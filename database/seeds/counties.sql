@@ -791,7 +791,7 @@ CREATE TABLE `wards` (
 
 
 
-
+DROP TABLE IF EXISTS `facilitys`;
 -- Dumping structure for table apidb.facilitys
 CREATE TABLE IF NOT EXISTS `facilitys` (
   `id` MEDIUMINT unsigned NOT NULL AUTO_INCREMENT,
