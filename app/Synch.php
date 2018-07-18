@@ -33,13 +33,12 @@ class Synch
 	        foreach ($body->organisationUnits as $key => $value) {
 	        	$sub = Subcounty::where('SubCountyDHISCode', $value->id)->get()->first();
 
-	        	if(!$sub){
-	        		$sub = new Subcounty;
-	        		$sub->SubCountyDHISCode = $value->id;
-	        	}
+	        	if(!$sub) $sub = new Subcounty;
+	        	
         		$county = County::where('CountyDHISCode', $value->parent->id)->get()->first();
         		$sub->county = $county->id ?? 0;
         		$sub->name = $value->name;
+        		$sub->SubCountyDHISCode = $value->id;
         		$sub->save();
 	        }
 
@@ -66,20 +65,13 @@ class Synch
 	        $body = json_decode($response->getBody());
 
 	        foreach ($body->organisationUnits as $key => $value) {
-	        	$sub = Subcounty::where('SubCountyDHISCode', $value->id)->get()->first();
+	        	$ward = Ward::where('WardDHISCode', $value->id)->get()->first();
 
-	        	if(!$sub){
-	        		$sub = new Subcounty;
-	        	}
-        		$county = County::where('CountyDHISCode', $value->parent->id)->get()->first();
-        		$sub->county = $county->id ?? 0;
-        		$sub->name = $value->name;
-        		$sub->save();
+	        	if(!$ward) $ward = new Ward;
 
-        		$ward = new Ward;
         		$ward->name = $value->name;
         		$ward->WardDHISCode = $value->id;
-        		$ward->rawcode = $value->code;
+        		$ward->rawcode = $value->code ?? null;
 
 				$sub = Subcounty::where('SubCountyDHISCode', $value->id)->get()->first();
 				$ward->subcounty_id = $sub->id ?? 0;        		
