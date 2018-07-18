@@ -85,8 +85,8 @@ CREATE TABLE IF NOT EXISTS `districts` (
   `SubCountyDHISCode` varchar(50) DEFAULT NULL,
   `SubCountyMFLCode` varchar(50) DEFAULT NULL,
   `SubCountyCoordinates` varchar(3070) DEFAULT NULL,
-  `county` TINYINT UNSIGNED NOT NULL,
-  `province` TINYINT UNSIGNED NOT NULL,
+  `county` TINYINT UNSIGNED DEFAULT NULL,
+  `province` TINYINT UNSIGNED DEFAULT NULL,
   `comment` varchar(32) DEFAULT NULL,
   `flag` TINYINT DEFAULT '1',
   PRIMARY KEY (`id`)
@@ -400,8 +400,8 @@ CREATE TABLE IF NOT EXISTS `subcounties` (
   `SubCountyDHISCode` varchar(50) DEFAULT NULL,
   `SubCountyMFLCode` varchar(50) DEFAULT NULL,
   `SubCountyCoordinates` varchar(3070) DEFAULT NULL,
-  `county` TINYINT UNSIGNED NOT NULL,
-  `province` TINYINT UNSIGNED NOT NULL,
+  `county` TINYINT UNSIGNED DEFAULT NULL,
+  `province` TINYINT UNSIGNED DEFAULT NULL,
   `comment` varchar(32) DEFAULT NULL,
   `flag` TINYINT DEFAULT '1',
   PRIMARY KEY (`id`)
