@@ -44,7 +44,7 @@ class Synch
 	        }
 
 	        if($page == $body->pager->pageCount) break;
-	        echo  'Page ' . $page . ' completed';
+	        echo  'Page ' . $page . ' completed \n';
 	        $page++;
         }
 
@@ -60,7 +60,7 @@ class Synch
 
 	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:4&page=' . $page, [
 	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
-	            'http_errors' => false,
+	            // 'http_errors' => false,
 	        ]);
 
 	        $body = json_decode($response->getBody());
@@ -86,6 +86,7 @@ class Synch
 	        }
 
 	        if($page == $body->pager->pageCount) break;
+	        echo  'Page ' . $page . ' completed \n';
 	        $page++;
         }
 

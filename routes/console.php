@@ -20,3 +20,7 @@ Artisan::command('inspire', function () {
 Artisan::command('synch:subcounties', function () {
 	\App\Synch::subcounties();
 })->describe('Synch subcounties from DHIS.');
+
+Artisan::command('synch:wards', function () {
+	\App\Synch::wards();
+})->describe('Synch wards from DHIS.');
