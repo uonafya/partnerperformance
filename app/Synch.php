@@ -13,7 +13,7 @@ use \App\Facility;
 
 class Synch 
 {
-	public static $base = 'https://hiskenya.org/api/organisationUnits.json?paging=true&';
+	public static $base = 'https://hiskenya.org/api/';
 
 	public static function subcounties(){
 
@@ -23,9 +23,9 @@ class Synch
 
         while($loop){
 
-	        $response = $client->request('get', 'fields=id,name,code,parent[id,code,name]&filter=level:eq:3&page=' . $page, [
+	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:3&page=' . $page, [
 	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
-	            'http_errors' => false,
+	            // 'http_errors' => false,
 	        ]);
 
 	        $body = json_decode($response->getBody());
@@ -56,7 +56,7 @@ class Synch
 
         while($loop){
 
-	        $response = $client->request('get', 'fields=id,name,code,parent[id,code,name]&filter=level:eq:4&page=' . $page, [
+	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:4&page=' . $page, [
 	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
 	            'http_errors' => false,
 	        ]);
@@ -73,6 +73,14 @@ class Synch
         		$sub->county = $county->id ?? 0;
         		$sub->name = $value->name;
         		$sub->save();
+
+        		$ward = new Ward;
+        		$ward->name = $value->name;
+        		$ward->WardDHISCode = $value->id;
+        		$ward->rawcode = $value->code;
+
+				$sub = Subcounty::where('SubCountyDHISCode', $value->id)->get()->first();
+				$ward->subcounty_id = $sub->id ?? 0;        		
 	        }
 
 	        if($page == $body->pageCount) break;
