@@ -44,6 +44,8 @@ class Synch
 	        }
 
 	        if($page == $body->pageCount) break;
+	        echo  'Page ' . $page . ' completed';
+	        $page++;
         }
 
 	}
@@ -84,6 +86,7 @@ class Synch
 	        }
 
 	        if($page == $body->pageCount) break;
+	        $page++;
         }
 
 	}
