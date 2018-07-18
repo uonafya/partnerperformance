@@ -43,7 +43,7 @@ class Synch
         		$sub->save();
 	        }
 
-	        if($page == $body->pageCount) break;
+	        if($page == $body->pager->pageCount) break;
 	        echo  'Page ' . $page . ' completed';
 	        $page++;
         }
@@ -85,7 +85,7 @@ class Synch
 				$ward->subcounty_id = $sub->id ?? 0;        		
 	        }
 
-	        if($page == $body->pageCount) break;
+	        if($page == $body->pager->pageCount) break;
 	        $page++;
         }
 
