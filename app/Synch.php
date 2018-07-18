@@ -34,7 +34,7 @@ class Synch
 	        	$sub = Subcounty::where('SubCountyDHISCode', $value->id)->get()->first();
 
 	        	if(!$sub) $sub = new Subcounty;
-	        	
+
         		$county = County::where('CountyDHISCode', $value->parent->id)->get()->first();
         		$sub->county = $county->id ?? 0;
         		$sub->name = $value->name;
@@ -43,7 +43,7 @@ class Synch
 	        }
 
 	        if($page == $body->pager->pageCount) break;
-	        echo  'Page ' . $page . ' completed \n';
+	        echo  'Page ' . $page . " completed \n";
 	        $page++;
         }
 
@@ -78,7 +78,7 @@ class Synch
 	        }
 
 	        if($page == $body->pager->pageCount) break;
-	        echo  'Page ' . $page . ' completed \n';
+	        echo  'Page ' . $page . " completed \n";
 	        $page++;
         }
 
