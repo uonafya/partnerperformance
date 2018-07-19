@@ -17,4 +17,10 @@ class Facility extends BaseModel
 	{
 		return $this->belongsTo('App\Subcounty');
 	}
+
+
+    public function scopeEligible($query, $offset=0)
+    {
+        return $query->whereNotNull('DHIScode')->limit(50)->offset($offset);
+    }
 }

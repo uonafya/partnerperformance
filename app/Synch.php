@@ -13,6 +13,8 @@ use \App\Facility;
 use \App\DataSet;
 use \App\DataSetElement;
 
+use DB;
+
 
 class Synch 
 {
@@ -176,15 +178,81 @@ class Synch
 	        }
 
 	        $d->save();
-
 	        echo  'Data set ' . ($key+1) . " completed \n";
         }
-
 	}
+
+	public static function populate($year=null)
+	{
+		if(!$year) $year = date('Y');
+        $client = new Client(['base_uri' => self::$base]);
+		// $datasets = DataSet::with(['element'])->get();
+		$datasets = DataSet::all();
+
+		echo 'Begin updates at ' . date('Y-m-d H:i:s a') . " \n";
+
+		$pe='';
+		$offset=0;
+
+		for($month=1; $month < 13; $month++) {
+			if($month < 10) $month = '0' . $month;
+			$pe .= $year . $month . ';';
+		}
+
+		while(true){
+
+			$facilities = Facility::eligible($offset)->get();
+			if($facilities->isEmpty()) break;
+			$ou = '';
+
+			foreach ($facilities as $facility) {
+				$ou .= $facility->DHISCode . ';';
+			}
+
+			foreach ($datasets as $dataset) {
+				// $elements = DataSetElement::with(['dataset'])->where('data_set_id', $dataset->id)->get();
+				$elements = $dataset->element;
+				$dx = '';
+				// foreach ($dataset->element as $element) {
+				foreach ($elements as $element) {
+					$dx .= $element->dhis . ';';
+				}
+				$co = $dataset->category_dhis;
+
+				// $url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=co:" . $co . "&dimension=pe:" . $pe;
+				// If co is set, it will be value[1]
+
+
+				$url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
+
+		        $response = $client->request('get', $url, [
+		            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+		            // 'http_errors' => false,
+		        ]);
+
+		        $body = json_decode($response->getBody());
+
+		        foreach ($body->rows as $key => $value) {
+		        	$elem = $elements->where('dhis', $value[0])->first();
+		        	$fac = $facilities->where('DHISCode', $value[1])->first();
+		        	$period = str_split($value[3], 2);
+		        	$y = $period[0];
+		        	$m = $period[1];
+
+		        	if(!$elem->table_name || !$elem->column_name) continue;
+
+		        	DB::table($elem->table_name)
+		        		->where(['facility_id' => $fac->id, 'year' => $y, 'month' => $m])
+		        		->update([$elem->column_name => $value[3]]);
+		        }
+			}			
+			$offset += 50;
+	        echo  'Completed updated for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
+		}
+	} 
 
 	public static function stuff()
 	{
-
 		// https://hiskenya.org/api/analytics?dimension=dx:F9yzD1uwtqU;&dimension=ou:z2V9BrTObHC;mu9d9jNXA6Y;&dimension=pe:2018;&
 		// dx is the dataset data datasetelement dataelement id
 		// co is the dataset data datasetelement categorycombo id
