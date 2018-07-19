@@ -10,6 +10,9 @@ use \App\Partner;
 use \App\Ward;
 use \App\Facility;
 
+use \App\DataSet;
+use \App\DataSetElement;
+
 
 class Synch 
 {
@@ -88,8 +91,8 @@ class Synch
         }
 	}
 
-	public static function facilities(){
-
+	public static function facilities()
+	{
         $client = new Client(['base_uri' => self::$base]);
         $loop=true;
         $page=125;
@@ -131,6 +134,61 @@ class Synch
 	        if($page == $body->pager->pageCount) break;
 	        $page++;
         }
+	}
+
+	public static function datasets()
+	{
+		$url = "dataSets.json?paging=false&filter=name:ilike:731&fields=id,name,code";
+        $client = new Client(['base_uri' => self::$base]);
+
+        $response = $client->request('get', $url, [
+            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+            // 'http_errors' => false,
+        ]);
+
+        $body = json_decode($response->getBody());
+
+        foreach ($body->dataSets as $key => $value) {
+        	$d = new DataSet;
+        	$d->name = $value->name ?? '';
+        	$d->dhis = $value->id ?? '';
+        	$d->code = $value->code ?? '';
+        	$d->save();
+
+        	$new_url = "dataSets/" . $d->dhis . ".json?fields=name,code,id,dataSetElements[dataElement[name,id,code],categoryCombo[id,name";
+
+	        $elements_request = $client->request('get', $new_url, [
+	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+	            // 'http_errors' => false,
+	        ]);
+
+	        $elements = json_decode($elements_request->getBody());
+
+	        foreach ($elements->dataSetElements as $element) {
+	        	$e = new DataSetElement;
+	        	$e->data_set_id = $d->id;
+	        	$e->name = $element->dataElement->name ?? '';
+	        	$e->code = $element->dataElement->code ?? '';
+	        	$e->dhis = $element->dataElement->id ?? '';
+	        	$e->save();
+
+	        	$d->category_dhis = $element->categoryCombo->id ?? '';
+	        }
+
+	        $d->save();
+        }
+
+
+	}
+
+	public static function stuff()
+	{
+
+		// https://hiskenya.org/api/analytics?dimension=dx:F9yzD1uwtqU;&dimension=ou:z2V9BrTObHC;mu9d9jNXA6Y;&dimension=pe:2018;&
+		// dx is the dataset data datasetelement dataelement id
+		// co is the dataset data datasetelement categorycombo id
+		// ou is the facility dhis code
+		// pe is the period
 	}
 
 

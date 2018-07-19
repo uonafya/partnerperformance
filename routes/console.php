@@ -28,3 +28,7 @@ Artisan::command('synch:wards', function () {
 Artisan::command('synch:facilities', function () {
 	\App\Synch::facilities();
 })->describe('Synch facilities from DHIS.');
+
+Artisan::command('synch:datasets', function () {
+	\App\Synch::datasets();
+})->describe('Synch datasets from DHIS.');
