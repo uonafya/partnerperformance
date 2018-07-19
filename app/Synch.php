@@ -104,7 +104,7 @@ class Synch
 	        $body = json_decode($response->getBody());
 
 	        foreach ($body->organisationUnits as $key => $value) {
-	        	
+
 	        	$mfl = $value->code ?? null;
 
 	        	$fac = Facility::where('DHISCode', $value->id)
@@ -117,7 +117,7 @@ class Synch
 
         		$fac->new_name = $value->name;
         		$fac->DHISCode = $value->id;
-        		$fac->facilitycode = $value->code ?? $fac->facilitycode ?? '';
+        		$fac->facilitycode = $value->code ?? $fac->facilitycode ?? null;
 
         		$ward = Ward::where('WardDHISCode', $value->parent->id)->get()->first();
 				$fac->ward_id = $ward->id ?? 0;        		
