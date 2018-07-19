@@ -92,7 +92,7 @@ class Synch
 
         $client = new Client(['base_uri' => self::$base]);
         $loop=true;
-        $page=1;
+        $page=125;
 
         while($loop){
 
@@ -118,6 +118,7 @@ class Synch
         		$fac->new_name = $value->name;
         		$fac->DHISCode = $value->id;
         		$fac->facilitycode = $fac->facilitycode ?? $value->code ?? 0;
+        		$fac->facilitycode = (int) $fac->facilitycode;
 
         		$ward = Ward::where('WardDHISCode', $value->parent->id)->get()->first();
 				$fac->ward_id = $ward->id ?? 0;        		
