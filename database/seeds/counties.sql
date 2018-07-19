@@ -800,6 +800,7 @@ CREATE TABLE IF NOT EXISTS `facilitys` (
   `subcounty_id` SMALLINT UNSIGNED DEFAULT '0' COMMENT 'Facility District ID',
   `ward_id` SMALLINT UNSIGNED DEFAULT '0' COMMENT 'Facility Ward ID',
   `name` varchar(100) DEFAULT NULL COMMENT 'Facility Name',
+  `new_name` varchar(100) DEFAULT NULL COMMENT 'Facility Name',
   `lab` int(14) NOT NULL DEFAULT '0',
   `partner` TINYINT UNSIGNED NOT NULL DEFAULT '0',
   `ftype` varchar(200) DEFAULT NULL,

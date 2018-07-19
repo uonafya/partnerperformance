@@ -12,4 +12,9 @@ class Facility extends BaseModel
 	{
 		return $this->belongsTo('App\Ward');
 	}
+
+	public function subcounty()
+	{
+		return $this->belongsTo('App\Subcounty');
+	}
 }

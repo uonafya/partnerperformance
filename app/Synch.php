@@ -36,14 +36,18 @@ class Synch
 	        	if(!$sub) $sub = new Subcounty;
 
         		$county = County::where('CountyDHISCode', $value->parent->id)->get()->first();
+        		if($county && !$county->rawcode){
+        			$county->rawcode = $value->parent->code;
+        			$county->save();
+        		}
         		$sub->county = $county->id ?? 0;
         		$sub->name = $value->name;
         		$sub->SubCountyDHISCode = $value->id;
         		$sub->save();
 	        }
 
-	        if($page == $body->pager->pageCount) break;
 	        echo  'Page ' . $page . " completed \n";
+	        if($page == $body->pager->pageCount) break;
 	        $page++;
         }
 
@@ -73,16 +77,55 @@ class Synch
         		$ward->WardDHISCode = $value->id;
         		$ward->rawcode = $value->code ?? null;
 
-				$sub = Subcounty::where('SubCountyDHISCode', $value->id)->get()->first();
-				$ward->subcounty_id = $sub->id ?? 0;        		
+				$sub = Subcounty::where('SubCountyDHISCode', $value->parent->id)->get()->first();
+				$ward->subcounty_id = $sub->id ?? 0;   
+				$ward->save();     		
 	        }
 
-	        if($page == $body->pager->pageCount) break;
 	        echo  'Page ' . $page . " completed \n";
+	        if($page == $body->pager->pageCount) break;
 	        $page++;
         }
-
 	}
+
+	public static function facilities(){
+
+        $client = new Client(['base_uri' => self::$base]);
+        $loop=true;
+        $page=1;
+
+        while($loop){
+
+	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:5&page=' . $page, [
+	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+	            // 'http_errors' => false,
+	        ]);
+
+	        $body = json_decode($response->getBody());
+
+	        foreach ($body->organisationUnits as $key => $value) {
+	        	$fac = Facility::where('facilitycode', $value->code)->orWhere('DHISCode', $value->id)->get()->first();
+
+	        	if(!$fac) $fac = new Facility;
+
+        		$fac->new_name = $value->name;
+        		$fac->DHISCode = $value->id;
+        		$fac->facilitycode = $value->code ?? $fac->facilitycode ?? '';
+
+        		$ward = Ward::where('WardDHISCode', $value->parent->id)->get()->first();
+				$fac->ward_id = $ward->id ?? 0;        		
+				$fac->subcounty_id = $ward->subcounty_id ?? 0;  
+
+				$fac->save();
+	        }
+
+	        echo  'Page ' . $page . " completed \n";
+	        if($page == $body->pager->pageCount) break;
+	        $page++;
+        }
+	}
+
+
 
 
 }
