@@ -176,8 +176,9 @@ class Synch
 	        }
 
 	        $d->save();
-        }
 
+	        echo  'Data set ' . ($key+1) . " completed \n";
+        }
 
 	}
 

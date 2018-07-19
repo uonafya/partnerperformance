@@ -14,7 +14,7 @@ class CreateDataSetElementsTable extends Migration
     public function up()
     {
         Schema::create('data_set_elements', function (Blueprint $table) {
-            $table->increments('id');
+            $table->smallIncrements('id');
             $table->string('name')->nullable();
             $table->string('code', 30)->nullable();
             $table->string('dhis', 30)->nullable();
