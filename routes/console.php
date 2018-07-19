@@ -24,3 +24,7 @@ Artisan::command('synch:subcounties', function () {
 Artisan::command('synch:wards', function () {
 	\App\Synch::wards();
 })->describe('Synch wards from DHIS.');
+
+Artisan::command('synch:facilities', function () {
+	\App\Synch::facilities();
+})->describe('Synch facilities from DHIS.');
