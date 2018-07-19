@@ -104,7 +104,11 @@ class Synch
 	        $body = json_decode($response->getBody());
 
 	        foreach ($body->organisationUnits as $key => $value) {
-	        	$fac = Facility::where('facilitycode', $value->code)->orWhere('DHISCode', $value->id)->get()->first();
+	        	$fac = Facility::where('DHISCode', $value->id)
+			        	->when($value->code, function($query) use ($value){
+			        		return $query->orWhere('facilitycode', $value->code);
+			        	})
+			        	->get()->first();
 
 	        	if(!$fac) $fac = new Facility;
 
