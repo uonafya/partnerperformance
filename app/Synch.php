@@ -117,7 +117,7 @@ class Synch
 
         		$fac->new_name = $value->name;
         		$fac->DHISCode = $value->id;
-        		$fac->facilitycode = $value->code ?? $fac->facilitycode ?? 0;
+        		$fac->facilitycode = $fac->facilitycode ?? $value->code ?? 0;
 
         		$ward = Ward::where('WardDHISCode', $value->parent->id)->get()->first();
 				$fac->ward_id = $ward->id ?? 0;        		
