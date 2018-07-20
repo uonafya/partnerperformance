@@ -219,7 +219,7 @@ class Synch
 
 		$tables = DataSetElement::selectRaw("distinct table_name")->get();
 
-		$facilities = Facility::all();
+		$facilities = Facility::select('id')->get();
 
 		foreach ($tables as $table) {
 
