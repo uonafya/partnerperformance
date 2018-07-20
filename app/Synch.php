@@ -306,7 +306,7 @@ class Synch
 		        foreach ($body->rows as $key => $value) {
 		        	$elem = $dataset->element->where('dhis', $value[0])->first();
 		        	$fac = $facilities->where('DHIScode', $value[1])->first();
-		        	$period = str_split($value[3], 2);
+		        	$period = str_split($value[2], 4);
 		        	$y = $period[0];
 		        	$m = $period[1];
 
