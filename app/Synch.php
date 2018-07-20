@@ -208,7 +208,7 @@ class Synch
 				);
 	        ";
 
-	        // DB::statement($sql);
+	        DB::statement($sql);
 	        $d->save();
 	        echo  'Data set ' . ($key+1) . " completed \n";
         }

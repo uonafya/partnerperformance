@@ -20,7 +20,7 @@ class Lookup
 
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
-		return $final;
+		return 'd_' . $final;
 	}
 
 	public static function column_name_formatter($raw)
