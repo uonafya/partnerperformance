@@ -32,3 +32,11 @@ Artisan::command('synch:facilities', function () {
 Artisan::command('synch:datasets', function () {
 	\App\Synch::datasets();
 })->describe('Synch datasets from DHIS.');
+
+Artisan::command('insert:rows {year?}', function ($year=null) {
+	\App\Synch::insert_rows($year);
+})->describe('Insert rows for data tables.');
+
+Artisan::command('populate {year?}', function ($year=null) {
+	\App\Synch::populate($year);
+})->describe('Populate data tables with values.');

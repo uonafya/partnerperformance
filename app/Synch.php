@@ -161,8 +161,6 @@ class Synch
 
         	$table_name = Lookup::table_name_formatter($d->name);
 
-
-
         	$sql = "CREATE TABLE `{$table_name}` (
         				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
         				facility int(10) UNSIGNED DEFAULT 0,
@@ -213,6 +211,37 @@ class Synch
 	        $d->save();
 	        echo  'Data set ' . ($key+1) . " completed \n";
         }
+	}
+
+	public static function insert_rows($year=null)
+	{
+		if(!$year) $year = date('Y');
+
+		$tables = DataSetElement::selectRaw("distinct table_name")->get();
+
+		$facilities = Facility::all();
+
+		foreach ($tables as $table) {
+
+			$i=0;
+			$data_array = [];
+
+			for ($month=1; $month < 13; $month++) { 
+				foreach ($facilities as $k => $val) {
+					$data_array[$i] = array('year' => $year, 'month' => $month, 'facility' => $val->id);
+					$i++;
+
+					if ($i == 200) {
+						DB::table($table->table_name)->insert($data_array);
+						$data_array=null;
+				    	$i=0;
+					}
+				}
+			}
+			DB::table($table->table_name)->insert($data_array);
+
+	        echo  'Completed entry for ' . $table->table_name . " \n";
+		}
 	}
 
 	public static function populate($year=null)
