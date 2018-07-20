@@ -33,6 +33,10 @@ Artisan::command('synch:datasets', function () {
 	\App\Synch::datasets();
 })->describe('Synch datasets from DHIS.');
 
+Artisan::command('truncate:tables', function () {
+	\App\Synch::truncate_tables();
+})->describe('Truncate tables.');
+
 Artisan::command('insert:rows {year?}', function ($year=null) {
 	\App\Synch::insert_rows($year);
 })->describe('Insert rows for data tables.');

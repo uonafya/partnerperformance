@@ -238,10 +238,20 @@ class Synch
 					}
 				}
 			}
-			DB::table($table->table_name)->insert($data_array);
+			if($data_array) DB::table($table->table_name)->insert($data_array);
 
 	        echo  'Completed entry for ' . $table->table_name . " \n";
 		}
+	}
+
+	public static function truncate_tables()
+	{
+		$tables = DataSetElement::selectRaw("distinct table_name")->get();
+
+		foreach ($tables as $table){
+			DB::statement("TRUNCATE TABLE " . $table->table_name . ";");
+		}
+
 	}
 
 	public static function populate($year=null)
