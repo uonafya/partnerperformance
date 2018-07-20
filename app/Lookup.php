@@ -8,7 +8,7 @@ class Lookup
 	public static function table_name_formatter($raw)
 	{
 		$raw = strtolower($raw);
-		$str = str_split($raw, ' ');
+		$str = explode(' ', $raw);
 
 		$size = sizeof($str);
 		$final = '';
