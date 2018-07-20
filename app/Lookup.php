@@ -37,6 +37,8 @@ class Lookup
 		$raw = str_replace('__', '_', $raw);
 		$raw = str_replace('(couples_only)', '', $raw);
 
+		$raw = str_replace('number_started_on', '', $raw);
+
 		$final = $raw;
 
 		if(starts_with($final, '_')) $final = str_replace_first('_', '', $final);
