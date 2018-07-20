@@ -165,9 +165,9 @@ class Synch
 
         	$sql = "CREATE TABLE `{$table_name}` (
         				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-        				facility int(10) UNSIGNED DEFAULT(0),
-        				year smallint(4) UNSIGNED DEFAULT(0),
-        				month tinyint(3) UNSIGNED DEFAULT(0),
+        				facility int(10) UNSIGNED DEFAULT 0,
+        				year smallint(4) UNSIGNED DEFAULT 0,
+        				month tinyint(3) UNSIGNED DEFAULT 0,
         	";
 
         	$new_url = "dataSets/" . $d->dhis . ".json?fields=name,code,id,dataSetElements[dataElement[name,id,code],categoryCombo[id,name";
