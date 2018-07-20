@@ -19,6 +19,7 @@ class Lookup
 		$final = str_replace('revision_2018', '', $final);
 
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
+		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 		return $final;
 	}
 

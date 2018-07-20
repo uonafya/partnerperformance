@@ -198,7 +198,7 @@ class Synch
 	        	$d->category_dhis = $element->categoryCombo->id ?? '';
 	        }
 
-	        DB::statement("DROP TABLE IF EXISTS {$table_name}");
+	        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
 
 	        $sql .= "
 					PRIMARY KEY (`id`),
