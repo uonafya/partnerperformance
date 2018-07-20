@@ -46,7 +46,9 @@ class Lookup
 
 		$length = strlen($final);
 
-		if($length > 50) $final = str_limit($final, 50);
+		if($length > 50) $final = str_limit($final, 50, '');
+
+		if($final == 'linked_to_community_based_services') $final = $final . rand(1, 5);
 
 		return $final;
 	}
