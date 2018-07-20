@@ -314,8 +314,8 @@ class Synch
 		        	if(!$elem->table_name || !$elem->column_name) continue;
 
 		        	DB::table($elem->table_name)
-		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m, 'dateupdated' => date('Y-m-d')])
-		        		->update([$elem->column_name => $value[3]]);
+		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m])
+		        		->update([$elem->column_name => $value[3], 'dateupdated' => date('Y-m-d')]);
 
 		        	echo "Updated {$elem->table_name} {$elem->column_name} {$fac->id} {$y} {$m} {$value[3]} \n ";
 		        }
