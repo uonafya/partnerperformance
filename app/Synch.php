@@ -193,7 +193,7 @@ class Synch
 	        	$e->save();
 
 	        	$sql .= "
-	        	{$column_name} int(10) DEFAULT NULL, ";
+	        	`{$column_name}` int(10) DEFAULT NULL, ";
 
 	        	$d->category_dhis = $element->categoryCombo->id ?? '';
 	        }

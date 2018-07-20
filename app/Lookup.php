@@ -34,6 +34,7 @@ class Lookup
 		$raw = str_replace('__', '_', $raw);
 		$raw = str_replace('__', '_', $raw);
 		$raw = str_replace('__', '_', $raw);
+		$raw = str_replace('(couples_only)', '', $raw);
 
 		$final = $raw;
 
