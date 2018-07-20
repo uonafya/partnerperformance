@@ -13,6 +13,8 @@ use \App\Facility;
 use \App\DataSet;
 use \App\DataSetElement;
 
+use \App\Lookup;
+
 use DB;
 
 
@@ -127,7 +129,7 @@ class Synch
 
         		$ward = Ward::where('WardDHISCode', $value->parent->id)->get()->first();
 				$fac->ward_id = $ward->id ?? 0;        		
-				$fac->subcounty_id = $ward->subcounty_id ?? 0;  
+				$fac->subcounty_id = $ward->subcounty_id ?? $fac->district ?? 0;  
 
 				$fac->save();
 	        }
@@ -157,6 +159,17 @@ class Synch
         	$d->code = $value->code ?? '';
         	$d->save();
 
+        	$table_name = Lookup::table_name_formatter($d->name);
+
+
+
+        	$sql = "CREATE TABLE `{$table_name}` (
+        				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        				facility int(10) UNSIGNED DEFAULT(0),
+        				year smallint(4) UNSIGNED DEFAULT(0),
+        				month tinyint(3) UNSIGNED DEFAULT(0),
+        	";
+
         	$new_url = "dataSets/" . $d->dhis . ".json?fields=name,code,id,dataSetElements[dataElement[name,id,code],categoryCombo[id,name";
 
 	        $elements_request = $client->request('get', $new_url, [
@@ -172,11 +185,30 @@ class Synch
 	        	$e->name = $element->dataElement->name ?? '';
 	        	$e->code = $element->dataElement->code ?? '';
 	        	$e->dhis = $element->dataElement->id ?? '';
+
+	        	$column_name = Lookup::column_name_formatter($e->name);
+
+	        	$e->table_name = $table_name;
+	        	$e->column_name = $column_name;
 	        	$e->save();
+
+	        	$sql .= "
+	        	{$column_name} int(10) DEFAULT NULL, ";
 
 	        	$d->category_dhis = $element->categoryCombo->id ?? '';
 	        }
 
+	        DB::statement("DROP TABLE IF EXISTS {$table_name}");
+
+	        $sql .= "
+					PRIMARY KEY (`id`),
+					KEY `identifier`(`facility`, `year`, `month`),
+					KEY `facility` (`facility`),
+					KEY `specific_time` (`year`, `month`)
+				);
+	        ";
+
+	        DB::statement($sql);
 	        $d->save();
 	        echo  'Data set ' . ($key+1) . " completed \n";
         }
@@ -186,8 +218,7 @@ class Synch
 	{
 		if(!$year) $year = date('Y');
         $client = new Client(['base_uri' => self::$base]);
-		// $datasets = DataSet::with(['element'])->get();
-		$datasets = DataSet::all();
+		$datasets = DataSet::with(['element'])->get();
 
 		echo 'Begin updates at ' . date('Y-m-d H:i:s a') . " \n";
 
@@ -199,22 +230,22 @@ class Synch
 			$pe .= $year . $month . ';';
 		}
 
+		// Begin loop to get facilities
 		while(true){
 
 			$facilities = Facility::eligible($offset)->get();
 			if($facilities->isEmpty()) break;
 			$ou = '';
 
+			// Put facilities' DHIS codes into a string
 			foreach ($facilities as $facility) {
 				$ou .= $facility->DHISCode . ';';
 			}
 
+			// Iterate through the data sets
 			foreach ($datasets as $dataset) {
-				// $elements = DataSetElement::with(['dataset'])->where('data_set_id', $dataset->id)->get();
-				$elements = $dataset->element;
 				$dx = '';
-				// foreach ($dataset->element as $element) {
-				foreach ($elements as $element) {
+				foreach ($dataset->element as $element) {
 					$dx .= $element->dhis . ';';
 				}
 				$co = $dataset->category_dhis;
@@ -232,8 +263,9 @@ class Synch
 
 		        $body = json_decode($response->getBody());
 
+
 		        foreach ($body->rows as $key => $value) {
-		        	$elem = $elements->where('dhis', $value[0])->first();
+		        	$elem = $dataset->element->where('dhis', $value[0])->first();
 		        	$fac = $facilities->where('DHISCode', $value[1])->first();
 		        	$period = str_split($value[3], 2);
 		        	$y = $period[0];
@@ -242,7 +274,7 @@ class Synch
 		        	if(!$elem->table_name || !$elem->column_name) continue;
 
 		        	DB::table($elem->table_name)
-		        		->where(['facility_id' => $fac->id, 'year' => $y, 'month' => $m])
+		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m])
 		        		->update([$elem->column_name => $value[3]]);
 		        }
 			}			
