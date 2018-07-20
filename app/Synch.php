@@ -316,7 +316,7 @@ class Synch
 		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m, 'dateupdated' => date('Y-m-d')])
 		        		->update([$elem->column_name => $value[3]]);
 
-		        	echo "Updated {$elem->table_name} {$fac->id} {$y} {$m} \n ";
+		        	echo "Updated {$elem->table_name} {$elem->column_name} {$fac->id} {$y} {$m} {$value[3]} \n ";
 		        }
 			}			
 			$offset += 50;
