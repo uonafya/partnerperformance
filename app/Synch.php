@@ -288,7 +288,6 @@ class Synch
 				foreach ($dataset->element as $element) {
 					$dx .= $element->dhis . ';';
 				}
-				dd($dx);
 				$co = $dataset->category_dhis;
 
 				// $url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=co:" . $co . "&dimension=pe:" . $pe;
