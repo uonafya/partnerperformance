@@ -114,7 +114,7 @@ class Synch
 
 	        	$mfl = $value->code ?? null;
 
-	        	$fac = Facility::where('DHISCode', $value->id)
+	        	$fac = Facility::where('DHIScode', $value->id)
 			        	->when($mfl, function($query) use ($value){
 			        		return $query->orWhere('facilitycode', $value->code);
 			        	})
@@ -123,7 +123,7 @@ class Synch
 	        	if(!$fac) $fac = new Facility;
 
         		$fac->new_name = $value->name;
-        		$fac->DHISCode = $value->id;
+        		$fac->DHIScode = $value->id;
         		$fac->facilitycode = $fac->facilitycode ?? $value->code ?? 0;
         		$fac->facilitycode = (int) $fac->facilitycode;
 
@@ -279,7 +279,7 @@ class Synch
 
 			// Put facilities' DHIS codes into a string
 			foreach ($facilities as $facility) {
-				$ou .= $facility->DHISCode . ';';
+				$ou .= $facility->DHIScode . ';';
 			}
 
 			// Iterate through the data sets
@@ -306,7 +306,7 @@ class Synch
 
 		        foreach ($body->rows as $key => $value) {
 		        	$elem = $dataset->element->where('dhis', $value[0])->first();
-		        	$fac = $facilities->where('DHISCode', $value[1])->first();
+		        	$fac = $facilities->where('DHIScode', $value[1])->first();
 		        	$period = str_split($value[3], 2);
 		        	$y = $period[0];
 		        	$m = $period[1];
