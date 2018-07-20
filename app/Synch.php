@@ -286,6 +286,7 @@ class Synch
 			foreach ($datasets as $dataset) {
 				$dx = '';
 				foreach ($dataset->element as $element) {
+					dd($element);
 					$dx .= $element->dhis . ';';
 				}
 				$co = $dataset->category_dhis;
@@ -314,7 +315,7 @@ class Synch
 		        	if(!$elem->table_name || !$elem->column_name) continue;
 
 		        	DB::table($elem->table_name)
-		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m])
+		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m, 'dateupdated' => date('Y-m-d')])
 		        		->update([$elem->column_name => $value[3]]);
 		        }
 			}			
