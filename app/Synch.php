@@ -201,6 +201,7 @@ class Synch
 	        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
 
 	        $sql .= "
+	        		dateupdated date DEFAULT NULL,
 					PRIMARY KEY (`id`),
 					KEY `identifier`(`facility`, `year`, `month`),
 					KEY `facility` (`facility`),
