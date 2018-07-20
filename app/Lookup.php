@@ -43,6 +43,10 @@ class Lookup
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 
+		$length = strlen($final);
+
+		if($length > 50) $final = str_limit($final, 50);
+
 		return $final;
 	}
 }
