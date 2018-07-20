@@ -303,7 +303,6 @@ class Synch
 
 		        $body = json_decode($response->getBody());
 
-
 		        foreach ($body->rows as $key => $value) {
 		        	$elem = $dataset->element->where('dhis', $value[0])->first();
 		        	$fac = $facilities->where('DHIScode', $value[1])->first();
@@ -316,6 +315,8 @@ class Synch
 		        	DB::table($elem->table_name)
 		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m, 'dateupdated' => date('Y-m-d')])
 		        		->update([$elem->column_name => $value[3]]);
+
+		        	echo "Updated {$elem->table_name} {$fac->id} {$y} {$m} \n "
 		        }
 			}			
 			$offset += 50;
