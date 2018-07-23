@@ -105,7 +105,7 @@ class Synch
 	{
         $client = new Client(['base_uri' => self::$base]);
         $loop=true;
-        $page=125;
+        $page=1;
 
         while($loop){
 
