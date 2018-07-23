@@ -19,3 +19,7 @@ Route::get('reset_password/{token}', ['as' => 'password.reset', function($token)
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
