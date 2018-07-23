@@ -49,7 +49,11 @@ class Synch
         		}
         		$sub->county = $county->id ?? 0;
         		$name = $value->name;
-        		$name = str_replace('Sub County', '', $name);
+
+        		$name = str_replace('Sub', '', $name);
+        		$name = str_replace('County', '', $name);
+        		$name = str_replace('-', '', $name);
+        		$name = trim($name);
         		$sub->name = $name;
         		$sub->SubCountyDHISCode = $value->id;
         		$sub->save();
