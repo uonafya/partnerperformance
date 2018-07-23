@@ -6,7 +6,7 @@ use App\BaseModel;
 
 class Subcounty extends BaseModel
 {
-	// protected $table = 'districts';
+	protected $table = 'districts';
 
 	public function county()
 	{
@@ -15,7 +15,7 @@ class Subcounty extends BaseModel
 
 	public function ward()
 	{
-		return $this->hasMany('App\Ward');
+		return $this->hasMany('App\Ward', 'subcounty_id');
 	}
 
 	public function facility()

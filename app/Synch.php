@@ -38,7 +38,7 @@ class Synch
 	        $body = json_decode($response->getBody());
 
 	        foreach ($body->organisationUnits as $key => $value) {
-	        	$sub = Subcounty::where('SubCountyDHISCode', $value->id)->get()->first();
+	        	$sub = Subcounty::where('SubCountyDHISCode', 'like', "%{$value->id}%")->get()->first();
 
 	        	if(!$sub) $sub = new Subcounty;
 
@@ -48,7 +48,9 @@ class Synch
         			$county->save();
         		}
         		$sub->county = $county->id ?? 0;
-        		$sub->name = $value->name;
+        		$name = $value->name;
+        		$name = str_replace('Sub County', '', $name);
+        		$sub->name = $name;
         		$sub->SubCountyDHISCode = $value->id;
         		$sub->save();
 	        }
