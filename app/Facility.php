@@ -21,6 +21,6 @@ class Facility extends BaseModel
 
     public function scopeEligible($query, $offset=0)
     {
-        return $query->whereNotNull('DHIScode')->where('DHIScode', '!=', 0)->limit(50)->offset($offset);
+        return $query->whereNotNull('DHIScode')->where('DHIScode', '!=', '0')->limit(50)->offset($offset);
     }
 }
