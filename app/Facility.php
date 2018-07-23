@@ -15,7 +15,7 @@ class Facility extends BaseModel
 
 	public function subcounty()
 	{
-		return $this->belongsTo('App\Subcounty');
+		return $this->belongsTo('App\Subcounty', 'subcounty_id');
 	}
 
 
