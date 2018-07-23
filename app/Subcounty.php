@@ -6,7 +6,7 @@ use App\BaseModel;
 
 class Subcounty extends BaseModel
 {
-	protected $table = 'districts';
+	// protected $table = 'districts';
 
 	public function county()
 	{

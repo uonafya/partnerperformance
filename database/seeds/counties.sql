@@ -77,7 +77,22 @@ INSERT INTO `countys` (`id`, `name`, `CountyDHISCode`, `CountyMFLCode`, `CountyC
 	(47, 'Nyamira', 'uepLTG8wGWJ', '44', '[[[[35.0541,-0.7055],[35.0925,-0.7992],[35.0452,-0.8568],[35.0199,-0.8535],[35.0117,-0.8857],[34.9447,-0.7763],[34.794,-0.6912],[34.7921,-0.6705],[34.8294,-0.6666],[34.826,-0.6444],[34.8454,-0.6576],[34.8519,-0.6394],[34.8277,-0.6178],[34.8388,-0.6011],[34.8856,-0.616],[34.8569,-0.5061],[35.0201,-0.4133],[35.0442,-0.4467],[35.0335,-0.4966],[35.0546,-0.5076],[35.0662,-0.6063],[35.0549,-0.6494],[35.0706,-0.6935],[35.0541,-0.7055]]]]', 1512, 'N');
 /*!40000 ALTER TABLE `countys` ENABLE KEYS */;
 
--- Dumping structure for table apidb.districts
+-- Dumping structure for table apidb.subcounties
+DROP TABLE IF EXISTS `subcounties`;
+CREATE TABLE IF NOT EXISTS `subcounties` (
+  `id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `SubCountyDHISCode` varchar(50) DEFAULT NULL,
+  `SubCountyMFLCode` varchar(50) DEFAULT NULL,
+  `SubCountyCoordinates` varchar(3070) DEFAULT NULL,
+  `county` TINYINT UNSIGNED DEFAULT NULL,
+  `province` TINYINT UNSIGNED DEFAULT NULL,
+  `comment` varchar(32) DEFAULT NULL,
+  `flag` TINYINT DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 DROP TABLE IF EXISTS `districts`;
 CREATE TABLE IF NOT EXISTS `districts` (
   `id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
