@@ -54,17 +54,17 @@ function doAlert(placementId, Content)
 }
 
 	
-function date_filter(criteria, id)
+function date_filter(criteria, id, date_url)
 {
 	if (criteria === "monthly") {
-			year = null;
-			month = id;
-		}else {
-			year = id;
-			month = null;
-		}
+		year = null;
+		month = id;
+	}else {
+		year = id;
+		month = null;
+	}
 
-		var posting = $.post("{{ url('filter/date') }}", { 'year': year, 'month': month } );
+	var posting = $.post(date_url, { 'year': year, 'month': month } );
     var all = localStorage.getItem("my_var");
 
 		// Put the results in a div
