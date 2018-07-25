@@ -83,9 +83,7 @@
 			<div class="row" id="filter">
 				<div class="col-md-3">
 					<select class="btn js-example-basic-single" style="width:220px;background-color: #C5EFF7;">
-						{{ dd($select_options) }}
-						{!! $select_options !!}
-						
+						{{ $select_options }}
 					</select>
 				</div>
 
@@ -102,7 +100,7 @@
 								$year = (int) Date('Y') - 1;
 							@endphp
 
-							<a href="javascript:void(0)" onclick="date_filter('yearly', {{ $year }} )" class="alert-link"> {{ $year }} </a>|
+							<a href="javascript:void(0)" onclick="date_filter('yearly', {{$year}})" class="alert-link"> {{ $year }} </a>|
 						@endfor
 					</div>
 
@@ -201,7 +199,7 @@
 
 		    $('#errorAlertDateRange').hide();
 		    $(".js-example-basic-single").select2();
-		    $("#breadcrum").html({!! $default_breadcrumb !!});
+		    $("#breadcrum").html({{ $default_breadcrumb }});
 
 		      //Getting the URL dynamically
 			/*var url = $(location).attr('href');
