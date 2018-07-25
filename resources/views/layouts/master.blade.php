@@ -191,7 +191,7 @@
 
 		    $('#errorAlertDateRange').hide();
 		    $(".js-example-basic-single").select2();
-		    $("#breadcrum").html({!! $default_breadcrumb !!});
+		    $("#breadcrum").html("{!! $default_breadcrumb !!}");
 
 		      //Getting the URL dynamically
 			/*var url = $(location).attr('href');
