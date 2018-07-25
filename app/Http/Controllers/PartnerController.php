@@ -34,7 +34,7 @@ class PartnerController extends Controller
 			SUM(`tested_10-14_(m)_hv01-02` + `tested_10-14(f)_hv01-03`) as below_15,
 			SUM(`tested_15-19_(m)_hv01-04` + `tested_15-19(f)_hv01-05`) as below_20,
 			SUM(`tested_20-24(m)_hv01-06` + `tested_20-24(f)_hv01-07`) as below_25,
-			SUM(`tested_25pos_(m)_hv01-08` + `tested_25pos(f)_hv01-09`) as above_25,
+			SUM(`tested_25pos_(m)_hv01-08` + `tested_25pos_(f)_hv01-09`) as above_25,
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) as total
 		";
 
