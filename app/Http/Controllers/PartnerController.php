@@ -11,12 +11,6 @@ use App\Partner;
 class PartnerController extends Controller
 {
 
-	public function home()
-	{
-		$data = Lookup::partner_data();
-		return view('partners.home', $data);
-	}
-
 	public function tested()
 	{
 		$partner = session('filter_partner');

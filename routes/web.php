@@ -11,15 +11,22 @@
 |
 */
 
-Route::get('reset_password/{token}', ['as' => 'password.reset', function($token)
-{
-    // implement your reset password route here!
-}]);
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::middleware(['web'])->group(function(){
+
+	Route::prefix('filter')->name('filter.')->group(function(){
+		Route::get('date', 'FilterController@filter_date')->name('date');
+		Route::get('partner', 'FilterController@filter_partner')->name('partner');
+	});
+
+	Route::prefix('partner')->name('partner.')->group(function(){
+		Route::get('tested', 'PartnerController@tested')->name('tested');
+	});
+
+	Route::middleware(['clear_session'])->group(function(){
+		Route::get('/', 'GeneralController@partner_home')->name('/');
+	});
+});

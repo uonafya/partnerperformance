@@ -34,10 +34,7 @@
 		<title>
 			Dashboard
 		</title>
-		<style type="text/css">
-		</style>
-		<!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
-		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 	</head>
 	<body>
 		<!-- Begining of Navigation Bar -->
@@ -158,6 +155,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
 
 
@@ -177,7 +176,6 @@
 
 	<script src="{{ url('js/customFunctions.js') }}"></script>
 
-
 	<script type="text/javascript">
 	    $(function() {
 		    $('.date-picker').datepicker( {
@@ -191,9 +189,7 @@
 		            $(this).datepicker('setDate', new Date(year, month, 1));
 		        }
 		    });
-	    });
-
-	    $().ready(function(){
+		    
 	    	
 	        $.ajaxSetup({
 	            headers: {
@@ -206,17 +202,17 @@
 		    $("#breadcrum").html({!! $default_breadcrumb !!});
 
 		      //Getting the URL dynamically
-		    var url = $(location).attr('href');
-		    // Getting the file name i.e last segment of URL (i.e. example.html)
-		    var fn = url.split('/').indexOf("partner");
-		    
-		    if (fn > -1) {
-		      var trends = url.split('/').indexOf("trends");
-		      if (trends > -1) {
-		        $('#year-month-filter').hide();
-		          $('#date-range-filter').hide();
-		      }
-		    }
+			/*var url = $(location).attr('href');
+			// Getting the file name i.e last segment of URL (i.e. example.html)
+			var fn = url.split('/').indexOf("partner");
+
+			if (fn > -1) {
+				var trends = url.split('/').indexOf("trends");
+				if (trends > -1) {
+					$('#year-month-filter').hide();
+					$('#date-range-filter').hide();
+				}
+			}*/
 	    });
 	</script>
 </html>
