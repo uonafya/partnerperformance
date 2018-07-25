@@ -89,7 +89,7 @@
 
 						@for($i=9; $i > -1; $i--)
 							@php
-								$year = (int) Date('Y') - 1;
+								$year = (int) Date('Y') - $i;
 							@endphp
 
 							<a href="javascript:void(0)" onclick="date_filter('yearly', {{$year}})" class="alert-link"> {{ $year }} </a>|
