@@ -24,8 +24,8 @@
 				<td> {{ $key+1 }} </td>
 
 				@if($division == 'partner')
+					<td> {{ $row->partnername }} </td>
 					<td> {{ $row->partner }} </td>
-					<td> {{ $row->partner_id }} </td>
 				@elseif($division == 'facility')
 					<td> {{ $row->name }} </td>
 					<td> {{ $row->facilitycode }} </td>

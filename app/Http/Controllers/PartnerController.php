@@ -24,9 +24,9 @@ class PartnerController extends Controller
 			$where = ['partner_id' => $partner];
 		}
 		else{
-			$sql = " partner, partner_id, ";
+			$sql = " partner, partnername, ";
 			$division = "facility";
-			$groupBy = "view_facilitys.partner_id";
+			$groupBy = "view_facilitys.partner";
 		}
 
 		$sql .= "
