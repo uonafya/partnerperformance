@@ -13,8 +13,6 @@ use \App\Facility;
 use \App\DataSet;
 use \App\DataSetElement;
 
-use \App\Lookup;
-
 use DB;
 
 
@@ -165,7 +163,7 @@ class Synch
         	$d->code = $value->code ?? '';
         	$d->save();
 
-        	$table_name = Lookup::table_name_formatter($d->name);
+        	$table_name = self::table_name_formatter($d->name);
 
         	$sql = "CREATE TABLE `{$table_name}` (
         				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -190,7 +188,7 @@ class Synch
 	        	$e->code = $element->dataElement->code ?? '';
 	        	$e->dhis = $element->dataElement->id ?? '';
 
-	        	$column_name = Lookup::column_name_formatter($e->name);
+	        	$column_name = self::column_name_formatter($e->name);
 
 	        	$e->table_name = $table_name;
 	        	$e->column_name = $column_name;
@@ -340,6 +338,57 @@ class Synch
 		// pe is the period
 	}
 
+
+	public static function table_name_formatter($raw)
+	{
+		$raw = strtolower($raw);
+		$str = explode(' ', $raw);
+
+		$size = sizeof($str);
+		$final = '';
+
+		for ($i=2; $i < $size; $i++) { 
+			$final .= $str[$i] . '_';
+		}
+		$final = str_replace('revision_2018', '', $final);
+
+		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
+		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
+		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
+		return 'd_' . $final;
+	}
+
+	public static function column_name_formatter($raw)
+	{
+		$raw = strtolower($raw);
+		$raw = str_replace('moh 731', '', $raw);
+		$raw = str_replace('moh731b', '', $raw);
+		$raw = str_replace('.', '', $raw);
+		$raw = str_replace('+', 'pos', $raw);
+
+		$raw = str_replace(' ', '_', $raw);
+		$raw = str_replace('__', '_', $raw);
+		$raw = str_replace('__', '_', $raw);
+		$raw = str_replace('__', '_', $raw);
+		$raw = str_replace('(couples_only)', '', $raw);
+
+		$raw = str_replace('number_started_on', '', $raw);
+
+		$final = $raw;
+
+		if(starts_with($final, '_')) $final = str_replace_first('_', '', $final);
+		if(starts_with($final, '_')) $final = str_replace_first('_', '', $final);
+		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
+		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
+
+		$length = strlen($final);
+
+		if($length > 60) $final = str_limit($final, 60, '');
+
+		if($final == 'linked_to_community_based_services') $final = $final . rand(1, 5);
+
+		return $final;
+	}
 
 
 

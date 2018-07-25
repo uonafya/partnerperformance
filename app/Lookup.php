@@ -2,57 +2,107 @@
 
 namespace App;
 
+use \App\County;
+use \App\Subcounty;
+use \App\Partner;
+use \App\Ward;
+use \App\Facility;
+
+use Illuminate\Support\Facades\Cache;
+
 class Lookup
 {
 
-	public static function table_name_formatter($raw)
+	public function resolve_month($month)
 	{
-		$raw = strtolower($raw);
-		$str = explode(' ', $raw);
-
-		$size = sizeof($str);
-		$final = '';
-
-		for ($i=2; $i < $size; $i++) { 
-			$final .= $str[$i] . '_';
+		switch ($month) {
+			case 1:
+				$value = 'January';
+				break;
+			case 2:
+				$value = 'February';
+				break;
+			case 3:
+				$value = 'March';
+				break;
+			case 4:
+				$value = 'April';
+				break;
+			case 5:
+				$value = 'May';
+				break;
+			case 6:
+				$value = 'June';
+				break;
+			case 7:
+				$value = 'July';
+				break;
+			case 8:
+				$value = 'August';
+				break;
+			case 9:
+				$value = 'September';
+				break;
+			case 10:
+				$value = 'October';
+				break;
+			case 11:
+				$value = 'November';
+				break;
+			case 12:
+				$value = 'December';
+				break;
+			default:
+				$value = NULL;
+				break;
 		}
-		$final = str_replace('revision_2018', '', $final);
 
-		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
-		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
-		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
-		return 'd_' . $final;
+		return $value;
+
 	}
 
-	public static function column_name_formatter($raw)
+	public static function partner_data()
 	{
-		$raw = strtolower($raw);
-		$raw = str_replace('moh 731', '', $raw);
-		$raw = str_replace('moh731b', '', $raw);
-		$raw = str_replace('.', '', $raw);
-		$raw = str_replace('+', 'pos', $raw);
+		// $default_breadcrumb = "<a href='javascript:void(0)' class='alert-link'><strong>All Partners</strong></a>";
+		$default_breadcrumb = self::set_crumb('All Partners');
 
-		$raw = str_replace(' ', '_', $raw);
-		$raw = str_replace('__', '_', $raw);
-		$raw = str_replace('__', '_', $raw);
-		$raw = str_replace('__', '_', $raw);
-		$raw = str_replace('(couples_only)', '', $raw);
+		$partners = Partner::select('id', 'name')->where('flag', 1)->orderBy('name', 'asc')->get();
+		$select_options = "<option disabled='true' selected='true'> Select Partner: <option/> ";
+		$select_options .= "<option value='null' selected='true'> All Partners <option/> ";
 
-		$raw = str_replace('number_started_on', '', $raw);
+		foreach ($partners as $partner) {
+			$select_options .= "<option value='{$partner->id}'> {$partner->name} <option/>";
+		}
 
-		$final = $raw;
+		return [
+			'default_breadcrumb' => $default_breadcrumb,
+			'select_options' => $select_options,
+		];
+	}
 
-		if(starts_with($final, '_')) $final = str_replace_first('_', '', $final);
-		if(starts_with($final, '_')) $final = str_replace_first('_', '', $final);
-		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
-		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
+	public static function set_crumb($name = '')
+	{
+		return "<a href='javascript:void(0)' class='alert-link'><strong>{$name}</strong></a>";
+	}
 
-		$length = strlen($final);
+	public static function date_query()
+	{
+		$default = date('Y');
+		$year = session('filter_year', $default);
+		$month = session('filter_month');
+		$to_year = session('to_year');
+		$to_month = session('to_month');
 
-		if($length > 60) $final = str_limit($final, 60, '');
+		$query = '';		
 
-		if($final == 'linked_to_community_based_services') $final = $final . rand(1, 5);
+		if(!$to_year){
+			$query .= " year='{$year}' ";
 
-		return $final;
+			if($month) $query .= " month='{$month}' ";
+		}
+		else{
+			$query .= " ((year = '{$year}' AND month >= '{$month}') OR (year = '{$to_year}' AND month <= '{$to_month}') OR (year > '{$year}' AND year > '{$to_year}'))  ";
+		}
+		return $query;
 	}
 }
