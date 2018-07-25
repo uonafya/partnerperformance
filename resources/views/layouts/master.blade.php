@@ -30,7 +30,7 @@
 
 
 
-		<link rel=icon href="{{ url('img/kenya-coat-of-arms.png') }}" type="image/png" />
+		<link rel=icon href="{{ secure_url('img/kenya-coat-of-arms.png') }}" type="image/png" />
 		<title>
 			Dashboard
 		</title>
@@ -47,7 +47,7 @@
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="javascript:void(0)" style="padding:0px;padding-top:4px;padding-left:4px;">
-						<img src="{{ url('img/nascop_pepfar_logo.jpg') }}" style="width:280px;height:52px;"/>
+						<img src="{{ secure_url('img/nascop_pepfar_logo.jpg') }}" style="width:280px;height:52px;"/>
 					</a>
 				</div>
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -60,7 +60,7 @@
 						</div>
 					</form> -->
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ url('/home') }} ">Home</a></li>
+						<li><a href="{{ secure_url('/home') }} ">Home</a></li>
 
 						
 
@@ -90,7 +90,7 @@
 						@for($i=8; $i > -1; $i--)
 							@php
 								$year = (int) Date('Y') - $i;
-								$date_url = url('filter/date');
+								$date_url = secure_url('filter/date');
 							@endphp
 
 							<a href="javascript:void(0)" onclick="date_filter('yearly', {{$year}}, '{{ $date_url }}')" class="alert-link"> {{ $year }} </a>|
@@ -167,7 +167,7 @@
 
     @yield('scripts')
 
-	<script src="{{ url('js/customFunctions.js') }}"></script>
+	<script src="{{ secure_url('js/customFunctions.js') }}"></script>
 
 	<script type="text/javascript">
 	    $(function() {

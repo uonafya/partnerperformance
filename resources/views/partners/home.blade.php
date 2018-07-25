@@ -78,7 +78,7 @@
 
 		$("select").change(function(){
 			em = $(this).val();
-			var posting = $.post( "{{ url('filter/partner') }}", { partner: em } );
+			var posting = $.post( "{{ secure_url('filter/partner') }}", { partner: em } );
 
 			posting.done(function( data ) {
 
@@ -91,7 +91,7 @@
 
 	function reload_page()
 	{
-		$("#hiv_testing").load("{{ url('partner/tested') }}");
+		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
 		// alert("this");
 	}
 
