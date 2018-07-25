@@ -60,7 +60,7 @@
 						</div>
 					</form> -->
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ url() }} ">Home</a></li>
+						<li><a href="{{ url('/home') }} ">Home</a></li>
 
 						{{--
 						<li class="dropdown">
@@ -83,7 +83,7 @@
 			<div class="row" id="filter">
 				<div class="col-md-3">
 					<select class="btn js-example-basic-single" style="width:220px;background-color: #C5EFF7;">
-						{{ $select_options }}
+						{!! $select_options !!}
 					</select>
 				</div>
 
@@ -199,7 +199,7 @@
 
 		    $('#errorAlertDateRange').hide();
 		    $(".js-example-basic-single").select2();
-		    $("#breadcrum").html({{ $default_breadcrumb }});
+		    $("#breadcrum").html({!! $default_breadcrumb !!});
 
 		      //Getting the URL dynamically
 			/*var url = $(location).attr('href');
