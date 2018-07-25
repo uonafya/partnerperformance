@@ -80,7 +80,7 @@
 				</div>
 
 				<div class="col-md-2">
-					<div id="breadcrum" class="alert" style="background-color: #1BA39C;/*display:none;"></div>
+					<div id="breadcrum" class="alert" style="background-color: #1BA39C;/*display:none;*/"></div>
 				</div>
 
 				<div class="col-md-4" id="year-month-filter">
