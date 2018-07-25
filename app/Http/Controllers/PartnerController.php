@@ -50,7 +50,9 @@ class PartnerController extends Controller
 			->groupBy($groupBy)
 			->get();
 
-		dd($rows);
+		return $rows;
+
+		// dd($rows);
 
 		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $division]);
 	}
