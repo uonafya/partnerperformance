@@ -20,12 +20,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(['web'])->group(function(){
 
 	Route::prefix('filter')->name('filter.')->group(function(){
-		Route::get('date', 'FilterController@filter_date')->name('date');
-		Route::get('partner', 'FilterController@filter_partner')->name('partner');
+		Route::post('date', 'FilterController@filter_date')->name('date');
+		Route::post('partner', 'FilterController@filter_partner')->name('partner');
 	});
 
 	Route::prefix('partner')->name('partner.')->group(function(){
-		Route::get('tested', 'PartnerController@tested')->name('tested');
+		Route::post('tested', 'PartnerController@tested')->name('tested');
 	});
 
 	Route::middleware(['clear_session'])->group(function(){
