@@ -164,7 +164,7 @@
 	<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js' type='text/javascript'></script>
 
 
-    @yield('js_scripts')
+    @yield('scripts')
 
 	<script src="{{ url('js/customFunctions.js') }}"></script>
 

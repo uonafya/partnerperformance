@@ -92,7 +92,7 @@
 	function reload_page()
 	{
 		$("#hiv_testing").load("{{ url('partner/tested') }}");
-		alert("this");
+		// alert("this");
 	}
 
 </script>
