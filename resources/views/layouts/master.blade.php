@@ -101,7 +101,7 @@
 							@endphp
 
 							<a href="javascript:void(0)" onclick="date_filter('yearly', {{ $year }} )" class="alert-link"> {{ $year }} </a>|
-						@endforeach
+						@endfor
 					</div>
 
 					<div class="filter">
@@ -189,7 +189,7 @@
 		            $(this).datepicker('setDate', new Date(year, month, 1));
 		        }
 		    });
-		    
+
 	    	
 	        $.ajaxSetup({
 	            headers: {
