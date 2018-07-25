@@ -25,12 +25,12 @@
 
 	    @yield('css_scripts')
 
-		<link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
-		<link rel="stylesheet" href="{{ asset('css/custom-2.css') }}" />
+		<link rel="stylesheet" href="{{ secure_asset('css/custom.css') }}" />
+		<link rel="stylesheet" href="{{ secure_asset('css/custom-2.css') }}" />
 
 
 
-		<link rel=icon href="{{ secure_url('img/kenya-coat-of-arms.png') }}" type="image/png" />
+		<link rel=icon href="{{ secure_asset('img/kenya-coat-of-arms.png') }}" type="image/png" />
 		<title>
 			Dashboard
 		</title>
