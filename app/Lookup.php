@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
 class Lookup
 {
 
-	public function resolve_month($month)
+	public static function resolve_month($month)
 	{
 		switch ($month) {
 			case 1:
