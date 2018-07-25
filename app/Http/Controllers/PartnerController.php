@@ -50,6 +50,7 @@ class PartnerController extends Controller
 			->groupBy($groupBy)
 			->get();
 
+		return DB::getQueryLog();
 		return $rows;
 
 		// dd($rows);
