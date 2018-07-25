@@ -18,7 +18,7 @@ class PartnerController extends Controller
 		$date_query = Lookup::date_query();
 
 		// For a specific partner
-		if($partner || $partner == 0){
+		if($partner && is_numeric($partner)){
 			$sql = " name, facilitycode, dhiscode, ";
 			$division = "facility";
 			$groupBy = "view_facilitys.id";
