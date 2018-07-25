@@ -25,7 +25,7 @@ Route::middleware(['web'])->group(function(){
 	});
 
 	Route::prefix('partner')->name('partner.')->group(function(){
-		Route::post('tested', 'PartnerController@tested')->name('tested');
+		Route::get('tested', 'PartnerController@tested')->name('tested');
 	});
 
 	Route::middleware(['clear_session'])->group(function(){
