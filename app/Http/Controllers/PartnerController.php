@@ -17,15 +17,17 @@ class PartnerController extends Controller
 		$where = null;
 		$date_query = Lookup::date_query();
 
+		// For a specific partner
 		if($partner || $partner == 0){
 			$sql = " name, facilitycode, dhiscode, ";
-			$division = "partner";
+			$division = "facility";
 			$groupBy = "view_facilitys.id";
 			$where = ['partner' => $partner];
 		}
+		// For all partners
 		else{
 			$sql = " partner, partnername, ";
-			$division = "facility";
+			$division = "partner";
 			$groupBy = "view_facilitys.partner";
 		}
 
