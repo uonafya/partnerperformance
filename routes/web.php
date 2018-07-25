@@ -26,7 +26,7 @@ Route::middleware(['web'])->group(function(){
 		Route::get('tested', 'PartnerController@tested')->name('tested');
 	});
 
-	Route::middleware(['clear_session'])->group(function(){
+	// Route::middleware(['clear_session'])->group(function(){
 		Route::get('/', 'GeneralController@partner_home')->name('/');
-	});
+	// });
 });
