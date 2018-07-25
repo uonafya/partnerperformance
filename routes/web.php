@@ -11,9 +11,11 @@
 |
 */
 
-Auth::routes();
+// Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Route::get('/', 'GeneralController@partner_home');
 
 Route::middleware(['web'])->group(function(){
 
@@ -26,7 +28,8 @@ Route::middleware(['web'])->group(function(){
 		Route::get('tested', 'PartnerController@tested')->name('tested');
 	});
 
-	// Route::middleware(['clear_session'])->group(function(){
-		Route::get('/', 'GeneralController@partner_home')->name('/');
-	// });
+	Route::middleware(['clear_session'])->group(function(){
+		Route::get('/', 'GeneralController@partner_home');
+		Route::get('partner_home', 'GeneralController@partner_home');
+	});
 });
