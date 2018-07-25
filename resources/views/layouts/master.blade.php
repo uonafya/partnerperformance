@@ -83,7 +83,9 @@
 			<div class="row" id="filter">
 				<div class="col-md-3">
 					<select class="btn js-example-basic-single" style="width:220px;background-color: #C5EFF7;">
+						{{ dd($select_options) }
 						{!! $select_options !!}
+						}
 					</select>
 				</div>
 
