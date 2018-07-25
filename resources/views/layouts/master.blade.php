@@ -62,16 +62,8 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="{{ url('/home') }} ">Home</a></li>
 
-						{{--
-						<li class="dropdown">
-							<a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Summaries
-							<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="<?php echo base_url();?>">Summary</a></li>
-								<li><a href="<?php echo base_url();?>summary/heivalidation">HEI Validation Summary</a></li>
-							</ul>
-						</li>						
-						--}}
+						
+						
 					</ul>
 				</div>
 			</div>
