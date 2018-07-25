@@ -29,7 +29,7 @@
 				@elseif($division == 'facility')
 					<td> {{ $row->name }} </td>
 					<td> {{ $row->facilitycode }} </td>
-					<td> {{ $row->dhiscode ?? '' }} </td>
+					<td> {{ $row->DHIScode ?? '' }} </td>
 				@endif
 
 				<td> {{ number_format($row->below_10 ) }} </td>
