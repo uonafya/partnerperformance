@@ -68,8 +68,9 @@ function date_filter(criteria, id, date_url)
     var all = localStorage.getItem("my_var");
 
 		// Put the results in a div
-	posting.done(function( data ) {
-		obj = $.parseJSON(data);
+	posting.done(function( obj ) {
+		console.log(obj);
+		// obj = $.parseJSON(data);
 		
 		if(obj['month'] == "null" || obj['month'] == null){
 			obj['month'] = "";
