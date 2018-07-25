@@ -40,6 +40,8 @@ class PartnerController extends Controller
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) as total
 		";
 
+		DB::enableQueryLog();
+
 		$rows = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
