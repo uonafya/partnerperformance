@@ -31,10 +31,7 @@
 
 
 		<link rel=icon href="{{ secure_asset('img/kenya-coat-of-arms.png') }}" type="image/png" />
-		<title>
-			Dashboard
-		</title>
-
+		<title> Dashboard </title>
 	</head>
 	<body>
 		<!-- Begining of Navigation Bar -->
@@ -83,7 +80,7 @@
 					<div id="breadcrum" class="alert" style="background-color: #1BA39C;/*display:none;*/"></div>
 				</div>
 
-				<div class="col-md-4" id="year-month-filter">
+				<div class="col-md-5" id="year-month-filter">
 				    <div class="filter">
 						Year: 
 
@@ -114,31 +111,33 @@
 					</div>
 			    </div>
 
-			<div class="col-md-2" id="date-range-filter">
-		        <div class="row" id="range">
-		            <div class="col-md-4">
-		                <input name="startDate" id="startDate" class="date-picker" placeholder="From:" />
-		            </div>
-		            <div class="col-md-4 endDate">
-		                <input name="endDate" id="endDate" class="date-picker" placeholder="To:" />
-		            </div>
-		            <div class="col-md-4">
-		                <button id="filter" class="btn btn-primary date-pickerBtn" style="color: white;background-color: #1BA39C; margin-top: 0.2em; margin-bottom: 0em; margin-left: 4em;"><center>Filter</center></button>
-		            </div>
-		        </div>
-		            <center>
-		            	<div id="errorAlertDateRange">
-		            		<div id="errorAlert" class="alert alert-danger" role="alert">...</div>
-		            	</div>
-		            </center>
-			    </div>
-			</div>
+
+				<div class="col-md-2" id="date-range-filter">
+					<div class="row" id="range">
+						<div class="col-md-4">
+							<input name="startDate" id="startDate" class="date-picker" placeholder="From:" />
+						</div>
+						<div class="col-md-4 endDate">
+							<input name="endDate" id="endDate" class="date-picker" placeholder="To:" />
+						</div>
+						<div class="col-md-4">
+							<button id="filter" class="btn btn-primary date-pickerBtn" style="color: white;background-color: #1BA39C; margin-top: 0.2em; margin-bottom: 0em; margin-left: 4em;"><center>Filter</center></button>
+						</div>
+					</div>
+				</div>
+
+	            <center>
+	            	<div id="errorAlertDateRange">
+	            		<div id="errorAlert" class="alert alert-danger" role="alert">...</div>
+	            	</div>
+	            </center>
+		    </div>
 
 			@yield('content')
+		</div>
 
-			<div id="errorModal">
-				
-			</div>
+		<div id="errorModal">
+			
 		</div>
 		<!-- End of Dashboard area -->
 	</body>
