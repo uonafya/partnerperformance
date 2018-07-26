@@ -56,7 +56,7 @@
 	$(document).ready(function() {
 
 		$('#{{ $div }}').DataTable({
-			dom: '<"btn btn-primary"B>lTfgtip',
+			dom: '<"btn"B>lTfgtip',
 			responsive: true,
 			buttons : [
 				{
