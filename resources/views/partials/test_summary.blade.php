@@ -12,7 +12,9 @@
 			@endif
 			<th>Tested</th>
 			<th>Positives</th>
+			<th>Positivity(%)</th>
 			<th>Linked To Treatment</th>	
+			<th>Linkage To Treatment(%)</th>	
 		</tr>
 	</thead>
 	<tbody>
@@ -33,9 +35,27 @@
 					// $total = $row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25;
 				@endphp
 
+				<?php
+					if($row->tested_total){
+						$positivity = round(($row->positive_total / $row->tested_total * 100), 2);
+					}
+					else{
+						$positivity = 0;
+					}
+
+					if($row->positive_total){
+						$linkage = round(($row->linked_total / $row->positive_total * 100), 2);
+					}
+					else{
+						$linkage = 0;
+					}
+				?>
+
 				<td> {{ number_format($row->tested_total ) }} </td>
 				<td> {{ number_format($row->positive_total ) }} </td>
+				<td> {{ number_format($positivity ) }} </td>
 				<td> {{ number_format($row->linked_total ) }} </td>
+				<td> {{ number_format($linkage ) }} </td>
 			</tr>
 		@endforeach
 	</tbody>	
