@@ -57,7 +57,7 @@
 						</div>
 					</form> -->
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ secure_url('/home') }} ">Home</a></li>
+						<li><a href="{{ url('/') }} ">Home</a></li>
 
 						
 
