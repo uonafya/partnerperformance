@@ -1,4 +1,4 @@
-<table id="hiv_tested_table"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
+<table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
 	<thead>
 		<tr class="colhead">
 			<th>No</th>
@@ -47,7 +47,7 @@
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
 
-		$('#hiv_tested_table').DataTable({
+		$('#{{ $div }}').DataTable({
 			dom: '<"btn btn-primary"B>lTfgtip',
 			responsive: true,
 			buttons : [

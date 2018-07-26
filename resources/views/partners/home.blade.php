@@ -82,6 +82,7 @@
 
 			posting.done(function( data ) {
 
+			    $("#breadcrum").html(data.crumb);
 				reload_page();
 
 
@@ -91,8 +92,11 @@
 
 	function reload_page()
 	{
+		alert("this");
+
 		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
-		// alert("this");
+		$("#pos_results").load("{{ secure_url('partner/positive') }}");
+		$("#linked").load("{{ secure_url('partner/linked') }}");
 	}
 
 </script>
