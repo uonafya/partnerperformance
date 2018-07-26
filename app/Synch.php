@@ -36,11 +36,11 @@ class Synch
 	        $body = json_decode($response->getBody());
 
 	        foreach ($body->organisationUnits as $key => $value) {
-	        	$sub = Subcounty::where('SubCountyDHISCode', 'like', "%{$value->id}%")->get()->first();
+	        	$sub = Subcounty::where('SubCountyDHISCode', 'like', "%{$value->id}%")->first();
 
 	        	if(!$sub) $sub = new Subcounty;
 
-        		$county = County::where('CountyDHISCode', $value->parent->id)->get()->first();
+        		$county = County::where('CountyDHISCode', $value->parent->id)->first();
         		if($county && !$county->rawcode){
         			$county->rawcode = $value->parent->code;
         			$county->save();
@@ -80,7 +80,7 @@ class Synch
 	        $body = json_decode($response->getBody());
 
 	        foreach ($body->organisationUnits as $key => $value) {
-	        	$ward = Ward::where('WardDHISCode', $value->id)->get()->first();
+	        	$ward = Ward::where('WardDHISCode', $value->id)->first();
 
 	        	if(!$ward) $ward = new Ward;
 
@@ -88,7 +88,7 @@ class Synch
         		$ward->WardDHISCode = $value->id;
         		$ward->rawcode = $value->code ?? null;
 
-				$sub = Subcounty::where('SubCountyDHISCode', $value->parent->id)->get()->first();
+				$sub = Subcounty::where('SubCountyDHISCode', $value->parent->id)->first();
 				$ward->subcounty_id = $sub->id ?? 0;   
 				$ward->save();     		
 	        }
@@ -121,8 +121,7 @@ class Synch
 	        	$fac = Facility::where('DHIScode', $value->id)
 			        	->when($mfl, function($query) use ($value){
 			        		return $query->orWhere('facilitycode', $value->code);
-			        	})
-			        	->get()->first();
+			        	})->first();
 
 	        	if(!$fac) $fac = new Facility;
 
@@ -131,7 +130,7 @@ class Synch
         		$fac->facilitycode = $fac->facilitycode ?? $value->code ?? 0;
         		$fac->facilitycode = (int) $fac->facilitycode;
 
-        		$ward = Ward::where('WardDHISCode', $value->parent->id)->get()->first();
+        		$ward = Ward::where('WardDHISCode', $value->parent->id)->first();
 				$fac->ward_id = $ward->id ?? 0;        		
 				$fac->subcounty_id = $ward->subcounty_id ?? $fac->district ?? 0;  
 

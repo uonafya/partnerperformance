@@ -11,6 +11,7 @@ use \App\Subcounty;
 use \App\Partner;
 use \App\Ward;
 use \App\Facility;
+use \App\ViewFacility;
 
 class FilterController extends Controller
 {
@@ -43,5 +44,16 @@ class FilterController extends Controller
 
 		return  ['partner' => $partner, 'crumb' => $crumb];
 	}
+
+
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $facilities = ViewFacility::select('id', 'name', 'facilitycode', 'county')
+            ->whereRaw("(name like '%" . $search . "%' OR  facilitycode like '" . $search . "%')")
+            ->paginate(10);
+        return $facilities;
+    }
 
 }
