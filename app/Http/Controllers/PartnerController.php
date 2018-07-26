@@ -13,50 +13,22 @@ class PartnerController extends Controller
 
 	public function tested()
 	{
-		return $this->data_set_two('tested');
+		return $this->data_set_two('tested_query');
 	}
 
 	public function positive()
 	{
-		return $this->data_set_two('positive');
+		return $this->data_set_two('positives_query');
 	}
 
 	public function linked()
 	{
-		return $this->data_set_two('linked');
+		return $this->data_set_two('linked_query');
 	}
 
-	public function data_set_two($function_name)
+	public function summary_tests()
 	{
-		$d = $this->pre_partners();
-		$where = $d['where'];
-		$sql = $d['sql'];
 
-		switch ($function_name) {
-			case 'tested':
-				$sql .= $this->tested_query();
-				break;
-			case 'positive':
-				$sql .= $this->tested_query();
-				break;
-			case 'linked':
-				$sql .= $this->tested_query();
-				break;
-			default:
-				break;
-		}
-
-		$rows = DB::table('d_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
-			->selectRaw($sql)
-			->when($where, function($query) use ($where){
-				return $query->where($where);
-			})
-			->whereRaw($d['date_query'])
-			->groupBy($d['groupBy'])
-			->get();
-
-		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 
 	/*
