@@ -84,20 +84,6 @@ class Controller extends BaseController
 
 		$sql .= $this->$function_name();
 
-		// switch ($function_name) {
-		// 	case 'tested':
-		// 		$sql .= $this->tested_query();
-		// 		break;
-		// 	case 'positive':
-		// 		$sql .= $this->positives_query();
-		// 		break;
-		// 	case 'linked':
-		// 		$sql .= $this->linked_query();
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
-
 		$rows = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
