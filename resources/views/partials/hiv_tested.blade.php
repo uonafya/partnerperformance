@@ -17,6 +17,7 @@
 			<th>Above 25</th>
 			<th>Actual Total</th>			
 			<th>Reported Total</th>			
+			<th>Discrepancy</th>			
 		</tr>
 	</thead>
 	<tbody>
@@ -33,13 +34,18 @@
 					<td> {{ $row->DHIScode ?? '' }} </td>
 				@endif
 
+				@php
+					$total = $row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25;
+				@endphp
+
 				<td> {{ number_format($row->below_10 ) }} </td>
 				<td> {{ number_format($row->below_15 ) }} </td>
 				<td> {{ number_format($row->below_20 ) }} </td>
 				<td> {{ number_format($row->below_25 ) }} </td>
 				<td> {{ number_format($row->above_25 ) }} </td>
-				<td> {{ number_format($row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25 ) }} </td>			
+				<td> {{ number_format($total) }} </td>			
 				<td> {{ number_format($row->total ) }} </td>
+				<td> {{ number_format($row->total - $total ) }} </td>
 			</tr>
 		@endforeach
 	</tbody>	
