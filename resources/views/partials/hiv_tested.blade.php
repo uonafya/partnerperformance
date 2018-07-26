@@ -15,7 +15,8 @@
 			<th>Below 20</th>
 			<th>Below 25</th>
 			<th>Above 25</th>
-			<th>Total</th>			
+			<th>Actual Total</th>			
+			<th>Reported Total</th>			
 		</tr>
 	</thead>
 	<tbody>
@@ -37,8 +38,8 @@
 				<td> {{ number_format($row->below_20 ) }} </td>
 				<td> {{ number_format($row->below_25 ) }} </td>
 				<td> {{ number_format($row->above_25 ) }} </td>
+				<td> {{ number_format($row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25 ) }} </td>			
 				<td> {{ number_format($row->total ) }} </td>
-				{!! number_format($row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25 ) !!}				
 			</tr>
 		@endforeach
 	</tbody>	
