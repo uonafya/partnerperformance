@@ -13,23 +13,27 @@ class PartnerController extends Controller
 
 	public function tested()
 	{
-		$partner = session('filter_partner');
-		$where = null;
-		$date_query = Lookup::date_query();
+		// $partner = session('filter_partner');
+		// $where = null;
+		// $date_query = Lookup::date_query();
 
-		// For a specific partner
-		if($partner && is_numeric($partner)){
-			$sql = " name, facilitycode, dhiscode, ";
-			$division = "facility";
-			$groupBy = "view_facilitys.id";
-			$where = ['partner' => $partner];
-		}
-		// For all partners
-		else{
-			$sql = " partner, partnername, ";
-			$division = "partner";
-			$groupBy = "view_facilitys.partner";
-		}
+		// // For a specific partner
+		// if($partner && is_numeric($partner)){
+		// 	$sql = " name, facilitycode, dhiscode, ";
+		// 	$division = "facility";
+		// 	$groupBy = "view_facilitys.id";
+		// 	$where = ['partner' => $partner];
+		// }
+		// // For all partners
+		// else{
+		// 	$sql = " partner, partnername, ";
+		// 	$division = "partner";
+		// 	$groupBy = "view_facilitys.partner";
+		// }
+
+		$d = $this->pre_partners();
+		$where = $d['where'];
+		$sql = $d['sql'];
 
 		$sql .= "
 			SUM(`tested_1-9_hv01-01`) as below_10,
@@ -48,8 +52,8 @@ class PartnerController extends Controller
 			->when($where, function($query) use ($where){
 				return $query->where($where);
 			})
-			->whereRaw($date_query)
-			->groupBy($groupBy)
+			->whereRaw($d['date_query'])
+			->groupBy($d['groupBy'])
 			->get();
 
 		// return DB::getQueryLog();
@@ -57,6 +61,11 @@ class PartnerController extends Controller
 
 		// dd($rows);
 
-		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $division]);
+		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division']]);
+	}
+
+	public function positives()
+	{
+
 	}
 }
