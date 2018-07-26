@@ -35,7 +35,6 @@ class Controller extends BaseController
 			$groupBy = "view_facilitys.partner";
 		}
 
-		return ['sql' => $sql, 'where' => $where, 'division' => $division, 'groupBy' => $groupBy];
-
+		return ['sql' => $sql, 'where' => $where, 'division' => $division, 'groupBy' => $groupBy, 'date_query' => $date_query];
     }
 }
