@@ -13,6 +13,7 @@ class BaseModel extends Model
     // protected $historyLimit = 500; 
 
     protected $guarded = [];
+    protected $connection = 'mysql_wr';
     public $timestamps = false;
 
     public function my_date_format($value)

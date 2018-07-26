@@ -200,7 +200,7 @@ class Synch
 	        	$d->category_dhis = $element->categoryCombo->id ?? '';
 	        }
 
-	        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
+	        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
 
 	        $sql .= "
 	        		dateupdated date DEFAULT NULL,
@@ -211,7 +211,7 @@ class Synch
 				);
 	        ";
 
-	        DB::statement($sql);
+	        DB::connection('mysql_wr')->statement($sql);
 	        $d->save();
 	        echo  'Data set ' . ($key+1) . " completed \n";
         }
@@ -236,13 +236,13 @@ class Synch
 					$i++;
 
 					if ($i == 200) {
-						DB::table($table->table_name)->insert($data_array);
+						DB::connection('mysql_wr')->table($table->table_name)->insert($data_array);
 						$data_array=null;
 				    	$i=0;
 					}
 				}
 			}
-			if($data_array) DB::table($table->table_name)->insert($data_array);
+			if($data_array) DB::connection('mysql_wr')->table($table->table_name)->insert($data_array);
 
 	        echo  'Completed entry for ' . $table->table_name . " \n";
 		}
@@ -253,7 +253,7 @@ class Synch
 		$tables = DataSetElement::selectRaw("distinct table_name")->get();
 
 		foreach ($tables as $table){
-			DB::statement("TRUNCATE TABLE " . $table->table_name . ";");
+			DB::connection('mysql_wr')->statement("TRUNCATE TABLE " . $table->table_name . ";");
 		}
 
 	}
@@ -317,7 +317,7 @@ class Synch
 
 		        	if(!$elem->table_name || !$elem->column_name) continue;
 
-		        	DB::table($elem->table_name)
+		        	DB::connection('mysql_wr')->table($elem->table_name)
 		        		->where(['facility' => $fac->id, 'year' => $y, 'month' => $m])
 		        		->update([$elem->column_name => $value[3], 'dateupdated' => date('Y-m-d')]);
 
