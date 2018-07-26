@@ -25,12 +25,14 @@ Route::middleware(['web'])->group(function(){
 	});
 
 	Route::prefix('partner')->name('partner.')->group(function(){
-		
+
 		Route::get('summary', 'PartnerController@summary')->name('summary');
 
 		Route::get('tested', 'PartnerController@tested')->name('tested');
 		Route::get('positive', 'PartnerController@positive')->name('positive');
 		Route::get('linked', 'PartnerController@linked')->name('linked');
+
+		Route::get('pmtct', 'PartnerController@pmtct')->name('pmtct');
 	});
 
 	Route::middleware(['clear_session'])->group(function(){

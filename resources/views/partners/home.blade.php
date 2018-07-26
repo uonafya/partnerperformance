@@ -95,28 +95,25 @@
 			var posting = $.post( "{{ secure_url('filter/partner') }}", { partner: em } );
 
 			posting.done(function( data ) {
-
 			    $("#breadcrum").html(data.crumb);
 				reload_page();
-
-
 			});
 		});
 	});
 
 	function reload_page()
 	{
-		// alert("this");
-
 		$("#summary").html("<center><div class='loader'></div></center>");		
 		$("#hiv_testing").html("<center><div class='loader'></div></center>");
 		$("#pos_results").html("<center><div class='loader'></div></center>");
 		$("#linked").html("<center><div class='loader'></div></center>");
+		$("#pmtct").html("<center><div class='loader'></div></center>");
 
 		$("#summary").load("{{ secure_url('partner/summary') }}");
 		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
 		$("#pos_results").load("{{ secure_url('partner/positive') }}");
 		$("#linked").load("{{ secure_url('partner/linked') }}");
+		$("#pmtct").load("{{ secure_url('partner/pmtct') }}");
 	}
 
 </script>

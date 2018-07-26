@@ -76,6 +76,15 @@ class Controller extends BaseController
 		";
     }
 
+    public function pmtct_query()
+    {
+    	return "
+    		SUM(`known_positive_at_1st_anc_hv02-03`) AS `known_positive`,
+    		SUM(`initial_test_at_anc_hv02-04` + `initial_test_at_l&d_hv02-05` + `initial_test_at_pnc_pnc<=6wks_hv02-06`) AS `new_pmtct`,
+    		SUM(`positive_results_anc_hv02-11` + `positive_results_l&d_hv02-12` + `positive_results_pnc<=6wks_hv02-13`) AS `positive_pmtct`
+    	";
+    }
+
 	public function data_set_two($function_name)
 	{
 		$d = $this->pre_partners();

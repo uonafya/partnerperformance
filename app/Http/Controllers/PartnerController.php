@@ -51,6 +51,27 @@ class PartnerController extends Controller
 		return view('partials.test_summary', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 
+	public function pmtct()
+	{
+		$d = $this->pre_partners();
+		$where = $d['where'];
+		$sql = $d['sql'];
+
+		$sql .= $this->pmtct_query();
+
+		$rows = DB::table('d_prevention_of_mother-to-child_transmission')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
+			->selectRaw($sql)
+			->when($where, function($query) use ($where){
+				return $query->where($where);
+			})
+			->whereRaw($d['date_query'])
+			->groupBy($d['groupBy'])
+			->get();
+
+		return view('partials.pmtct', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+	}
+
 
 	/*
 	public function tested()
