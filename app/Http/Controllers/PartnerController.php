@@ -28,6 +28,12 @@ class PartnerController extends Controller
 
 	public function summary_tests()
 	{
+		$d = $this->pre_partners();
+		$where = $d['where'];
+		$base = $d['sql'];
+
+		$sql = $base . $this->tested_query();
+
 
 	}
 
