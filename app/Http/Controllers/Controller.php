@@ -85,6 +85,32 @@ class Controller extends BaseController
     	";
     }
 
+    public function new_art_query()
+    {
+    	return "
+			SUM(`start_art_<1_hv03-016`) as below_1,
+			SUM(`start_art_1-9_hv03-017`) as below_10,
+			SUM(`start_art_10-14(m)__hv03-018` + `start_art_10-14_(f)__hv03-019`) as below_15,
+			SUM(`start_art_15-19(m)__hv03-020` + `start_art_15-19_(f)__hv03-021`) as below_20,
+			SUM(`start_art_20-24(m)__hv03-022` + `start_art_20-24_(f)__hv03-023`) as below_25,
+			SUM(`start_art_25pos(m)__hv03-024` + `start_art_25pos_(f)__hv03-025`) as above_25,
+			SUM(`start_art_total__(sum_hv03-018_to_hv03-029)_hv03-026`) as total
+		";
+    }
+
+    public function current_art_query()
+    {
+    	return "
+			SUM(`on_art_<1_hv03-028`) as below_1,
+			SUM(`on_art_1-9_hv03-029`) as below_10,
+			SUM(`on_art_10-14(m)__hv03-030` + `on_art_10-14_(f)__hv03-031`) as below_15,
+			SUM(`on_art_15-19(m)__hv03-032` + `on_art_15-19_(f)__hv03-033`) as below_20,
+			SUM(`on_art_20-24(m)__hv03-034` + `on_art_20-24_(f)__hv03-035`) as below_25,
+			SUM(`on_art_25pos(m)__hv03-036` + `on_art_25pos_(f)__hv03-037`) as above_25,
+			SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
+		";
+    }
+
 	public function data_set_two($function_name)
 	{
 		$d = $this->pre_partners();
@@ -104,6 +130,27 @@ class Controller extends BaseController
 			->get();
 
 		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+	}
+
+	public function data_set_six($function_name)
+	{
+		$d = $this->pre_partners();
+		$where = $d['where'];
+		$sql = $d['sql'];
+
+		$sql .= $this->$function_name();
+
+		$rows = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw($sql)
+			->when($where, function($query) use ($where){
+				return $query->where($where);
+			})
+			->whereRaw($d['date_query'])
+			->groupBy($d['groupBy'])
+			->get();
+
+		return view('partials.art_totals', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 	
 }

@@ -56,4 +56,20 @@ class FilterController extends Controller
         return $facilities;
     }
 
+
+	public function get_current_header()
+	{
+
+    	$year = ((int) Date('Y'));
+    	$prev_year = ((int) Date('Y')) - 1;
+    	$month = ((int) Date('m')) - 1;
+    	$prev_month = ((int) Date('m'));
+
+    	if($month == 0){
+    		return "(Jan - Dec {$prev_year})";
+    	}
+    	else{
+    		return "(" . Lookup::resolve_month($prev_month) . ", {$prev_year} - " . Lookup::resolve_month($month) . ", {$year})";
+    	}
+	}
 }

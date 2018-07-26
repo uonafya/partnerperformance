@@ -33,10 +33,13 @@ Route::middleware(['web'])->group(function(){
 		Route::get('linked', 'PartnerController@linked')->name('linked');
 
 		Route::get('pmtct', 'PartnerController@pmtct')->name('pmtct');
+
+		Route::get('new_art', 'PartnerController@new_art')->name('new_art');
+		Route::get('current_art', 'PartnerController@current_art')->name('current_art');
 	});
 
 	Route::middleware(['clear_session'])->group(function(){
 		Route::get('/', 'GeneralController@partner_home');
-		Route::get('partner_home', 'GeneralController@partner_home');
+		// Route::get('partner_home', 'GeneralController@partner_home');
 	});
 });

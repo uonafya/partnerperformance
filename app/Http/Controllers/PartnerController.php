@@ -26,6 +26,17 @@ class PartnerController extends Controller
 		return $this->data_set_two('linked_query');
 	}
 
+	public function new_art()
+	{
+		return $this->data_set_six('new_art_query');		
+	}
+
+	public function current_art()
+	{
+		return $this->data_set_six('current_art_query');		
+	}
+
+
 	public function summary()
 	{
 		$d = $this->pre_partners();

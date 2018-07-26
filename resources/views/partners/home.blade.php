@@ -80,6 +80,32 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Starting Art <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="new_art">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Currently On Art <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="current_art">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -108,12 +134,16 @@
 		$("#pos_results").html("<center><div class='loader'></div></center>");
 		$("#linked").html("<center><div class='loader'></div></center>");
 		$("#pmtct").html("<center><div class='loader'></div></center>");
+		$("#new_art").html("<center><div class='loader'></div></center>");
+		$("#current_art").html("<center><div class='loader'></div></center>");
 
 		$("#summary").load("{{ secure_url('partner/summary') }}");
 		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
 		$("#pos_results").load("{{ secure_url('partner/positive') }}");
 		$("#linked").load("{{ secure_url('partner/linked') }}");
 		$("#pmtct").load("{{ secure_url('partner/pmtct') }}");
+		$("#new_art").load("{{ secure_url('partner/new_art') }}");
+		$("#current_art").load("{{ secure_url('partner/current_art') }}");
 	}
 
 </script>
