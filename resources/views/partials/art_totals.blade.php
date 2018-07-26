@@ -36,7 +36,7 @@
 				@endif
 
 				@php
-					$total = $row->below1 + $row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25;
+					$total = $row->below_1 + $row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25;
 				@endphp
 
 				<td> {{ number_format($row->below_1 ) }} </td>
