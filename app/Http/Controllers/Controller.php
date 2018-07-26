@@ -96,4 +96,5 @@ class Controller extends BaseController
 
 		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
+	
 }
