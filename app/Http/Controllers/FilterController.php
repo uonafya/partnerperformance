@@ -19,15 +19,17 @@ class FilterController extends Controller
 	public function filter_date(Request $request)
 	{
 		$default = session('filter_year');
-		$year = (int) $request->input('year', $default);
+		$year = $request->input('year', $default);
 		$month = $request->input('month');
 
 		$to_year = $request->input('to_year');
 		$to_month = $request->input('to_month');
 
+		$prev_year = (int) ($year - 1) ?? null;
+
 		session(['filter_year' => $year, 'filter_month' => $month, 'to_year' => $to_year, 'to_month' => $to_month]);
 
-		return ['year' => $year, 'month' => Lookup::resolve_month($month), 'prev_year' => ($year-1)];
+		return ['year' => $year, 'month' => Lookup::resolve_month($month), 'prev_year' => $prev_year];
 	}
 
 	public function filter_partner(Request $request)
