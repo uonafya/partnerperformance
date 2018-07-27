@@ -19,7 +19,7 @@ class FilterController extends Controller
 	public function filter_date(Request $request)
 	{
 		$default = session('filter_year');
-		$year = $request->input('year', $default);
+		$year = (int) $request->input('year', $default);
 		$month = $request->input('month');
 
 		$to_year = $request->input('to_year');
