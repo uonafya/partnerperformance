@@ -22,6 +22,8 @@ class ClearSession
         
         session()->forget('filter_partner');
 
+        session(['filter_year' => date('Y')]);
+
         return $next($request);
     }
 }
