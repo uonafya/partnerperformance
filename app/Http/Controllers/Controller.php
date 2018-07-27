@@ -119,7 +119,7 @@ class Controller extends BaseController
 
 		$sql .= $this->$function_name();
 
-		DB::enableQueryLog();
+		// DB::enableQueryLog();
 
 		$rows = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
@@ -131,7 +131,7 @@ class Controller extends BaseController
 			->groupBy($d['groupBy'])
 			->get();
 
-		return DB::getQueryLog();
+		// return DB::getQueryLog();
 		
 		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
