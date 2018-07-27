@@ -83,7 +83,7 @@ class Lookup
 
 	public static function set_crumb($name = '')
 	{
-		return "<a href='javascript:void(0)' class='alert-link'><strong>{$name}</strong></a>";
+		return "<a href='javascript:void(0)' class='alert-link'><center><strong>{$name}</strong></center></a>";
 	}
 
 	public static function date_query()
