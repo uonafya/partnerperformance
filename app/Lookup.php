@@ -77,6 +77,7 @@ class Lookup
 		return [
 			'default_breadcrumb' => $default_breadcrumb,
 			'select_options' => $select_options,
+			'date_url' => secure_url('filter/date'),
 		];
 	}
 

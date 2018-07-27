@@ -114,7 +114,8 @@
 
 <script type="text/javascript">
 	$().ready(function(){
-		reload_page();
+		date_filter('yearly', "{{ date('Y') }}", "{{ $date_url }}");
+		// reload_page();"
 
 		$("select").change(function(){
 			em = $(this).val();

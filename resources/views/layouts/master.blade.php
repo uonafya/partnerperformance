@@ -87,7 +87,7 @@
 						@for($i=8; $i > -1; $i--)
 							@php
 								$year = (int) Date('Y') - $i;
-								$date_url = secure_url('filter/date');
+								// $date_url = secure_url('filter/date');
 							@endphp
 
 							<a href="javascript:void(0)" onclick="date_filter('yearly', {{$year}}, '{{ $date_url }}')" class="alert-link"> {{ $year }} </a>|
