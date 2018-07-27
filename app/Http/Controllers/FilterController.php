@@ -28,11 +28,11 @@ class FilterController extends Controller
 
 		if($year == '') $year = $default;
 
-		// $prev_year = (int) ($year - 1) ?? null;
+		$prev_year = ($year - 1);
 
 		session(['filter_year' => $year, 'filter_month' => $month, 'to_year' => $to_year, 'to_month' => $to_month]);
 
-		return ['year' => $year, 'month' => Lookup::resolve_month($month), 'prev_year' => $original];
+		return ['year' => $year, 'month' => Lookup::resolve_month($month), 'prev_year' => $prev_year];
 	}
 
 	public function filter_partner(Request $request)

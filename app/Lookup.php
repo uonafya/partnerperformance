@@ -99,7 +99,7 @@ class Lookup
 		if(!$to_year){
 			$query .= " year='{$year}' ";
 
-			if($month) $query .= " month='{$month}' ";
+			if($month) $query .= " AND month='{$month}' ";
 		}
 		else{
 			$query .= " ((year = '{$year}' AND month >= '{$month}') OR (year = '{$to_year}' AND month <= '{$to_month}') OR (year > '{$year}' AND year > '{$to_year}'))  ";
