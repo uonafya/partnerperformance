@@ -114,7 +114,7 @@
 
 <script type="text/javascript">
 	$().ready(function(){
-		reload_page();
+		// reload_page();
 		
 		date_filter('yearly', {{ date('Y') }}, '{{ $date_url }}');
 

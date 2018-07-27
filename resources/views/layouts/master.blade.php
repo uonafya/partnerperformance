@@ -164,9 +164,6 @@
 
 	<script src="{{ secure_url('js/customFunctions.js') }}"></script>
 
-
-    @yield('scripts')
-
 	<script type="text/javascript">
 	    $(function() {
 		    $('.date-picker').datepicker( {
@@ -206,5 +203,8 @@
 			}*/
 	    });
 	</script>
+
+
+    @yield('scripts')
 </html>
 		
