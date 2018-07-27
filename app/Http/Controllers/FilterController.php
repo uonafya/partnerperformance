@@ -26,7 +26,7 @@ class FilterController extends Controller
 		$to_year = $request->input('to_year');
 		$to_month = $request->input('to_month');
 
-		// $year = $year ?? $default;
+		if($year == '') $year = $default;
 
 		// $prev_year = (int) ($year - 1) ?? null;
 
