@@ -145,7 +145,7 @@
 		    var error_check = check_error_date_range(from, to);
 
 		    if (!error_check) {
-		    	date_filter('date_range', {'year': from[0], 'month': from[1], 'to_year': to[0], 'to_month': to[1] }, '{{ $date_url }}');
+		    	date_filter('date_range', {'year': from[1], 'month': from[0], 'to_year': to[1], 'to_month': to[0] }, '{{ $date_url }}');
 		    }
 		    var new_title = set_multiple_date(first, second);
 		});
