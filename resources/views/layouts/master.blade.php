@@ -162,7 +162,7 @@
 	<script src='//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js' type='text/javascript'></script>
 	<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js' type='text/javascript'></script>
 
-	<script src="{{ secure_url('js/customFunctions.js') }}"></script>
+	<script src="{{ secure_url('js/customFunctions1.1.js') }}"></script>
 
 	<script type="text/javascript">
 	    $(function() {
