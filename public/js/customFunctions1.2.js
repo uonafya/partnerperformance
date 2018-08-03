@@ -80,7 +80,10 @@ function date_filter(criteria, id, date_url)
 		if(obj.month == "null" || obj.month == null){
 			obj.month = "";
 		}
-		$(".display_date").html("( "+obj.year +" "+obj.month +" )");
+
+		if(criteria == 'monthly' || criteria == 'yearly'){
+			$(".display_date").html("( "+obj.year +" "+obj.month +" )");			
+		}
 		$(".display_range").html("( "+obj.prev_year +" - "+obj.year +" )");
 
 		reload_page();

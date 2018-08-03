@@ -135,6 +135,7 @@
 		    second = $(".date-picker[name=endDate]").val();
 		    
 		    var all = localStorage.getItem("my_var");
+		    var new_title = set_multiple_date(first, second);
 
 		    
 		    from = format_date(first);
@@ -147,7 +148,6 @@
 		    if (!error_check) {
 		    	date_filter('date_range', {'year': from[1], 'month': from[0], 'to_year': to[1], 'to_month': to[0] }, '{{ $date_url }}');
 		    }
-		    var new_title = set_multiple_date(first, second);
 		});
 
 	});
