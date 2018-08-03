@@ -130,12 +130,11 @@
 
 
 		$("button").click(function () {
-			    var first, second;
-			    first = $(".date-picker[name=startDate]").val();
-			    second = $(".date-picker[name=endDate]").val();
-			    
-			    var new_title = set_multiple_date(first, second);
-			    var all = localStorage.getItem("my_var");
+		    var first, second;
+		    first = $(".date-picker[name=startDate]").val();
+		    second = $(".date-picker[name=endDate]").val();
+		    
+		    var all = localStorage.getItem("my_var");
 
 		    
 		    from = format_date(first);
@@ -148,6 +147,7 @@
 		    if (!error_check) {
 		    	date_filter('date_range', {'year': from[0], 'month': from[1], 'to_year': to[0], 'to_month': to[1] }, '{{ $date_url }}');
 		    }
+		    var new_title = set_multiple_date(first, second);
 		});
 
 	});
