@@ -19,21 +19,29 @@ class FilterController extends Controller
 	public function filter_date(Request $request)
 	{
 		$default = session('filter_year');
-		$original = $request->input('year');
+		$default_financial = session('filter_financial_year');
+
 		$year = $request->input('year', $default);
 		$month = $request->input('month');
 
 		$to_year = $request->input('to_year');
 		$to_month = $request->input('to_month');
-
-		if($year == '') $year = $default;
-
 		$prev_year = ($year - 1);
-		$range = ['filter_year' => $year, 'filter_month' => $month, 'to_year' => $to_year, 'to_month' => $to_month];
+
+		$financial_year = $request->input('financial_year', $default_financial);
+		$quarter = $request->input('quarter');
+
+		$range = ['filter_year' => $year, 'filter_month' => $month, 'to_year' => $to_year, 'to_month' => $to_month, 'filter_financial_year' = $financial_year, 'filter_quarter' = $quarter];
 
 		session($range);
 
-		return ['year' => $year, 'month' => Lookup::resolve_month($month), 'prev_year' => $prev_year, 'range' => $range];
+		if(session('financial')){
+			$display_date = 'October, ' . ($financial_year-1) . ' - September ' . $financial_year;
+		}else{
+			$display_date = $year . ' ' . Lookup::resolve_month($month);
+		}		
+
+		return ['year' => $year, 'prev_year' => $prev_year, 'range' => $range];
 	}
 
 	public function filter_partner(Request $request)
@@ -51,13 +59,25 @@ class FilterController extends Controller
 		return  ['partner' => $partner, 'crumb' => $crumb];
 	}
 
+	public function filter_any(Request $request)
+	{
+		$var = $request->input('session_var');
+		$val = $request->input($var);
+
+		if($val == null || !is_numeric($val)) $val = null;
+		session([$var => $val]);
+
+		return [$var => $val];
+	}
+
 
 
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $facilities = ViewFacility::select('id', 'name', 'facilitycode', 'county')
+        $facilities = Facility::select('id', 'name', 'facilitycode')
             ->whereRaw("(name like '%" . $search . "%' OR  facilitycode like '" . $search . "%')")
+            ->where('flag', 1)
             ->paginate(10);
         return $facilities;
     }

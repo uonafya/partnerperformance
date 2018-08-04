@@ -9,6 +9,45 @@ function format_date(data)
 		return [month, date[1]];
 	}
 
+
+
+
+function set_select_facility(div_name, url, minimum_length, placeholder) {
+	div_name = '#' + div_name;		
+
+	$(div_name).select2({
+		minimumInputLength: minimum_length,
+		placeholder: placeholder,
+		ajax: {
+			delay	: 100,
+			type	: "POST",
+			dataType: 'json',
+			data	: function(params){
+				return {
+					search : params.term
+				}
+			},
+			url		: function(params){
+				params.page = params.page || 1;
+				return  url + "?page=" + params.page;
+			},
+			processResults: function(data, params){
+				return {
+					results 	: $.map(data.data, function (row){
+						return {
+							text	: row.facilitycode + ' - ' + row.name, 
+							id		: row.id		
+						};
+					}),
+					pagination	: {
+						more: data.to < data.total
+					}
+				};
+			}
+		}
+	});
+}
+
 function set_multiple_date(first, second){
 	var f = first.split(" ");
 	var s = second.split(" ");
@@ -58,32 +97,32 @@ function date_filter(criteria, id, date_url)
 {
 	var date_object;
 	if (criteria === "monthly") {
-		year = null;
-		month = id;
-		date_object = { 'year': year, 'month': month };
+		date_object = { 'month': id };
 	}else if(criteria === "yearly"){
-		year = id;
-		month = null;
-		date_object = { 'year': year, 'month': month };
+		date_object = { 'year': id };
+	}else if(criteria == 'financial_year'){
+		date_object = { 'financial_year': id };
+	}else if(criteria == 'quarter'){
+		date_object = { 'quarter': id };
 	}else{
 		date_object = id;
 	}
 
-	var posting = $.post(date_url,  date_object);
+	var posting = $.post(date_url, date_object);
     var all = localStorage.getItem("my_var");
 
 		// Put the results in a div
 	posting.done(function( obj ) {
-		console.log(obj);
-		// obj = $.parseJSON(data);
-		
+
 		if(obj.month == "null" || obj.month == null){
 			obj.month = "";
 		}
+		console.log(obj);
 
-		if(criteria == 'monthly' || criteria == 'yearly'){
-			$(".display_date").html("( "+obj.year +" "+obj.month +" )");			
+		if(typeof obj.display_date !== 'undefined' && criteria != 'date_range'){
+			$(".display_date").html(obj.display_date);
 		}
+		
 		$(".display_range").html("( "+obj.prev_year +" - "+obj.year +" )");
 
 		reload_page();

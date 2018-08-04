@@ -15,6 +15,9 @@ class ClearSession
      */
     public function handle($request, Closure $next)
     {
+        session()->forget('filter_financial_year');
+        session()->forget('filter_quarter');
+
         session()->forget('filter_year');
         session()->forget('filter_month');
         session()->forget('to_year');
@@ -26,7 +29,21 @@ class ClearSession
         session()->forget('filter_facility');
         session()->forget('filter_partner');
 
+        $m = date('m');
+
+        if($m < 10){
+            $f = date('Y');
+        }else{
+           $f = date('Y')+1; 
+        }
+
         session(['filter_year' => date('Y')]);
+        session([
+            'financial' => true,
+            'filter_year' => date('Y'),
+            'filter_financial_year' => $f,
+            'filter_groupby' => 1,
+        ]);
 
         return $next($request);
     }

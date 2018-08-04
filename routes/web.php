@@ -16,8 +16,11 @@
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Route::get('/', 'GeneralController@partner_home');
+Route::get('current', 'GeneralController@current');
 
 Route::middleware(['web'])->group(function(){
+
+	Route::post('facility/search', 'FilterController@facility')->name('facility.search');
 
 	Route::prefix('filter')->name('filter.')->group(function(){
 		Route::post('date', 'FilterController@filter_date')->name('date');
