@@ -254,8 +254,8 @@ class Synch
 
 			for ($month=1; $month < 13; $month++) { 
 				foreach ($facilities as $k => $val) {
-					$data = array('year' => $year, 'month' => $month, 'facility' => $val->id)
-					$data = array_merge($data, self::get_financial_year_quarter($year, $month));
+					$data = array('year' => $year, 'month' => $month, 'facility' => $val->id);
+					$data = array_merge($data, self::get_financial_year_quarter($year, $month) );
 					$data_array[$i] = $data;
 					$i++;
 
