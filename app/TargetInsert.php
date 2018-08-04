@@ -14,7 +14,7 @@ class TargetInsert
 		$path = public_path('targets/new_2018.xlsx');
 		$data = Excel::load($path, function($reader){
 
-		})->get();
+		})->get(['mfl', 'new']);
 		foreach ($data as $row) {
 			print_r($row);
 			break;
