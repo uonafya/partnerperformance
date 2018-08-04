@@ -143,11 +143,11 @@ class ChartController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['outcomes'][0]['name'] = "Male";
-		$data['outcomes'][1]['name'] = "Female";
+		$data['outcomes']['data'][0]['name'] = "Male";
+		$data['outcomes']['data'][1]['name'] = "Female";
 
-		$data['outcomes'][0]['y'] = (int) $row->male_test;
-		$data['outcomes'][1]['y'] = (int) $row->female_test;
+		$data['outcomes']['data'][0]['y'] = (int) $row->male_test;
+		$data['outcomes']['data'][1]['y'] = (int) $row->female_test;
 
 		return view('charts.pie_chart', $data);
 	}
