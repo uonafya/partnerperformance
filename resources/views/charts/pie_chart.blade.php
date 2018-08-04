@@ -4,6 +4,8 @@
 	{!! $paragraph !!}
 @endif
 
+{!! $outcomes !!}
+
 <script type="text/javascript">
 	$().ready(function(){
 
