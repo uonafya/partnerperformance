@@ -8,7 +8,7 @@ class TargetInsert
 {
     
 
-	public function current()
+	public static function current()
 	{
 		ini_set("memory_limit", "-1");
 		$path = public_path('targets/new_2018.xlsx');
