@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lookup;
-use Excel;
 
 class GeneralController extends Controller
 {
@@ -20,15 +19,5 @@ class GeneralController extends Controller
 	{
 		$data = Lookup::view_data();
 		return view('base.home', $data);
-	}
-
-	public function current()
-	{
-		ini_set("memory_limit", "-1");
-		$path = public_path('targets/new_2018.xlsx');
-		$data = Excel::load($path, function($reader){
-
-		})->get();
-		dd($data);
 	}
 }

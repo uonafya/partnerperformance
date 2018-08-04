@@ -142,4 +142,58 @@
 	</div>
 </div>
 
+@endsection
+
+
+
+@section('scripts')
+
+
+<script type="text/javascript">
+
+
+	function reload_page()
+	{
+		$("#treatment").html("<center><div class='loader'></div></center>");		
+		$("#currenttx").html("<center><div class='loader'></div></center>");
+		$("#newtx").html("<center><div class='loader'></div></center>");
+		$("#gender").html("<center><div class='loader'></div></center>");
+		$("#out_gender").html("<center><div class='loader'></div></center>");
+		$("#age").html("<center><div class='loader'></div></center>");
+		$("#out_age").html("<center><div class='loader'></div></center>");
+		$("#pmtct").html("<center><div class='loader'></div></center>");
+		$("#eid").html("<center><div class='loader'></div></center>");
+
+		/*$("#summary").load("{{ secure_url('partner/summary') }}");
+		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
+		$("#pos_results").load("{{ secure_url('partner/positive') }}");
+		$("#linked").load("{{ secure_url('partner/linked') }}");
+		$("#pmtct").load("{{ secure_url('partner/pmtct') }}");
+		$("#new_art").load("{{ secure_url('partner/new_art') }}");
+		$("#current_art").load("{{ secure_url('partner/current_art') }}");*/
+	}
+
+
+	$().ready(function(){
+		// reload_page();
+		
+		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
+
+		$("select").change(function(){
+			em = $(this).val();
+
+			id = $(this).attr('id');
+			var posting = $.post( "{{ secure_url('filter/any') }}", { 'session_var': id, id: 'em' } );
+
+			posting.done(function( data ) {
+				reload_page();
+			});
+		});
+
+	});
+
+</script>
+
+@endsection
+
 

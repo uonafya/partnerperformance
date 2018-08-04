@@ -24,6 +24,7 @@ Route::middleware(['web'])->group(function(){
 
 	Route::prefix('filter')->name('filter.')->group(function(){
 		Route::post('date', 'FilterController@filter_date')->name('date');
+		Route::post('any', 'FilterController@filter_any')->name('any');
 		Route::post('partner', 'FilterController@filter_partner')->name('partner');
 	});
 
@@ -42,7 +43,7 @@ Route::middleware(['web'])->group(function(){
 	});
 
 	Route::middleware(['clear_session'])->group(function(){
-		Route::get('/', 'GeneralController@partner_home');
-		// Route::get('partner_home', 'GeneralController@partner_home');
+		Route::get('/', 'GeneralController@home');
+		Route::get('partner', 'GeneralController@partner_home');
 	});
 });
