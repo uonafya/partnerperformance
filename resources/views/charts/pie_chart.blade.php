@@ -40,7 +40,7 @@
                 '#1BA39C',
                 '#913D88'
             ],     
-            series: {!! json_encode($outcomes) !!}
+            series: [{!! json_encode($outcomes) !!}]
 
 		});
     });

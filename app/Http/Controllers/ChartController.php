@@ -143,6 +143,10 @@ class ChartController extends Controller
 
 		$data['div'] = str_random(15);
 
+		$data['outcomes']['name'] = "Tests";
+		$data['outcomes']['colorByPoint'] = true;
+
+
 		$data['outcomes']['data'][0]['name'] = "Male";
 		$data['outcomes']['data'][1]['name'] = "Female";
 
