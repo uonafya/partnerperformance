@@ -1,7 +1,7 @@
 
 <div class="row" id="filter">
 	<div class="col-md-4">
-		<select class="btn filters" id="filter_county">
+		<select class="btn filters" style="width: auto;" id="filter_county">
 			<option disabled='true' selected='true'>Select County</option>
 			<option value='null' selected='true'>All Counties</option>
 
