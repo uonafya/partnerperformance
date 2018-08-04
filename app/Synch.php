@@ -304,13 +304,13 @@ class Synch
 		$tables = DataSetElement::selectRaw("distinct table_name")->get();
 
 		foreach ($tables as $table){
-			DB::connection('mysql_wr')->statement("TRUNCATE TABLE " . $table->table_name . ";");
+			DB::connection('mysql_wr')->statement("TRUNCATE " . $table->table_name . ";");
 		}
-		
+
 		$tables = DataSetElement::selectRaw("distinct targets_table_name")->get();
 
 		foreach ($tables as $table){
-			DB::connection('mysql_wr')->statement("TRUNCATE TABLE " . $table->targets_table_name . ";");
+			DB::connection('mysql_wr')->statement("TRUNCATE " . $table->targets_table_name . ";");
 		}
 	}
 
