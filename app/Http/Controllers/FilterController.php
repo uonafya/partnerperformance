@@ -72,7 +72,7 @@ class FilterController extends Controller
 
 
 
-    public function search(Request $request)
+    public function facility(Request $request)
     {
         $search = $request->input('search');
         $facilities = Facility::select('id', 'name', 'facilitycode')
