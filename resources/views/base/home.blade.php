@@ -183,6 +183,7 @@
 
 			id = $(this).attr('id');
 			var posting = $.post( "{{ secure_url('filter/any') }}", { 'session_var': id, id: 'em' } );
+			console.log({ 'session_var': id, id: 'em' });
 
 			posting.done(function( data ) {
 				console.log(data);
