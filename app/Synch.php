@@ -270,6 +270,33 @@ class Synch
 
 	        echo  'Completed entry for ' . $table->table_name . " \n";
 		}
+
+		$data_array=null;
+    	$i=0;
+
+		$tables = DataSetElement::selectRaw("distinct targets_table_name")->get();
+		$facilities = Facility::select('id')->get();
+
+		foreach ($tables as $table) {
+
+			$i=0;
+			$data_array = [];
+
+			foreach ($facilities as $k => $val) {
+				$data_array[$i] = array('financial_year' => $year, 'facility' => $val->id);
+				$i++;
+
+				if ($i == 200) {
+					DB::connection('mysql_wr')->table($table->targets_table_name)->insert($data_array);
+					$data_array=null;
+			    	$i=0;
+				}
+			}
+
+			if($data_array) DB::connection('mysql_wr')->table($table->targets_table_name)->insert($data_array);
+
+	        echo  'Completed entry for ' . $table->targets_table_name . " \n";
+		}
 	}
 
 	public static function truncate_tables()
@@ -278,6 +305,12 @@ class Synch
 
 		foreach ($tables as $table){
 			DB::connection('mysql_wr')->statement("TRUNCATE TABLE " . $table->table_name . ";");
+		}
+		
+		$tables = DataSetElement::selectRaw("distinct targets_table_name")->get();
+
+		foreach ($tables as $table){
+			DB::connection('mysql_wr')->statement("TRUNCATE TABLE " . $table->targets_table_name . ";");
 		}
 	}
 
