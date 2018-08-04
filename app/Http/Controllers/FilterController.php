@@ -62,7 +62,7 @@ class FilterController extends Controller
 	public function filter_any(Request $request)
 	{
 		$var = $request->input('session_var');
-		$val = $request->input($var);
+		$val = $request->input('value');
 
 		if($val == null || !is_numeric($val)) $val = null;
 		session([$var => $val]);
