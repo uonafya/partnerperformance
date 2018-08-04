@@ -41,7 +41,7 @@ class TargetInsert
 				$unknown[] = $row->mfl;
 				continue;
 			}
-			DB::table('t_hiv_and_tb_treatment')
+			DB::connection('mysql_wr')->table('t_hiv_and_tb_treatment')
 					->where(['facility' => $facility->id, 'financial_year' => 2018])
 					->update(['on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038' => $row->current]);
 
@@ -58,13 +58,20 @@ class TargetInsert
 
 		})->get(['mfl', 'new']);
 
+		$unknown = [];
+
 		foreach ($data as $row) {
 			$facility = Facility::where('facilitycode', $row->mfl)->first();
-			DB::table('t_hiv_and_tb_treatment')
+			if(!$facility){
+				$unknown[] = $row->mfl;
+				continue;
+			}
+			DB::connection('mysql_wr')->table('t_hiv_and_tb_treatment')
 					->where(['facility' => $facility->id, 'financial_year' => 2018])
 					->update(['start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026' => $row->new]);
 
 		}
+		print_r($unknown);
 	}
     
 
@@ -76,13 +83,21 @@ class TargetInsert
 
 		})->get(['mfl', 'new', 'current']);
 
+		$unknown = [];
+
 		foreach ($data as $row) {
 			$facility = Facility::where('facilitycode', $row->mfl)->first();
-			DB::table('t_hiv_and_tb_treatment')
+			if(!$facility){
+				$unknown[] = $row->mfl;
+				continue;
+			}
+			$facility = Facility::where('facilitycode', $row->mfl)->first();
+			DB::connection('mysql_wr')->table('t_hiv_and_tb_treatment')
 					->where(['facility' => $facility->id, 'financial_year' => 2019])
 					->update(['start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026' => $row->new]);
 
 		}
+		print_r($unknown);
 	}
 
 
