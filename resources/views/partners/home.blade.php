@@ -136,13 +136,12 @@
 		    
 		    var all = localStorage.getItem("my_var");
 		    var new_title = set_multiple_date(first, second);
+		    $(".display_date").html(new_title);
 
 		    
 		    from = format_date(first);
-		    /* from is an array
-		     	[0] => month
-		     	[1] => year*/
 		    to 	= format_date(second);
+		    
 		    var error_check = check_error_date_range(from, to);
 
 		    if (!error_check) {

@@ -20,6 +20,10 @@ class ClearSession
         session()->forget('to_year');
         session()->forget('to_month');
         
+        session()->forget('filter_county');
+        session()->forget('filter_subcounty');
+        session()->forget('filter_ward');
+        session()->forget('filter_facility');
         session()->forget('filter_partner');
 
         session(['filter_year' => date('Y')]);

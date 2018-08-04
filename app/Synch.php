@@ -162,13 +162,22 @@ class Synch
         	$d->code = $value->code ?? '';
         	$d->save();
 
-        	$table_name = self::table_name_formatter($d->name);
+        	$table_name = 'd_' . self::table_name_formatter($d->name);
+        	$target_name = 't_' . self::table_name_formatter($d->name);
 
         	$sql = "CREATE TABLE `{$table_name}` (
         				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
         				facility int(10) UNSIGNED DEFAULT 0,
         				year smallint(4) UNSIGNED DEFAULT 0,
         				month tinyint(3) UNSIGNED DEFAULT 0,
+        				financial_year smallint(4) UNSIGNED DEFAULT 0,
+        				quarter tinyint(3) UNSIGNED DEFAULT 0,
+        	";
+
+        	$sql2 = "CREATE TABLE `{$target_name}` (
+        				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        				facility int(10) UNSIGNED DEFAULT 0,
+        				financial_year smallint(4) UNSIGNED DEFAULT 0,
         	";
 
         	$new_url = "dataSets/" . $d->dhis . ".json?fields=name,code,id,dataSetElements[dataElement[name,id,code],categoryCombo[id,name";
@@ -196,6 +205,9 @@ class Synch
 	        	$sql .= "
 	        	`{$column_name}` int(10) DEFAULT NULL, ";
 
+	        	$sql2 .= "
+	        	`{$column_name}` int(10) DEFAULT NULL, ";
+
 	        	$d->category_dhis = $element->categoryCombo->id ?? '';
 	        }
 
@@ -205,12 +217,23 @@ class Synch
 	        		dateupdated date DEFAULT NULL,
 					PRIMARY KEY (`id`),
 					KEY `identifier`(`facility`, `year`, `month`),
+					KEY `identifier_other`(`facility`, `financial_year`, `quarter`),
 					KEY `facility` (`facility`),
-					KEY `specific_time` (`year`, `month`)
+					KEY `specific_time` (`year`, `month`),
+					KEY `specific_period` (`financial_year`, `quarter`)
+				);
+	        ";
+
+	        $sql2 .= "
+	        		dateupdated date DEFAULT NULL,
+					PRIMARY KEY (`id`),
+					KEY `identifier`(`facility`, `financial_year`),
+					KEY `facility` (`facility`)
 				);
 	        ";
 
 	        DB::connection('mysql_wr')->statement($sql);
+	        DB::connection('mysql_wr')->statement($sql2);
 	        $d->save();
 	        echo  'Data set ' . ($key+1) . " completed \n";
         }
@@ -219,9 +242,7 @@ class Synch
 	public static function insert_rows($year=null)
 	{
 		if(!$year) $year = date('Y');
-
 		$tables = DataSetElement::selectRaw("distinct table_name")->get();
-
 		$facilities = Facility::select('id')->get();
 
 		foreach ($tables as $table) {
@@ -231,7 +252,9 @@ class Synch
 
 			for ($month=1; $month < 13; $month++) { 
 				foreach ($facilities as $k => $val) {
-					$data_array[$i] = array('year' => $year, 'month' => $month, 'facility' => $val->id);
+					$data = array('year' => $year, 'month' => $month, 'facility' => $val->id)
+					$data = array_merge($data, self::get_financial_year_quarter($year, $month));
+					$data_array[$i] = $data;
 					$i++;
 
 					if ($i == 200) {
@@ -254,7 +277,6 @@ class Synch
 		foreach ($tables as $table){
 			DB::connection('mysql_wr')->statement("TRUNCATE TABLE " . $table->table_name . ";");
 		}
-
 	}
 
 	public static function populate($year=null)
@@ -354,7 +376,7 @@ class Synch
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
-		return 'd_' . $final;
+		return $final;
 	}
 
 	public static function column_name_formatter($raw)
@@ -366,6 +388,9 @@ class Synch
 		$raw = str_replace('+', 'pos', $raw);
 
 		$raw = str_replace(' ', '_', $raw);
+		$raw = str_replace('__', '_', $raw);
+		$raw = str_replace('__', '_', $raw);
+		$raw = str_replace('__', '_', $raw);
 		$raw = str_replace('__', '_', $raw);
 		$raw = str_replace('__', '_', $raw);
 		$raw = str_replace('__', '_', $raw);
@@ -388,6 +413,22 @@ class Synch
 
 		return $final;
 	}
+
+	public static function get_financial_year_quarter($year, $month)
+	{
+		if($month < 10) $financial_year = $year;
+		else{
+			$financial_year = $year -1
+		}
+
+		if($month < 4) $quarter = 2;
+		else if($month > 3 && $month < 7) $quarter = 3;
+		else if($month > 6 && $month < 10) $quarter = 4;
+		else if($month > 9) $quarter = 1;
+
+		return ['financial_year' => $financial_year, 'quarter' => $quarter];
+	}
+
 
 
 
