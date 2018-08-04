@@ -44,3 +44,11 @@ Artisan::command('insert:rows {year?}', function ($year=null) {
 Artisan::command('populate {year?}', function ($year=null) {
 	\App\Synch::populate($year);
 })->describe('Populate data tables with values.');
+
+
+
+Artisan::command('target:current', function () {
+	\App\TargetInsert::current_2018();
+})->describe('Populate target tables with values.');
+
+
