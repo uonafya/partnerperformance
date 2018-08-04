@@ -16,7 +16,7 @@
                 text: ''
             },
             xAxis: [{
-                categories: {!! $categories !!}
+                categories: {!! json_encode($categories) !!}
             }],
             yAxis: [{ // Primary yAxis
                 labels: {
@@ -86,7 +86,7 @@
                 '#F2784B',
                 '#1BA39C'
             ],     
-            series: {!! $outcomes !!}
+            series: {!! json_encode($outcomes) !!}
         });
     });
 </script>
