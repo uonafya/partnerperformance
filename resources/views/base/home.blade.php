@@ -175,7 +175,6 @@
 
 
 	$().ready(function(){
-		// reload_page();
 		
 		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
 
@@ -186,6 +185,7 @@
 			var posting = $.post( "{{ secure_url('filter/any') }}", { 'session_var': id, id: 'em' } );
 
 			posting.done(function( data ) {
+				console.log(data);
 				reload_page();
 			});
 		});
