@@ -123,7 +123,7 @@
 
 		    @if(session('financial'))
 		    	$(".filters").select2();
-		    	set_select_facility("filter_facility", "{{ url('/facility/search') }}", 3, "Search for facility");
+		    	set_select_facility("filter_facility", "{{ secure_url('/facility/search') }}", 3, "Search for facility");
 		    @else
 			    $('#errorAlertDateRange').hide();
 			    $(".js-example-basic-single").select2();

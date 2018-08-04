@@ -42,7 +42,7 @@
 	</div>		
 
 	<div class="col-md-4">
-		<select class="btn" id="filter_groupby">
+		<select class="btn filters" id="filter_groupby">
 			<option disabled='true' selected='true'>Group By:</option>
 
 			@foreach($divisions as $division)
