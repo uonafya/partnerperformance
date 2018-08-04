@@ -116,8 +116,8 @@ class ChartController extends Controller
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
 
-		$row = DB::table('hiv_tested')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'hiv_tested.facility')
+		$row = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($this->gender_query())
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
