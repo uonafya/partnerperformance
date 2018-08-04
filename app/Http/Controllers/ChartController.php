@@ -38,6 +38,7 @@ class ChartController extends Controller
 
 		$data['div'] = str_random(15);
 
+		$t = round(($target->total / 12), 2);
 
 		$data['outcomes'][0]['name'] = "Totals";
 		$data['outcomes'][1]['name'] = "Target";
@@ -55,7 +56,7 @@ class ChartController extends Controller
 			$m = Lookup::resolve_month($row->month);
 			$data['categories'][$key] = substr($m, 0, 3) . ', ' . $row->year;
 			$data["outcomes"][0]["data"][$key] = (int) $row->total;
-			$data["outcomes"][1]["data"][$key] = (int) $target->total / 12;
+			$data["outcomes"][1]["data"][$key] = $t;
 		}
 
 		return view('charts.dual_axis', $data);
