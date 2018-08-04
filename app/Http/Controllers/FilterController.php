@@ -41,7 +41,7 @@ class FilterController extends Controller
 			$display_date = $year . ' ' . Lookup::resolve_month($month);
 		}		
 
-		return ['year' => $year, 'prev_year' => $prev_year, 'range' => $range];
+		return ['year' => $year, 'prev_year' => $prev_year, 'range' => $range, 'display_date' => $display_date];
 	}
 
 	public function filter_partner(Request $request)
