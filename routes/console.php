@@ -51,4 +51,8 @@ Artisan::command('target:current', function () {
 	\App\TargetInsert::current_2018();
 })->describe('Populate target tables with values.');
 
+Artisan::command('target:new', function () {
+	\App\TargetInsert::new_2018();
+})->describe('Populate target tables with values.');
+
 

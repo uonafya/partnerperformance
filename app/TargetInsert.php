@@ -66,6 +66,24 @@ class TargetInsert
 
 		}
 	}
+    
+
+	public static function current_new_2019()
+	{
+		ini_set("memory_limit", "-1");
+		$path = public_path('targets/new_2018.xlsx');
+		$data = Excel::load($path, function($reader){
+
+		})->get(['mfl', 'new', 'current']);
+
+		foreach ($data as $row) {
+			$facility = Facility::where('facilitycode', $row->mfl)->first();
+			DB::table('t_hiv_and_tb_treatment')
+					->where(['facility' => $facility->id, 'financial_year' => 2019])
+					->update(['start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026' => $row->new]);
+
+		}
+	}
 
 
 }
