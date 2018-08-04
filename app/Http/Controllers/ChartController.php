@@ -53,9 +53,9 @@ class ChartController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$m = Lookup::resolve_month($row->month);
-			$data['categories'][$key] = substr($m, 0, 3) . ', ' $row->year;
-			$data["outcomes"][0]["data"][$key]	= (int) $row->total;
-			$data["outcomes"][1]["data"][$key]	= (int) $target->total / 12;
+			$data['categories'][$key] = substr($m, 0, 3) . ', ' . $row->year;
+			$data["outcomes"][0]["data"][$key] = (int) $row->total;
+			$data["outcomes"][1]["data"][$key] = (int) $target->total / 12;
 		}
 
 		return view('charts.dual_axis', $data);
