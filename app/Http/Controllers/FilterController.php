@@ -31,7 +31,7 @@ class FilterController extends Controller
 		$financial_year = $request->input('financial_year', $default_financial);
 		$quarter = $request->input('quarter');
 
-		$range = ['filter_year' => $year, 'filter_month' => $month, 'to_year' => $to_year, 'to_month' => $to_month, 'filter_financial_year' = $financial_year, 'filter_quarter' = $quarter];
+		$range = ['filter_year' => $year, 'filter_month' => $month, 'to_year' => $to_year, 'to_month' => $to_month, 'filter_financial_year' => $financial_year, 'filter_quarter' => $quarter];
 
 		session($range);
 
