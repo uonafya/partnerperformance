@@ -163,7 +163,7 @@ class Synch
         	$d->save();
 
         	$table_name = 'd_' . self::table_name_formatter($d->name);
-        	$target_name = 't_' . self::table_name_formatter($d->name);
+        	$targets_table_name = 't_' . self::table_name_formatter($d->name);
 
         	$sql = "CREATE TABLE `{$table_name}` (
         				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -174,7 +174,7 @@ class Synch
         				quarter tinyint(3) UNSIGNED DEFAULT 0,
         	";
 
-        	$sql2 = "CREATE TABLE `{$target_name}` (
+        	$sql2 = "CREATE TABLE `{$targets_table_name}` (
         				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
         				facility int(10) UNSIGNED DEFAULT 0,
         				financial_year smallint(4) UNSIGNED DEFAULT 0,
@@ -199,6 +199,7 @@ class Synch
 	        	$column_name = self::column_name_formatter($e->name);
 
 	        	$e->table_name = $table_name;
+	        	$e->targets_table_name = $targets_table_name;
 	        	$e->column_name = $column_name;
 	        	$e->save();
 
@@ -212,6 +213,7 @@ class Synch
 	        }
 
 	        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
+	        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$targets_table_name}`;");
 
 	        $sql .= "
 	        		dateupdated date DEFAULT NULL,

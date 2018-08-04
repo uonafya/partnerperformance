@@ -19,6 +19,7 @@ class CreateDataSetElementsTable extends Migration
             $table->string('code', 30)->nullable();
             $table->string('dhis', 30)->nullable();
             $table->string('table_name', 100)->nullable();
+            $table->string('targets_table_name', 100)->nullable();
             $table->string('column_name', 100)->nullable();
             $table->tinyInteger('data_set_id')->unsigned();
             $table->timestamps();
