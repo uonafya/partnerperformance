@@ -164,6 +164,8 @@
 		$("#pmtct").html("<center><div class='loader'></div></center>");
 		$("#eid").html("<center><div class='loader'></div></center>");
 
+		$("#currenttx").load("{{ secure_url('chart/current') }}");
+
 		/*$("#summary").load("{{ secure_url('partner/summary') }}");
 		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
 		$("#pos_results").load("{{ secure_url('partner/positive') }}");

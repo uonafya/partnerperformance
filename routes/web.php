@@ -38,6 +38,10 @@ Route::prefix('partner')->name('partner.')->group(function(){
 	Route::get('current_art', 'PartnerController@current_art')->name('current_art');
 });
 
+Route::prefix('chart')->name('chart.')->group(function(){
+	Route::get('current', 'ChartController@current')->name('current');
+});
+
 Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@home');
 	Route::get('partner', 'GeneralController@partner_home');

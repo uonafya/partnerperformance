@@ -12,7 +12,7 @@ class GeneralController extends Controller
 	{
 		session(['financial' => false]);
 		$data = Lookup::partner_data();
-		return view('partners.home', $data);
+		return view('base.partner_home', $data);
 	}
 
 	public function home()

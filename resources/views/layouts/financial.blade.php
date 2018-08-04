@@ -1,6 +1,6 @@
 
 <div class="row" id="filter">
-	<div class="col-md-4">
+	<div class="col-md-3">
 		<select class="btn filters form-control" id="filter_county">
 			<option disabled='true' selected='true'>Select County</option>
 			<option value='null' selected='true'>All Counties</option>
@@ -11,8 +11,8 @@
 		</select>		
 	</div>	
 
-	<div class="col-md-4">
-		<select class="btn filters" id="filter_subcounty">
+	<div class="col-md-3">
+		<select class="btn filters form-control" id="filter_subcounty">
 			<option disabled='true' selected='true'>Select Subcounty</option>
 			<option value='null' selected='true'>All Subcounties</option>
 
@@ -20,10 +20,21 @@
 				<option value="{{ $subcounty->id }}"> {{ $subcounty->name }} </option>
 			@endforeach
 		</select>		
-	</div>	
+	</div>		
 
-	<div class="col-md-4">
-		<select class="btn filters" id="filter_partner">
+	<div class="col-md-3">
+		<select class="btn filters form-control" id="filter_ward">
+			<option disabled='true' selected='true'>Select Ward</option>
+			<option value='null' selected='true'>All Wards</option>
+
+			@foreach($wards as $ward)
+				<option value="{{ $ward->id }}"> {{ $ward->name }} </option>
+			@endforeach
+		</select>		
+	</div>
+
+	<div class="col-md-3">
+		<select class="btn filters form-control" id="filter_partner">
 			<option disabled='true' selected='true'>Select Partner</option>
 			<option value='null' selected='true'>All Partners</option>
 
@@ -34,7 +45,7 @@
 	</div>		
 
 	<div class="col-md-4">
-		<select class="btn" id="filter_facility">
+		<select class="btn form-control" id="filter_facility">
 			<option disabled='true' selected='true'>Select Facility</option>
 			<option value='null' selected='true'>All Facilities</option>
 
@@ -42,7 +53,7 @@
 	</div>		
 
 	<div class="col-md-4">
-		<select class="btn filters" id="filter_groupby">
+		<select class="btn filters form-control" id="filter_groupby">
 			<option disabled='true' selected='true'>Group By:</option>
 
 			@foreach($divisions as $division)
