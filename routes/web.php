@@ -40,6 +40,8 @@ Route::prefix('partner')->name('partner.')->group(function(){
 
 Route::prefix('chart')->name('chart.')->group(function(){
 	Route::get('current', 'ChartController@current')->name('current');
+	Route::get('art_new', 'ChartController@art_new')->name('art_new');
+	Route::get('testing_gender', 'ChartController@testing_gender')->name('testing_gender');
 });
 
 Route::middleware(['clear_session'])->group(function(){

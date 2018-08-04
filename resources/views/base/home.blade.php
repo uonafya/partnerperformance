@@ -165,14 +165,9 @@
 		$("#eid").html("<center><div class='loader'></div></center>");
 
 		$("#currenttx").load("{{ secure_url('chart/current') }}");
-
-		/*$("#summary").load("{{ secure_url('partner/summary') }}");
-		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
-		$("#pos_results").load("{{ secure_url('partner/positive') }}");
-		$("#linked").load("{{ secure_url('partner/linked') }}");
-		$("#pmtct").load("{{ secure_url('partner/pmtct') }}");
-		$("#new_art").load("{{ secure_url('partner/new_art') }}");
-		$("#current_art").load("{{ secure_url('partner/current_art') }}");*/
+		$("#newtx").load("{{ secure_url('chart/art_new') }}");
+		$("#gender").load("{{ secure_url('chart/testing_gender') }}");
+		
 	}
 
 
