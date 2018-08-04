@@ -453,7 +453,7 @@ class Synch
 	{
 		if($month < 10) $financial_year = $year;
 		else{
-			$financial_year = $year - 1;
+			$financial_year = $year + 1;
 		}
 
 		if($month < 4) $quarter = 2;
