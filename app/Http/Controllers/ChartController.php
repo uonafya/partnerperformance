@@ -229,6 +229,49 @@ class ChartController extends Controller
 		return view('charts.pie_chart', $data);
 	}
 
+	public function outcome_age()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$row = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($this->age_query())
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Positives";
+		$data['outcomes'][1]['name'] = "Negatives";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+
+		$data['categories'][0] = '&lt; 14';
+		$data['categories'][1] = '&gt; 14 & &lt; 25';
+		$data['categories'][2] = '&gt; 25';
+
+		$data["outcomes"][0]["data"][0] = (int) ($row->below_10_pos + $row->below_15_pos);
+		$data["outcomes"][1]["data"][0] = (int) (($row->below_10 + $row->below_15) - ($row->below_10_pos + $row->below_15_pos));
+
+		$data["outcomes"][0]["data"][0] = (int) ($row->below_20_pos + $row->below_25_pos);
+		$data["outcomes"][1]["data"][0] = (int) (($row->below_20 + $row->below_25) - ($row->below_20_pos + $row->below_25_pos));
+
+		$data["outcomes"][0]["data"][2] = (int) $row->above_25_pos;
+		$data["outcomes"][1]["data"][3] = (int) ($row->above_25 - $row->above_25_pos);
+
+
+		return view('charts.dual_axis', $data);
+	}
+
     public function gender_query()
     {
     	return "

@@ -169,6 +169,7 @@
 		$("#gender").load("{{ secure_url('chart/testing_gender') }}");
 		$("#out_gender").load("{{ secure_url('chart/outcome_gender') }}");
 		$("#age").load("{{ secure_url('chart/testing_age') }}");
+		$("#out_age").load("{{ secure_url('chart/outcome_age') }}");
 
 	}
 

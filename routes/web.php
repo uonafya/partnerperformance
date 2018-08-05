@@ -46,7 +46,7 @@ Route::prefix('chart')->name('chart.')->group(function(){
 	Route::get('outcome_gender', 'ChartController@outcome_gender')->name('outcome_gender');
 	
 	Route::get('testing_age', 'ChartController@testing_age')->name('testing_age');
-	// Route::get('outcome_gender', 'ChartController@outcome_gender')->name('outcome_gender');
+	Route::get('outcome_age', 'ChartController@outcome_age')->name('outcome_age');
 
 });
 
