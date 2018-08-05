@@ -23,6 +23,8 @@ class ChartController extends Controller
 
 		$data['div'] = str_random(15);
 
+		DB::enableQueryLog();
+
 		$data['rows'] = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
@@ -31,6 +33,8 @@ class ChartController extends Controller
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
 			->get();
+
+		return DB::getQueryLog();
 
 		return view('tables.testing_summary', $data);
 	}
