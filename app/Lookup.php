@@ -71,7 +71,7 @@ class Lookup
 
 	public static function get_percentage($num, $den, $roundby=2)
 	{
-		if($den){
+		if(!$den){
 			$val = 0;
 		}else{
 			$val = round(($num / $den * 100), $roundby);

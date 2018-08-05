@@ -342,7 +342,7 @@ class ChartController extends Controller
 
 		$rows = DB::table('d_prevention_of_mother-to-child_transmission')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
-			->selectRaw($this->pmtct_query())
+			->selectRaw($this->eid_query())
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
