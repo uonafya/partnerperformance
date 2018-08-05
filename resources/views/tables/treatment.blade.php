@@ -43,7 +43,7 @@
 		</div>
 
 		<div class="progress">
-			<div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="{{ $new_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
+			<div class="progress-bar bg-success" role="progressbar" style="width: {{ $new_completion }}%" aria-valuenow="{{ $new_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>
 		
 	</div>
