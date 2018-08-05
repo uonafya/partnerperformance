@@ -81,10 +81,10 @@ class Lookup
 
 	public static function progress_status($val)
 	{
-		if($val > 99) $status = ' bg-success ';
-		else if($val > 80) $status = ' bg-info ';
-		else if($val > 50) $status = ' bg-warning ';
-		else if($val <= 50) $status = ' bg-danger ';
+		if($val > 99) $status = 'bg-success';
+		else if($val > 80) $status = 'bg-info';
+		else if($val > 50) $status = 'bg-warning';
+		else if($val <= 50) $status = 'bg-danger';
 		else{
 			$status = '';
 		}
