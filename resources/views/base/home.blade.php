@@ -168,8 +168,8 @@
 		$("#newtx").load("{{ secure_url('chart/art_new') }}");
 		$("#gender").load("{{ secure_url('chart/testing_gender') }}");
 		$("#out_gender").load("{{ secure_url('chart/outcome_gender') }}");
-		$("#testing_age").load("{{ secure_url('chart/testing_age') }}");
-		
+		$("#age").load("{{ secure_url('chart/testing_age') }}");
+
 	}
 
 

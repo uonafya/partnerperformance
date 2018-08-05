@@ -180,9 +180,9 @@ class ChartController extends Controller
 		$data['categories'][1] = 'female';
 
 		$data["outcomes"][0]["data"][0] = (int) $row->male_pos;
-		$data["outcomes"][0]["data"][1] = (int) ($row->male_test - $row->male_pos);
-
 		$data["outcomes"][1]["data"][0] = (int) $row->female_pos;
+
+		$data["outcomes"][0]["data"][1] = (int) ($row->male_test - $row->male_pos);
 		$data["outcomes"][1]["data"][1] = (int) ($row->female_test - $row->female_pos);
 
 		return view('charts.dual_axis', $data);
