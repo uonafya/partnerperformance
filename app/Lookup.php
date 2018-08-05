@@ -69,6 +69,28 @@ class Lookup
 		return substr($m, 0, 3) . ', ' . $year;
 	}
 
+	public static function get_percentage($num, $den, $roundby=2)
+	{
+		if($den){
+			$val = 0;
+		}else{
+			$val = round(($num / $den * 100), $roundby);
+		}
+		return $val;
+	}
+
+	public static function progress_status($val)
+	{
+		if($val > 99) $status = ' bg-success ';
+		else if($val > 80) $status = ' bg-info ';
+		else if($val > 50) $status = ' bg-warning ';
+		else if($val <= 50) $status = ' bg-danger ';
+		else{
+			$status = '';
+		}
+		return $val;
+	}
+
 	public static function partner_data()
 	{
 		// $default_breadcrumb = "<a href='javascript:void(0)' class='alert-link'><strong>All Partners</strong></a>";

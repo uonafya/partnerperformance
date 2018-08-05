@@ -1,18 +1,3 @@
-<?php
-	if(!$target->current){
-		$current_completion = 0;
-	}else{
-		$current_completion = round(($actual->current / $target->current * 100), 2);
-	}
-
-	if(!$target->new_art){
-		$new_completion = 0;
-	}else{
-		$new_completion = round(($actual->new_art / $target->new_art * 100), 2);
-	}
-
-?>
-
 <div class="row">
 	<div class="col-md-6">
 		<table class="tablehead table table-striped table-bordered">
@@ -38,12 +23,13 @@
 		
 	</div>
 	<div class="col-md-6">
+		<br />
 		<div class="progress">
-			<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ $current_completion }}%" aria-valuenow="{{ $current_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
+			<div class="progress-bar progress-bar-striped {{ $current_status }}" role="progressbar" style="width: {{ $current_completion }}%" aria-valuenow="{{ $current_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>
 
 		<div class="progress">
-			<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ $new_completion }}%" aria-valuenow="{{ $new_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
+			<div class="progress-bar progress-bar-striped {{ $new_status }}" role="progressbar" style="width: {{ $new_completion }}%" aria-valuenow="{{ $new_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>
 		
 	</div>

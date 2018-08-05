@@ -15,7 +15,7 @@ class ChartController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['actual'] = DB::table('d_hiv_and_tb_treatment')
+		$actual = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`, 
 							SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`")
@@ -24,13 +24,22 @@ class ChartController extends Controller
 			->first();
 
 		$date_query = Lookup::date_query(true);
-		$data['target'] = DB::table('t_hiv_and_tb_treatment')
+		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`, 
 							SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
+
+		$data['actual'] = $actual;
+		$data['target'] = $target;
+
+		$data['current_completion'] = Lookup::get_percentage($actual->current, $target->current);
+		$data['new_completion'] = Lookup::get_percentage($actual->new_art, $target->new_art);
+
+		$data['current_status'] = Lookup::progress_status($data['current_completion']);
+		$data['new_status'] = Lookup::progress_status($data['new_completion']);
 
 		return view('tables.treatment', $data);
 	}
