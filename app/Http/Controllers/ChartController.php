@@ -185,6 +185,8 @@ class ChartController extends Controller
 		$data["outcomes"][0]["data"][1] = (int) ($row->male_test - $row->male_pos);
 		$data["outcomes"][1]["data"][1] = (int) ($row->female_test - $row->female_pos);
 
+		dd($data);
+
 		return view('charts.dual_axis', $data);
 	}
 
@@ -253,7 +255,7 @@ class ChartController extends Controller
 			SUM(`positive_10-14(m)_hv01-18` + `positive_10-14(f)_hv01-19`) as below_15_pos,
 			SUM(`positive_15-19(m)_hv01-20` + `positive_15-19(f)_hv01-21`) as below_20_pos,
 			SUM(`positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23`) as below_25_pos,
-			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25_pos,
+			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25_pos
     	";
     }
 }
