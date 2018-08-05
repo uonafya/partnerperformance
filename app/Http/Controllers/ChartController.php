@@ -289,8 +289,6 @@ class ChartController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$t = round(($target->total / 12), 2);
-
 		$data['outcomes'][0]['name'] = "New PMTCT";
 		$data['outcomes'][1]['name'] = "Positive PMTCT";
 
