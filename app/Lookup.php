@@ -183,4 +183,35 @@ class Lookup
 
 		return $query;
 	}
+
+	public static function groupby_query()
+	{
+		$groupby = session('filter_groupby', 1);
+
+		switch ($groupby) {
+			case 1:
+				$select_query = "partner as div_id, partnername as name";
+				$group_query = "partner";
+				break;
+			case 2:
+				$select_query = "county as div_id, countyname as name, CountyDHISCode as dhis_code, CountyMFLCode as mfl_code";
+				$group_query = "county";
+				break;
+			case 3:
+				$select_query = "subcounty_id as div_id, subcounty as name, SubCountyDHISCode as dhis_code, SubCountyMFLCode as mfl_code";
+				$group_query = "subcounty_id";
+				break;
+			case 4:
+				$select_query = "ward_id as div_id, wardname as name, WardDHISCode as dhis_code, WardMFLCode as mfl_code";
+				$group_query = "ward_id";
+				break;
+			case 5:
+				$select_query = "view_facilitys.id as div_id, name, DHIScode as dhis_code, facilitycode as mfl_code";
+				$group_query = "view_facilitys.id";
+				break;			
+			default:
+				break;
+		}
+		return ['select_query' => $select_query, 'group_query' => $group_query];
+	}
 }

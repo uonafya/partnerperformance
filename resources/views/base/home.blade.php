@@ -14,7 +14,6 @@
 </style>
 
 
-
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -129,15 +128,25 @@
 	</div>
 </div>
 
-@endsection
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Summary <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="summary">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
 
+@endsection
 
 
 @section('scripts')
 
-
 <script type="text/javascript">
-
 
 	function reload_page()
 	{
@@ -150,6 +159,7 @@
 		$("#out_age").html("<center><div class='loader'></div></center>");
 		$("#pmtct").html("<center><div class='loader'></div></center>");
 		$("#eid").html("<center><div class='loader'></div></center>");
+		$("#summary").html("<center><div class='loader'></div></center>");
 
 		$("#treatment").load("{{ secure_url('chart/treatment') }}");
 		$("#currenttx").load("{{ secure_url('chart/current') }}");
@@ -161,6 +171,7 @@
 		$("#pmtct").load("{{ secure_url('chart/pmtct') }}");
 		$("#pmtct").load("{{ secure_url('chart/pmtct') }}");
 		$("#eid").load("{{ secure_url('chart/eid') }}");
+		$("#summary").load("{{ secure_url('table/summary') }}");
 
 	}
 

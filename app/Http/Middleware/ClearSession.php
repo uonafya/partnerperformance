@@ -29,6 +29,8 @@ class ClearSession
         session()->forget('filter_facility');
         session()->forget('filter_partner');
 
+        session()->forget('filter_groupby');
+
         $m = date('m');
 
         if($m < 10){
@@ -37,7 +39,6 @@ class ClearSession
            $f = date('Y')+1; 
         }
 
-        session(['filter_year' => date('Y')]);
         session([
             'financial' => true,
             'filter_year' => date('Y'),
