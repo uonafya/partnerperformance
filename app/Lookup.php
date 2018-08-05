@@ -88,7 +88,7 @@ class Lookup
 		else{
 			$status = '';
 		}
-		return $val;
+		return $status;
 	}
 
 	public static function partner_data()
