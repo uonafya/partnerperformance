@@ -119,22 +119,15 @@ class ChartController extends Controller
 		$row = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($this->gender_query())
-			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
 		$data['paragraph'] = "
 		<table class='table table-striped'>
-			<tr>
-				<td>Below 10 : </td> <td>" . number_format($row->below_10_test) . "</td>
-			</tr>
-			<tr>
-				<td>Male : </td> <td>" . number_format($row->male_test) . "</td>
-			</tr>
-			<tr>
-				<td>Female : </td> <td>" . number_format($row->female_test) . "</td>
-			</tr>
+			<tr> <td>Below 10 : </td> <td>" . number_format($row->below_10_test) . "</td> </tr>
+			<tr> <td>Male : </td> <td>" . number_format($row->male_test) . "</td> </tr>
+			<tr> <td>Female : </td> <td>" . number_format($row->female_test) . "</td> </tr>
 			<tr>
 				<td>Total : </td> <td>" . number_format($row->below_10_test + $row->male_test + $row->female_test) . "</td>
 			</tr>
@@ -152,6 +145,85 @@ class ChartController extends Controller
 
 		$data['outcomes']['data'][0]['y'] = (int) $row->male_test;
 		$data['outcomes']['data'][1]['y'] = (int) $row->female_test;
+
+		return view('charts.pie_chart', $data);
+	}
+
+	public function outcome_gender()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$row = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($this->gender_query())
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Positives";
+		$data['outcomes'][1]['name'] = "Negatives";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		// $data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		$data['categories'][0] = 'male';
+		$data['categories'][1] = 'female';
+
+		$data["outcomes"][0]["data"][0] = (int) $row->male_pos;
+		$data["outcomes"][0]["data"][1] = (int) ($row->male_test - $row->male_pos);
+
+		$data["outcomes"][1]["data"][0] = (int) $row->female_pos;
+		$data["outcomes"][1]["data"][1] = (int) ($row->female_test - $row->female_pos);
+
+		return view('charts.dual_axis', $data);
+	}
+
+	public function testing_age()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$row = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($this->age_query())
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['paragraph'] = "
+		<table class='table table-striped'>
+			<tr> <td>&lt; 14 : </td> <td>" . number_format($row->below_10 + $row->below_15) . "</td> </tr>
+			<tr> <td>&gt; 14 & &lt; 25: </td> <td>" . number_format($row->below_20 + $row->below_25) . "</td> </tr>
+			<tr> <td>&gt; 25: </td> <td>" . number_format($row->above_25) . "</td> </tr>
+			<tr>
+				<td>Total : </td> <td>" . number_format($row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25) . "</td>
+			</tr>
+		</table>			
+		";
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes']['name'] = "Tests";
+		$data['outcomes']['colorByPoint'] = true;
+
+
+		$data['outcomes']['data'][0]['name'] = "&lt; 14";
+		$data['outcomes']['data'][1]['name'] = "&gt; 14 & &lt; 25";
+		$data['outcomes']['data'][2]['name'] = "&gt; 25";
+
+		$data['outcomes']['data'][0]['y'] = (int) ($row->below_10 + $row->below_15);
+		$data['outcomes']['data'][1]['y'] = (int) ($row->below_20 + $row->below_25);
+		$data['outcomes']['data'][2]['y'] = (int) $row->above_25;
 
 		return view('charts.pie_chart', $data);
 	}
