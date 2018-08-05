@@ -271,6 +271,39 @@ class ChartController extends Controller
 		return view('charts.dual_axis', $data);
 	}
 
+	public function pmtct()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$rows = DB::table('d_prevention_of_mother-to-child_transmission')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
+			->selectRaw($this->pmtct_query())
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$t = round(($target->total / 12), 2);
+
+		$data['outcomes'][0]['name'] = "New PMTCT";
+		$data['outcomes'][1]['name'] = "Positive PMTCT";
+
+		foreach ($rows as $key => $row) {
+			$m = Lookup::resolve_month($row->month);
+			$data['categories'][$key] = substr($m, 0, 3) . ', ' . $row->year;
+			$data["outcomes"][0]["data"][$key] = (int) $row->new_pmtct;
+			$data["outcomes"][1]["data"][$key] = (int) $row->positive_pmtct;
+		}
+
+		return view('charts.line_graph', $data);
+	}
+
     public function gender_query()
     {
     	return "
