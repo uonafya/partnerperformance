@@ -185,6 +185,8 @@ class ChartController extends Controller
 		$data["outcomes"][0]["data"][1] = (int) $row->female_pos;
 		$data["outcomes"][1]["data"][1] = (int) ($row->female_test - $row->female_pos);
 
+		dd($data);
+
 
 		return view('charts.dual_axis', $data);
 	}
@@ -267,6 +269,8 @@ class ChartController extends Controller
 
 		$data["outcomes"][0]["data"][2] = (int) $row->above_25_pos;
 		$data["outcomes"][1]["data"][3] = (int) ($row->above_25 - $row->above_25_pos);
+
+		dd($data);
 
 
 		return view('charts.dual_axis', $data);
