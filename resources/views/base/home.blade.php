@@ -56,19 +56,6 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    New on Treatment Trend <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="newtx">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
 	<div class="col-md-6 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
