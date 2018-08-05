@@ -81,10 +81,19 @@ class Lookup
 
 	public static function progress_status($val)
 	{
-		if($val > 99) $status = 'bg-success';
+		// Bootstrap 4
+		/*if($val > 99) $status = 'bg-success';
 		else if($val > 80) $status = 'bg-info';
 		else if($val > 50) $status = 'bg-warning';
 		else if($val <= 50) $status = 'bg-danger';
+		else{
+			$status = '';
+		}*/
+
+		if($val > 99) $status = 'progress-bar-success';
+		else if($val > 80) $status = 'progress-bar-info';
+		else if($val > 50) $status = 'progress-bar-warning';
+		else if($val <= 50) $status = 'progress-bar-danger';
 		else{
 			$status = '';
 		}

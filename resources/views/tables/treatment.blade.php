@@ -25,11 +25,15 @@
 	<div class="col-md-6">
 		<br />
 		<div class="progress">
-			<div class="progress-bar progress-bar-striped {{ $current_status }}" role="progressbar" style="width: {{ $current_completion }}%" aria-valuenow="{{ $current_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
+			<div class="progress-bar progress-bar-striped {{ $current_status }}" role="progressbar" style="width: {{ $current_completion }}%" aria-valuenow="{{ $current_completion }}" aria-valuemin="0" aria-valuemax="100">
+				{{ $current_completion }}%
+			</div>
 		</div>
 
 		<div class="progress">
-			<div class="progress-bar progress-bar-striped {{ $new_status }}" role="progressbar" style="width: {{ $new_completion }}%" aria-valuenow="{{ $new_completion }}" aria-valuemin="0" aria-valuemax="100"></div>
+			<div class="progress-bar progress-bar-striped {{ $new_status }}" role="progressbar" style="width: {{ $new_completion }}%" aria-valuenow="{{ $new_completion }}" aria-valuemin="0" aria-valuemax="100">
+				{{ $new_completion }}%
+			</div>
 		</div>
 		
 	</div>
