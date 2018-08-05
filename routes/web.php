@@ -39,6 +39,8 @@ Route::prefix('partner')->name('partner.')->group(function(){
 });
 
 Route::prefix('chart')->name('chart.')->group(function(){
+	Route::get('treatment', 'ChartController@treatment')->name('treatment');
+	
 	Route::get('current', 'ChartController@current')->name('current');
 	Route::get('art_new', 'ChartController@art_new')->name('art_new');
 
@@ -47,8 +49,9 @@ Route::prefix('chart')->name('chart.')->group(function(){
 	
 	Route::get('testing_age', 'ChartController@testing_age')->name('testing_age');
 	Route::get('outcome_age', 'ChartController@outcome_age')->name('outcome_age');
-	
+
 	Route::get('pmtct', 'ChartController@pmtct')->name('pmtct');
+	Route::get('eid', 'ChartController@eid')->name('eid');
 
 });
 

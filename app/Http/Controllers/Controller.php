@@ -133,7 +133,7 @@ class Controller extends BaseController
 
 		// return DB::getQueryLog();
 		
-		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+		return view('tables.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 
 	public function data_set_six($function_name)
@@ -154,7 +154,7 @@ class Controller extends BaseController
 			->groupBy($d['groupBy'])
 			->get();
 
-		return view('partials.art_totals', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+		return view('tables.art_totals', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 	
 }

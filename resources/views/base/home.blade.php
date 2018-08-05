@@ -164,6 +164,7 @@
 		$("#pmtct").html("<center><div class='loader'></div></center>");
 		$("#eid").html("<center><div class='loader'></div></center>");
 
+		$("#treatment").load("{{ secure_url('chart/treatment') }}");
 		$("#currenttx").load("{{ secure_url('chart/current') }}");
 		$("#newtx").load("{{ secure_url('chart/art_new') }}");
 		$("#gender").load("{{ secure_url('chart/testing_gender') }}");
@@ -171,6 +172,8 @@
 		$("#age").load("{{ secure_url('chart/testing_age') }}");
 		$("#out_age").load("{{ secure_url('chart/outcome_age') }}");
 		$("#pmtct").load("{{ secure_url('chart/pmtct') }}");
+		$("#pmtct").load("{{ secure_url('chart/pmtct') }}");
+		$("#eid").load("{{ secure_url('chart/eid') }}");
 
 	}
 

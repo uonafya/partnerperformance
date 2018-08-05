@@ -59,7 +59,7 @@ class PartnerController extends Controller
 			->groupBy($d['groupBy'])
 			->get();
 
-		return view('partials.test_summary', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+		return view('tables.test_summary', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 
 	public function pmtct()
@@ -80,7 +80,7 @@ class PartnerController extends Controller
 			->groupBy($d['groupBy'])
 			->get();
 
-		return view('partials.pmtct', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+		return view('tables.pmtct', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 
 
@@ -114,7 +114,7 @@ class PartnerController extends Controller
 
 		// return DB::getQueryLog();
 
-		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+		return view('tables.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 
 	public function positive()
@@ -142,7 +142,7 @@ class PartnerController extends Controller
 			->groupBy($d['groupBy'])
 			->get();
 
-		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+		return view('tables.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 
 	public function linked()
@@ -170,7 +170,7 @@ class PartnerController extends Controller
 			->groupBy($d['groupBy'])
 			->get();
 
-		return view('partials.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
+		return view('tables.hiv_tested', ['rows' => $rows, 'division' => $d['division'], 'div' => str_random(15)]);
 	}
 	*/
 

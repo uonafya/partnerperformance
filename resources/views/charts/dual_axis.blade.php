@@ -76,12 +76,13 @@
                 y: 40,
                 floating: true,
                 backgroundColor: '#FFFFFF'
-            },navigation: {
-                        buttonOptions: {
-                            verticalAlign: 'bottom',
-                            y: -20
-                        }
-                    },
+            },
+            navigation: {
+                buttonOptions: {
+                    verticalAlign: 'bottom',
+                    y: -20
+                }
+            },
             colors: [
                 '#F2784B',
                 '#1BA39C',

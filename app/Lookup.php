@@ -55,12 +55,18 @@ class Lookup
 				$value = 'December';
 				break;
 			default:
-				$value = NULL;
+				$value = '';
 				break;
 		}
 
 		return $value;
 
+	}
+
+	public static function get_category($year, $month)
+	{
+		$m = self::resolve_month($month);
+		return substr($m, 0, 3) . ', ' . $year;
 	}
 
 	public static function partner_data()
@@ -106,14 +112,14 @@ class Lookup
 		return "<a href='javascript:void(0)' class='alert-link'><center><strong>{$name}</strong></center></a>";
 	}
 
-	public static function date_query()
+	public static function date_query($for_target=false)
 	{
-		if(session('financial')){
+		if(session('financial') || $for_target){
 			$financial_year = session('filter_financial_year');
 			$quarter = session('filter_quarter');
 			$query = " financial_year='{$financial_year}'";
 
-			if($quarter) $query .= " AND quarter='{$quarter}'";
+			if($quarter && !$for_target) $query .= " AND quarter='{$quarter}'";
 		}else{
 			$default = date('Y');
 			$year = session('filter_year', $default);

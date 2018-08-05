@@ -10,7 +10,29 @@ class ChartController extends Controller
 {
 	public function treatment()
 	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
 
+		$data['div'] = str_random(15);
+
+		$data['actual'] = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`, 
+							SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$date_query = Lookup::date_query(true);
+		$data['target'] = DB::table('t_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`, 
+							SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		return view('tables.treatment', $data);
 	}
 
 	public function current()
@@ -29,6 +51,7 @@ class ChartController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `total`")
@@ -41,7 +64,7 @@ class ChartController extends Controller
 		$t = round(($target->total / 12), 2);
 
 		$data['outcomes'][0]['name'] = "Totals";
-		$data['outcomes'][1]['name'] = "Target";
+		$data['outcomes'][1]['name'] = "Monthly Target";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "spline";
@@ -78,6 +101,7 @@ class ChartController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `total`")
@@ -90,7 +114,7 @@ class ChartController extends Controller
 		$t = round(($target->total / 12), 2);
 
 		$data['outcomes'][0]['name'] = "Totals";
-		$data['outcomes'][1]['name'] = "Target";
+		$data['outcomes'][1]['name'] = "Monthly Target";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "spline";
@@ -302,6 +326,37 @@ class ChartController extends Controller
 		return view('charts.line_graph', $data);
 	}
 
+	public function eid()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$rows = DB::table('d_prevention_of_mother-to-child_transmission')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
+			->selectRaw($this->pmtct_query())
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Initial PCR &lt;8 weeks";
+		$data['outcomes'][1]['name'] = "Initial PCR 2-12 months";
+
+		foreach ($rows as $key => $row) {
+			$m = Lookup::resolve_month($row->month);
+			$data['categories'][$key] = substr($m, 0, 3) . ', ' . $row->year;
+			$data["outcomes"][0]["data"][$key] = (int) $row->below_2m;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below_12m;
+		}
+
+		return view('charts.line_graph', $data);
+	}
+
     public function gender_query()
     {
     	return "
@@ -329,5 +384,14 @@ class ChartController extends Controller
 			SUM(`positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23`) as below_25_pos,
 			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25_pos
     	";
+    }
+
+    public function eid_query()
+    {
+    	return "
+    		SUM(`initial_pcr_<_8wks_hv02-44`) as below_2m,
+    		SUM(`initial_pcr_>8wks_-12_mths_hv02-45`) as below_12m
+    	";
+
     }
 }
