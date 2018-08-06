@@ -126,7 +126,7 @@ class Synch
 	        foreach ($body->organisationUnits as $key => $value) {
 
 	        	$mfl = $value->code ?? null;
-	        	if($mfl == "00000") $mfl = null;
+	        	$mfl = (int) $mfl;
 
 	        	$facilities = Facility::where('DHIScode', $value->id)
 			        	->when($mfl, function($query) use ($value){
