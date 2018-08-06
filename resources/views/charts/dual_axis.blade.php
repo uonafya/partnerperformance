@@ -18,15 +18,17 @@
             xAxis: [{
                 categories: {!! json_encode($categories) !!}
             }],
-            
             yAxis: [{ // Primary yAxis
                 labels: {
                     formatter: function() {
-                        return this.value;
+                        return this.value +'<?= (isset($tat) ? @"": @"%"); ?>';
                     },
+                    style: {
+                        
+                    }
                 },
                 title: {
-                    text: '',
+                    text: '<?= (isset($tat) ? @"Days": @"Percentage"); ?>',
                     style: {
                         color: '#89A54E'
                     }
@@ -36,14 +38,14 @@
             }, { // Secondary yAxis
                 gridLineWidth: 0,
                 title: {
-                    text: '',
+                    text: '<?= (isset($tat) ? @"Days": @"Tests"); ?>',
                     style: {
                         color: '#4572A7'
                     }
                 },
                 labels: {
                     formatter: function() {
-                        return this.value;
+                        return this.value +'';
                     },
                     style: {
                         color: '#4572A7'
@@ -70,9 +72,9 @@
                 layout: 'horizontal',
                 align: 'right',
                 x: -100,
-                verticalAlign: 'bottom',
-                y: -25,
-                floating: false,
+                verticalAlign: 'top',
+                y: 40,
+                floating: true,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {
