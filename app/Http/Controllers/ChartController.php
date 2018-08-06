@@ -65,9 +65,7 @@ class ChartController extends Controller
 
 		$cu = DB::select($current_patients);
 
-		return [$cu, $actual];
-
-
+		// return [$cu, $actual];
 
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
@@ -81,7 +79,9 @@ class ChartController extends Controller
 		$data['actual'] = $actual;
 		$data['target'] = $target;
 
-		$data['current_completion'] = Lookup::get_percentage($actual->current, $target->current);
+		$data['actual_current'] = $cu[0]['totals'];
+
+		$data['current_completion'] = Lookup::get_percentage($cu[0]['totals'], $target->current);
 		$data['new_completion'] = Lookup::get_percentage($actual->new_art, $target->new_art);
 
 		$data['current_status'] = Lookup::progress_status($data['current_completion']);
