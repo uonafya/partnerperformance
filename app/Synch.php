@@ -118,6 +118,8 @@ class Synch
 
 	        	$mfl = $value->code ?? null;
 
+	        	if($mfl == "00000") $mfl = null;
+
 	        	$facilities = Facility::where('DHIScode', $value->id)
 			        	->when($mfl, function($query) use ($value){
 			        		return $query->orWhere('facilitycode', $value->code);
@@ -126,9 +128,14 @@ class Synch
 			    if($facilities->count() == 1) $fac = $facilities->first();
 			    else if($facilities->count() == 0)  $fac = new Facility;
 			    else{
-			    	print_r($value);
-			    	print_r($facilities->toArray());
-			    	continue;
+			    	if($mfl == 22539){
+			    		$fac = $facilities->where('code', $mfl)->first();
+			    	}
+			    	else{
+				    	print_r($value);
+				    	print_r($facilities->toArray());
+				    	continue;			    		
+			    	}
 			    }
 
 	        	if(!$fac) $fac = new Facility;
@@ -145,7 +152,7 @@ class Synch
 				$fac->save();
 	        }
 
-	        // echo  'Page ' . $page . " completed \n";
+	        echo  'Page ' . $page . " completed \n";
 	        if($page == $body->pager->pageCount) break;
 	        $page++;
         }
