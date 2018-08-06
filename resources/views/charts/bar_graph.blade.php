@@ -16,19 +16,6 @@
                 categories: {!! json_encode($categories) !!}
             }],
             
-            yAxis: { // Primary yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value;
-                    },
-                },
-                title: {
-                    text: '',
-                    style: {
-                        color: '#89A54E'
-                    }
-                },    
-            },
             tooltip: {
                 borderRadius: 2,
                 borderWidth: 1,
