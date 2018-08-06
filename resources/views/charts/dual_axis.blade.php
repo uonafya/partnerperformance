@@ -71,7 +71,7 @@
                 align: 'right',
                 x: -100,
                 verticalAlign: 'bottom',
-                y: 40,
+                y: -40,
                 floating: false,
                 backgroundColor: '#FFFFFF'
             },
