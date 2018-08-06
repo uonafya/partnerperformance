@@ -168,6 +168,7 @@ class Synch
 			    		'clashing_mfl' => $clashing_mfl,
 			    		'clashing_dhis' => $clashing_dhis,
 			    	];
+			    	break;
 			    	continue;	
 			    }
 
