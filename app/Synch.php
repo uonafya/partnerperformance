@@ -118,10 +118,18 @@ class Synch
 
 	        	$mfl = $value->code ?? null;
 
-	        	$fac = Facility::where('DHIScode', $value->id)
+	        	$facilities = Facility::where('DHIScode', $value->id)
 			        	->when($mfl, function($query) use ($value){
 			        		return $query->orWhere('facilitycode', $value->code);
-			        	})->first();
+			        	})->get();
+
+			    if($facilities->count() == 1) $fac = $facilities->first();
+			    else if($facilities->count() == 0)  $fac = new Facility;
+			    else{
+			    	print_r($value);
+			    	print_r($facilities);
+			    	die();
+			    }
 
 	        	if(!$fac) $fac = new Facility;
 
