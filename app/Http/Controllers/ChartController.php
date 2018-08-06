@@ -53,6 +53,21 @@ class ChartController extends Controller
 			->whereRaw($divisions_query)
 			->first();
 
+		$current_patients = "
+			SELECT SUM(current_patients) AS totals
+			FROM (
+				SELECT MAX(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as current_patients
+				FROM `d_hiv_and_tb_treatment`
+				WHERE {$divisions_query} AND {$date_query}
+			)
+		";
+
+		$cu = DB::select($current_patients)->first();
+
+		return $cu;
+
+
+
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
