@@ -22,14 +22,14 @@
             yAxis: [{ // Primary yAxis
                 labels: {
                     formatter: function() {
-                        return this.value +'<?= (isset($tat) ? @"": @""); ?>';
+                        return this.value;
                     },
                     style: {
                         
                     }
                 },
                 title: {
-                    text: '<?= (isset($tat) ? @"": @""); ?>',
+                    text: '',
                     style: {
                         color: '#89A54E'
                     }
@@ -39,14 +39,14 @@
             }, { // Secondary yAxis
                 gridLineWidth: 0,
                 title: {
-                    text: '<?= (isset($tat) ? @"": @""); ?>',
+                    text: '',
                     style: {
                         color: '#4572A7'
                     }
                 },
                 labels: {
                     formatter: function() {
-                        return this.value +'';
+                        return this.value;
                     },
                     style: {
                         color: '#4572A7'
