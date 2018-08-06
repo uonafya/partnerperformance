@@ -226,9 +226,7 @@ class Lookup
 
     public static function print_duplicates($duplicates)
     {
-    	$path = storage_path('app/public/duplicates');
-
-    	Excel::create($path, function($excel) use($duplicates){
+    	Excel::create('duplicates', function($excel) use($duplicates){
     		$excel->sheet('sheet1', function($sheet) use($duplicates){
     			$sheet->fromArray($duplicates);
     		});
