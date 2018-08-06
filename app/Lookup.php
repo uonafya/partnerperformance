@@ -226,13 +226,13 @@ class Lookup
 
     public static function print_duplicates($duplicates)
     {
-    	$path = storage_path('app/public/duplicates.xls');
+    	$path = storage_path('app/public/duplicates.csv');
 
     	Excel::create($path, function($excel) use($duplicates){
     		$excel->sheet('sheet1', function($sheet) use($duplicates){
     			$sheet->fromArray($duplicates);
     		});
-    	})->export('xls');
+    	})->store('csv');
 
     }
 }
