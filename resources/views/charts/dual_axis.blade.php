@@ -18,44 +18,6 @@
             xAxis: [{
                 categories: {!! json_encode($categories) !!}
             }],
-            {{--
-            /*yAxis: [{ // Primary yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value +'<?= (isset($tat) ? @"": @""); ?>';
-                    },
-                    style: {
-                        
-                    }
-                },
-                title: {
-                    text: '<?= (isset($tat) ? @"Days": @"Percentage"); ?>',
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                opposite: true
-    
-            }, { // Secondary yAxis
-                gridLineWidth: 0,
-                title: {
-                    text: '<?= (isset($tat) ? @"Days": @"Tests"); ?>',
-                    style: {
-                        color: '#4572A7'
-                    }
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +'';
-                    },
-                    style: {
-                        color: '#4572A7'
-                    }
-                }
-                // min: 0, 
-                // max: 70000,
-                // tickInterval: 1
-            }],*/--}}
             tooltip: {
                 borderRadius: 2,
                 borderWidth: 1,
