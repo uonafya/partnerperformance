@@ -124,8 +124,8 @@ class ChartController extends Controller
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "spline";
 
-		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
+		// $data['outcomes'][0]['yAxis'] = 1;
+		// $data['outcomes'][1]['yAxis'] = 1;
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
@@ -176,6 +176,7 @@ class ChartController extends Controller
 		$data['outcomes'][1]['type'] = "spline";
 
 		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
