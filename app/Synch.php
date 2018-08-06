@@ -185,7 +185,7 @@ class Synch
 				$fac->save();
 	        }
 
-	        // echo  'Page ' . $page . " completed \n";
+	        echo  'Page ' . $page . " completed \n";
 	        if($page == $body->pager->pageCount) break;
 	        $page++;
         }

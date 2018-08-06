@@ -29,6 +29,7 @@ class Duplicate extends Mailable
     public function build()
     {
         $filePath = base_path('duplicates.txt');
-        return $this->view('duplicates')->attach($filePath);        
+        $path = storage_path('app/public/duplicates.csv');
+        return $this->view('duplicates')->attach($filePath)->attach($path);        
     }
 }
