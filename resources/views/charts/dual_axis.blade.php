@@ -70,9 +70,9 @@
                 layout: 'horizontal',
                 align: 'right',
                 x: -100,
-                verticalAlign: 'top',
+                verticalAlign: 'bottom',
                 y: 40,
-                floating: true,
+                floating: false,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {
