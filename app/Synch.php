@@ -127,8 +127,8 @@ class Synch
 			    else if($facilities->count() == 0)  $fac = new Facility;
 			    else{
 			    	print_r($value);
-			    	print_r($facilities);
-			    	die();
+			    	print_r($facilities->toArray());
+			    	continue;
 			    }
 
 	        	if(!$fac) $fac = new Facility;
