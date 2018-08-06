@@ -10,6 +10,8 @@ use \App\Partner;
 use \App\Ward;
 use \App\Facility;
 
+use \App\Lookup;
+
 use \App\DataSet;
 use \App\DataSetElement;
 
@@ -105,9 +107,16 @@ class Synch
         $loop=true;
         $page=1;
 
+        $dhis_facilities = [];
+
         while($loop){
 
-	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:5&page=' . $page, [
+	        /*$response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:5&page=' . $page, [
+	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+	            // 'http_errors' => false,
+	        ]);*/
+
+	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name,parent[id,code,name]]&filter=level:eq:5&page=' . $page, [
 	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
 	            // 'http_errors' => false,
 	        ]);
@@ -117,7 +126,6 @@ class Synch
 	        foreach ($body->organisationUnits as $key => $value) {
 
 	        	$mfl = $value->code ?? null;
-
 	        	if($mfl == "00000") $mfl = null;
 
 	        	$facilities = Facility::where('DHIScode', $value->id)
@@ -136,9 +144,31 @@ class Synch
 				    	print_r($facilities->toArray());
 				    	continue;			    		
 			    	}*/
-				    	print_r($value);
-				    	print_r($facilities->toArray());
-				    	continue;	
+			    	// print_r($value);
+			    	// print_r($facilities->toArray());
+
+			    	$clashing_ids = $clashing_mfl = $clashing_dhis = '';
+
+			    	foreach ($facilities as $f) {
+			    		$clashing_ids .= $f->id . ',';
+			    		$clashing_mfl .= $f->facilitycode . ',';
+			    		$clashing_dhis .= $f->DHIScode . ',';
+			    	}
+
+			    	$dhis_facilities[] = [
+			    		'facility_dhis' => $value->id,
+			    		'facility_mfl' => $value->code ?? null,
+			    		'facility' => $value->name,
+			    		'ward_dhis' => $value->parent->id ?? null,
+			    		'ward' => $value->parent->name ?? null,
+			    		'subcounty_dhis' => $value->parent->parent->id ?? null,
+			    		'subcounty_mfl' => $value->parent->parent->code ?? null,
+			    		'subcounty' => $value->parent->parent->name ?? null,
+			    		'clashing_ids' => $clashing_ids,
+			    		'clashing_mfl' => $clashing_mfl,
+			    		'clashing_dhis' => $clashing_dhis,
+			    	];
+			    	continue;	
 			    }
 
 	        	if(!$fac) $fac = new Facility;
@@ -159,6 +189,7 @@ class Synch
 	        if($page == $body->pager->pageCount) break;
 	        $page++;
         }
+        Lookup::print_duplicates($dhis_facilities);
 	}
 
 	public static function datasets()
@@ -371,6 +402,7 @@ class Synch
 
 				// $url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=co:" . $co . "&dimension=pe:" . $pe;
 				// If co is set, it will be value[1]
+	        	// https://hiskenya.org/api/dataValueSets.json?dataSet=​ptIUGFkE6jn​&period=​201806​&orgUnit=​HfVjCurKxh2
 
 
 				$url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;

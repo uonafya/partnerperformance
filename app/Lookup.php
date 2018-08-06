@@ -10,6 +10,7 @@ use \App\Partner;
 use \App\Ward;
 use \App\Facility;
 
+use Excel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 
@@ -221,5 +222,17 @@ class Lookup
     public static function send_report(){
     	$mail_array = array('joelkith@gmail.com', 'tngugi@gmail.com', 'baksajoshua09@gmail.com');
     	Mail::to($mail_array)->send(new Duplicate());
+    }
+
+    public static function print_duplicates($duplicates)
+    {
+    	$path = storage_path('app/public/duplicates.csv');
+
+    	Excel::create($path, function($excel) use($duplicates){
+    		$excel->sheet('sheet1', function($sheet) use($duplicates){
+    			$sheet->fromArray($duplicates);
+    		});
+    	})->export('csv');
+
     }
 }
