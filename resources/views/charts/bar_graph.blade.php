@@ -34,7 +34,7 @@
                 align: 'right',
                 x: -100,
                 verticalAlign: 'bottom',
-                y: -5,
+                y: 5,
                 floating: false,
                 backgroundColor: '#FFFFFF'
             },
