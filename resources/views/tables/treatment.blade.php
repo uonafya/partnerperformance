@@ -9,8 +9,9 @@
 			</tr>
 			<tr>
 				<td><b>Current on tx</b></td>
-				<td> {{ number_format($target->current) }} </td>				
-				<td> {{ number_format($actual->current) }} </td>				
+				<td> {{ number_format($target->current) }} </td>	
+				<!-- Actual current is from a different object  -->
+				<td> {{ number_format($actual_current) }} </td>				
 				<td> {{ number_format($current_completion) }} </td>				
 			</tr>
 			<tr>

@@ -81,7 +81,7 @@ class ChartController extends Controller
 
 		$data['actual_current'] = $cu[0]->totals;
 
-		$data['current_completion'] = Lookup::get_percentage($cu[0]['totals'], $target->current);
+		$data['current_completion'] = Lookup::get_percentage($cu[0]->totals, $target->current);
 		$data['new_completion'] = Lookup::get_percentage($actual->new_art, $target->new_art);
 
 		$data['current_status'] = Lookup::progress_status($data['current_completion']);
