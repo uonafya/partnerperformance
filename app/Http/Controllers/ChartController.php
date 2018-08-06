@@ -65,7 +65,7 @@ class ChartController extends Controller
 
 		$cu = DB::select($current_patients);
 
-		return $cu;
+		return [$cu, $actual];
 
 
 
