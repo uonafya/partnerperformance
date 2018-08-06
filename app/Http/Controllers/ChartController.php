@@ -138,7 +138,7 @@ class ChartController extends Controller
 			$data["outcomes"][1]["data"][$key] = $t;
 		}
 
-		return view('charts.dual_axis', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 	public function art_new()
