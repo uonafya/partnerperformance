@@ -11,6 +11,9 @@ use \App\Ward;
 use \App\Facility;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\Duplicate;
 
 class Lookup
 {
@@ -214,4 +217,9 @@ class Lookup
 		}
 		return ['select_query' => $select_query, 'group_query' => $group_query];
 	}
+
+    public static function send_report(){
+    	$mail_array = array('joelkith@gmail.com', 'tngugi@gmail.com', 'baksajoshua09@gmail.com');
+    	Mail::to($mail_array)->send(new Duplicate());
+    }
 }

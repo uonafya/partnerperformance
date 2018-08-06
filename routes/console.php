@@ -56,3 +56,8 @@ Artisan::command('target:new', function () {
 })->describe('Populate target tables with values.');
 
 
+Artisan::command('report', function () {
+	\App\Lookup::send_report();
+})->describe('Send Duplicates Report.');
+
+
