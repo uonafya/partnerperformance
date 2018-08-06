@@ -9,9 +9,6 @@
                     stacking: 'normal'
                 }
             },
-            chart: {
-                zoomType: 'xy'
-            },
             title: {
                 text: ''
             },
@@ -30,8 +27,7 @@
                     style: {
                         color: '#89A54E'
                     }
-                },
-    
+                },    
             },
             tooltip: {
                 borderRadius: 2,
