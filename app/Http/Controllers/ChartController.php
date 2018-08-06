@@ -116,10 +116,10 @@ class ChartController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$t = round(($target->total / 12), 2);
+		$t = round(($target->total), 2);
 
 		$data['outcomes'][0]['name'] = "Totals";
-		$data['outcomes'][1]['name'] = "Monthly Target";
+		$data['outcomes'][1]['name'] = "Target";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "spline";
@@ -128,7 +128,7 @@ class ChartController extends Controller
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		// $data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
 
 		foreach ($rows as $key => $row) {
 			$m = Lookup::resolve_month($row->month);

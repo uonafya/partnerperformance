@@ -18,10 +18,11 @@
             xAxis: [{
                 categories: {!! json_encode($categories) !!}
             }],
-            yAxis: [{ // Primary yAxis
+            {{--
+            /*yAxis: [{ // Primary yAxis
                 labels: {
                     formatter: function() {
-                        return this.value +'<?= (isset($tat) ? @"": @"%"); ?>';
+                        return this.value +'<?= (isset($tat) ? @"": @""); ?>';
                     },
                     style: {
                         
@@ -54,7 +55,7 @@
                 // min: 0, 
                 // max: 70000,
                 // tickInterval: 1
-            }],
+            }],*/--}}
             tooltip: {
                 borderRadius: 2,
                 borderWidth: 1,
