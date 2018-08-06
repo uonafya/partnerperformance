@@ -24,9 +24,6 @@
                     formatter: function() {
                         return this.value;
                     },
-                    style: {
-                        
-                    }
                 },
                 title: {
                     text: '',

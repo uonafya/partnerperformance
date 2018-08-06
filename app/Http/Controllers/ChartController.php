@@ -125,10 +125,11 @@ class ChartController extends Controller
 		$data['outcomes'][1]['type'] = "spline";
 
 		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
+		// $data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
 
 		foreach ($rows as $key => $row) {
 			$m = Lookup::resolve_month($row->month);
