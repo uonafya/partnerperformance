@@ -128,14 +128,17 @@ class Synch
 			    if($facilities->count() == 1) $fac = $facilities->first();
 			    else if($facilities->count() == 0)  $fac = new Facility;
 			    else{
-			    	if($mfl == 22539){
-			    		$fac = $facilities->where('code', $mfl)->first();
+			    	/*if($mfl == 22539){
+			    		$fac = $facilities->where('facilitycode', $mfl)->first();
 			    	}
 			    	else{
 				    	print_r($value);
 				    	print_r($facilities->toArray());
 				    	continue;			    		
-			    	}
+			    	}*/
+				    	print_r($value);
+				    	print_r($facilities->toArray());
+				    	continue;	
 			    }
 
 	        	if(!$fac) $fac = new Facility;
