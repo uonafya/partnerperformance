@@ -15,7 +15,7 @@
             xAxis: [{
                 categories: {!! json_encode($categories) !!}
             }],
-            
+
             tooltip: {
                 borderRadius: 2,
                 borderWidth: 1,
@@ -34,7 +34,7 @@
                 align: 'right',
                 x: -100,
                 verticalAlign: 'bottom',
-                y: -25,
+                y: -15,
                 floating: false,
                 backgroundColor: '#FFFFFF'
             },
