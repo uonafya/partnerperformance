@@ -72,9 +72,9 @@
                 layout: 'horizontal',
                 align: 'right',
                 x: -100,
-                verticalAlign: 'top',
-                y: 40,
-                floating: true,
+                verticalAlign: 'bottom',
+                y: -25,
+                floating: false,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {

@@ -175,8 +175,8 @@ class ChartController extends Controller
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "spline";
 
-		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
+		// $data['outcomes'][0]['yAxis'] = 1;
+		// $data['outcomes'][1]['yAxis'] = 1;
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
@@ -189,7 +189,7 @@ class ChartController extends Controller
 			$data["outcomes"][1]["data"][$key] = $t;
 		}
 
-		return view('charts.dual_axis', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 	public function testing_gender()
@@ -250,8 +250,8 @@ class ChartController extends Controller
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 
-		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
+		// $data['outcomes'][0]['yAxis'] = 1;
+		// $data['outcomes'][1]['yAxis'] = 1;
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
@@ -266,7 +266,7 @@ class ChartController extends Controller
 		$data["outcomes"][0]["data"][1] = (int) $row->female_pos;
 		$data["outcomes"][1]["data"][1] = (int) ($row->female_test - $row->female_pos);
 
-		return view('charts.dual_axis', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 	public function testing_age()
@@ -329,8 +329,8 @@ class ChartController extends Controller
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 
-		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
+		// $data['outcomes'][0]['yAxis'] = 1;
+		// $data['outcomes'][1]['yAxis'] = 1;
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
@@ -349,7 +349,7 @@ class ChartController extends Controller
 		$data["outcomes"][1]["data"][2] = (int) ($row->above_25 - $row->above_25_pos);
 
 
-		return view('charts.dual_axis', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 	public function pmtct()
