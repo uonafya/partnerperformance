@@ -62,7 +62,7 @@ class ChartController extends Controller
 			) cu
 		";
 
-		$cu = DB::select($current_patients)->first();
+		$cu = DB::select($current_patients);
 
 		return $cu;
 
