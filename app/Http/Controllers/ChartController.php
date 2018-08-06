@@ -54,12 +54,12 @@ class ChartController extends Controller
 			->first();
 
 		$current_patients = "
-			SELECT SUM(current_patients) AS totals
+			SELECT SUM(cu.current_patients) AS totals
 			FROM (
 				SELECT MAX(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as current_patients
 				FROM `d_hiv_and_tb_treatment`
 				WHERE {$divisions_query} AND {$date_query}
-			)
+			) cu
 		";
 
 		$cu = DB::select($current_patients)->first();
