@@ -1880,14 +1880,10 @@ INSERT INTO `wards` (`id`, `name`, `WardDHISCode`, `WardMFLCode`, `rawcode`, `su
 	(1461, 'Zombe/mwitika Ward', 'fgZAe9zffHF', NULL, 'KE_Ward_359', 341);
 /*!40000 ALTER TABLE `wards` ENABLE KEYS */;
 
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-
 DROP TABLE IF EXISTS `partners`;
 -- Dumping structure for table apidb.partners
 CREATE TABLE IF NOT EXISTS `partners` (
-  `ID` int(32) NOT NULL AUTO_INCREMENT,
+  `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `partnerDHISCode` varchar(30) DEFAULT NULL,
   `mech_id` varchar(10) DEFAULT NULL,
@@ -1956,13 +1952,9 @@ INSERT INTO `partners` (`ID`, `name`, `partnerDHISCode`, `mech_id`, `fundingagen
 	(86, 'HOPE Worldwide', NULL, NULL, 'HHS/CDC', 2, NULL, 1, 0, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `partners` ENABLE KEYS */;
 
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-
 DROP TABLE IF EXISTS `funding_agencies`;
 CREATE TABLE `funding_agencies` (
-  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
