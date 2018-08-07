@@ -65,6 +65,40 @@ class TableController extends Controller
 		// return DB::getQueryLog();
 
 		return view('dynamic_tables.art_totals', $data);
+	}
 
+	public function art_current()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
+
+		$current_query = $this->current_art_fixed_query();
+
+		$sql = $q['select_query'] . ",
+			SUM(below_1) as below_1, SUM(below_10) AS below_10, SUM(below_15) AS below_15, SUM(below_20) AS below_20, SUM(below_25) AS below_25, SUM(above_25) AS above_25, SUM(total) AS total
+		";
+
+		$data['div'] = str_random(15);
+
+		// DB::enableQueryLog();
+
+		$subquery = "(
+			SELECT facility, {$current_query}
+			FROM `d_hiv_and_tb_treatment`
+			JOIN `view_facilitys` ON `view_facilitys`.`id`=`d_hiv_and_tb_treatment`.`facility`
+			WHERE {$divisions_query} AND {$date_query}
+			GROUP BY facility
+		) qu";
+
+		$data['rows'] = DB::table(DB::raw($subquery))
+			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
+			->selectRaw($sql)
+			->groupBy($q['group_query'])
+			->get();
+
+		// return DB::getQueryLog();
+
+		return view('dynamic_tables.art_totals', $data);
 	}
 }

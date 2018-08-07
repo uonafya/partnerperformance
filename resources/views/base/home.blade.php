@@ -154,6 +154,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Currently On Treatment <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="art_current">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -175,6 +188,7 @@
 
 		$("#summary").html("<center><div class='loader'></div></center>");
 		$("#art_new").html("<center><div class='loader'></div></center>");
+		$("#art_current").html("<center><div class='loader'></div></center>");
 
 
 
@@ -190,6 +204,7 @@
 
 		$("#summary").load("{{ secure_url('table/summary') }}");
 		$("#art_new").load("{{ secure_url('table/art_new') }}");
+		$("#art_current").load("{{ secure_url('table/art_current') }}");
 	}
 
 

@@ -58,6 +58,7 @@ Route::prefix('chart')->name('chart.')->group(function(){
 Route::prefix('table')->name('table.')->group(function(){
 	Route::get('summary', 'TableController@summary')->name('summary');
 	Route::get('art_new', 'TableController@art_new')->name('art_new');
+	Route::get('art_current', 'TableController@art_current')->name('art_current');
 });
 
 Route::middleware(['clear_session'])->group(function(){

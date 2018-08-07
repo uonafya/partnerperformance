@@ -88,6 +88,19 @@ class Controller extends BaseController
 		";
     }
 
+    public function current_art_fixed_query()
+    {
+    	return "
+			MAX(`on_art_<1_hv03-028`) as below_1,
+			MAX(`on_art_1-9_hv03-029`) as below_10,
+			MAX(`on_art_10-14(m)_hv03-030` + `on_art_10-14_(f)_hv03-031`) as below_15,
+			MAX(`on_art_15-19(m)_hv03-032` + `on_art_15-19_(f)_hv03-033`) as below_20,
+			MAX(`on_art_20-24(m)_hv03-034` + `on_art_20-24_(f)_hv03-035`) as below_25,
+			MAX(`on_art_25pos(m)_hv03-036` + `on_art_25pos_(f)_hv03-037`) as above_25,
+			MAX(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
+		";
+    }
+
     public function gender_query()
     {
     	return "
