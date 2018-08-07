@@ -54,8 +54,8 @@ class TableController extends Controller
 
 		// DB::enableQueryLog();
 
-		$data['rows'] = DB::table('d_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+		$data['rows'] = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
