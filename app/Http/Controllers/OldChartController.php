@@ -351,7 +351,7 @@ class OldChartController extends Controller
 
     		SUM(`pcr_(by_2_months)_confirmed_infant_test_results_positive`) AS below_2m_pos,
     		SUM(`pcr_(3_to_8_months)_confirmed_infant_test_results_positive`) AS below_9m_pos,
-    		SUM(`pcr_(9_to_12_months)_confirmed_infant_test_results_positive`) AS below_12m_pos,
+    		SUM(`pcr_(9_to_12_months)_confirmed_infant_test_results_positive`) AS below_12m_pos
 		";
 
 		$rows = DB::table('d_pmtct')
