@@ -28,6 +28,7 @@ class ClearSession
         session()->forget('filter_ward');
         session()->forget('filter_facility');
         session()->forget('filter_partner');
+        session()->forget('filter_agency');
 
         session()->forget('filter_groupby');
 

@@ -141,6 +141,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    New On Treatment <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="art_new">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -159,7 +172,11 @@
 		$("#out_age").html("<center><div class='loader'></div></center>");
 		$("#pmtct").html("<center><div class='loader'></div></center>");
 		$("#eid").html("<center><div class='loader'></div></center>");
+
 		$("#summary").html("<center><div class='loader'></div></center>");
+		$("#art_new").html("<center><div class='loader'></div></center>");
+
+
 
 		$("#treatment").load("{{ secure_url('chart/treatment') }}");
 		$("#currenttx").load("{{ secure_url('chart/current') }}");
@@ -169,10 +186,10 @@
 		$("#age").load("{{ secure_url('chart/testing_age') }}");
 		$("#out_age").load("{{ secure_url('chart/outcome_age') }}");
 		$("#pmtct").load("{{ secure_url('chart/pmtct') }}");
-		$("#pmtct").load("{{ secure_url('chart/pmtct') }}");
 		$("#eid").load("{{ secure_url('chart/eid') }}");
-		$("#summary").load("{{ secure_url('table/summary') }}");
 
+		$("#summary").load("{{ secure_url('table/summary') }}");
+		$("#art_new").load("{{ secure_url('table/art_new') }}");
 	}
 
 

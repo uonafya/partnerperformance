@@ -17,29 +17,6 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    public function pre_partners()
-    {    	
-		$partner = session('filter_partner');
-		$where = null;
-		$date_query = Lookup::date_query();
-
-		// For a specific partner
-		if($partner && is_numeric($partner)){
-			$sql = " name, facilitycode, dhiscode, ";
-			$division = "facility";
-			$groupBy = "view_facilitys.id";
-			$where = ['partner' => $partner];
-		}
-		// For all partners
-		else{
-			$sql = " partner, partnername, ";
-			$division = "partner";
-			$groupBy = "view_facilitys.partner";
-		}
-
-		return ['sql' => $sql, 'where' => $where, 'division' => $division, 'groupBy' => $groupBy, 'date_query' => $date_query];
-    }
-
     public function tested_query()
     {
     	return "
@@ -109,6 +86,67 @@ class Controller extends BaseController
 			SUM(`on_art_25pos(m)_hv03-036` + `on_art_25pos_(f)_hv03-037`) as above_25,
 			SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
 		";
+    }
+
+    public function gender_query()
+    {
+    	return "
+			SUM(`tested_1-9_hv01-01`) as below_10_test,
+    		SUM(`tested_10-14_(m)_hv01-02` + `tested_15-19_(m)_hv01-04` + `tested_20-24(m)_hv01-06` + `tested_25pos_(m)_hv01-08`) AS male_test,
+    		SUM(`tested_10-14(f)_hv01-03` + `tested_15-19(f)_hv01-05` + `tested_20-24(f)_hv01-07` + `tested_25pos_(f)_hv01-09`) AS female_test,
+			SUM(`positive_1-9_hv01-17`) as below_10_pos,
+			SUM(`positive_10-14(m)_hv01-18` + `positive_15-19(m)_hv01-20` + `positive_20-24(m)_hv01-22` + `positive_25pos(m)_hv01-24`) as male_pos,
+			SUM(`positive_10-14(f)_hv01-19` + `positive_15-19(f)_hv01-21` + `positive_20-24(f)_hv01-23` + `positive_25pos(f)_hv01-25`) as female_pos
+		";
+    }
+
+    public function age_query()
+    {
+    	return "
+    		SUM(`tested_1-9_hv01-01`) as below_10,
+			SUM(`tested_10-14_(m)_hv01-02` + `tested_10-14(f)_hv01-03`) as below_15,
+			SUM(`tested_15-19_(m)_hv01-04` + `tested_15-19(f)_hv01-05`) as below_20,
+			SUM(`tested_20-24(m)_hv01-06` + `tested_20-24(f)_hv01-07`) as below_25,
+			SUM(`tested_25pos_(m)_hv01-08` + `tested_25pos_(f)_hv01-09`) as above_25,
+
+			SUM(`positive_1-9_hv01-17`) as below_10_pos,
+			SUM(`positive_10-14(m)_hv01-18` + `positive_10-14(f)_hv01-19`) as below_15_pos,
+			SUM(`positive_15-19(m)_hv01-20` + `positive_15-19(f)_hv01-21`) as below_20_pos,
+			SUM(`positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23`) as below_25_pos,
+			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25_pos
+    	";
+    }
+
+    public function eid_query()
+    {
+    	return "
+    		SUM(`initial_pcr_<_8wks_hv02-44`) as below_2m,
+    		SUM(`initial_pcr_>8wks_-12_mths_hv02-45`) as below_12m
+    	";
+
+    }
+
+    public function pre_partners()
+    {    	
+		$partner = session('filter_partner');
+		$where = null;
+		$date_query = Lookup::date_query();
+
+		// For a specific partner
+		if($partner && is_numeric($partner)){
+			$sql = " name, facilitycode, dhiscode, ";
+			$division = "facility";
+			$groupBy = "view_facilitys.id";
+			$where = ['partner' => $partner];
+		}
+		// For all partners
+		else{
+			$sql = " partner, partnername, ";
+			$division = "partner";
+			$groupBy = "view_facilitys.partner";
+		}
+
+		return ['sql' => $sql, 'where' => $where, 'division' => $division, 'groupBy' => $groupBy, 'date_query' => $date_query];
     }
 
 	public function data_set_two($function_name)

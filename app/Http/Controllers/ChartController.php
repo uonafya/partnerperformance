@@ -6,41 +6,9 @@ use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 
-// current on treatment
-// new on treatment
-
 
 class ChartController extends Controller
 {
-
-	public function summary()
-	{
-		$date_query = Lookup::date_query();
-		$divisions_query = Lookup::divisions_query();
-		$q = Lookup::groupby_query();
-
-		$sql = $q['select_query'] .  ",
-			SUM(`tested_1-9_hv01-01` + `tested_10-14_(m)_hv01-02` + `tested_10-14(f)_hv01-03` + `tested_15-19_(m)_hv01-04` + `tested_15-19(f)_hv01-05` + `tested_20-24(m)_hv01-06` + `tested_20-24(f)_hv01-07` + `tested_25pos_(m)_hv01-08` + `tested_25pos_(f)_hv01-09`) AS `tested_total`,
-			SUM(`positive_1-9_hv01-17` + `positive_10-14(m)_hv01-18` + `positive_10-14(f)_hv01-19` + `positive_15-19(m)_hv01-20` + `positive_15-19(f)_hv01-21` + `positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23` + `positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) AS `positive_total`,
-			SUM(`linked_1-9_yrs_hv01-30` + `linked_10-14_hv01-31` + `linked_15-19_hv01-32` + `linked_20-24_hv01-33` + `linked_25pos_hv01-34`) AS `linked_total`
-		";
-
-		$data['div'] = str_random(15);
-
-		// DB::enableQueryLog();
-
-		$data['rows'] = DB::table('d_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
-			->selectRaw($sql)
-			->whereRaw($date_query)
-			->whereRaw($divisions_query)
-			->groupBy($q['group_query'])
-			->get();
-
-		// return DB::getQueryLog();
-
-		return view('tables.testing_summary', $data);
-	}
 
 	public function treatment()
 	{
@@ -418,42 +386,4 @@ class ChartController extends Controller
 
 		return view('charts.line_graph', $data);
 	}
-
-    public function gender_query()
-    {
-    	return "
-			SUM(`tested_1-9_hv01-01`) as below_10_test,
-    		SUM(`tested_10-14_(m)_hv01-02` + `tested_15-19_(m)_hv01-04` + `tested_20-24(m)_hv01-06` + `tested_25pos_(m)_hv01-08`) AS male_test,
-    		SUM(`tested_10-14(f)_hv01-03` + `tested_15-19(f)_hv01-05` + `tested_20-24(f)_hv01-07` + `tested_25pos_(f)_hv01-09`) AS female_test,
-			SUM(`positive_1-9_hv01-17`) as below_10_pos,
-			SUM(`positive_10-14(m)_hv01-18` + `positive_15-19(m)_hv01-20` + `positive_20-24(m)_hv01-22` + `positive_25pos(m)_hv01-24`) as male_pos,
-			SUM(`positive_10-14(f)_hv01-19` + `positive_15-19(f)_hv01-21` + `positive_20-24(f)_hv01-23` + `positive_25pos(f)_hv01-25`) as female_pos
-		";
-    }
-
-    public function age_query()
-    {
-    	return "
-    		SUM(`tested_1-9_hv01-01`) as below_10,
-			SUM(`tested_10-14_(m)_hv01-02` + `tested_10-14(f)_hv01-03`) as below_15,
-			SUM(`tested_15-19_(m)_hv01-04` + `tested_15-19(f)_hv01-05`) as below_20,
-			SUM(`tested_20-24(m)_hv01-06` + `tested_20-24(f)_hv01-07`) as below_25,
-			SUM(`tested_25pos_(m)_hv01-08` + `tested_25pos_(f)_hv01-09`) as above_25,
-
-			SUM(`positive_1-9_hv01-17`) as below_10_pos,
-			SUM(`positive_10-14(m)_hv01-18` + `positive_10-14(f)_hv01-19`) as below_15_pos,
-			SUM(`positive_15-19(m)_hv01-20` + `positive_15-19(f)_hv01-21`) as below_20_pos,
-			SUM(`positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23`) as below_25_pos,
-			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25_pos
-    	";
-    }
-
-    public function eid_query()
-    {
-    	return "
-    		SUM(`initial_pcr_<_8wks_hv02-44`) as below_2m,
-    		SUM(`initial_pcr_>8wks_-12_mths_hv02-45`) as below_12m
-    	";
-
-    }
 }

@@ -187,6 +187,7 @@ class Lookup
 		if(session('filter_ward')) $query .= " AND ward_id='" . session('filter_ward') . "' ";
 		if(session('filter_facility')) $query .= " AND id='" . session('filter_facility') . "' ";
 		if(session('filter_partner')) $query .= " AND partner='" . session('filter_partner') . "' ";
+		if(session('filter_agency')) $query .= " AND funding_agency_id='" . session('filter_agency') . "' ";
 
 		return $query;
 	}
@@ -215,6 +216,10 @@ class Lookup
 			case 5:
 				$select_query = "view_facilitys.id as div_id, name, DHIScode as dhis_code, facilitycode as mfl_code";
 				$group_query = "view_facilitys.id";
+				break;
+			case 6:
+				$select_query = "funding_agency_id as div_id, funding_agency";
+				$group_query = "funding_agency_id";
 				break;			
 			default:
 				break;
