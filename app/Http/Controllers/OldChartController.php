@@ -119,7 +119,7 @@ class OldChartController extends Controller
 
 		$rows = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `total`")
+			->selectRaw("SUM(`total_starting_on_art`) AS `total`")
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -356,7 +356,7 @@ class OldChartController extends Controller
 
 		$rows = DB::table('d_pmtct')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pmtct.facility')
-			->selectRaw($this->eid_query())
+			->selectRaw($sql)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
