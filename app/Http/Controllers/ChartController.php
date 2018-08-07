@@ -58,6 +58,7 @@ class ChartController extends Controller
 			FROM (
 				SELECT MAX(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as current_patients
 				FROM `d_hiv_and_tb_treatment`
+				JOIN `view_facilitys` ON `view_facilitys`.`id`=`d_hiv_and_tb_treatment`.`facility`
 				WHERE {$divisions_query} AND {$date_query}
 				GROUP BY `facility`
 			) cu
