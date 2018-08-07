@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 
+// current on treatment
+// new on treatment
+
+
 class ChartController extends Controller
 {
 

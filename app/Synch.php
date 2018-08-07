@@ -116,7 +116,7 @@ class Synch
 	            // 'http_errors' => false,
 	        ]);*/
 
-	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name,parent[id,code,name]]&filter=level:eq:5&page=' . $page, [
+	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:5&page=' . $page, [
 	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
 	            // 'http_errors' => false,
 	        ]);
@@ -161,9 +161,9 @@ class Synch
 			    		'facility' => $value->name,
 			    		'ward_dhis' => $value->parent->id ?? null,
 			    		'ward' => $value->parent->name ?? null,
-			    		'subcounty_dhis' => $value->parent->parent->id ?? null,
-			    		'subcounty_mfl' => $value->parent->parent->code ?? null,
-			    		'subcounty' => $value->parent->parent->name ?? null,
+			    		// 'subcounty_dhis' => $value->parent->parent->id ?? null,
+			    		// 'subcounty_mfl' => $value->parent->parent->code ?? null,
+			    		// 'subcounty' => $value->parent->parent->name ?? null,
 			    		'clashing_ids' => $clashing_ids,
 			    		'clashing_mfl' => $clashing_mfl,
 			    		'clashing_dhis' => $clashing_dhis,
@@ -344,7 +344,7 @@ class Synch
 
 			if($data_array) DB::connection('mysql_wr')->table($table->targets_table_name)->insert($data_array);
 
-	        echo  'Completed entry for ' . $table->targets_table_name . " \n";
+	        echo 'Completed entry for ' . $table->targets_table_name . " \n";
 		}
 	}
 

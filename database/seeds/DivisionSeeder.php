@@ -15,6 +15,7 @@ class DivisionSeeder extends Seeder
     	\App\Division::create(['name' => 'Counties']);
     	\App\Division::create(['name' => 'Subcounties']);
     	\App\Division::create(['name' => 'Wards']);
-    	\App\Division::create(['name' => 'Facilities']);
+        \App\Division::create(['name' => 'Facilities']);
+    	\App\Division::create(['name' => 'Funding Agencies']);
     }
 }
