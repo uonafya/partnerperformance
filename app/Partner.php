@@ -11,4 +11,9 @@ class Partner extends BaseModel
 	{
 		return $this->hasMany('App\Facility', 'partner');
 	}
+
+	public function facility()
+	{
+		return $this->belongsTo('App\FundingAgency');
+	}
 }

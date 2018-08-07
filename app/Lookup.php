@@ -126,14 +126,17 @@ class Lookup
 
 	public static function view_data()
 	{
+		$divisions = Division::all();
+		$agencies = FundingAgency::all();
+
 		$partners = Partner::select('id', 'name')->where('flag', 1)->orderBy('name', 'asc')->get();
 		$counties = County::select('id', 'name')->orderBy('name', 'asc')->get();
 		$subcounties = Subcounty::select('id', 'name')->orderBy('name', 'asc')->get();
 		$wards = Ward::select('id', 'name')->orderBy('name', 'asc')->get();
-		$divisions = Division::all();
 
 		return [
 			'divisions' => $divisions,
+			'agencies' => $agencies,
 			'partners' => $partners,
 			'counties' => $counties,
 			'subcounties' => $subcounties,
