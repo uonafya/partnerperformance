@@ -30,6 +30,6 @@ class Duplicate extends Mailable
     {
         $filePath = base_path('duplicates.txt');
         $path = storage_path('exports/duplicates.csv');
-        return $this->view('duplicates')->attach($filePath)->attach($path);        
+        return $this->view('duplicates')->attach($path);        
     }
 }
