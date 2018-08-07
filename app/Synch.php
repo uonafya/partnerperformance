@@ -111,11 +111,6 @@ class Synch
 
         while($loop){
 
-	        /*$response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:5&page=' . $page, [
-	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
-	            // 'http_errors' => false,
-	        ]);*/
-
 	        $response = $client->request('get', 'organisationUnits.json?paging=true&fields=id,name,code,parent[id,code,name]&filter=level:eq:5&page=' . $page, [
 	            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
 	            // 'http_errors' => false,
