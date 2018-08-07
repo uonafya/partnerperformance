@@ -105,7 +105,7 @@ class Synch
 	{
         $client = new Client(['base_uri' => self::$base]);
         $loop=true;
-        $page=1;
+        $page=174;
 
         $dhis_facilities = [];
 
@@ -136,16 +136,8 @@ class Synch
 			    if($facilities->count() == 1) $fac = $facilities->first();
 			    else if($facilities->count() == 0)  $fac = new Facility;
 			    else{
-			    	/*if($mfl == 22539){
-			    		$fac = $facilities->where('facilitycode', $mfl)->first();
-			    	}
-			    	else{
-				    	print_r($value);
-				    	print_r($facilities->toArray());
-				    	continue;			    		
-			    	}*/
-			    	// print_r($value);
-			    	// print_r($facilities->toArray());
+
+			    	$fac = $facilities->where('DHIScode', '!=', '0')->first();
 
 			    	$clashing_ids = $clashing_mfl = $clashing_dhis = '';
 
