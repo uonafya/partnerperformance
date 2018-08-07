@@ -10,13 +10,16 @@ CREATE OR REPLACE VIEW  `view_facilitys` AS
  	`facilitys`.`district`, `facilitys`.`subcounty_id`,`districts`.`name` AS `subcounty`,
  	`districts`.`SubCountyDHISCode`,`districts`.`SubCountyMFLCode`,
 
- 	`facilitys`.`partner`,`partners`.`name` AS `partnername`,`facilitys`.`partner2` AS `partner2`,
+ 	`facilitys`.`partner`,`partners`.`name` AS `partnername`,`facilitys`.`partner2` AS `partner2`,`partners`.`mech_id`,
+
+ 	`partners`.`funding_agency_id`, `funding_agencies`.`name` AS `funding_agency`,
 
  	`districts`.`county`,`countys`.`name` AS `countyname`,`countys`.`CountyDHISCode`,`countys`.`CountyMFLCode`,
  	`districts`.`province` AS `province`
  	
  	FROM `facilitys` 
  	LEFT JOIN `partners` on `facilitys`.`partner` = `partners`.`id`
+ 	LEFT JOIN `funding_agencies` on `partners`.`funding_agency_id` = `funding_agencies`.`id`
  	LEFT JOIN `districts` on `facilitys`.`subcounty_id` = `districts`.`id`
  	LEFT JOIN `wards` on `facilitys`.`ward_id` = `wards`.`id`
  	LEFT JOIN `countys` on `districts`.`county` = `countys`.`id`
