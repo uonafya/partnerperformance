@@ -12,7 +12,7 @@ class Partner extends BaseModel
 		return $this->hasMany('App\Facility', 'partner');
 	}
 
-	public function facility()
+	public function funding_agency()
 	{
 		return $this->belongsTo('App\FundingAgency');
 	}
