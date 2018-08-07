@@ -137,7 +137,7 @@ class Synch
 			    else if($facilities->count() == 0)  $fac = new Facility;
 			    else{
 
-			    	$fac = $facilities->where('DHIScode', '!=', '0')->first();
+			    	// $fac = $facilities->where('DHIScode', '!=', '0')->first();
 
 			    	$clashing_ids = $clashing_mfl = $clashing_dhis = '';
 
