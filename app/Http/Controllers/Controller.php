@@ -74,7 +74,7 @@ class Controller extends BaseController
 			SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) as total
 		";
     }
-
+    
     public function current_art_query()
     {
     	return "
@@ -113,6 +113,14 @@ class Controller extends BaseController
 		";
     }
 
+    public function old_gender_query()
+    {
+    	return "
+    		SUM(`male_under_15yrs_receiving_hiv_pos_results` + `male_15-24yrs_receiving_hiv_pos_results` + `male_above_25yrs_receiving_hiv_pos_results`) AS male_test,
+    		SUM(`female_under_15yrs_receiving_hiv_pos_results` + `female_15-24yrs_receiving_hiv_pos_results` + `female_above_25yrs_receiving_hiv_pos_results`) AS female_test
+		";
+    }
+
     public function age_query()
     {
     	return "
@@ -127,6 +135,15 @@ class Controller extends BaseController
 			SUM(`positive_15-19(m)_hv01-20` + `positive_15-19(f)_hv01-21`) as below_20_pos,
 			SUM(`positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23`) as below_25_pos,
 			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25_pos
+    	";
+    }
+
+    public function old_age_query()
+    {
+    	return "
+			SUM(`male_under_15yrs_receiving_hiv_pos_results` + `female_under_15yrs_receiving_hiv_pos_results`) as below_15,
+			SUM(`male_15-24yrs_receiving_hiv_pos_results` + `female_15-24yrs_receiving_hiv_pos_results`) as below_25,
+			SUM(`male_above_25yrs_receiving_hiv_pos_results` + `female_above_25yrs_receiving_hiv_pos_results`) as above_25
     	";
     }
 

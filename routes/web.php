@@ -61,7 +61,31 @@ Route::prefix('table')->name('table.')->group(function(){
 	Route::get('art_current', 'TableController@art_current')->name('art_current');
 });
 
+Route::prefix('old/chart')->name('old.chart.')->group(function(){
+	Route::get('treatment', 'OldChartController@treatment')->name('treatment');
+
+	Route::get('current', 'OldChartController@current')->name('current');
+	Route::get('art_new', 'OldChartController@art_new')->name('art_new');
+
+	Route::get('testing_gender', 'OldChartController@testing_gender')->name('testing_gender');
+	Route::get('outcome_gender', 'OldChartController@outcome_gender')->name('outcome_gender');
+	
+	Route::get('testing_age', 'OldChartController@testing_age')->name('testing_age');
+	Route::get('outcome_age', 'OldChartController@outcome_age')->name('outcome_age');
+
+	Route::get('pmtct', 'OldChartController@pmtct')->name('pmtct');
+	Route::get('eid', 'OldChartController@eid')->name('eid');
+
+});
+
+Route::prefix('old/table')->name('old.table.')->group(function(){
+	Route::get('summary', 'OldTableController@summary')->name('summary');
+	Route::get('art_new', 'OldTableController@art_new')->name('art_new');
+	Route::get('art_current', 'OldTableController@art_current')->name('art_current');
+});
+
 Route::middleware(['clear_session'])->group(function(){
-	Route::get('/', 'GeneralController@home');
+	Route::get('/', 'GeneralController@dupli_home');
+	Route::get('original', 'GeneralController@home');
 	Route::get('partner', 'GeneralController@partner_home');
 });

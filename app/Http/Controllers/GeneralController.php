@@ -20,4 +20,10 @@ class GeneralController extends Controller
 		$data = Lookup::view_data();
 		return view('base.home', $data);
 	}
+
+	public function dupli_home()
+	{
+		$data = Lookup::view_data();
+		return view('base.dupli_home', $data);
+	}
 }

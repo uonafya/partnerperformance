@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 
-class TableController extends Controller
+class OldTableController extends Controller
 {
-
 
 	public function summary()
 	{
@@ -45,14 +44,19 @@ class TableController extends Controller
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$sql = $q['select_query'] . ', ' . $this->new_art_query();
+		$sql = $q['select_query'] . ",
+			SUM(`under_1yr_starting_on_art`) as below_1,
+			SUM(`start_art_10-14(m)_hv03-018` + `female_under_15yrs_starting_on_art`) as below_15,
+			SUM(`female_above_15yrs_starting_on_art`) as above_15,
+			SUM(`total_starting_on_art`) as total
+		";
 
 		$data['div'] = str_random(15);
 
 		// DB::enableQueryLog();
 
-		$data['rows'] = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+		$data['rows'] = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -61,7 +65,7 @@ class TableController extends Controller
 
 		// return DB::getQueryLog();
 
-		return view('dynamic_tables.art_totals', $data);
+		return view('dynamic_tables.art_totals_old', $data);
 	}
 
 	public function art_current()
@@ -70,10 +74,15 @@ class TableController extends Controller
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$current_query = $this->current_art_fixed_query();
+		$current_query = "
+			MAX(`currently_on_art_-_below_1_year`) as below_1,
+			MAX(`currently_on_art_-_male_below_15_years` + `female_under_15yrs_currently_in_care`) as below_15,
+			MAX(`currently_on_art_-_male_above_15_years` + `currently_on_art_-_female_above_15_years`) as above_15,
+			MAX(`total_currently_on_art`) as total
+		";
 
 		$sql = $q['select_query'] . ",
-			SUM(below_1) as below_1, SUM(below_10) AS below_10, SUM(below_15) AS below_15, SUM(below_20) AS below_20, SUM(below_25) AS below_25, SUM(above_25) AS above_25, SUM(total) AS total
+			SUM(below_1) as below_1, SUM(below_15) AS below_15, SUM(above_15) AS above_15, SUM(total) AS total
 		";
 
 		$data['div'] = str_random(15);
@@ -82,8 +91,8 @@ class TableController extends Controller
 
 		$subquery = "(
 			SELECT facility, {$current_query}
-			FROM `d_hiv_and_tb_treatment`
-			JOIN `view_facilitys` ON `view_facilitys`.`id`=`d_hiv_and_tb_treatment`.`facility`
+			FROM `d_care_and_treatment`
+			JOIN `view_facilitys` ON `view_facilitys`.`id`=`d_care_and_treatment`.`facility`
 			WHERE {$divisions_query} AND {$date_query}
 			GROUP BY facility
 		) qu";
@@ -96,6 +105,6 @@ class TableController extends Controller
 
 		// return DB::getQueryLog();
 
-		return view('dynamic_tables.art_totals', $data);
+		return view('dynamic_tables.art_totals_old', $data);
 	}
 }
