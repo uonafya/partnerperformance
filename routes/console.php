@@ -47,12 +47,8 @@ Artisan::command('populate {year?}', function ($year=null) {
 
 
 
-Artisan::command('target:current', function () {
-	\App\TargetInsert::current_2018();
-})->describe('Populate target tables with values.');
-
-Artisan::command('target:new', function () {
-	\App\TargetInsert::new_2018();
+Artisan::command('targets {year?}', function ($year=null) {
+	\App\TargetInsert::insert($year);
 })->describe('Populate target tables with values.');
 
 
