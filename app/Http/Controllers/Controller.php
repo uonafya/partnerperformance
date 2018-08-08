@@ -21,10 +21,10 @@ class Controller extends BaseController
     {
     	return "
 			SUM(`tested_1-9_hv01-01`) as below_10,
-			SUM(`tested_10-14_(m)_hv01-02` + `tested_10-14(f)_hv01-03`) as below_15,
-			SUM(`tested_15-19_(m)_hv01-04` + `tested_15-19(f)_hv01-05`) as below_20,
-			SUM(`tested_20-24(m)_hv01-06` + `tested_20-24(f)_hv01-07`) as below_25,
-			SUM(`tested_25pos_(m)_hv01-08` + `tested_25pos_(f)_hv01-09`) as above_25,
+			(SUM(`tested_10-14_(m)_hv01-02`) + SUM(`tested_10-14(f)_hv01-03`)) as below_15,
+			(SUM(`tested_15-19_(m)_hv01-04`) + SUM(`tested_15-19(f)_hv01-05`)) as below_20,
+			(SUM(`tested_20-24(m)_hv01-06`) + SUM(`tested_20-24(f)_hv01-07`)) as below_25,
+			(SUM(`tested_25pos_(m)_hv01-08`) + SUM(`tested_25pos_(f)_hv01-09`)) as above_25,
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) as total
 		";
     }
@@ -33,10 +33,10 @@ class Controller extends BaseController
     {
     	return "
 			SUM(`positive_1-9_hv01-17`) as below_10,
-			SUM(`positive_10-14(m)_hv01-18` + `positive_10-14(f)_hv01-19`) as below_15,
-			SUM(`positive_15-19(m)_hv01-20` + `positive_15-19(f)_hv01-21`) as below_20,
-			SUM(`positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23`) as below_25,
-			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25,
+			(SUM(`positive_10-14(m)_hv01-18`) + SUM(`positive_10-14(f)_hv01-19`)) as below_15,
+			(SUM(`positive_15-19(m)_hv01-20`) + SUM(`positive_15-19(f)_hv01-21`)) as below_20,
+			(SUM(`positive_20-24(m)_hv01-22`) + SUM(`positive_20-24(f)_hv01-23`)) as below_25,
+			(SUM(`positive_25pos(m)_hv01-24`) + SUM(`positive_25pos(f)_hv01-25`)) as above_25,
 			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) as total
 		";
     }
@@ -57,8 +57,8 @@ class Controller extends BaseController
     {
     	return "
     		SUM(`known_positive_at_1st_anc_hv02-03`) AS `known_positive`,
-    		SUM(`initial_test_at_anc_hv02-04` + `initial_test_at_l&d_hv02-05` + `initial_test_at_pnc_pnc<=6wks_hv02-06`) AS `new_pmtct`,
-    		SUM(`positive_results_anc_hv02-11` + `positive_results_l&d_hv02-12` + `positive_results_pnc<=6wks_hv02-13`) AS `positive_pmtct`
+    		(SUM(`initial_test_at_anc_hv02-04`) + SUM(`initial_test_at_l&d_hv02-05`) + SUM(`initial_test_at_pnc_pnc<=6wks_hv02-06`)) AS `new_pmtct`,
+    		(SUM(`positive_results_anc_hv02-11`) + SUM(`positive_results_l&d_hv02-12`) + SUM(`positive_results_pnc<=6wks_hv02-13`)) AS `positive_pmtct`
     	";
     }
 
@@ -67,23 +67,23 @@ class Controller extends BaseController
     	return "
 			SUM(`start_art_<1_hv03-016`) as below_1,
 			SUM(`start_art_1-9_hv03-017`) as below_10,
-			SUM(`start_art_10-14(m)_hv03-018` + `start_art_10-14_(f)_hv03-019`) as below_15,
-			SUM(`start_art_15-19(m)_hv03-020` + `start_art_15-19_(f)_hv03-021`) as below_20,
-			SUM(`start_art_20-24(m)_hv03-022` + `start_art_20-24_(f)_hv03-023`) as below_25,
-			SUM(`start_art_25pos(m)_hv03-024` + `start_art_25pos_(f)_hv03-025`) as above_25,
+			(SUM(`start_art_10-14(m)_hv03-018`) + SUM(`start_art_10-14_(f)_hv03-019`)) as below_15,
+			(SUM(`start_art_15-19(m)_hv03-020`) + SUM(`start_art_15-19_(f)_hv03-021`)) as below_20,
+			(SUM(`start_art_20-24(m)_hv03-022`) + SUM(`start_art_20-24_(f)_hv03-023`)) as below_25,
+			(SUM(`start_art_25pos(m)_hv03-024`) + SUM(`start_art_25pos_(f)_hv03-025`)) as above_25,
 			SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) as total
 		";
     }
-    
+
     public function current_art_query()
     {
     	return "
 			SUM(`on_art_<1_hv03-028`) as below_1,
 			SUM(`on_art_1-9_hv03-029`) as below_10,
-			SUM(`on_art_10-14(m)_hv03-030` + `on_art_10-14_(f)_hv03-031`) as below_15,
-			SUM(`on_art_15-19(m)_hv03-032` + `on_art_15-19_(f)_hv03-033`) as below_20,
-			SUM(`on_art_20-24(m)_hv03-034` + `on_art_20-24_(f)_hv03-035`) as below_25,
-			SUM(`on_art_25pos(m)_hv03-036` + `on_art_25pos_(f)_hv03-037`) as above_25,
+			(SUM(`on_art_10-14(m)_hv03-030`) + SUM(`on_art_10-14_(f)_hv03-031`)) as below_15,
+			(SUM(`on_art_15-19(m)_hv03-032`) + SUM(`on_art_15-19_(f)_hv03-033`)) as below_20,
+			(SUM(`on_art_20-24(m)_hv03-034`) + SUM(`on_art_20-24_(f)_hv03-035`)) as below_25,
+			(SUM(`on_art_25pos(m)_hv03-036`) + SUM(`on_art_25pos_(f)_hv03-037`)) as above_25,
 			SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
 		";
     }
@@ -93,10 +93,10 @@ class Controller extends BaseController
     	return "
 			MAX(`on_art_<1_hv03-028`) as below_1,
 			MAX(`on_art_1-9_hv03-029`) as below_10,
-			MAX(`on_art_10-14(m)_hv03-030` + `on_art_10-14_(f)_hv03-031`) as below_15,
-			MAX(`on_art_15-19(m)_hv03-032` + `on_art_15-19_(f)_hv03-033`) as below_20,
-			MAX(`on_art_20-24(m)_hv03-034` + `on_art_20-24_(f)_hv03-035`) as below_25,
-			MAX(`on_art_25pos(m)_hv03-036` + `on_art_25pos_(f)_hv03-037`) as above_25,
+			(MAX(`on_art_10-14(m)_hv03-030`) + MAX(`on_art_10-14_(f)_hv03-031`)) as below_15,
+			(MAX(`on_art_15-19(m)_hv03-032`) + MAX(`on_art_15-19_(f)_hv03-033`)) as below_20,
+			(MAX(`on_art_20-24(m)_hv03-034`) + MAX(`on_art_20-24_(f)_hv03-035`)) as below_25,
+			(MAX(`on_art_25pos(m)_hv03-036`) + MAX(`on_art_25pos_(f)_hv03-037`)) as above_25,
 			MAX(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
 		";
     }
@@ -105,19 +105,19 @@ class Controller extends BaseController
     {
     	return "
 			SUM(`tested_1-9_hv01-01`) as below_10_test,
-    		SUM(`tested_10-14_(m)_hv01-02` + `tested_15-19_(m)_hv01-04` + `tested_20-24(m)_hv01-06` + `tested_25pos_(m)_hv01-08`) AS male_test,
-    		SUM(`tested_10-14(f)_hv01-03` + `tested_15-19(f)_hv01-05` + `tested_20-24(f)_hv01-07` + `tested_25pos_(f)_hv01-09`) AS female_test,
+    		(SUM(`tested_10-14_(m)_hv01-02` + SUM(`tested_15-19_(m)_hv01-04`) + SUM(`tested_20-24(m)_hv01-06`) + SUM(`tested_25pos_(m)_hv01-08`)) AS male_test,
+    		(SUM(`tested_10-14(f)_hv01-03`) + SUM(`tested_15-19(f)_hv01-05`) + SUM(`tested_20-24(f)_hv01-07`) + SUM(`tested_25pos_(f)_hv01-09`)) AS female_test,
 			SUM(`positive_1-9_hv01-17`) as below_10_pos,
-			SUM(`positive_10-14(m)_hv01-18` + `positive_15-19(m)_hv01-20` + `positive_20-24(m)_hv01-22` + `positive_25pos(m)_hv01-24`) as male_pos,
-			SUM(`positive_10-14(f)_hv01-19` + `positive_15-19(f)_hv01-21` + `positive_20-24(f)_hv01-23` + `positive_25pos(f)_hv01-25`) as female_pos
+			(SUM(`positive_10-14(m)_hv01-18`) + SUM(`positive_15-19(m)_hv01-20`) + SUM(`positive_20-24(m)_hv01-22`) + SUM(`positive_25pos(m)_hv01-24`)) as male_pos,
+			(SUM(`positive_10-14(f)_hv01-19` + `positive_15-19(f)_hv01-21` + `positive_20-24(f)_hv01-23` + `positive_25pos(f)_hv01-25`)) as female_pos
 		";
     }
 
     public function old_gender_query()
     {
     	return "
-    		SUM(`male_under_15yrs_receiving_hiv_pos_results` + `male_15-24yrs_receiving_hiv_pos_results` + `male_above_25yrs_receiving_hiv_pos_results`) AS male_test,
-    		SUM(`female_under_15yrs_receiving_hiv_pos_results` + `female_15-24yrs_receiving_hiv_pos_results` + `female_above_25yrs_receiving_hiv_pos_results`) AS female_test
+    		(SUM(`male_under_15yrs_receiving_hiv_pos_results`) + SUM(`male_15-24yrs_receiving_hiv_pos_results` + `male_above_25yrs_receiving_hiv_pos_results`)) AS male_test,
+    		(SUM(`female_under_15yrs_receiving_hiv_pos_results`) + SUM(`female_15-24yrs_receiving_hiv_pos_results` + `female_above_25yrs_receiving_hiv_pos_results`)) AS female_test
 		";
     }
 
@@ -125,25 +125,25 @@ class Controller extends BaseController
     {
     	return "
     		SUM(`tested_1-9_hv01-01`) as below_10,
-			SUM(`tested_10-14_(m)_hv01-02` + `tested_10-14(f)_hv01-03`) as below_15,
-			SUM(`tested_15-19_(m)_hv01-04` + `tested_15-19(f)_hv01-05`) as below_20,
-			SUM(`tested_20-24(m)_hv01-06` + `tested_20-24(f)_hv01-07`) as below_25,
-			SUM(`tested_25pos_(m)_hv01-08` + `tested_25pos_(f)_hv01-09`) as above_25,
+			(SUM(`tested_10-14_(m)_hv01-02` + SUM(`tested_10-14(f)_hv01-03`) as below_15,
+			(SUM(`tested_15-19_(m)_hv01-04` + SUM(`tested_15-19(f)_hv01-05`) as below_20,
+			(SUM(`tested_20-24(m)_hv01-06` + SUM(`tested_20-24(f)_hv01-07`) as below_25,
+			(SUM(`tested_25pos_(m)_hv01-08` + SUM(`tested_25pos_(f)_hv01-09`) as above_25,
 
 			SUM(`positive_1-9_hv01-17`) as below_10_pos,
-			SUM(`positive_10-14(m)_hv01-18` + `positive_10-14(f)_hv01-19`) as below_15_pos,
-			SUM(`positive_15-19(m)_hv01-20` + `positive_15-19(f)_hv01-21`) as below_20_pos,
-			SUM(`positive_20-24(m)_hv01-22` + `positive_20-24(f)_hv01-23`) as below_25_pos,
-			SUM(`positive_25pos(m)_hv01-24` + `positive_25pos(f)_hv01-25`) as above_25_pos
+			(SUM(`positive_10-14(m)_hv01-18` + SUM(`positive_10-14(f)_hv01-19`)) as below_15_pos,
+			(SUM(`positive_15-19(m)_hv01-20` + SUM(`positive_15-19(f)_hv01-21`)) as below_20_pos,
+			(SUM(`positive_20-24(m)_hv01-22` + SUM(`positive_20-24(f)_hv01-23`)) as below_25_pos,
+			(SUM(`positive_25pos(m)_hv01-24` + SUM(`positive_25pos(f)_hv01-25`)) as above_25_pos
     	";
     }
 
     public function old_age_query()
     {
     	return "
-			SUM(`male_under_15yrs_receiving_hiv_pos_results` + `female_under_15yrs_receiving_hiv_pos_results`) as below_15,
-			SUM(`male_15-24yrs_receiving_hiv_pos_results` + `female_15-24yrs_receiving_hiv_pos_results`) as below_25,
-			SUM(`male_above_25yrs_receiving_hiv_pos_results` + `female_above_25yrs_receiving_hiv_pos_results`) as above_25
+			(SUM(`male_under_15yrs_receiving_hiv_pos_results` + SUM(`female_under_15yrs_receiving_hiv_pos_results`)) as below_15,
+			(SUM(`male_15-24yrs_receiving_hiv_pos_results` + SUM(`female_15-24yrs_receiving_hiv_pos_results`)) as below_25,
+			(SUM(`male_above_25yrs_receiving_hiv_pos_results` + SUM(`female_above_25yrs_receiving_hiv_pos_results`)) as above_25
     	";
     }
 

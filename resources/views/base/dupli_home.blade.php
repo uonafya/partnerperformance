@@ -58,7 +58,7 @@
 	<div class="col-md-6 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Testing Gender <div class="display_date"></div>
+			    Positive Outcomes Gender <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="gender">
 				<center><div class="loader"></div></center>
@@ -69,7 +69,7 @@
 	<div class="col-md-6 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Outcomes Gender <div class="display_date"></div>
+			    Positive Outcomes Gender <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="out_gender">
 				<center><div class="loader"></div></center>
@@ -82,7 +82,7 @@
 	<div class="col-md-6 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Testing Age <div class="display_date"></div>
+			    Positive Outcomes Age <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="age">
 				<center><div class="loader"></div></center>
@@ -93,7 +93,7 @@
 	<div class="col-md-6 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Outcomes Age <div class="display_date"></div>
+			    Positive Outcomes Age <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="out_age">
 				<center><div class="loader"></div></center>

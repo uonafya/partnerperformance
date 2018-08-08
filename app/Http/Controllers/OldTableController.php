@@ -47,7 +47,7 @@ class OldTableController extends Controller
 		$sql = $q['select_query'] . ",
 			SUM(`under_1yr_starting_on_art`) as below_1,
 			SUM(`female_under_15yrs_starting_on_art`) as below_15,
-			SUM(`male_above_15yrs_starting_on_art` + `female_above_15yrs_starting_on_art`) as above_15,
+			(SUM(`male_above_15yrs_starting_on_art`) + SUM(`female_above_15yrs_starting_on_art`)) as above_15,
 			SUM(`total_starting_on_art`) as total
 		";
 
@@ -76,8 +76,8 @@ class OldTableController extends Controller
 
 		$current_query = "
 			MAX(`currently_on_art_-_below_1_year`) as below_1,
-			MAX(`currently_on_art_-_male_below_15_years` + `female_under_15yrs_currently_in_care`) as below_15,
-			MAX(`currently_on_art_-_male_above_15_years` + `currently_on_art_-_female_above_15_years`) as above_15,
+			(MAX(`currently_on_art_-_male_below_15_years`) + MAX(`female_under_15yrs_currently_in_care`)) as below_15,
+			(MAX(`currently_on_art_-_male_above_15_years`) + MAX(`currently_on_art_-_female_above_15_years`)) as above_15,
 			MAX(`total_currently_on_art`) as total
 		";
 
