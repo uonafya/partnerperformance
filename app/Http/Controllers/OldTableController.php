@@ -123,6 +123,11 @@ class OldTableController extends Controller
 			SUM(`first_testing_hiv`) AS first_testing_hiv
 		";
 
+		$sql2 = $q['select_query'] .  ",
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
+		";
+
 		$data['div'] = str_random(15);
 
 		// DB::enableQueryLog();
@@ -136,6 +141,16 @@ class OldTableController extends Controller
 			->get();
 
 		// return DB::getQueryLog();
+
+		$date_query = Lookup::date_query(true);
+
+		$data['targets'] = DB::table('t_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql2)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
 
 		return view('dynamic_tables.test_old_summary', $data);
 

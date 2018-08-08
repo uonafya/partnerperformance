@@ -3,9 +3,12 @@
 		<tr class="colhead">
 			<th>No</th>
 			<th>Name</th>
-			<th>MFL Code</th>
-			<th>DHIS Code</th>
+			@if(session('filter_groupby') == 5)
+				<th>MFL Code</th>
+				<th>DHIS Code</th>
+			@endif
 			<th>Tested</th>
+			<th>Tested Target</th>
 			<th>Positives</th>
 			<th>Positivity (%)</th>
 			<th>First Test</th>
@@ -16,8 +19,10 @@
 			<tr>
 				<td> {{ $key+1 }} </td>
 				<td> {{ $row->name ?? '' }} </td>
-				<td> {{ $row->mfl_code ?? '' }} </td>
-				<td> {{ $row->dhis_code ?? '' }} </td>
+				@if(session('filter_groupby') == 5)
+					<td> {{ $row->mfl_code ?? '' }} </td>
+					<td> {{ $row->dhis_code ?? '' }} </td>
+				@endif
 
 				<?php
 					if($row->tests){
@@ -26,10 +31,14 @@
 					else{
 						$positivity = 0;
 					}
+
+					$target = $targets->where('div_id', $row->div_id)->first();
 				?>
 
 				<td> {{ number_format($row->tests ) }} </td>
+				<td> {{ number_format($target->tests ?? 0) }} </td>
 				<td> {{ number_format($row->pos ) }} </td>
+				<td> {{ number_format($target->pos ?? 0) }} </td>
 				<td> {{ number_format($positivity ) }} </td>
 				<td> {{ number_format($row->first_testing_hiv ) }} </td>
 

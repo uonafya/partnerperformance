@@ -3,12 +3,14 @@
 		<tr class="colhead">
 			<th>No</th>
 			<th>Name</th>
-			<th>MFL Code</th>
-			<th>DHIS Code</th>
+			@if(session('filter_groupby') == 5)
+				<th>MFL Code</th>
+				<th>DHIS Code</th>
+			@endif
 			<th>Below 1</th>
 			<th>Below 15</th>
 			<th>Above 15</th>
-			<th>Actual Total</th>			
+			<th>Sum Total</th>			
 			<th>Reported Total</th>			
 			<th>Discrepancy</th>			
 		</tr>
@@ -18,8 +20,10 @@
 			<tr>
 				<td> {{ $key+1 }} </td>
 				<td> {{ $row->name ?? '' }} </td>
-				<td> {{ $row->mfl_code ?? '' }} </td>
-				<td> {{ $row->dhis_code ?? '' }} </td>
+				@if(session('filter_groupby') == 5)
+					<td> {{ $row->mfl_code ?? '' }} </td>
+					<td> {{ $row->dhis_code ?? '' }} </td>
+				@endif
 
 				@php
 					$total = $row->below_1 +  $row->below_15 + $row->above_15;
