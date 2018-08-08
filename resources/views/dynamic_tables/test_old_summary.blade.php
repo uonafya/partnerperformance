@@ -27,7 +27,7 @@
 
 				<?php
 					if($row->tests){
-						$positivity = round(($row->pos / $row->tests * 100), 2);
+						$positivity = round(($row->pos / $row->tests * 100), 4);
 					}
 					else{
 						$positivity = 0;
