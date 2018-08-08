@@ -153,6 +153,39 @@ class OldTableController extends Controller
 			->get();
 
 		return view('dynamic_tables.test_old_summary', $data);
-
 	}
+
+	public function summary_breakdown()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
+
+		$sql = $q['select_query'] .  ",
+			SUM(`total_tested_hiv`) AS tests,
+			SUM(`first_testing_hiv`) AS first_testing_hiv,
+			SUM(`repeat_testing_hiv`) AS repeat_testing_hiv,
+			SUM(`outreach_testing_hiv`) AS outreach_testing_hiv,
+			SUM(`static_testing_hiv_(health_facility)`) AS static_testing,
+			SUM(`couples_testing`) AS couples_testing
+		";
+
+		$data['div'] = str_random(15);
+
+		// DB::enableQueryLog();
+
+		$data['rows'] = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		// return DB::getQueryLog();
+
+		return view('dynamic_tables.summary_breakdown', $data);
+	}
+
+
 }
