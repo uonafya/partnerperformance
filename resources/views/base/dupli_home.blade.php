@@ -128,7 +128,7 @@
 	</div>
 </div>
 
-<!-- <div class="row">
+<div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -139,7 +139,7 @@
 			</div>
 		</div>
 	</div>
-</div> -->
+</div>
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -186,6 +186,7 @@
 		$("#pmtct").html("<center><div class='loader'></div></center>");
 		$("#eid").html("<center><div class='loader'></div></center>");
 
+		$("#summary").html("<center><div class='loader'></div></center>");
 		$("#art_new").html("<center><div class='loader'></div></center>");
 		$("#art_current").html("<center><div class='loader'></div></center>");
 
@@ -201,6 +202,7 @@
 		$("#pmtct").load("{{ secure_url('old/chart/pmtct') }}");
 		$("#eid").load("{{ secure_url('old/chart/eid') }}");
 
+		$("#summary").load("{{ secure_url('old/table/summary') }}");
 		$("#art_new").load("{{ secure_url('old/table/art_new') }}");
 		$("#art_current").load("{{ secure_url('old/table/art_current') }}");
 	}

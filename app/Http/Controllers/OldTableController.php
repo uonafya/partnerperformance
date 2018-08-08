@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 
+// First tests
+// Targets for testing
+
 class OldTableController extends Controller
 {
 
@@ -106,5 +109,35 @@ class OldTableController extends Controller
 		// return DB::getQueryLog();
 
 		return view('dynamic_tables.art_totals_old', $data);
+	}
+
+	public function new_summary()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
+
+		$sql = $q['select_query'] .  ",
+			SUM(`total_tested_hiv`) AS tests,
+			SUM(`total_received_hivpos_results`) AS pos,
+			SUM(`first_testing_hiv`) AS first_testing_hiv
+		";
+
+		$data['div'] = str_random(15);
+
+		// DB::enableQueryLog();
+
+		$data['rows'] = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		// return DB::getQueryLog();
+
+		return view('dynamic_tables.test_old_summary', $data);
+
 	}
 }

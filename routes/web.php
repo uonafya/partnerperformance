@@ -79,7 +79,7 @@ Route::prefix('old/chart')->name('old.chart.')->group(function(){
 });
 
 Route::prefix('old/table')->name('old.table.')->group(function(){
-	Route::get('summary', 'OldTableController@summary')->name('summary');
+	Route::get('summary', 'OldTableController@new_summary')->name('summary');
 	Route::get('art_new', 'OldTableController@art_new')->name('art_new');
 	Route::get('art_current', 'OldTableController@art_current')->name('art_current');
 });
