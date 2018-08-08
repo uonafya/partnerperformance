@@ -26,20 +26,13 @@
 					else{
 						$positivity = 0;
 					}
-
-					if($row->positive_total){
-						$linkage = round(($row->linked_total / $row->positive_total * 100), 2);
-					}
-					else{
-						$linkage = 0;
-					}
 				?>
 
 				<td> {{ number_format($row->tests ) }} </td>
 				<td> {{ number_format($row->pos ) }} </td>
 				<td> {{ number_format($positivity ) }} </td>
 				<td> {{ number_format($row->first_testing_hiv ) }} </td>
-				
+
 			</tr>
 		@endforeach
 	</tbody>	
