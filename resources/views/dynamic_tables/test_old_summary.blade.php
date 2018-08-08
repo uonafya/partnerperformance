@@ -10,6 +10,7 @@
 			<th>Tested</th>
 			<th>Tested Target</th>
 			<th>Positives</th>
+			<th>Positives Target</th>
 			<th>Positivity (%)</th>
 			<th>First Test</th>
 		</tr>
