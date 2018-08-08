@@ -40,7 +40,7 @@
 				<td> {{ number_format($target->tests ?? 0) }} </td>
 				<td> {{ number_format($row->pos ) }} </td>
 				<td> {{ number_format($target->pos ?? 0) }} </td>
-				<td> {{ number_format($positivity ) }} </td>
+				<td> {{ $positivity }} </td>
 				<td> {{ number_format($row->first_testing_hiv ) }} </td>
 
 			</tr>
