@@ -141,9 +141,9 @@ class Controller extends BaseController
     public function old_age_query()
     {
     	return "
-			(SUM(`male_under_15yrs_receiving_hiv_pos_results` + SUM(`female_under_15yrs_receiving_hiv_pos_results`)) as below_15,
-			(SUM(`male_15-24yrs_receiving_hiv_pos_results` + SUM(`female_15-24yrs_receiving_hiv_pos_results`)) as below_25,
-			(SUM(`male_above_25yrs_receiving_hiv_pos_results` + SUM(`female_above_25yrs_receiving_hiv_pos_results`)) as above_25
+			(SUM(`male_under_15yrs_receiving_hiv_pos_results`) + SUM(`female_under_15yrs_receiving_hiv_pos_results`)) as below_15,
+			(SUM(`male_15-24yrs_receiving_hiv_pos_results`) + SUM(`female_15-24yrs_receiving_hiv_pos_results`)) as below_25,
+			(SUM(`male_above_25yrs_receiving_hiv_pos_results`) + SUM(`female_above_25yrs_receiving_hiv_pos_results`)) as above_25
     	";
     }
 
