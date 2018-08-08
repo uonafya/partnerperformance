@@ -105,11 +105,11 @@ class Controller extends BaseController
     {
     	return "
 			SUM(`tested_1-9_hv01-01`) as below_10_test,
-    		(SUM(`tested_10-14_(m)_hv01-02` + SUM(`tested_15-19_(m)_hv01-04`) + SUM(`tested_20-24(m)_hv01-06`) + SUM(`tested_25pos_(m)_hv01-08`)) AS male_test,
+    		(SUM(`tested_10-14_(m)_hv01-02`) + SUM(`tested_15-19_(m)_hv01-04`) + SUM(`tested_20-24(m)_hv01-06`) + SUM(`tested_25pos_(m)_hv01-08`)) AS male_test,
     		(SUM(`tested_10-14(f)_hv01-03`) + SUM(`tested_15-19(f)_hv01-05`) + SUM(`tested_20-24(f)_hv01-07`) + SUM(`tested_25pos_(f)_hv01-09`)) AS female_test,
 			SUM(`positive_1-9_hv01-17`) as below_10_pos,
 			(SUM(`positive_10-14(m)_hv01-18`) + SUM(`positive_15-19(m)_hv01-20`) + SUM(`positive_20-24(m)_hv01-22`) + SUM(`positive_25pos(m)_hv01-24`)) as male_pos,
-			(SUM(`positive_10-14(f)_hv01-19` + `positive_15-19(f)_hv01-21` + `positive_20-24(f)_hv01-23` + `positive_25pos(f)_hv01-25`)) as female_pos
+			(SUM(`positive_10-14(f)_hv01-19`) + SUM(`positive_15-19(f)_hv01-21`) + SUM(`positive_20-24(f)_hv01-23`) + SUM(`positive_25pos(f)_hv01-25`)) as female_pos
 		";
     }
 
@@ -125,16 +125,16 @@ class Controller extends BaseController
     {
     	return "
     		SUM(`tested_1-9_hv01-01`) as below_10,
-			(SUM(`tested_10-14_(m)_hv01-02` + SUM(`tested_10-14(f)_hv01-03`) as below_15,
-			(SUM(`tested_15-19_(m)_hv01-04` + SUM(`tested_15-19(f)_hv01-05`) as below_20,
-			(SUM(`tested_20-24(m)_hv01-06` + SUM(`tested_20-24(f)_hv01-07`) as below_25,
-			(SUM(`tested_25pos_(m)_hv01-08` + SUM(`tested_25pos_(f)_hv01-09`) as above_25,
+			(SUM(`tested_10-14_(m)_hv01-02`) + SUM(`tested_10-14(f)_hv01-03`)) as below_15,
+			(SUM(`tested_15-19_(m)_hv01-04`) + SUM(`tested_15-19(f)_hv01-05`)) as below_20,
+			(SUM(`tested_20-24(m)_hv01-06`) + SUM(`tested_20-24(f)_hv01-07`)) as below_25,
+			(SUM(`tested_25pos_(m)_hv01-08`) + SUM(`tested_25pos_(f)_hv01-09`)) as above_25,
 
 			SUM(`positive_1-9_hv01-17`) as below_10_pos,
-			(SUM(`positive_10-14(m)_hv01-18` + SUM(`positive_10-14(f)_hv01-19`)) as below_15_pos,
-			(SUM(`positive_15-19(m)_hv01-20` + SUM(`positive_15-19(f)_hv01-21`)) as below_20_pos,
-			(SUM(`positive_20-24(m)_hv01-22` + SUM(`positive_20-24(f)_hv01-23`)) as below_25_pos,
-			(SUM(`positive_25pos(m)_hv01-24` + SUM(`positive_25pos(f)_hv01-25`)) as above_25_pos
+			(SUM(`positive_10-14(m)_hv01-18`) + SUM(`positive_10-14(f)_hv01-19`)) as below_15_pos,
+			(SUM(`positive_15-19(m)_hv01-20`) + SUM(`positive_15-19(f)_hv01-21`)) as below_20_pos,
+			(SUM(`positive_20-24(m)_hv01-22`) + SUM(`positive_20-24(f)_hv01-23`)) as below_25_pos,
+			(SUM(`positive_25pos(m)_hv01-24`) + SUM(`positive_25pos(f)_hv01-25`)) as above_25_pos
     	";
     }
 
