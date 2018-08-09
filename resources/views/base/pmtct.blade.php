@@ -73,7 +73,7 @@
 		    <div class="panel-heading">
 			    Male Testing <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="eid">
+			<div class="panel-body" id="male_testing">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
