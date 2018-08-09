@@ -46,7 +46,7 @@ class TestingController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$sql2 = $q['select_query'] .  ",
+		$sql2 = "
 			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
 		";
@@ -56,7 +56,6 @@ class TestingController extends Controller
 			->selectRaw($sql2)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupBy($q['group_query'])
 			->first();
 
 		$t = round(($target->tests / 12), 2);
