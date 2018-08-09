@@ -69,45 +69,6 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Point of Identification of Positivity <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="discovery_positivity">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Initial PCR Test <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="eid">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Male Testing <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="male_testing">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
 @endsection
 
 
@@ -126,7 +87,7 @@
 		$("#new_age_breakdown").load("{{ secure_url('art/new_age_breakdown') }}");
 		$("#enrolled_age_breakdown").load("{{ secure_url('art/enrolled_age_breakdown') }}");
 		$("#new_art").load("{{ secure_url('art/new_art') }}");
-	}new_art
+	}
 
 
 	$().ready(function(){
