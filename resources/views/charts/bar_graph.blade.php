@@ -47,7 +47,8 @@
             colors: [
                 '#F2784B',
                 '#1BA39C',
-                '#913D88'
+                '#913D88',
+                '#4d79ff'
             ],     
             series: {!! json_encode($outcomes) !!}
         });
