@@ -13,7 +13,7 @@
         },
         yAxis: {
             title: {
-                text: "Totals"
+                
             },
             plotLines: [{
                 value: 0,
