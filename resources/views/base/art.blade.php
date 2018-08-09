@@ -32,6 +32,34 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
+			    New On Treatment (Age Breakdown) <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="new_age_breakdown">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Enrolled On Treatment (Age Breakdown) <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="enrolled_age_breakdown">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
 			    Point Of Starting ART <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="starting_point">
@@ -90,8 +118,12 @@
 	function reload_page()
 	{
 		$("#current_age_breakdown").html("<center><div class='loader'></div></center>");
+		$("#new_age_breakdown").html("<center><div class='loader'></div></center>");
+		$("#enrolled_age_breakdown").html("<center><div class='loader'></div></center>");
 
 		$("#current_age_breakdown").load("{{ secure_url('art/current_age_breakdown') }}");
+		$("#new_age_breakdown").load("{{ secure_url('art/new_age_breakdown') }}");
+		$("#enrolled_age_breakdown").load("{{ secure_url('art/enrolled_age_breakdown') }}");
 	}
 
 

@@ -97,6 +97,8 @@ Route::prefix('pmtct')->name('pmtct')->group(function(){
 
 Route::prefix('art')->name('art')->group(function(){
 	Route::get('current_age_breakdown', 'ArtController@current_age_breakdown')->name('current_age_breakdown');
+	Route::get('new_age_breakdown', 'ArtController@new_age_breakdown')->name('new_age_breakdown');
+	Route::get('enrolled_age_breakdown', 'ArtController@enrolled_age_breakdown')->name('enrolled_age_breakdown');
 });
 
 Route::middleware(['clear_session'])->group(function(){

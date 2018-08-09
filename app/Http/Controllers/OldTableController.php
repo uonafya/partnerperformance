@@ -49,7 +49,7 @@ class OldTableController extends Controller
 
 		$sql = $q['select_query'] . ",
 			SUM(`under_1yr_starting_on_art`) as below_1,
-			SUM(`female_under_15yrs_starting_on_art`) as below_15,
+			(SUM(`male_under_15yrs_starting_on_art`) + SUM(`female_under_15yrs_starting_on_art`)) as below_15,
 			(SUM(`male_above_15yrs_starting_on_art`) + SUM(`female_above_15yrs_starting_on_art`)) as above_15,
 			SUM(`total_starting_on_art`) as total
 		";

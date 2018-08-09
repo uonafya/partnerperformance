@@ -75,6 +75,17 @@ class Controller extends BaseController
 		";
     }
 
+    public function former_new_art_query()
+    {
+    	return "
+			SUM(`under_1yr_starting_on_art`) as below_1,
+			(SUM(`male_under_15yrs_starting_on_art`) + SUM(`female_under_15yrs_starting_on_art`)) as below_15,
+			(SUM(`male_above_15yrs_starting_on_art`) + SUM(`female_above_15yrs_starting_on_art`)) as above_15,
+			SUM(`total_starting_on_art`) as total
+		";
+    }
+
+
     public function current_art_query()
     {
     	return "
@@ -85,6 +96,20 @@ class Controller extends BaseController
 			(SUM(`on_art_20-24(m)_hv03-034`) + SUM(`on_art_20-24_(f)_hv03-035`)) as below_25,
 			(SUM(`on_art_25pos(m)_hv03-036`) + SUM(`on_art_25pos_(f)_hv03-037`)) as above_25,
 			SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
+		";
+    }
+
+
+    public function enrolled_art_query()
+    {
+    	return "
+			SUM(`enrolled_<1_hv03-001`) as below_1,
+			SUM(`enrolled_1-9_hv03-002`) as below_10,
+			(SUM(`enrolled_10-14(m)_hv03-003`) + SUM(`enrolled_10-14_(f)_hv03-004`)) as below_15,
+			(SUM(`enrolled_15-19(m)_hv03-005`) + SUM(`enrolled_15-19_(f)_hv03-006`)) as below_20,
+			(SUM(`enrolled_20-24(m)_hv03-007`) + SUM(`enrolled_20-24_(f)_hv03-008`)) as below_25,
+			(SUM(`enrolled_25pos(m)_hv03-009`) + SUM(`enrolled_25pos_(f)_hv03-010`)) as above_25,
+			SUM(`enrolled_total_(sum_hv03-001_to_hv03-010)_hv03-011`) as total
 		";
     }
 
