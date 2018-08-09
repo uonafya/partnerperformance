@@ -201,11 +201,6 @@ class TestingController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
-		$sql2 = ",
-			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
-			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
-		";
-
 		$data['linked'] = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw($q['select_query'] . ", SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) as total")
@@ -221,6 +216,12 @@ class TestingController extends Controller
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
 			->get();
+
+
+		$sql2 = $q['select_query'] . ",
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
+		";
 
 		$data['targets'] = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
