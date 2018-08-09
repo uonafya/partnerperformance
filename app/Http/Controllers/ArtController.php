@@ -56,6 +56,11 @@ class ArtController extends Controller
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "Spline";
 
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' ');
+
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = (int) $row->below_1 + $rows2[$key]->below_1;
