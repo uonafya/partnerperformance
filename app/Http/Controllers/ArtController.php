@@ -72,7 +72,7 @@ class ArtController extends Controller
 		return "
 			SUM(`currently_on_art_-_below_1_year`) AS `below1`,
 			(SUM(`currently_on_art_-_male_below_15_years`) + SUM(`currently_on_art_-_female_below_15_years`)) AS `below15`,
-			(SUM(`currently_on_art_-_male_above_15_years`) + SUM(`currently_on_art_-_female_above_15_years`)) AS `above15`,
+			(SUM(`currently_on_art_-_male_above_15_years`) + SUM(`currently_on_art_-_female_above_15_years`)) AS `above15`
 		";
 	}
 }
