@@ -110,9 +110,5 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
 	Route::get('pmtct', 'GeneralController@pmtct');
 	Route::get('art', 'GeneralController@art');
-
-
-	Route::get('old_form', 'GeneralController@dupli_home');
-	Route::get('new_home', 'GeneralController@home');
-	Route::get('partner', 'GeneralController@partner_home');
+	Route::get('testing', 'GeneralController@testing');
 });

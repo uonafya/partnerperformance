@@ -38,4 +38,10 @@ class GeneralController extends Controller
 		$data = Lookup::view_data();
 		return view('base.art', $data);
 	}
+
+	public function testing()
+	{
+		$data = Lookup::view_data();
+		return view('base.testing', $data);
+	}
 }

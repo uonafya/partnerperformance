@@ -80,7 +80,7 @@
 	{
 		$("#testing_outcomes").html("<center><div class='loader'></div></center>");
 
-		$("#testing_outcomes").load("{{ secure_url('art/testing_outcomes') }}");
+		$("#testing_outcomes").load("{{ secure_url('testing/testing_outcomes') }}");
 	}
 
 
