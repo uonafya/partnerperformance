@@ -21,7 +21,7 @@ class TestingController extends Controller
 
 		$rows = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
-			->selectRaw($this->new_art_query())
+			->selectRaw($sql)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
