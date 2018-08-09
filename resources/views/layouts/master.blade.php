@@ -28,8 +28,6 @@
 		<link rel="stylesheet" href="{{ secure_asset('css/custom.css') }}" />
 		<link rel="stylesheet" href="{{ secure_asset('css/custom-2.css') }}" />
 
-
-
 		<link rel=icon href="{{ secure_asset('img/kenya-coat-of-arms.png') }}" type="image/png" />
 		<title> Dashboard </title>
 	</head>
@@ -50,9 +48,12 @@
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
 					<ul class="nav navbar-nav">
 						<li><a href="{{ secure_url('/') }} ">Home</a></li>	
+						<li><a href="{{ secure_url('testing') }} ">Testing</a></li>	
+						<li><a href="{{ secure_url('pmtct') }} ">PMTCT</a></li>	
+						<li><a href="{{ secure_url('art') }} ">ART</a></li>	
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ secure_url('/') }} ">Home</a></li>	
+						{{--<li><a href="{{ secure_url('/') }} ">Home</a></li>--}}	
 					</ul>
 				</div>
 			</div>

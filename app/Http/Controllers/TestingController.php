@@ -65,24 +65,24 @@ class TestingController extends Controller
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
 		$data['outcomes'][2]['name'] = "Monthly Target";
-		$data['outcomes'][3]['name'] = "Positivity";
-		$data['outcomes'][4]['name'] = "Targeted Positivity";
+		// $data['outcomes'][3]['name'] = "Positivity";
+		// $data['outcomes'][4]['name'] = "Targeted Positivity";
 
-		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
-		$data['outcomes'][2]['yAxis'] = 1;
+		// $data['outcomes'][0]['yAxis'] = 1;
+		// $data['outcomes'][1]['yAxis'] = 1;
+		// $data['outcomes'][2]['yAxis'] = 1;
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "spline";
-		$data['outcomes'][3]['type'] = "spline";
-		$data['outcomes'][4]['type'] = "spline";
+		// $data['outcomes'][3]['type'] = "spline";
+		// $data['outcomes'][4]['type'] = "spline";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
-		$data['outcomes'][4]['tooltip'] = array("valueSuffix" => ' %');
+		// $data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
+		// $data['outcomes'][4]['tooltip'] = array("valueSuffix" => ' %');
 
 
 		foreach ($rows as $key => $row) {
@@ -93,10 +93,11 @@ class TestingController extends Controller
 			$data["outcomes"][0]["data"][$key] = (int) $pos;
 			$data["outcomes"][1]["data"][$key] = (int) $neg;
 			$data["outcomes"][2]["data"][$key] = $t;
-			$data["outcomes"][3]["data"][$key] = Lookup::get_percentage($pos, ($pos + $neg));
-			$data["outcomes"][4]["data"][$key] = Lookup::get_percentage($target->pos, $target->tests);
+			// $data["outcomes"][3]["data"][$key] = Lookup::get_percentage($pos, ($pos + $neg));
+			// $data["outcomes"][4]["data"][$key] = Lookup::get_percentage($target->pos, $target->tests);
 		}
-		return view('charts.dual_axis', $data);		
+		// return view('charts.dual_axis', $data);		
+		return view('charts.bar_graph', $data);		
 	}
 
 
