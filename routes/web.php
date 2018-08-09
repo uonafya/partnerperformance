@@ -90,6 +90,7 @@ Route::prefix('old/table')->name('old.table.')->group(function(){
 Route::prefix('testing')->name('testing')->group(function(){
 	Route::get('testing_outcomes', 'TestingController@testing_outcomes')->name('testing_outcomes');
 	Route::get('positivity', 'TestingController@positivity')->name('positivity');
+	Route::get('summary', 'TestingController@summary')->name('summary');
 });
 
 Route::prefix('pmtct')->name('pmtct')->group(function(){

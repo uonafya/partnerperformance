@@ -46,28 +46,15 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Enrolled On Treatment (Age Breakdown) <div class="display_date"></div>
+			    Summary <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="enrolled_age_breakdown">
+			<div class="panel-body" id="summary">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
 	</div>
 </div>
 
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    New On Treatment <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="new_art">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
 
 @endsection
 
@@ -80,9 +67,11 @@
 	{
 		$("#testing_outcomes").html("<center><div class='loader'></div></center>");
 		$("#positivity").html("<center><div class='loader'></div></center>");
+		$("#summary").html("<center><div class='loader'></div></center>");
 
 		$("#testing_outcomes").load("{{ secure_url('testing/testing_outcomes') }}");
 		$("#positivity").load("{{ secure_url('testing/positivity') }}");
+		$("#summary").load("{{ secure_url('testing/summary') }}");
 	}
 
 
