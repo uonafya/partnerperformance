@@ -76,6 +76,8 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$data['div'] = str_random(15);
+
 		$data['outcomes'][0]['name'] = "Started at ANC";
 		$data['outcomes'][1]['name'] = "Started at L&D (*)";
 		$data['outcomes'][2]['name'] = "Started at PNC < 6w (*)";
@@ -127,6 +129,8 @@ class PmtctController extends Controller
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
 			->get();
+
+		$data['div'] = str_random(15);
 
 		$data['outcomes'][0]['name'] = "Positive Result at ANC";
 		$data['outcomes'][1]['name'] = "Positive Result at L&D";
@@ -180,6 +184,8 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$data['div'] = str_random(15);
+
 		$data['outcomes'][0]['name'] = "Males Tested (ANC/L&D)";
 		$data['outcomes'][1]['name'] = "Males Tested PNC (*)";
 
@@ -224,6 +230,8 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$data['div'] = str_random(15);
+		
 		$data['outcomes'][0]['name'] = "< 2 months";
 		$data['outcomes'][1]['name'] = "> 2 months";
 
