@@ -54,7 +54,7 @@ class ArtController extends Controller
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "column";
-		$data['outcomes'][3]['type'] = "Spline";
+		$data['outcomes'][3]['type'] = "spline";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
