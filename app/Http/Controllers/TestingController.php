@@ -68,6 +68,10 @@ class TestingController extends Controller
 		$data['outcomes'][3]['name'] = "Positivity";
 		$data['outcomes'][4]['name'] = "Targeted Positivity";
 
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+		$data['outcomes'][2]['yAxis'] = 1;
+
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "column";
