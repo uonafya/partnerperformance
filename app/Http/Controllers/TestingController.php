@@ -60,6 +60,8 @@ class TestingController extends Controller
 
 		$t = round(($target->tests / 12), 2);
 
+		$data['div'] = str_random(15);
+
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
 		$data['outcomes'][2]['name'] = "Monthly Target";
