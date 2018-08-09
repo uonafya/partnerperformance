@@ -95,10 +95,10 @@ class PmtctController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$data["outcomes"][3]["data"][$key] = (int) $row->anc + $rows2[$key]->anc;
-			$data["outcomes"][2]["data"][$key] = (int) $row->lnd;
-			$data["outcomes"][1]["data"][$key] = (int) $row->pnc6w;
 			$data["outcomes"][0]["data"][$key] = (int) $row->pnc_later;
+			$data["outcomes"][1]["data"][$key] = (int) $row->pnc6w;
+			$data["outcomes"][2]["data"][$key] = (int) $row->lnd;
+			$data["outcomes"][3]["data"][$key] = (int) $row->anc + $rows2[$key]->anc;
 		}
 		return view('charts.bar_graph', $data);
 	}
@@ -149,10 +149,10 @@ class PmtctController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$data["outcomes"][3]["data"][$key] = (int) $row->anc + $rows2[$key]->anc;
-			$data["outcomes"][2]["data"][$key] = (int) $row->lnd + $rows2[$key]->lnd;
-			$data["outcomes"][1]["data"][$key] = (int) $row->pnc6w;
 			$data["outcomes"][0]["data"][$key] = (int) $row->pnc_later;
+			$data["outcomes"][1]["data"][$key] = (int) $row->pnc6w;
+			$data["outcomes"][2]["data"][$key] = (int) $row->lnd + $rows2[$key]->lnd;
+			$data["outcomes"][3]["data"][$key] = (int) $row->anc + $rows2[$key]->anc;
 		}
 		return view('charts.bar_graph', $data);
 	}
@@ -186,8 +186,8 @@ class PmtctController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['outcomes'][0]['name'] = "Males Tested (ANC/L&D)";
-		$data['outcomes'][1]['name'] = "Males Tested PNC (*)";
+		$data['outcomes'][0]['name'] = "Males Tested PNC (*)";
+		$data['outcomes'][1]['name'] = "Males Tested (ANC/L&D)";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
@@ -197,8 +197,8 @@ class PmtctController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$data["outcomes"][0]["data"][$key] = (int) $row->anc + $rows2[$key]->anc;
-			$data["outcomes"][1]["data"][$key] = (int) $row->pnc;
+			$data["outcomes"][0]["data"][$key] = (int) $row->pnc;
+			$data["outcomes"][1]["data"][$key] = (int) $row->anc + $rows2[$key]->anc;
 		}
 		return view('charts.bar_graph', $data);
 	}

@@ -185,25 +185,38 @@ class ArtController extends Controller
 		return view('charts.bar_graph', $data);
 	}
 
+	public function new_art()
+	{		
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
 
+		$sql = $q['select_query'] . ", " . $this->new_art_query();		
 
+		$data['rows'] = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
 
-	public function former_age_current_query()
-	{
-		return "
-			SUM(`currently_on_art_-_below_1_year`) AS `below_1`,
-			(SUM(`currently_on_art_-_male_below_15_years`) + SUM(`currently_on_art_-_female_below_15_years`)) AS `below_15`,
-			(SUM(`currently_on_art_-_male_above_15_years`) + SUM(`currently_on_art_-_female_above_15_years`)) AS `above_15`
-		";
+		$sql = $q['select_query'] . ", " . $this->new_art_query();	
+
+		$data['others'] = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['div'] = str_random(15);
+
+		return view('combined_tables.art_totals', $data);
 	}
 
-	public function former_age_enrolled_query()
-	{
-		return "
-			SUM(`under_1yr_enrolled_in_care`) AS `below_1`,
-			(SUM(`male_under_15yrs_enrolled_in_care`) + SUM(`female_under_15yrs_enrolled_in_care`)) AS `below_15`,
-			(SUM(`male_above_15yrs_&_older_enrolled_in_care`) + SUM(`female_above_15yrs_enrolled_in_care`)) AS `above_15`,
-			SUM(`total_enrolled_in_care`) AS `total`
-		";
-	}
+
+
+
 }

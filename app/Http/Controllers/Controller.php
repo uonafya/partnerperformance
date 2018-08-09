@@ -84,6 +84,25 @@ class Controller extends BaseController
 			SUM(`total_starting_on_art`) as total
 		";
     }
+	public function former_age_current_query()
+	{
+		return "
+			SUM(`currently_on_art_-_below_1_year`) AS `below_1`,
+			(SUM(`currently_on_art_-_male_below_15_years`) + SUM(`currently_on_art_-_female_below_15_years`)) AS `below_15`,
+			(SUM(`currently_on_art_-_male_above_15_years`) + SUM(`currently_on_art_-_female_above_15_years`)) AS `above_15`,
+			SUM(`total_currently_on_art`) AS `total`
+		";
+	}
+
+	public function former_age_enrolled_query()
+	{
+		return "
+			SUM(`under_1yr_enrolled_in_care`) AS `below_1`,
+			(SUM(`male_under_15yrs_enrolled_in_care`) + SUM(`female_under_15yrs_enrolled_in_care`)) AS `below_15`,
+			(SUM(`male_above_15yrs_&_older_enrolled_in_care`) + SUM(`female_above_15yrs_enrolled_in_care`)) AS `above_15`,
+			SUM(`total_enrolled_in_care`) AS `total`
+		";
+	}
 
 
     public function current_art_query()
