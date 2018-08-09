@@ -201,7 +201,7 @@ class ArtController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
-		$sql = $q['select_query'] . ", " . $this->new_art_query();	
+		$sql = $q['select_query'] . ", " . $this->former_new_art_query();	
 
 		$data['others'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
