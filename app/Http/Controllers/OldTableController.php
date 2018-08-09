@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 
-// First tests
-// Targets for testing
-
 class OldTableController extends Controller
 {
 

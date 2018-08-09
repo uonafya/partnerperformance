@@ -87,6 +87,10 @@ Route::prefix('old/table')->name('old.table.')->group(function(){
 
 
 
+Route::prefix('testing')->name('testing')->group(function(){
+	Route::get('testing_outcomes', 'ArtController@testing_outcomes')->name('testing_outcomes');
+});
+
 Route::prefix('pmtct')->name('pmtct')->group(function(){
 	Route::get('haart', 'PmtctController@haart')->name('haart');
 	Route::get('starting_point', 'PmtctController@starting_point')->name('starting_point');
