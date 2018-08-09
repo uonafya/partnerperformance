@@ -74,7 +74,7 @@ class TestingController extends Controller
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
-		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][2]['type'] = "spline";
 		$data['outcomes'][3]['type'] = "spline";
 		$data['outcomes'][4]['type'] = "spline";
 
