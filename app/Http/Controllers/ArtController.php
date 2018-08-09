@@ -58,9 +58,9 @@ class ArtController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$data["outcomes"][0]["data"][$key] = (int) $row->below1 + $rows2[$key]->below1;
-			$data["outcomes"][1]["data"][$key] = (int) $row->below_10 + $row->below15 + $rows2[$key]->below15;
-			$data["outcomes"][2]["data"][$key] = (int) $row->below_20 + $row->below25 + $row->above25 + $rows2[$key]->above15;
+			$data["outcomes"][0]["data"][$key] = (int) $row->below_1 + $rows2[$key]->below_1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below_10 + $row->below_15 + $rows2[$key]->below_15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->below_20 + $row->below_25 + $row->above_25 + $rows2[$key]->above_15;
 			$data["outcomes"][3]["data"][$key] = (int) $target->total;
 		}
 		return view('charts.bar_graph', $data);
@@ -70,9 +70,9 @@ class ArtController extends Controller
 	public function former_age_current_query()
 	{
 		return "
-			SUM(`currently_on_art_-_below_1_year`) AS `below1`,
-			(SUM(`currently_on_art_-_male_below_15_years`) + SUM(`currently_on_art_-_female_below_15_years`)) AS `below15`,
-			(SUM(`currently_on_art_-_male_above_15_years`) + SUM(`currently_on_art_-_female_above_15_years`)) AS `above15`
+			SUM(`currently_on_art_-_below_1_year`) AS `below_1`,
+			(SUM(`currently_on_art_-_male_below_15_years`) + SUM(`currently_on_art_-_female_below_15_years`)) AS `below_15`,
+			(SUM(`currently_on_art_-_male_above_15_years`) + SUM(`currently_on_art_-_female_above_15_years`)) AS `above_15`
 		";
 	}
 }
