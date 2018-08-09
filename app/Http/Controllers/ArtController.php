@@ -213,7 +213,7 @@ class ArtController extends Controller
 
 		$data['div'] = str_random(15);
 
-		return view('combined_tables.art_totals', $data);
+		return view('combined.art_totals', $data);
 	}
 
 
