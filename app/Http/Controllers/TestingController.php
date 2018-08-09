@@ -175,7 +175,7 @@ class TestingController extends Controller
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$sql = $q['select_query'] . "
+		$sql = $q['select_query'] . ",
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests,
 			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos
 		";
@@ -188,7 +188,7 @@ class TestingController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
-		$sql = $q['select_query'] . "
+		$sql = $q['select_query'] . ",
 			SUM(`total_tested_hiv`) AS tests,
 			SUM(`total_received_hivpos_results`) AS pos
 		";
@@ -201,14 +201,14 @@ class TestingController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
-		$sql2 = "
+		$sql2 = ",
 			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
 		";
 
 		$data['linked'] = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) as total")
+			->selectRaw($q['select_query'] . ", SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) as total")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
@@ -216,7 +216,7 @@ class TestingController extends Controller
 
 		$data['linked_old'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("SUM(`total_starting_on_art`) as total")
+			->selectRaw($q['select_query'] . ", SUM(`total_starting_on_art`) as total")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
