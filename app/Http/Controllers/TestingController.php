@@ -98,4 +98,75 @@ class TestingController extends Controller
 		}
 		return view('charts.dual_axis', $data);		
 	}
+
+
+	public function positivity()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$sql = "
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests,
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos
+		";
+
+		$rows = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$sql = "
+			SUM(`total_tested_hiv`) AS tests,
+			SUM(`total_received_hivpos_results`) AS pos
+		";
+
+		$rows2 = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($sql)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$sql2 = "
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
+		";
+
+		$target = DB::table('t_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql2)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$t = round(($target->tests / 12), 2);
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Positivity";
+		$data['outcomes'][1]['name'] = "Targeted Positivity";
+
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+			$pos = $row->pos + $rows2[$key]->pos;
+			$neg = $row->tests + $rows2[$key]->tests - $pos;
+
+			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($pos, ($pos + $neg));
+			$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($target->pos, $target->tests);
+		}
+		return view('charts.line_graph', $data);		
+	}
+
+
 }

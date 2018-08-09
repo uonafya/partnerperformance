@@ -32,9 +32,9 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    New On Treatment (Age Breakdown) <div class="display_date"></div>
+			    Positivity <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="new_age_breakdown">
+			<div class="panel-body" id="positivity">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -79,8 +79,10 @@
 	function reload_page()
 	{
 		$("#testing_outcomes").html("<center><div class='loader'></div></center>");
+		$("#positivity").html("<center><div class='loader'></div></center>");
 
 		$("#testing_outcomes").load("{{ secure_url('testing/testing_outcomes') }}");
+		$("#positivity").load("{{ secure_url('testing/positivity') }}");
 	}
 
 

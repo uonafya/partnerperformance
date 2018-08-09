@@ -26,11 +26,19 @@
 
         },
         legend: {
-            layout: 'vertical',
+            /*layout: 'vertical',
             align: 'right',
             verticalAlign: 'bottom',
             floating: false,
-            borderWidth: 0
+            borderWidth: 0*/
+            
+            layout: 'horizontal',
+            align: 'right',
+            x: -100,
+            verticalAlign: 'bottom',
+            y: -25,
+            floating: false,
+            backgroundColor: '#FFFFFF'
         },
         series: {!! json_encode($outcomes) !!}
             
