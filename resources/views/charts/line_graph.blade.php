@@ -13,7 +13,7 @@
         },
         yAxis: {
             title: {
-                
+                text: "{{ $ytitle ?? '' }} "
             },
             plotLines: [{
                 value: 0,
