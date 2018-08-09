@@ -85,8 +85,22 @@ Route::prefix('old/table')->name('old.table.')->group(function(){
 	Route::get('art_current', 'OldTableController@art_current')->name('art_current');
 });
 
+
+
+Route::prefix('pmtct')->name('pmtct')->group(function(){
+	Route::get('haart', 'PmtctController@haart')->name('haart');
+	Route::get('starting_point', 'PmtctController@starting_point')->name('starting_point');
+	Route::get('discovery_positivity', 'PmtctController@discovery_positivity')->name('discovery_positivity');
+	Route::get('eid', 'PmtctController@eid')->name('eid');
+	Route::get('male_testing', 'PmtctController@male_testing')->name('male_testing');
+});
+
 Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
-	Route::get('original', 'GeneralController@home');
+	Route::get('pmtct', 'GeneralController@pmtct');
+
+
+	Route::get('old_form', 'GeneralController@dupli_home');
+	Route::get('new_home', 'GeneralController@home');
 	Route::get('partner', 'GeneralController@partner_home');
 });

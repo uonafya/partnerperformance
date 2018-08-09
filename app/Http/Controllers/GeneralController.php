@@ -26,4 +26,10 @@ class GeneralController extends Controller
 		$data = Lookup::view_data();
 		return view('base.dupli_home', $data);
 	}
+
+	public function pmtct()
+	{
+		$data = Lookup::view_data();
+		return view('base.pmtct', $data);
+	}
 }
