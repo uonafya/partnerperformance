@@ -18,9 +18,9 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    On Maternal HAART  <div class="display_date"></div>
+			    Currently On Treatment (Age Breakdown) <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="haart">
+			<div class="panel-body" id="current_age_breakdown">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -89,18 +89,9 @@
 
 	function reload_page()
 	{
-		$("#haart").html("<center><div class='loader'></div></center>");		
-		$("#starting_point").html("<center><div class='loader'></div></center>");
-		$("#discovery_positivity").html("<center><div class='loader'></div></center>");
-		$("#eid").html("<center><div class='loader'></div></center>");
-		$("#male_testing").html("<center><div class='loader'></div></center>");
+		$("#current_age_breakdown").html("<center><div class='loader'></div></center>");
 
-
-		$("#haart").load("{{ secure_url('pmtct/haart') }}");
-		$("#starting_point").load("{{ secure_url('pmtct/starting_point') }}");
-		$("#discovery_positivity").load("{{ secure_url('pmtct/discovery_positivity') }}");
-		$("#eid").load("{{ secure_url('pmtct/eid') }}");
-		$("#male_testing").load("{{ secure_url('pmtct/male_testing') }}");
+		$("#current_age_breakdown").load("{{ secure_url('art/current_age_breakdown') }}");
 	}
 
 

@@ -95,9 +95,14 @@ Route::prefix('pmtct')->name('pmtct')->group(function(){
 	Route::get('male_testing', 'PmtctController@male_testing')->name('male_testing');
 });
 
+Route::prefix('art')->name('art')->group(function(){
+	Route::get('current_age_breakdown', 'ArtController@current_age_breakdown')->name('current_age_breakdown');
+});
+
 Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
 	Route::get('pmtct', 'GeneralController@pmtct');
+	Route::get('art', 'GeneralController@art');
 
 
 	Route::get('old_form', 'GeneralController@dupli_home');

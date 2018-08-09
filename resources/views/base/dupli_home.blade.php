@@ -223,22 +223,8 @@
 	}
 
 
-	$().ready(function(){
-		
+	$().ready(function(){		
 		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
-
-		$("select").change(function(){
-			em = $(this).val();
-			id = $(this).attr('id');
-
-			var posting = $.post( "{{ secure_url('filter/any') }}", { 'session_var': id, 'value': em } );
-
-			posting.done(function( data ) {
-				console.log(data);
-				reload_page();
-			});
-		});
-
 	});
 
 </script>

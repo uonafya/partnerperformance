@@ -32,4 +32,10 @@ class GeneralController extends Controller
 		$data = Lookup::view_data();
 		return view('base.pmtct', $data);
 	}
+
+	public function art()
+	{
+		$data = Lookup::view_data();
+		return view('base.art', $data);
+	}
 }

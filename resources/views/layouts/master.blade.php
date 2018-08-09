@@ -132,6 +132,18 @@
 
 		    
 
+			$("select").change(function(){
+				em = $(this).val();
+				id = $(this).attr('id');
+
+				var posting = $.post( "{{ secure_url('filter/any') }}", { 'session_var': id, 'value': em } );
+
+				posting.done(function( data ) {
+					console.log(data);
+					reload_page();
+				});
+			});		    
+
 		      //Getting the URL dynamically
 			/*var url = $(location).attr('href');
 			// Getting the file name i.e last segment of URL (i.e. example.html)
