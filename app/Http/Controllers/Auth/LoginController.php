@@ -32,14 +32,14 @@ class LoginController extends Controller
      * @var string
      */
     // protected $redirectTo = '/sample/create';
-    // protected $redirectTo = '/home';
+    protected $redirectTo = '/targets';
 
-    protected function redirectTo()
-    {
-        $partner = auth()->user()->partner;
-        session(['session_partner' => $partner]);
-        return '/targets';
-    }
+    // protected function redirectTo()
+    // {
+    //     $partner = auth()->user()->partner;
+    //     session(['session_partner' => $partner]);
+    //     return '/targets';
+    // }
 
     /**
      * Create a new controller instance.
