@@ -77,6 +77,7 @@ class OtzController extends Controller
 			$data["outcomes"][2]["data"][$key] = (int) $otz[$key]->total;
 			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total;
 		}
+		print_r($data);
 		return view('charts.bar_graph', $data);		
 	}
 
@@ -206,6 +207,9 @@ class OtzController extends Controller
 		$data['outcomes'][6]['stack'] = "OTZ";
 		$data['outcomes'][7]['stack'] = "Men";
 
+		for ($i=0; $i < 8; $i++) { 
+			$data['outcomes'][$i]['type'] = "column";
+		}
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = "FY " . $row->financial_year;
