@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lookup;
+use DB;
 
 class GeneralController extends Controller
 {
@@ -48,5 +49,14 @@ class GeneralController extends Controller
 	public function guide()
 	{
 		return view('base.user_guide', ['no_header' => true]);
+	}
+
+
+	public function targets()
+	{
+		$user = auth()->user();
+		$partner = session(['session_partner']);
+		$facilities = \App\ViewFacility::select('id', 'name')->where('partner', $user->partner_id)->get();
+		return view('base.targets', ['no_header' => true, 'facilities' => $facilities]);
 	}
 }

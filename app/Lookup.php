@@ -241,4 +241,10 @@ class Lookup
     	})->store('csv');
 
     }
+
+    public static function clean_zero($val)
+    {    	
+    	if($val) return $val;
+    	return null;
+    }
 }

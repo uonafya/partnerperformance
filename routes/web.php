@@ -11,7 +11,7 @@
 |
 */
 
-// Auth::routes();
+Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -115,4 +115,8 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('testing', 'GeneralController@testing');
 
 	Route::get('guide', 'GeneralController@guide');
+});
+
+Route::middleware(['clear_session', 'auth'])->group(function(){
+	Route::get('targets', 'GeneralController@targets');
 });
