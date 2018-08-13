@@ -22,6 +22,7 @@
 		    </div>
 			<div class="panel-body" id="user_guide">
 				<form action="{{ secure_url('target/set_target') }}" method="post" class="form-horizontal"> 
+					@csrf
 
 					<div class="form-group">
 					  <label class="col-sm-4 control-label">Financial Year 
