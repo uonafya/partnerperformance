@@ -26,7 +26,8 @@ class TargetController extends Controller
 	{
 		$financial_year = $request->input('financial_year');
 
-		$facilities = $request->input('facilities');
+		// $facilities = $request->input('facilities');
+		$facility_id = $request->input('facility_id');
 		$viremia_beneficiaries = $request->input('viremia_beneficiaries');
 		$viremia_target = $request->input('viremia_target');
 		$dsd_beneficiaries = $request->input('dsd_beneficiaries');
@@ -37,7 +38,7 @@ class TargetController extends Controller
 		$men_clinic_target = $request->input('men_clinic_target');
 
 		$today = date('Y-m-d');
-		DB::where(['financial_year' => $financial_year, 'facility_id' => $facility])->update([
+		DB::where(['financial_year' => $financial_year, 'facility_id' => $facility_id])->update([
 			'viremia_beneficiaries' => Lookup::clean_zero($viremia_beneficiaries),
 			'viremia_target' => Lookup::clean_zero($viremia_target),
 			'dsd_beneficiaries' => Lookup::clean_zero($dsd_beneficiaries),
