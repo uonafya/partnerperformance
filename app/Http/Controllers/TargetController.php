@@ -26,6 +26,8 @@ class TargetController extends Controller
 	{
 		$financial_year = $request->input('financial_year');
 
+		dd($request);
+
 		// $facilities = $request->input('facilities');
 		$facility_id = $request->input('facility_id');
 		$viremia_beneficiaries = $request->input('viremia_beneficiaries');
