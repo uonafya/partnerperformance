@@ -54,6 +54,14 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						{{--<li><a href="{{ secure_url('/') }} ">Home</a></li>--}}	
+						@auth
+							<li><a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">Home</a></li>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+						@endauth
 					</ul>
 				</div>
 			</div>
