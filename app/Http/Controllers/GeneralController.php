@@ -47,6 +47,6 @@ class GeneralController extends Controller
 
 	public function guide()
 	{
-		return view('base.user_guide');
+		return view('base.user_guide', ['no_header' => true]);
 	}
 }

@@ -62,11 +62,15 @@
 		<!-- Begining of Dashboard area -->
 		<div class="container-fluid">
 
-			@if(session('financial'))
-				@include('layouts.financial')
-			@else
-				@include('layouts.year_month')
-			@endif
+			@empty($no_header)
+
+				@if(session('financial'))
+					@include('layouts.financial')
+				@else
+					@include('layouts.year_month')
+				@endif
+
+			@endempty
 
 			@yield('content')
 		</div>
