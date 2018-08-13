@@ -61,7 +61,7 @@
                         <div class="col-sm-4">
                             <input class="form-control" name="viremia_beneficiaries" id="viremia_beneficiaries" number="number"  type="text" >
                         </div>
-                        
+
                         <label class="col-sm-2 control-label">Viremia Target</label>
                         <div class="col-sm-4">
                             <input class="form-control" name="viremia_target" id="viremia_target" number="number" type="text" >
@@ -70,72 +70,61 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">DSD Beneficiaries</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">DSD Beneficiaries</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="dsd_beneficiaries" id="dsd_beneficiaries" number="number"  type="text" >
                         </div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">DSD Target</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">DSD Target</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="dsd_target" id="dsd_target" number="number" type="text" >
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">DSD Beneficiaries</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">DSD Beneficiaries</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="dsd_beneficiaries" id="dsd_beneficiaries" number="number"  type="text" >
                         </div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">DSD Target</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">DSD Target</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="dsd_target" id="dsd_target" number="number" type="text" >
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">OTZ Beneficiaries</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">OTZ Beneficiaries</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="otz_beneficiaries" id="otz_beneficiaries" number="number"  type="text" >
                         </div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">OTZ Target</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">OTZ Target</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="otz_target" id="otz_target" number="number" type="text" >
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Men Clinic Beneficiaries</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">Men Clinic Beneficiaries</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="men_clinic_beneficiaries" id="men_clinic_beneficiaries" number="number"  type="text" >
                         </div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Men Clinic Target</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">Men Clinic Target</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="men_clinic_target" id="men_clinic_target" number="number" type="text" >
                         </div>
                     </div>
 
-                    <div>
-                    	<input type="submit" name="submit">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <button class="btn btn-success" type="submit" name="submit_type" value="release">Submit</button>
+                        @endisset
                     </div>
-
+                    
                 </form>
 
 			</div>

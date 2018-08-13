@@ -48,6 +48,9 @@ class TargetController extends Controller
 			'men_clinic_target' => Lookup::clean_zero($men_clinic_target),
 		]);
 
+		session(['toast_message' => 'The target has been updated.']);
+		return back();
+
 		// foreach ($facilities as $key => $facility) {
 		// 	DB::where(['financial_year' => $financial_year, 'facility_id' => $facility])->update([
 		// 		'viremia_beneficiaries' => Lookup::clean_zero($viremia_beneficiaries[$key]),

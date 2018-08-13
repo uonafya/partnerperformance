@@ -22,6 +22,7 @@
 		<link rel='stylesheet' href='//cdn.datatables.net/1.10.12/css/jquery.dataTables.css' type='text/css' />
 		<link rel='stylesheet' href='//cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css' type='text/css' />
 		<link rel='stylesheet' href='//cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.css' type='text/css' />
+	    <link rel="stylesheet" href="{{ secure_asset('css/toastr/toastr.min.css') }}" type="text/css">
 
 	    @yield('css_scripts')
 
@@ -98,6 +99,7 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
 
+	<script src="{{ secure_asset('js/toastr/toastr.min.js') }}"></script>
 
 	<script src='https://code.highcharts.com/highcharts.js' type='text/javascript'></script>
 	<script src='https://code.highcharts.com/highcharts-more.js' type='text/javascript'></script>
@@ -132,6 +134,27 @@
 	                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	            }
 	        });
+
+	        @php
+	            $toast_message = session()->pull('toast_message');
+	            $toast_error = session()->pull('toast_error');
+	        @endphp
+	        
+	        @if($toast_message)
+	            setTimeout(function(){
+	                toastr.options = {
+	                    closeButton: false,
+	                    progressBar: false,
+	                    showMethod: 'slideDown',
+	                    timeOut: 10000
+	                };
+	                @if($toast_error)
+	                    toastr.error("{!! $toast_message !!}", "Warning!");
+	                @else
+	                    toastr.warning("{!! $toast_message !!}");
+	                @endif
+	            });
+	        @endif
 		    
 
 		    @if(session('financial'))
