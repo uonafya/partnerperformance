@@ -18,7 +18,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    {{ $partner->name }} 
+			    {{ $partner->name ?? '' }} 
 		    </div>
 			<div class="panel-body" id="user_guide">
 				<form action="{{ secure_url('target') }}" method="post" class="form-horizontal"> 
