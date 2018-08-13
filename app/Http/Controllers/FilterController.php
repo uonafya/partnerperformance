@@ -40,16 +40,16 @@ class FilterController extends Controller
 			if($quarter){
 				switch ($quarter) {
 					case 1:
-						$display_date = "(October - December " . ($financial_year-1) . ")"
+						$display_date = "(October - December " . ($financial_year-1) . ")";
 						break;
 					case 2:
-						$display_date = "(January - March " . $financial_year . ")"
+						$display_date = "(January - March " . $financial_year . ")";
 						break;
 					case 2:
-						$display_date = "(April - June " . $financial_year . ")"
+						$display_date = "(April - June " . $financial_year . ")";
 						break;
 					case 2:
-						$display_date = "(July - September " . $financial_year . ")"
+						$display_date = "(July - September " . $financial_year . ")";
 						break;					
 					default:
 						break;

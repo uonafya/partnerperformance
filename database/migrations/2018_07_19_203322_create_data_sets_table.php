@@ -13,14 +13,14 @@ class CreateDataSetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_sets', function (Blueprint $table) {
-            $table->tinyIncrements('id');
-            $table->string('name')->nullable();
-            $table->string('code', 30)->nullable();
-            $table->string('dhis', 30)->nullable();
-            $table->string('category_dhis', 30)->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('data_sets', function (Blueprint $table) {
+        //     $table->tinyIncrements('id');
+        //     $table->string('name')->nullable();
+        //     $table->string('code', 30)->nullable();
+        //     $table->string('dhis', 30)->nullable();
+        //     $table->string('category_dhis', 30)->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -30,6 +30,6 @@ class CreateDataSetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_sets');
+        // Schema::dropIfExists('data_sets');
     }
 }

@@ -13,10 +13,10 @@ class CreateDivisionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('divisions', function (Blueprint $table) {
-            $table->tinyIncrements('id');
-            $table->string('name', 100);
-        });
+        // Schema::create('divisions', function (Blueprint $table) {
+        //     $table->tinyIncrements('id');
+        //     $table->string('name', 100);
+        // });
     }
 
     /**
@@ -26,6 +26,6 @@ class CreateDivisionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('divisions');
+        // Schema::dropIfExists('divisions');
     }
 }
