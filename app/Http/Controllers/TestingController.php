@@ -50,6 +50,8 @@ class TestingController extends Controller
 			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
 		";
+		
+		$date_query = Lookup::date_query(true);
 
 		$target = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
@@ -143,6 +145,7 @@ class TestingController extends Controller
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
 		";
 
+		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql2)
@@ -224,6 +227,7 @@ class TestingController extends Controller
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
 		";
 
+		$date_query = Lookup::date_query(true);
 		$data['targets'] = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql2)
