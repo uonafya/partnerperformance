@@ -11,7 +11,7 @@ class TargetController extends Controller
 	public function get_data(Request $request)
 	{
 		$target = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("t_non_mer.*, name")
 			->where('view_facilitys.id', $request->input('facility_id'))
 			->where('financial_year', $request->input('financial_year'))
