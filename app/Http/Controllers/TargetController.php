@@ -15,7 +15,7 @@ class TargetController extends Controller
 			->selectRaw("t_non_mer.*, name")
 			->where('view_facilitys.id', $request->input('facility_id'))
 			->where('financial_year', $request->input('financial_year'))
-			->get();
+			->first();
 
 		return $target;
 
