@@ -59,10 +59,4 @@ class GeneralController extends Controller
 		$facilities = \App\ViewFacility::select('id', 'name')->where('partner', $user->partner_id)->get();
 		return view('base.targets', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner]);
 	}
-
-	public function register()
-	{
-		$partners = \App\Partner::all();
-		return view('base.register', ['partners' => $partners]);
-	}
 }

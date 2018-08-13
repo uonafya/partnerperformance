@@ -120,9 +120,10 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('testing', 'GeneralController@testing');
 
 	Route::get('guide', 'GeneralController@guide');
+	Route::resource('user', 'UserController');
 });
 
 Route::middleware(['clear_session', 'auth'])->group(function(){
 	Route::get('target', 'GeneralController@targets');
-	
+
 });

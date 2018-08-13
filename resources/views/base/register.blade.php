@@ -8,8 +8,12 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ url('user-registration') }}" aria-label="{{ __('Register') }}">
-                        @csrf
+
+                    @if (isset($user))
+                        {{ Form::open(['url' => '/user/' . $user->id, 'method' => 'put', 'class'=>'form-horizontal']) }}
+                    @else
+                        {{ Form::open(['url'=>'/user', 'method' => 'post', 'class'=>'form-horizontal', 'id' => 'samples_form']) }}
+                    @endif
 
 
                         <div class="form-group row">
@@ -20,7 +24,11 @@
                                     <option selected='true'>Select Partner</option>
 
                                     @foreach($partners as $partner)
-                                        <option value="{{ $partner->id }}"> {{ $partner->name }} </option>
+                                        <option value="{{ $partner->id }}"
+                                            @if($user && $user->partner_id == $partner->id)
+                                                selected
+                                            @endif
+                                            > {{ $partner->name }} </option>
                                     @endforeach
                                 </select>   
                             </div>    
@@ -32,10 +40,8 @@
                             <div class="col-md-6">
                                 <select class="btn filters form-control" id="filter_partner" name="user_type_id">
                                     <option selected='true'>Select User Type</option>
-
-                                        <option value="1"> Admin </option>
-                                        <option value="2"> Partner </option>
-                                    @endforeach
+                                    <option value="1"> Admin </option>
+                                    <option value="2"> Partner </option>
                                 </select>   
                             </div>    
                         </div> 
@@ -83,7 +89,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
