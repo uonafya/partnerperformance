@@ -113,4 +113,6 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('pmtct', 'GeneralController@pmtct');
 	Route::get('art', 'GeneralController@art');
 	Route::get('testing', 'GeneralController@testing');
+
+	Route::get('guide', 'GeneralController@guide');
 });

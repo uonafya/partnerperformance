@@ -44,4 +44,9 @@ class GeneralController extends Controller
 		$data = Lookup::view_data();
 		return view('base.testing', $data);
 	}
+
+	public function guide()
+	{
+		return view('base.user_guide');
+	}
 }
