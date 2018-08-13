@@ -244,7 +244,7 @@ class Lookup
 
     public static function clean_zero($val)
     {    	
-    	if($val) return $val;
-    	return null;
+    	if($val == '' || $val == '0' || !$val) return null;
+    	return $val;
     }
 }
