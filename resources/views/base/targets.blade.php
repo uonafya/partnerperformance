@@ -84,19 +84,6 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">DSD Beneficiaries</label>
-                        <div class="col-sm-4">
-                            <input class="form-control" name="dsd_beneficiaries" id="dsd_beneficiaries" number="number"  type="text" >
-                        </div>
-
-                        <label class="col-sm-2 control-label">DSD Target</label>
-                        <div class="col-sm-4">
-                            <input class="form-control" name="dsd_target" id="dsd_target" number="number" type="text" >
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
                         <label class="col-sm-2 control-label">OTZ Beneficiaries</label>
                         <div class="col-sm-4">
                             <input class="form-control" name="otz_beneficiaries" id="otz_beneficiaries" number="number"  type="text" >
@@ -155,12 +142,16 @@
            success: function(data){
            		data = JSON.parse(data);
            		console.log(data);
+
            		$("#viremia_beneficiaries").val(data.viremia_beneficiaries);
            		$("#viremia_target").val(data.viremia_target);
+
            		$("#dsd_beneficiaries").val(data.dsd_beneficiaries);
            		$("#dsd_target").val(data.dsd_target);
+
            		$("#otz_beneficiaries").val(data.otz_beneficiaries);
            		$("#otz_target").val(data.otz_target);
+
            		$("#men_clinic_beneficiaries").val(data.men_clinic_beneficiaries);
            		$("#men_clinic_target").val(data.men_clinic_target);
            }
