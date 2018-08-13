@@ -54,8 +54,8 @@
 		$("#achievement").html("<center><div class='loader'></div></center>");
 
 
-		$("#facilities_count").load("{{ secure_url('art/facilities_count') }}");
-		$("#achievement").load("{{ secure_url('art/achievement') }}");
+		$("#facilities_count").load("{{ secure_url('otz/facilities_count') }}");
+		$("#achievement").load("{{ secure_url('otz/achievement') }}");
 	}
 
 
