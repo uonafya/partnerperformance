@@ -70,6 +70,15 @@ class OtzController extends Controller
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
 
+		$data['categories'][$key] = "FY 2017";
+		$data['categories'][$key] = "FY 2018";
+		$data['categories'][$key] = "FY 2019";
+
+		$data["outcomes"][0]["data"] = array_fill(0, 3, 0);
+		$data["outcomes"][1]["data"] = array_fill(0, 3, 0);
+		$data["outcomes"][2]["data"] = array_fill(0, 3, 0);
+		$data["outcomes"][3]["data"] = array_fill(0, 3, 0);
+
 		foreach ($viremia as $key => $row) {
 			$data['categories'][$key] = "FY " . $row->financial_year;
 			$data["outcomes"][0]["data"][$key] = (int) $row->total;
@@ -77,8 +86,7 @@ class OtzController extends Controller
 			$data["outcomes"][2]["data"][$key] = (int) $otz[$key]->total;
 			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total;
 		}
-		print_r($data);
-		// return view('charts.bar_graph', $data);		
+		return view('charts.bar_graph', $data);		
 	}
 
 	public function beneficiaries()
