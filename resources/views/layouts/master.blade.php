@@ -56,7 +56,7 @@
 						{{--<li><a href="{{ secure_url('/') }} ">Home</a></li>--}}	
 						@auth
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">Home</a></li>
+                                 document.getElementById('logout-form').submit();">Logout</a></li>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
