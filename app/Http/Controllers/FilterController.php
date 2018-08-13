@@ -45,10 +45,10 @@ class FilterController extends Controller
 					case 2:
 						$display_date = "(January - March " . $financial_year . ")";
 						break;
-					case 2:
+					case 3:
 						$display_date = "(April - June " . $financial_year . ")";
 						break;
-					case 2:
+					case 4:
 						$display_date = "(July - September " . $financial_year . ")";
 						break;					
 					default:
