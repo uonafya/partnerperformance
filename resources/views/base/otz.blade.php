@@ -41,6 +41,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Breakdown <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="breakdown">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -52,10 +65,12 @@
 	{
 		$("#facilities_count").html("<center><div class='loader'></div></center>");
 		$("#achievement").html("<center><div class='loader'></div></center>");
+		$("#breakdown").html("<center><div class='loader'></div></center>");
 
 
 		$("#facilities_count").load("{{ secure_url('otz/facilities_count') }}");
 		$("#achievement").load("{{ secure_url('otz/achievement') }}");
+		$("#breakdown").load("{{ secure_url('otz/breakdown') }}");
 	}
 
 

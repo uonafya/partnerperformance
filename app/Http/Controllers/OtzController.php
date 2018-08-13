@@ -235,6 +235,30 @@ class OtzController extends Controller
 		return view('charts.bar_graph', $data);		
 	}
 
+	public function breakdown()
+	{
+		$divisions_query = Lookup::divisions_query();
+		$date_query = Lookup::date_query(true);
+		$q = Lookup::groupby_query();
+
+		$data['rows'] = DB::table('t_non_mer')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->selectRaw($q['select_query'] . ",
+			 SUM(viremia_beneficiaries) AS viremia_beneficiaries, SUM(viremia_target) AS viremia_target,
+			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
+			 SUM(otz_beneficiaries) AS otz_beneficiaries, SUM(otz_target) AS otz_target, 
+			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['div'] = str_random(15);
+
+		return view('combined.otz', $data);
+
+	}
+
 
 
 
