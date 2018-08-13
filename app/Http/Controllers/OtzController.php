@@ -70,9 +70,9 @@ class OtzController extends Controller
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
 
-		$data['categories'][$key] = "FY 2017";
-		$data['categories'][$key] = "FY 2018";
-		$data['categories'][$key] = "FY 2019";
+		$data['categories'][0] = "FY 2017";
+		$data['categories'][1] = "FY 2018";
+		$data['categories'][2] = "FY 2019";
 
 		$data["outcomes"][0]["data"] = array_fill(0, 3, 0);
 		$data["outcomes"][1]["data"] = array_fill(0, 3, 0);
