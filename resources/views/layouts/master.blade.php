@@ -54,8 +54,13 @@
 						<li><a href="{{ secure_url('art') }} ">ART</a></li>	
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						{{--<li><a href="{{ secure_url('/') }} ">Home</a></li>--}}	
+						@guest
+							<li><a href="{{ secure_url('/login') }} ">Login</a></li>
+						@endguest	
 						@auth
+							@if(auth()->user()->user_type_id == 1)
+								<li><a href="{{ secure_url('/user/create') }} ">Login</a></li>
+							@endif
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">Logout</a></li>
 

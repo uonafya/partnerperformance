@@ -110,9 +110,18 @@
         </div>
     </div>
 </div>
+<script src="{{ secure_asset('js/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
     $(function() {
         $(".filters").select2();
+
+        $(".form-horizontal").validate({
+            errorPlacement: function (error, element)
+            {
+                element.before(error);
+            }
+            {{ $val_rules ?? '' }}
+        });
 
     });
 </script>

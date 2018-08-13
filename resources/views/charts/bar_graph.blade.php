@@ -6,7 +6,11 @@
         $('#{{$div}}').highcharts({
             plotOptions: {
                 column: {
-                    stacking: 'normal'
+                    @if(isset($stacking_false))
+                        stacking: false
+                    @else
+                        stacking: 'normal'
+                    @endif
                 }
             },
             title: {

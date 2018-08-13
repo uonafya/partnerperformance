@@ -108,22 +108,29 @@ Route::prefix('art')->name('art')->group(function(){
 	Route::get('new_art', 'ArtController@new_art')->name('new_art');
 });
 
-Route::prefix('target')->name('target')->group(function(){
-	Route::post('get_data', 'TargetController@get_data')->name('get_data');
-	Route::post('set_target', 'TargetController@set_target')->name('set_target');
+Route::prefix('otz')->name('otz')->group(function(){
+	Route::post('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
+	Route::post('achievement', 'OtzController@achievement')->name('achievement');
 });
+
+Route::prefix('target')->name('target')->group(function(){
+	Route::post('get_data', 'OtzController@get_data')->name('get_data');
+	Route::post('set_target', 'OtzController@set_target')->name('set_target');
+});
+
+
 
 Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
 	Route::get('pmtct', 'GeneralController@pmtct');
 	Route::get('art', 'GeneralController@art');
 	Route::get('testing', 'GeneralController@testing');
+	Route::get('otz', 'GeneralController@otz');
 
 	Route::get('guide', 'GeneralController@guide');
-	Route::resource('user', 'UserController');
 });
 
 Route::middleware(['clear_session', 'auth'])->group(function(){
 	Route::get('target', 'GeneralController@targets');
-
+	Route::resource('user', 'UserController');
 });

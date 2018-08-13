@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -73,6 +74,7 @@
                 </div>
             </div>
         </nav>
+
 
         <main class="py-4">
             @yield('content')
