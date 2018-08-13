@@ -8,17 +8,37 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
+                    <form method="POST" action="{{ url('user-registration') }}" aria-label="{{ __('Register') }}">
                         @csrf
 
+
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Partners</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $user->name ?? '' }}" required autofocus>
+                                <select class="btn filters form-control" id="filter_partner" name="partner_id">
+                                    <option selected='true'>Select Partner</option>
 
-                            </div>
-                        </div>
+                                    @foreach($partners as $partner)
+                                        <option value="{{ $partner->id }}"> {{ $partner->name }} </option>
+                                    @endforeach
+                                </select>   
+                            </div>    
+                        </div> 
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">User Type</label>
+
+                            <div class="col-md-6">
+                                <select class="btn filters form-control" id="filter_partner" name="user_type_id">
+                                    <option selected='true'>Select User Type</option>
+
+                                        <option value="1"> Admin </option>
+                                        <option value="2"> Partner </option>
+                                    @endforeach
+                                </select>   
+                            </div>    
+                        </div> 
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -34,7 +54,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        {{--<div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
@@ -54,7 +74,7 @@
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" required>
                             </div>
-                        </div>
+                        </div>--}}
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
@@ -63,10 +83,17 @@
                                 </button>
                             </div>
                         </div>
+                        
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function() {
+        $(".filters").select2();
+
+    });
+</script>
 @endsection

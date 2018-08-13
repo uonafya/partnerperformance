@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->tinyInteger('partner_id')->unsigned()->index();
+            $table->tinyInteger('user_type_id')->unsigned()->index();
             $table->rememberToken();
             $table->timestamps();
         });

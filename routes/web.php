@@ -124,4 +124,5 @@ Route::middleware(['clear_session'])->group(function(){
 
 Route::middleware(['clear_session', 'auth'])->group(function(){
 	Route::get('target', 'GeneralController@targets');
+	
 });
