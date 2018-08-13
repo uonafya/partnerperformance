@@ -37,6 +37,24 @@ class FilterController extends Controller
 
 		if(session('financial')){
 			$display_date = ' (October, ' . ($financial_year-1) . ' - September ' . $financial_year . ')';
+			if($quarter){
+				switch ($quarter) {
+					case 1:
+						$display_date = "(October - December " . ($financial_year-1) . ")"
+						break;
+					case 2:
+						$display_date = "(January - March " . $financial_year . ")"
+						break;
+					case 2:
+						$display_date = "(April - June " . $financial_year . ")"
+						break;
+					case 2:
+						$display_date = "(July - September " . $financial_year . ")"
+						break;					
+					default:
+						break;
+				}
+			}
 		}else{
 			$display_date = $year . ' ' . Lookup::resolve_month($month);
 		}		
