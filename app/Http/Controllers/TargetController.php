@@ -39,7 +39,7 @@ class TargetController extends Controller
 
 		$today = date('Y-m-d');
 		DB::table('t_non_mer')
-			->where(['financial_year' => $financial_year, 'facility_id' => $facility_id])
+			->where(['financial_year' => $financial_year, 'facility' => $facility_id])
 			->update([
 				'viremia_beneficiaries' => Lookup::clean_zero($viremia_beneficiaries),
 				'viremia_target' => Lookup::clean_zero($viremia_target),
