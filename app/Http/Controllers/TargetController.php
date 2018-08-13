@@ -41,14 +41,14 @@ class TargetController extends Controller
 		DB::table('t_non_mer')
 			->where(['financial_year' => $financial_year, 'facility' => $facility_id])
 			->update([
-				'viremia_beneficiaries' => Lookup::clean_zero($viremia_beneficiaries),
-				'viremia_target' => Lookup::clean_zero($viremia_target),
-				'dsd_beneficiaries' => Lookup::clean_zero($dsd_beneficiaries),
-				'dsd_target' => Lookup::clean_zero($dsd_target),
-				'otz_beneficiaries' => Lookup::clean_zero($otz_beneficiaries),
-				'otz_target' => Lookup::clean_zero($otz_target),
-				'men_clinic_beneficiaries' => Lookup::clean_zero($men_clinic_beneficiaries),
-				'men_clinic_target' => Lookup::clean_zero($men_clinic_target),
+				'viremia_beneficiaries' => $viremia_beneficiaries,
+				'viremia_target' => $viremia_target,
+				'dsd_beneficiaries' => $dsd_beneficiaries,
+				'dsd_target' => $dsd_target,
+				'otz_beneficiaries' => $otz_beneficiaries,
+				'otz_target' => $otz_target,
+				'men_clinic_beneficiaries' => $men_clinic_beneficiaries,
+				'men_clinic_target' => $men_clinic_target,
 			]);
 
 		session(['toast_message' => 'The target has been updated.']);
