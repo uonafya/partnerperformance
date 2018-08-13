@@ -108,6 +108,11 @@ Route::prefix('art')->name('art')->group(function(){
 	Route::get('new_art', 'ArtController@new_art')->name('new_art');
 });
 
+Route::prefix('target')->name('target')->group(function(){
+	Route::post('get_data', 'TargetController@get_data')->name('get_data');
+	Route::post('set_target', 'TargetController@set_target')->name('set_target');
+});
+
 Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
 	Route::get('pmtct', 'GeneralController@pmtct');

@@ -8,13 +8,13 @@ use App\Lookup;
 
 class TargetController extends Controller
 {
-	public function get_form($partner_id, $year)
+	public function get_data(Request $request)
 	{
 		$target = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("t_non_mer.*, name")
-			->where('partner', $partner_id)
-			->where('financial_year', $year)
+			->where('view_facilitys.id', $request->input('facility_id'))
+			->where('financial_year', $request->input('financial_year'))
 			->get();
 
 		return $target;

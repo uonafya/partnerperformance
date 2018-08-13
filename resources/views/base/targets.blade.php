@@ -132,9 +132,11 @@
                         </div>
                     </div>
 
+                    <div>
+                    	<input type="submit" name="submit">
+                    </div>
 
-
-				{{ Form::close() }}
+                </form>
 
 			</div>
 		</div>
@@ -150,15 +152,18 @@
 <script type="text/javascript">
 
     function get_values(facility_id, $year){    
+    	financial_year = $("#financial_year").val();
+    	facility_id = $("#facility_id").val();
 
         $.ajax({
            type: "POST",
            data: {
-			year : year,
+			financial_year : financial_year,
             facility_id : facility_id
            },
-           url: "{{ url('/sample/new_patient') }}",
+           url: "{{ secure_url('/target/get_data') }}",
            success: function(data){
+           		console.log(data);
            		// $("#patient_name").val(patient.patient_name);
            }
         });
