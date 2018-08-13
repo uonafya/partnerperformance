@@ -55,7 +55,7 @@ class GeneralController extends Controller
 	public function targets()
 	{
 		$user = auth()->user();
-		$partner = session(['session_partner']);
+		$partner = session('session_partner');
 		$facilities = \App\ViewFacility::select('id', 'name')->where('partner', $user->partner_id)->get();
 		return view('base.targets', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner]);
 	}
