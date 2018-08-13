@@ -167,6 +167,8 @@
         });
     }
 
+    function reload_page(){}
+
     $(document).ready(function(){
     	$(".form-control").attr('autocomplete', 'off');
 
