@@ -21,7 +21,7 @@
 			    {{ $partner->name }} 
 		    </div>
 			<div class="panel-body" id="user_guide">
-				{{ Form::open(['url' => '/dr_sample/' . $sample->id, 'method' => 'put', 'class'=>'form-horizontal']) }}
+				<form action="{{ secure_url('target') }}" method="post" class="form-horizontal"> 
 
 					<div class="form-group">
 					  <label class="col-sm-4 control-label">Financial Year 
@@ -144,7 +144,7 @@
 
 @section('scripts')
 
-<script src="{{ asset('js/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ secure_asset('js/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
 
     function get_values(facility_id, $year){    
