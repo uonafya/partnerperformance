@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UserSeeder::class);
-        // $this->call(DivisionSeeder::class);
+    	\App\User::create(['name' => 'joel', 'email' => 'joelkith@gmail.com', 'password' => 'password', 'partner_id' => 55])
+
     }
 }
