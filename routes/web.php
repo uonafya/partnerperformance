@@ -109,8 +109,8 @@ Route::prefix('art')->name('art')->group(function(){
 });
 
 Route::prefix('otz')->name('otz')->group(function(){
-	Route::post('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
-	Route::post('achievement', 'OtzController@achievement')->name('achievement');
+	Route::get('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
+	Route::get('achievement', 'OtzController@achievement')->name('achievement');
 });
 
 Route::prefix('target')->name('target')->group(function(){
