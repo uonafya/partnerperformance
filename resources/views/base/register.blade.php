@@ -25,7 +25,7 @@
 
                                     @foreach($partners as $partner)
                                         <option value="{{ $partner->id }}"
-                                            @if($user && $user->partner_id == $partner->id)
+                                            @if(isset($user) && $user->partner_id == $partner->id)
                                                 selected
                                             @endif
                                             > {{ $partner->name }} </option>
