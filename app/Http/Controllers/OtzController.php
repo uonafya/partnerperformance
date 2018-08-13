@@ -78,7 +78,7 @@ class OtzController extends Controller
 			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total;
 		}
 		print_r($data);
-		return view('charts.bar_graph', $data);		
+		// return view('charts.bar_graph', $data);		
 	}
 
 	public function beneficiaries()
