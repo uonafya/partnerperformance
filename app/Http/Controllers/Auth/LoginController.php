@@ -32,7 +32,7 @@ class LoginController extends Controller
      * @var string
      */
     // protected $redirectTo = '/sample/create';
-    protected $redirectTo = '/targets';
+    protected $redirectTo = 'targets';
 
     // protected function redirectTo()
     // {
