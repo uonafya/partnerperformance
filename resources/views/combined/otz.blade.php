@@ -37,14 +37,14 @@
 				@endif
 
 
-				<td> {{ number_format($viremia_beneficiaries) }} </td>
-				<td> {{ number_format($viremia_target) }} </td>
-				<td> {{ number_format($dsd_beneficiaries) }} </td>
-				<td> {{ number_format($dsd_target) }} </td>
-				<td> {{ number_format($otz_beneficiaries) }} </td>
-				<td> {{ number_format($otz_target) }} </td>
-				<td> {{ number_format($men_clinic_beneficiaries) }} </td>
-				<td> {{ number_format($men_clinic_target) }} </td>
+				<td> {{ number_format($row->viremia_beneficiaries) }} </td>
+				<td> {{ number_format($row->viremia_target) }} </td>
+				<td> {{ number_format($row->dsd_beneficiaries) }} </td>
+				<td> {{ number_format($row->dsd_target) }} </td>
+				<td> {{ number_format($row->otz_beneficiaries) }} </td>
+				<td> {{ number_format($row->otz_target) }} </td>
+				<td> {{ number_format($row->men_clinic_beneficiaries) }} </td>
+				<td> {{ number_format($row->men_clinic_target) }} </td>
 			</tr>
 		@endforeach
 	</tbody>	
