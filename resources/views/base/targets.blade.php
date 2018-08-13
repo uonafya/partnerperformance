@@ -21,7 +21,7 @@
 			    {{ $partner->name ?? '' }} 
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ secure_url('target') }}" method="post" class="form-horizontal"> 
+				<form action="{{ secure_url('target/set_target') }}" method="post" class="form-horizontal"> 
 
 					<div class="form-group">
 					  <label class="col-sm-4 control-label">Financial Year 
@@ -32,6 +32,7 @@
 					    	<option> Select One </option>
 					    	<option value="2017"> 2017 </option>
 					    	<option value="2018"> 2018 </option>
+					    	<option value="2019"> 2019 </option>
 					    </select>
 					  </div>
 					</div>
@@ -151,7 +152,8 @@
 <script src="{{ secure_asset('js/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
 
-    function get_values(facility_id, $year){    
+    // function get_values(facility_id, $year){    
+    function get_values(){    
     	financial_year = $("#financial_year").val();
     	facility_id = $("#facility_id").val();
 
@@ -164,7 +166,14 @@
            url: "{{ secure_url('/target/get_data') }}",
            success: function(data){
            		console.log(data);
-           		// $("#patient_name").val(patient.patient_name);
+           		$("#viremia_beneficiaries").val(data.viremia_beneficiaries);
+           		$("#viremia_target").val(data.viremia_target);
+           		$("#dsd_beneficiaries").val(data.dsd_beneficiaries);
+           		$("#dsd_target").val(data.dsd_target);
+           		$("#otz_beneficiaries").val(data.otz_beneficiaries);
+           		$("#otz_target").val(data.otz_target);
+           		$("#men_clinic_beneficiaries").val(data.men_clinic_beneficiaries);
+           		$("#men_clinic_target").val(data.men_clinic_target);
            }
         });
     }
@@ -173,6 +182,10 @@
     	$(".form-control").attr('autocomplete', 'off');
 
     	$(".form-horizontal select").select2();
+
+    	$("select").change(function(){
+    		get_values();
+		});	
 
 
 

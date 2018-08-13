@@ -122,6 +122,6 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('guide', 'GeneralController@guide');
 });
 
-// Route::middleware(['clear_session', 'auth'])->group(function(){
+Route::middleware(['clear_session', 'auth'])->group(function(){
 	Route::get('target', 'GeneralController@targets');
-// });
+});
