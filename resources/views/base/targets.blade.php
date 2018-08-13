@@ -29,6 +29,7 @@
 					  </label>
 					  <div class="col-sm-8">
 					    <select class="form-control requirable" required name="financial_year" id="financial_year">
+					    	<option> Select One </option>
 					    	<option value="2017"> 2017 </option>
 					    	<option value="2018"> 2018 </option>
 					    </select>
@@ -42,6 +43,7 @@
 					  </label>
 					  <div class="col-sm-8">
 					    <select class="form-control requirable" required name="facility_id" id="facility_id">
+					    	<option> Select One </option>
 					    	@foreach($facilities as $facility)
 					    		<option value="{{ $facility->id }}"> {{ $facility->name }} </option>
 					    	@endforeach

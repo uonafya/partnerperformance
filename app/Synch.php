@@ -308,7 +308,8 @@ class Synch
 		$table_name = 't_non_mer';
 		$i=0;
 		$data_array = [];
-
+		
+		$facilities = Facility::select('id')->get();
 		foreach ($facilities as $k => $val) {
 			$data_array[$i] = array('financial_year' => $year, 'facility' => $val->id);
 			$i++;
@@ -321,7 +322,7 @@ class Synch
 		}
 
 		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
-		
+
 	}
 
 
