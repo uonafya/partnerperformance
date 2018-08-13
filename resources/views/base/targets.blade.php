@@ -55,16 +55,16 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Viremia Beneficiaries</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">Viremia Beneficiaries</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="viremia_beneficiaries" id="viremia_beneficiaries" number="number"  type="text" >
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Viremia Target</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-2 control-label">Viremia Target</label>
+                        <div class="col-sm-4">
                             <input class="form-control" name="viremia_target" id="viremia_target" number="number" type="text" >
                         </div>
                     </div>
@@ -165,6 +165,7 @@
            },
            url: "{{ secure_url('/target/get_data') }}",
            success: function(data){
+           		data = JSON.parse(data);
            		console.log(data);
            		$("#viremia_beneficiaries").val(data.viremia_beneficiaries);
            		$("#viremia_target").val(data.viremia_target);
