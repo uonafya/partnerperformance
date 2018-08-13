@@ -36,7 +36,7 @@
             legend: {
                 layout: 'horizontal',
                 align: 'right',
-                x: -100,
+                x: -120,
                 verticalAlign: 'bottom',
                 y: 5,
                 floating: false,
@@ -56,7 +56,7 @@
                 '#80ff00',
                 '#ff8000',
                 '#ff00f',
-                '#8000ff'
+                '#ff4000'
             ],     
             series: {!! json_encode($outcomes) !!}
         });
