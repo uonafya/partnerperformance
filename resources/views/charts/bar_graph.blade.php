@@ -52,7 +52,11 @@
                 '#F2784B',
                 '#1BA39C',
                 '#913D88',
-                '#4d79ff'
+                '#4d79ff',
+                '#80ff00'.
+                '#ff8000',
+                '#ff00f',
+                '#8000ff'
             ],     
             series: {!! json_encode($outcomes) !!}
         });
