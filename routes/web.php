@@ -115,6 +115,7 @@ Route::prefix('otz')->name('otz')->group(function(){
 
 
 	Route::get('download/{financial_year}', 'OtzController@download_excel')->name('download');
+	Route::post('upload/{financial_year}', 'OtzController@upload_excel')->name('upload_excel');
 });
 
 Route::prefix('target')->name('target')->group(function(){
@@ -136,5 +137,6 @@ Route::middleware(['clear_session'])->group(function(){
 
 Route::middleware(['clear_session', 'auth'])->group(function(){
 	Route::get('target', 'GeneralController@targets');
+	Route::get('non_mer', 'GeneralController@non_mer');
 	Route::resource('user', 'UserController');
 });

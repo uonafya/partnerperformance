@@ -63,6 +63,13 @@ class GeneralController extends Controller
 		$user = auth()->user();
 		$partner = session('session_partner');
 		$facilities = \App\ViewFacility::select('id', 'name')->where('partner', $user->partner_id)->get();
-		return view('base.targets', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner]);
+		return view('forms.nonmer', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner]);
+	}
+
+	public function non_mer()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		return view('forms.upload_nonmer', ['no_header' => true, 'partner' => $partner]);
 	}
 }

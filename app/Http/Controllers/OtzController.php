@@ -372,6 +372,18 @@ class OtzController extends Controller
     	return response()->download($path);
 	}
 
+	public function upload_excel(Request $request)
+	{
+		$file = $request->upload->path();
+		// $path = $request->upload->store('public/results/vl');
+
+		$data = Excel::load($file, function($reader){
+			$reader->toArray();
+		})->get();
+
+		print_r($data);
+	}
+
 
 
 }
