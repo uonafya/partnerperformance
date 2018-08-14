@@ -1,7 +1,7 @@
 
 CREATE OR REPLACE VIEW  `view_facilitys` AS
  (select `facilitys`.`id`,`facilitys`.`originalID`,`facilitys`.`longitude`,`facilitys`.`latitude`,
- 	`facilitys`.`DHIScode`,`facilitys`.`facilitycode`,`facilitys`.`name`,`facilitys`.`newname`,`facilitys`.`burden`,
+ 	`facilitys`.`DHIScode`,`facilitys`.`facilitycode`,`facilitys`.`name`,`facilitys`.`new_name`,`facilitys`.`burden`,
  	`facilitys`.`totalartmar`,`facilitys`.`totalartsep17`,`facilitys`.`asofdate`,`facilitys`.`totalartsep15` AS `totalartsep15`,
  	`facilitys`.`smsprinter`,`facilitys`.`Flag`,`facilitys`.`ART`,
 
