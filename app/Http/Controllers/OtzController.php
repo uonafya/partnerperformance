@@ -353,7 +353,7 @@ class OtzController extends Controller
 			})
 			->where('partner', $partner->id)			
 			->orderBy('name', 'asc')
-			->get();
+			->get()->toArray();
 
 		$filename = snake_case($partner->name) . '_' . $financial_year;
 
