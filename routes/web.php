@@ -115,7 +115,7 @@ Route::prefix('otz')->name('otz')->group(function(){
 
 
 	Route::get('download/{financial_year}', 'OtzController@download_excel')->name('download');
-	Route::post('upload/{financial_year}', 'OtzController@upload_excel')->name('upload_excel');
+	Route::post('upload', 'OtzController@upload_excel')->name('upload_excel');
 });
 
 Route::prefix('target')->name('target')->group(function(){
