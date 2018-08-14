@@ -347,7 +347,7 @@ class OtzController extends Controller
 		$rows = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year AS `Financial Year`, name AS `Facility`, partnername AS `Partner Name`, facilitycode AS `MFL Code`, DHIScode AS `DHIS Code`, 
-				is_viremia, is_dsd, is_otz, is_men_clinic,
+				is_viremia AS `Is Viremia`, is_dsd AS `Is DSD`, is_otz AS `Is OTZ`, is_men_clinic AS `Is Men Clinic`,
 				viremia_beneficiaries AS `Viremia Beneficiaries`, dsd_beneficiaries AS `DSD Beneficiaries`, otz_beneficiaries AS `OTZ Beneficiaries`, men_clinic_beneficiaries AS `Men Clinic Beneficiaries` ")
 			->when($financial_year, function($query) use ($financial_year){
 				return $query->where('financial_year', $financial_year);
@@ -376,12 +376,29 @@ class OtzController extends Controller
 	{
 		$file = $request->upload->path();
 		// $path = $request->upload->store('public/results/vl');
+		$financial_year = $request->input('financial_year');
 
 		$data = Excel::load($file, function($reader){
 			$reader->toArray();
 		})->get();
 
-		print_r($data);
+		foreach ($data as $key => $value) {
+			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
+			$fac->fill([
+				'is_viremia' => $value->is_viremia, 'is_dsd' => $is_dsd, 'is_otz' => $is_otz, 'is_men_clinic' => $is_men_clinic,
+			]);
+			$fac->save();
+
+			DB::connection('mysql_wr')->table('t_non_mer')
+				->where(['facility' => $fac->id, 'financial_year' => $financial_year])
+				->update([
+					'viremia_beneficiaries' => $viremia_beneficiaries, 'dsd_beneficiaries' => $dsd_beneficiaries,
+					'otz_beneficiaries' => $otz_beneficiaries, 'men_clinic_beneficiaries' => $men_clinic_beneficiaries,
+				]);
+		}
+
+		session(['toast_message' => 'The updates have been made.']);
+		return back();
 	}
 
 
