@@ -59,7 +59,7 @@
 						@endguest	
 						@auth
 							<li class="dropdown">
-								<a data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Template <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
