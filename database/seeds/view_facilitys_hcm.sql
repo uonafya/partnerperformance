@@ -5,12 +5,14 @@ CREATE OR REPLACE VIEW  `view_facilitys` AS
  	`facilitys`.`totalartmar`,`facilitys`.`totalartsep17`,`facilitys`.`asofdate`,`facilitys`.`totalartsep15` AS `totalartsep15`,
  	`facilitys`.`smsprinter`,`facilitys`.`Flag`,`facilitys`.`ART`,
 
+ 	`facilitys`.`is_viremia`, `facilitys`.`is_dsd`, `facilitys`.`is_otz`, `facilitys`.`is_men_clinic`,
+
  	`facilitys`.`ward_id`, `wards`.`name` AS `wardname`,`wards`.`WardDHISCode`,`wards`.`WardMFLCode`, 
 
  	`facilitys`.`district`, `facilitys`.`subcounty_id`,`districts`.`name` AS `subcounty`,
  	`districts`.`SubCountyDHISCode`,`districts`.`SubCountyMFLCode`,
 
- 	`facilitys`.`partner`,`partners`.`name` AS `partnername`,`facilitys`.`partner2` AS `partner2`,`partners`.`mech_id`,
+ 	`facilitys`.`partner`,`partners`.`name` AS `partnername`,`facilitys`.`partner2`,`partners`.`mech_id`,
 
  	`partners`.`funding_agency_id`, `funding_agencies`.`name` AS `funding_agency`,
 

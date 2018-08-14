@@ -325,6 +325,53 @@ class Synch
 
 	}
 
+	public static function partner_targets()
+	{
+		$table_name = 'p_non_mer';
+    	$sql = "CREATE TABLE `{$table_name}` (
+    				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    				partner int(10) UNSIGNED DEFAULT 0,
+    				financial_year smallint(4) UNSIGNED DEFAULT 0,
+    				viremia_beneficiaries int(10) DEFAULT NULL,
+    				viremia_target int(10) DEFAULT NULL,
+    				dsd_beneficiaries int(10) DEFAULT NULL,
+    				dsd_target int(10) DEFAULT NULL,
+    				otz_beneficiaries int(10) DEFAULT NULL,
+    				otz_target int(10) DEFAULT NULL,
+    				men_clinic_beneficiaries int(10) DEFAULT NULL,
+    				men_clinic_target int(10) DEFAULT NULL,
+
+	        		dateupdated date DEFAULT NULL,
+					PRIMARY KEY (`id`),
+					KEY `identifier`(`partner`, `financial_year`),
+					KEY `partner` (`partner`)
+				);
+        ";
+        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::connection('mysql_wr')->statement($sql);
+	}
+
+	public static function insert_partner_nonmer($year)
+	{
+		$table_name = 'p_non_mer';
+		$i=0;
+		$data_array = [];
+		
+		$partners = Partner::select('id')->get();
+		foreach ($partners as $k => $val) {
+			$data_array[$i] = array('financial_year' => $year, 'partner' => $val->id);
+			$i++;
+
+			if ($i == 200) {
+				DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+				$data_array=null;
+		    	$i=0;
+			}
+		}
+
+		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+	}
+
 
 	public static function insert_rows($year=null)
 	{

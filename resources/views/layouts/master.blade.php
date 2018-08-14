@@ -59,7 +59,7 @@
 						@endguest	
 						@auth
 							@if(auth()->user()->user_type_id == 1)
-								<li><a href="{{ secure_url('/user/create') }} ">Login</a></li>
+								<li><a href="{{ secure_url('/user/create') }} ">Create User</a></li>
 							@endif
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">Logout</a></li>

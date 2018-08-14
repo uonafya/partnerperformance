@@ -228,18 +228,17 @@ class Lookup
 	}
 
     public static function send_report(){
-    	$mail_array = array('joelkith@gmail.com', 'tngugi@gmail.com', 'baksajoshua09@gmail.com');
+    	$mail_array = ['joelkith@gmail.com', 'tngugi@gmail.com', 'baksajoshua09@gmail.com'];
     	Mail::to($mail_array)->send(new Duplicate());
     }
 
-    public static function print_duplicates($duplicates)
+    public static function print_duplicates($duplicates, $filename='duplicates')
     {
     	Excel::create('duplicates', function($excel) use($duplicates){
     		$excel->sheet('sheet1', function($sheet) use($duplicates){
     			$sheet->fromArray($duplicates);
     		});
     	})->store('csv');
-
     }
 
     public static function clean_zero($val)

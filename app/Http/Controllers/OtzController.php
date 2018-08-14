@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Excel;
 use App\Lookup;
+
+// pns partner notification services
 
 class OtzController extends Controller
 {
@@ -335,5 +338,35 @@ class OtzController extends Controller
 		// 	]);
 		// }
 	}
+
+	public function download_excel($financial_year)
+	{
+		$partner = session('session_partner');
+
+		$rows = DB::table('t_non_mer')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->selectRaw("financial_year, name, partnername, facilitycode, DHIScode, 
+				is_viremia, is_dsd, is_otz, is_men_clinic,
+				viremia_beneficiaries, dsd_beneficiaries, otz_beneficiaries, men_clinic_beneficiaries ")
+			->when($financial_year, function($financial_year) use ($financial_year){
+				return $query->where('financial_year', $financial_year);
+			})
+			->where('partner', $partner->id)			
+			->orderBy('name', 'asc')
+			->get();
+
+		$filename = snake_case($partner->name) . '_' . $financial_year;
+
+    	Excel::create($filename, function($excel) use($rows){
+    		$excel->sheet('sheet1', function($sheet) use($rows){
+    			$sheet->fromArray($rows);
+    		});
+    	})->store('csv');
+
+    	$path = storage_path('exports/' . $filename . '.csv');
+    	return response()->download($path);
+	}
+
+
 
 }
