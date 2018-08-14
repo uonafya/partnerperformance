@@ -357,10 +357,11 @@ class OtzController extends Controller
 			->get();
 
 		foreach ($rows as $key => $row) {
-			$data[] = $row->toArray();
+			// $data[] = $row->toArray();
+			$data[] = get_object_vars($row);
 		}
 
-		print_r($rows); die();
+		// print_r($rows); die();
 
 		$filename = snake_case($partner->name) . '_' . $financial_year;
 
