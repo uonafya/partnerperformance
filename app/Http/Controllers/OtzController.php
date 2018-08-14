@@ -346,9 +346,9 @@ class OtzController extends Controller
 
 		$rows = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
-			->selectRaw("financial_year, name, partnername, facilitycode, DHIScode, 
+			->selectRaw("financial_year AS `Financial Year`, name AS `Facility`, partnername AS `Partner Name`, facilitycode AS `MFL Code`, DHIScode AS `DHIS Code`, 
 				is_viremia, is_dsd, is_otz, is_men_clinic,
-				viremia_beneficiaries, dsd_beneficiaries, otz_beneficiaries, men_clinic_beneficiaries ")
+				viremia_beneficiaries AS `Viremia Beneficiaries`, dsd_beneficiaries AS `DSD Beneficiaries`, otz_beneficiaries AS `OTZ Beneficiaries`, men_clinic_beneficiaries AS `Men Clinic Beneficiaries` ")
 			->when($financial_year, function($query) use ($financial_year){
 				return $query->where('financial_year', $financial_year);
 			})
@@ -357,13 +357,10 @@ class OtzController extends Controller
 			->get();
 
 		foreach ($rows as $key => $row) {
-			// $data[] = $row->toArray();
 			$data[] = get_object_vars($row);
 		}
 
-		// print_r($rows); die();
-
-		$filename = snake_case($partner->name) . '_' . $financial_year;
+		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year;
 
     	Excel::create($filename, function($excel) use($data){
     		$excel->sheet('sheet1', function($sheet) use($data){
