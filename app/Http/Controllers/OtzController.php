@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Excel;
 use App\Lookup;
+use App\Facility;
 
 // pns partner notification services
 
