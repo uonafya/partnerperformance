@@ -355,6 +355,8 @@ class OtzController extends Controller
 			->orderBy('name', 'asc')
 			->get()->toArray();
 
+		print_r($rows); die();
+
 		$filename = snake_case($partner->name) . '_' . $financial_year;
 
     	Excel::create($filename, function($excel) use($rows){
