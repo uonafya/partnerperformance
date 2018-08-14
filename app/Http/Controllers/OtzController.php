@@ -386,15 +386,17 @@ class OtzController extends Controller
 		foreach ($data as $key => $value) {
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
 			$fac->fill([
-				'is_viremia' => $value->is_viremia, 'is_dsd' => $is_dsd, 'is_otz' => $is_otz, 'is_men_clinic' => $is_men_clinic,
+				'is_viremia' => $value->is_viremia, 'is_dsd' => $value->is_dsd, 'is_otz' => $value->is_otz, 'is_men_clinic' => $value->is_men_clinic,
 			]);
 			$fac->save();
 
 			DB::connection('mysql_wr')->table('t_non_mer')
 				->where(['facility' => $fac->id, 'financial_year' => $financial_year])
 				->update([
-					'viremia_beneficiaries' => $viremia_beneficiaries, 'dsd_beneficiaries' => $dsd_beneficiaries,
-					'otz_beneficiaries' => $otz_beneficiaries, 'men_clinic_beneficiaries' => $men_clinic_beneficiaries,
+					'viremia_beneficiaries' => $value->viremia_beneficiaries,
+					'dsd_beneficiaries' => $value->dsd_beneficiaries,
+					'otz_beneficiaries' => $value->otz_beneficiaries,
+					'men_clinic_beneficiaries' => $value->men_clinic_beneficiaries,
 				]);
 		}
 
