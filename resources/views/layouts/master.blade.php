@@ -58,6 +58,17 @@
 							<li><a href="{{ secure_url('/login') }} ">Login</a></li>
 						@endguest	
 						@auth
+							<li class="dropdown">
+								<a data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									Download Template <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('otz/download/2017') }} ">2017</a></li>
+									<li><a href="{{ url('otz/download/2018') }} ">2018</a></li>
+									<li><a href="{{ url('otz/download/2019') }} ">2019</a></li>
+								</ul>
+							</li>
+							<li><a href="{{ url('/non_mer') }} ">Upload Non-Mer</a></li>
 							@if(auth()->user()->user_type_id == 1)
 								<li><a href="{{ secure_url('/user/create') }} ">Create User</a></li>
 							@endif
