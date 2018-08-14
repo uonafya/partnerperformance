@@ -365,9 +365,9 @@ class OtzController extends Controller
 
 		$filename = snake_case($partner->name) . '_' . $financial_year;
 
-    	Excel::create($filename, function($excel) use($rows){
-    		$excel->sheet('sheet1', function($sheet) use($rows){
-    			$sheet->fromArray($rows);
+    	Excel::create($filename, function($excel) use($data){
+    		$excel->sheet('sheet1', function($sheet) use($data){
+    			$sheet->fromArray($data);
     		});
     	})->store('csv');
 
