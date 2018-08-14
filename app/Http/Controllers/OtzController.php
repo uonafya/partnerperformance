@@ -348,7 +348,7 @@ class OtzController extends Controller
 			->selectRaw("financial_year, name, partnername, facilitycode, DHIScode, 
 				is_viremia, is_dsd, is_otz, is_men_clinic,
 				viremia_beneficiaries, dsd_beneficiaries, otz_beneficiaries, men_clinic_beneficiaries ")
-			->when($financial_year, function($financial_year) use ($financial_year){
+			->when($financial_year, function($query) use ($financial_year){
 				return $query->where('financial_year', $financial_year);
 			})
 			->where('partner', $partner->id)			
