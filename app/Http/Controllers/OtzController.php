@@ -342,6 +342,7 @@ class OtzController extends Controller
 	public function download_excel($financial_year)
 	{
 		$partner = session('session_partner');
+		$data = [];
 
 		$rows = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
@@ -353,7 +354,11 @@ class OtzController extends Controller
 			})
 			->where('partner', $partner->id)			
 			->orderBy('name', 'asc')
-			->get()->toArray();
+			->get();
+
+		foreach ($rows as $key => $row) {
+			$data[] = $row->toArray();
+		}
 
 		print_r($rows); die();
 
