@@ -476,7 +476,7 @@ class OtzController extends Controller
 
 		$partner = session('session_partner');
 
-		print_r($data);die();
+		// print_r($data);die();
 
 		foreach ($data as $key => $value) {
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
@@ -485,10 +485,10 @@ class OtzController extends Controller
 			// if($view_facility->partner != $partner->id) continue;
 
 			$fac->fill([
-				'is_viremia_yesno' => Lookup::get_boolean($value->is_viremia), 
-				'is_dsd_yesno' => Lookup::get_boolean($value->is_dsd), 
-				'is_otz_yesno' => Lookup::get_boolean($value->is_otz), 
-				'is_men_clinic_yesno' => Lookup::get_boolean($value->is_men_clinic),
+				'is_viremia_yesno' => Lookup::clean_boolean($value->is_viremia), 
+				'is_dsd_yesno' => Lookup::clean_boolean($value->is_dsd), 
+				'is_otz_yesno' => Lookup::clean_boolean($value->is_otz), 
+				'is_men_clinic_yesno' => Lookup::clean_boolean($value->is_men_clinic),
 			]);
 			$fac->save();
 
