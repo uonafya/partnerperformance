@@ -41,7 +41,8 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Upload File</label>
                         <div class="col-sm-8">
-                            <input class="form-control" name="upload" id="upload" type="file" accept=".csv" >
+                            <input class="form-control" name="upload" id="upload" type="file" accept=".xlsx, .xls, .csv" />
+                            <!--  accept=".csv, .xlsx,"  -->
                         </div>
                     </div>
 

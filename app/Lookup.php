@@ -243,7 +243,28 @@ class Lookup
 
     public static function clean_zero($val)
     {    	
-    	if($val == '' || $val == '0' || !$val) return null;
-    	return $val;
+    	if(is_numeric($val)) return $val;
+    	return null;
+    	// if($val == '' || $val == '0' || !$val) return null;
+    	// return $val;
+    }
+
+    public static function clean_boolean($val)
+    {
+    	$val = strtolower($val);
+
+    	$pos = strpos($val, 'y');
+    	if(is_numeric($pos)) return 1;
+    	$pos = strpos($val, 'n');
+    	if(is_numeric($pos)) return 0;
+
+    	return null;
+    }
+
+    public static function get_boolean($val)
+    {
+    	if($val == 1) return 'YES';
+    	if($val == 0) return 'NO';
+    	return null;
     }
 }

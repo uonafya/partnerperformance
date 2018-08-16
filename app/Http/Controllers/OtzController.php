@@ -323,6 +323,8 @@ class OtzController extends Controller
 				// 'men_clinic_target' => $men_clinic_target,
 			]);
 
+
+
 		session(['toast_message' => 'The target has been updated.']);
 		return back();
 
@@ -358,18 +360,37 @@ class OtzController extends Controller
 			->get();
 
 		foreach ($rows as $key => $row) {
-			$data[] = get_object_vars($row);
+			$row_array = get_object_vars($row);
+			$data[] = $row_array;
+			$data[$key]['Is Viremia'] = Lookup::get_boolean($row_array['Is Viremia']);
+			$data[$key]['Is DSD'] = Lookup::get_boolean($row_array['Is DSD']);
+			$data[$key]['Is OTZ'] = Lookup::get_boolean($row_array['Is OTZ']);
+			$data[$key]['Is Men Clinic'] = Lookup::get_boolean($row_array['Is Men Clinic']);
 		}
 
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year;
 
-    	Excel::create($filename, function($excel) use($data){
-    		$excel->sheet('sheet1', function($sheet) use($data){
+    	Excel::create($filename, function($excel) use($data, $key){
+    		$excel->sheet('sheet1', function($sheet) use($data, $key){
     			$sheet->fromArray($data);
-    		});
-    	})->store('csv');
 
-    	$path = storage_path('exports/' . $filename . '.csv');
+	    		$letter_array = ['F', 'G', 'H', 'I'];
+
+	    		for ($i=0; $i < $key; $i++) { 
+	    			foreach ($letter_array as $letter) {
+	    				$cell_no = $i+1;
+	    				$objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
+	    				$objValidation->setAllowBlank(true);
+	    				$objValidation->setPromptTitle('Pick from list');
+	    				$objValidation->setPrompt('Please pick a value from the drop-down list.');
+	    				$objValidation->setFormula1('"YES,NO"');
+	    			}
+	    		}
+    		});
+
+    	})->store('xlsx');
+
+    	$path = storage_path('exports/' . $filename . '.xlsx');
     	return response()->download($path);
 	}
 
@@ -386,7 +407,10 @@ class OtzController extends Controller
 		foreach ($data as $key => $value) {
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
 			$fac->fill([
-				'is_viremia' => $value->is_viremia, 'is_dsd' => $value->is_dsd, 'is_otz' => $value->is_otz, 'is_men_clinic' => $value->is_men_clinic,
+				'is_viremia' => $value->is_viremia, 
+				'is_dsd' => $value->is_dsd, 
+				'is_otz' => $value->is_otz, 
+				'is_men_clinic' => $value->is_men_clinic,
 			]);
 			$fac->save();
 
