@@ -7,6 +7,7 @@ use DB;
 use Excel;
 use App\Lookup;
 use App\Facility;
+use App\ViewFacility;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -353,7 +354,7 @@ class OtzController extends Controller
 		$rows = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year AS `Financial Year`, name AS `Facility`, partnername AS `Partner Name`, facilitycode AS `MFL Code`, DHIScode AS `DHIS Code`, 
-				is_viremia AS `Is Viremia`, is_dsd AS `Is DSD`, is_otz AS `Is OTZ`, is_men_clinic AS `Is Men Clinic`,
+				is_viremia AS `Is Viremia (YES/NO)`, is_dsd AS `Is DSD (YES/NO)`, is_otz AS `Is OTZ (YES/NO)`, is_men_clinic AS `Is Men Clinic (YES/NO)`,
 				viremia_beneficiaries AS `Viremia Beneficiaries`, dsd_beneficiaries AS `DSD Beneficiaries`, otz_beneficiaries AS `OTZ Beneficiaries`, men_clinic_beneficiaries AS `Men Clinic Beneficiaries` ")
 			->when($financial_year, function($query) use ($financial_year){
 				return $query->where('financial_year', $financial_year);
@@ -365,10 +366,10 @@ class OtzController extends Controller
 		foreach ($rows as $key => $row) {
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
-			$data[$key]['Is Viremia'] = Lookup::get_boolean($row_array['Is Viremia']);
-			$data[$key]['Is DSD'] = Lookup::get_boolean($row_array['Is DSD']);
-			$data[$key]['Is OTZ'] = Lookup::get_boolean($row_array['Is OTZ']);
-			$data[$key]['Is Men Clinic'] = Lookup::get_boolean($row_array['Is Men Clinic']);
+			$data[$key]['Is Viremia (YES/NO)'] = Lookup::get_boolean($row_array['Is Viremia (YES/NO)']);
+			$data[$key]['Is DSD (YES/NO)'] = Lookup::get_boolean($row_array['Is DSD (YES/NO)']);
+			$data[$key]['Is OTZ (YES/NO)'] = Lookup::get_boolean($row_array['Is OTZ (YES/NO)']);
+			$data[$key]['Is Men Clinic (YES/NO)'] = Lookup::get_boolean($row_array['Is Men Clinic (YES/NO)']);
 		}
 
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year;
@@ -473,15 +474,21 @@ class OtzController extends Controller
 			$reader->toArray();
 		})->get();
 
+		$partner = session('session_partner');
+
 		print_r($data);die();
 
 		foreach ($data as $key => $value) {
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
+
+			// $view_facility = ViewFacility::find($fac->id);
+			// if($view_facility->partner != $partner->id) continue;
+
 			$fac->fill([
-				'is_viremia' => $value->is_viremia, 
-				'is_dsd' => $value->is_dsd, 
-				'is_otz' => $value->is_otz, 
-				'is_men_clinic' => $value->is_men_clinic,
+				'is_viremia_yesno' => Lookup::get_boolean($value->is_viremia), 
+				'is_dsd_yesno' => Lookup::get_boolean($value->is_dsd), 
+				'is_otz_yesno' => Lookup::get_boolean($value->is_otz), 
+				'is_men_clinic_yesno' => Lookup::get_boolean($value->is_men_clinic),
 			]);
 			$fac->save();
 
