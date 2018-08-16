@@ -380,7 +380,7 @@ class OtzController extends Controller
 	    			foreach ($letter_array as $letter) {
 	    				$cell_no = $i+1;
 	    				$objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
-	    				$objValidation->setType(PHPExcel_Cell_DataValidation::TYPE_LIST);
+	    				$objValidation->setType('list');
 	    				$objValidation->setAllowBlank(true);
 	    				$objValidation->setPromptTitle('Pick from list');
 	    				$objValidation->setPrompt('Please pick a value from the drop-down list.');
