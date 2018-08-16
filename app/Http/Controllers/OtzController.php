@@ -481,8 +481,8 @@ class OtzController extends Controller
 		foreach ($data as $key => $value) {
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
 
-			// $view_facility = ViewFacility::find($fac->id);
-			// if($view_facility->partner != $partner->id) continue;
+			$view_facility = ViewFacility::find($fac->id);
+			if($view_facility->partner != $partner->id) continue;
 
 			$fac->fill([
 				'is_viremia' => Lookup::clean_boolean($value->is_viremia_yesno), 
