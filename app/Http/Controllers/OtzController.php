@@ -485,10 +485,10 @@ class OtzController extends Controller
 			// if($view_facility->partner != $partner->id) continue;
 
 			$fac->fill([
-				'is_viremia_yesno' => Lookup::clean_boolean($value->is_viremia), 
-				'is_dsd_yesno' => Lookup::clean_boolean($value->is_dsd), 
-				'is_otz_yesno' => Lookup::clean_boolean($value->is_otz), 
-				'is_men_clinic_yesno' => Lookup::clean_boolean($value->is_men_clinic),
+				'is_viremia' => Lookup::clean_boolean($value->is_viremia_yesno), 
+				'is_dsd' => Lookup::clean_boolean($value->is_dsd_yesno), 
+				'is_otz' => Lookup::clean_boolean($value->is_otz_yesno), 
+				'is_men_clinic' => Lookup::clean_boolean($value->is_men_clinic_yesno),
 			]);
 			$fac->save();
 
