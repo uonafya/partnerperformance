@@ -8,6 +8,9 @@ use Excel;
 use App\Lookup;
 use App\Facility;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 // pns partner notification services
 
 class OtzController extends Controller
@@ -379,8 +382,10 @@ class OtzController extends Controller
 	    		for ($i=0; $i < $key; $i++) { 
 	    			foreach ($letter_array as $letter) {
 	    				$cell_no = $i+1;
+	    				// $sheet->
 	    				$objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
 	    				$objValidation->setType('list');
+	    				$objValidation->setErrorStyle('information');
 	    				$objValidation->setAllowBlank(true);
 	    				$objValidation->setPromptTitle('Pick from list');
 	    				$objValidation->setPrompt('Please pick a value from the drop-down list.');
@@ -395,6 +400,69 @@ class OtzController extends Controller
     	return response()->download($path);
 	}
 
+	/*public function download_excel($financial_year)
+	{
+		$partner = session('session_partner');
+		$data = [];
+
+		$rows = DB::table('t_non_mer')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->selectRaw("financial_year AS `Financial Year`, name AS `Facility`, partnername AS `Partner Name`, facilitycode AS `MFL Code`, DHIScode AS `DHIS Code`, 
+				is_viremia AS `Is Viremia`, is_dsd AS `Is DSD`, is_otz AS `Is OTZ`, is_men_clinic AS `Is Men Clinic`,
+				viremia_beneficiaries AS `Viremia Beneficiaries`, dsd_beneficiaries AS `DSD Beneficiaries`, otz_beneficiaries AS `OTZ Beneficiaries`, men_clinic_beneficiaries AS `Men Clinic Beneficiaries` ")
+			->when($financial_year, function($query) use ($financial_year){
+				return $query->where('financial_year', $financial_year);
+			})
+			->where('partner', $partner->id)			
+			->orderBy('name', 'asc')
+			->get();
+
+		foreach ($rows as $key => $row) {
+			$row_array = get_object_vars($row);
+			$data[] = $row_array;
+			$data[$key]['Is Viremia'] = Lookup::get_boolean($row_array['Is Viremia']);
+			$data[$key]['Is DSD'] = Lookup::get_boolean($row_array['Is DSD']);
+			$data[$key]['Is OTZ'] = Lookup::get_boolean($row_array['Is OTZ']);
+			$data[$key]['Is Men Clinic'] = Lookup::get_boolean($row_array['Is Men Clinic']);
+		}
+
+		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year;
+
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+
+    	Excel::create($filename, function($excel) use($data, $key){
+    		$excel->sheet('sheet1', function($sheet) use($data, $key){
+    			$sheet->fromArray($data);
+
+	    		$letter_array = ['F', 'G', 'H', 'I'];
+
+	    		for ($i=0; $i < $key; $i++) { 
+	    			foreach ($letter_array as $letter) {
+	    				$cell_no = $i+1;
+	    				$sheet->
+	    				// $objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
+	    				// $objValidation->setType('list');
+	    				// $objValidation->setErrorStyle('information');
+	    				// $objValidation->setAllowBlank(true);
+	    				// $objValidation->setPromptTitle('Pick from list');
+	    				// $objValidation->setPrompt('Please pick a value from the drop-down list.');
+	    				// $objValidation->setFormula1('"YES,NO"');
+	    			}
+	    		}
+    		});
+
+    	})->store('xlsx');
+
+    	$path = storage_path('exports/' . $filename . '.xlsx');
+
+		$writer = new Xlsx($spreadsheet);
+		$writer->save($path);
+    	return response()->download($path);
+	}*/
+
+
+
 	public function upload_excel(Request $request)
 	{
 		$file = $request->upload->path();
@@ -404,6 +472,8 @@ class OtzController extends Controller
 		$data = Excel::load($file, function($reader){
 			$reader->toArray();
 		})->get();
+
+		print_r($data);die();
 
 		foreach ($data as $key => $value) {
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
