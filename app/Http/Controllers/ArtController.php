@@ -62,6 +62,8 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		dd($start_art_old);
+
 		$data['div'] = str_random(15);
 
 		$data['outcomes'][0]['name'] = "New tx old form";
