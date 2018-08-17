@@ -106,6 +106,8 @@ Route::prefix('art')->name('art')->group(function(){
 	Route::get('new_age_breakdown', 'ArtController@new_age_breakdown')->name('new_age_breakdown');
 	Route::get('enrolled_age_breakdown', 'ArtController@enrolled_age_breakdown')->name('enrolled_age_breakdown');
 	Route::get('new_art', 'ArtController@new_art')->name('new_art');
+	
+	Route::get('reporting', 'ArtController@reporting')->name('reporting');
 });
 
 Route::prefix('otz')->name('otz')->group(function(){
