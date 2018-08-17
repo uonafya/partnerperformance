@@ -84,9 +84,9 @@ class ArtController extends Controller
 		foreach ($start_art_old as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = (int) $row->total;
-			$data["outcomes"][1]["data"][$key] = (int) $start_art_new[$key]->total;
-			$data["outcomes"][2]["data"][$key] = (int) $current_art_old[$key]->total;
-			$data["outcomes"][3]["data"][$key] = (int) $current_art_new[$key]->total;
+			$data["outcomes"][1]["data"][$key] = (int) $start_art_new->where('year', $row->year)->where('month', $row->month)->first()->total ?? 0;
+			$data["outcomes"][2]["data"][$key] = (int) $current_art_old->where('year', $row->year)->where('month', $row->month)->first()->total ?? 0;
+			$data["outcomes"][3]["data"][$key] = (int) $current_art_new->where('year', $row->year)->where('month', $row->month)->first()->total ?? 0;
 		}
 		return view('charts.bar_graph', $data);
 	}
