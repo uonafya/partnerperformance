@@ -16,7 +16,7 @@ class ArtController extends Controller
 
 		$start_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("COUNT(DISTINCT facility) as total")
+			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
 			->whereRaw($date_query)
@@ -28,7 +28,7 @@ class ArtController extends Controller
 
 		$start_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("COUNT(DISTINCT facility) as total")
+			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`total_starting_on_art` > 0")
 			->whereRaw($date_query)
@@ -40,7 +40,7 @@ class ArtController extends Controller
 
 		$current_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("COUNT(DISTINCT facility) as total")
+			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
 			->whereRaw($date_query)
@@ -52,7 +52,7 @@ class ArtController extends Controller
 
 		$current_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("COUNT(DISTINCT facility) as total")
+			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`total_currently_on_art` > 0")
 			->whereRaw($date_query)
@@ -62,7 +62,7 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		dd($start_art_old);
+		// dd($start_art_old);
 
 		$data['div'] = str_random(15);
 
