@@ -19,7 +19,7 @@ class Controller extends BaseController
     public function check_null($object)
     {
     	if(!$object) return 0;
-    	return (int) $object->first()->total;
+    	return (int) $object->total;
     }
 
     public function tested_query()
