@@ -596,8 +596,12 @@ class Synch
 
 		        $response = $client->request('get', $url, [
 		            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
-		            // 'http_errors' => false,
+		            'http_errors' => false,
 		        ]);
+
+		        if($response->getStatusCode() >= 400){
+		        	dd($response->getBody());
+		        }
 
 		        $body = json_decode($response->getBody());
 
