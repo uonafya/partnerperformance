@@ -376,6 +376,7 @@ class Synch
 	{
 		if(!$year) $year = date('Y');
 		$table_name = 'd_regimen_totals';
+		$facilities = Facility::select('id')->get();
 
 		$i=0;
 		$data_array = [];
