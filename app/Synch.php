@@ -593,15 +593,20 @@ class Synch
 				$ou = $facility->DHIScode . ';';
 				$url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
 
+				try {
 
-		        $response = $client->request('get', $url, [
-		            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
-		            'http_errors' => false,
-		        ]);
+			        $response = $client->request('get', $url, [
+			            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+			            // 'http_errors' => false,
+			        ]);
+					
+				} catch (\Guzzle\Http\Exception\BadResponseException $e) {
+					dd($e->getMessage());
+				}
 
-		        if($response->getStatusCode() >= 400){
-		        	dd($response->getError());
-		        }
+		        // if($response->getStatusCode() >= 400){
+		        // 	dd($response->getError());
+		        // }
 
 		        $body = json_decode($response->getBody());
 
