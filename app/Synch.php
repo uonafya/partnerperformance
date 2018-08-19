@@ -597,17 +597,6 @@ class Synch
 				// $url = "analytics?dimension=dx:" . $dx . "co:OzshuDqmXQI;" . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
 				$url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
 
-				/*try {
-
-			        $response = $client->request('get', $url, [
-			            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
-			            // 'http_errors' => false,
-			        ]);
-					
-				} catch (\GuzzleHttp\Exception\ClientException $e) {
-					dd($e->getMessage());
-				}*/
-
 				$response = $client->request('get', $url, [
 		            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
 		            'http_errors' => false,
@@ -639,7 +628,7 @@ class Synch
 		        		->update($data);
 		        }
 			}
-			print_r($messy_facilities);
+			// print_r($messy_facilities);
 			echo 'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
 	}

@@ -264,7 +264,7 @@ class Lookup
     public static function get_boolean($val)
     {
     	if($val == 1) return 'YES';
-    	if($val == 0) return 'NO';
+    	// if($val == 0) return 'NO';
     	return null;
     }
 }

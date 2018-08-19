@@ -105,9 +105,7 @@ class OtzController extends Controller
 		$viremia = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(viremia_beneficiaries) AS beneficiaries, SUM(viremia_target) AS target ")
-			// ->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			// ->where('viremia_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2016)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
@@ -117,7 +115,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(dsd_beneficiaries) AS beneficiaries, SUM(dsd_target) AS target ")
 			->whereRaw($divisions_query)
-			// ->where('dsd_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2016)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
@@ -127,7 +124,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(otz_beneficiaries) AS beneficiaries, SUM(otz_target) AS target ")
 			->whereRaw($divisions_query)
-			// ->where('otz_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2016)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
@@ -137,7 +133,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(men_clinic_beneficiaries) AS beneficiaries, SUM(men_clinic_target) AS target ")
 			->whereRaw($divisions_query)
-			->where('men_clinic_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2016)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
@@ -151,20 +146,20 @@ class OtzController extends Controller
 		$data['outcomes'][2]['name'] = "OTZ Beneficiaries";
 		$data['outcomes'][3]['name'] = "Men Clinics Beneficiaries";
 
-		$data['outcomes'][4]['name'] = "Viremia Shortfall";
-		$data['outcomes'][5]['name'] = "DSD Shortfall";
-		$data['outcomes'][6]['name'] = "OTZ Shortfall";
-		$data['outcomes'][7]['name'] = "Men Clinics Shortfall";
+		// $data['outcomes'][4]['name'] = "Viremia Shortfall";
+		// $data['outcomes'][5]['name'] = "DSD Shortfall";
+		// $data['outcomes'][6]['name'] = "OTZ Shortfall";
+		// $data['outcomes'][7]['name'] = "Men Clinics Shortfall";
 
 		$data['outcomes'][0]['stack'] = "Viremia";
 		$data['outcomes'][1]['stack'] = "DSD";
 		$data['outcomes'][2]['stack'] = "OTZ";
 		$data['outcomes'][3]['stack'] = "Men";
 
-		$data['outcomes'][4]['stack'] = "Viremia";
-		$data['outcomes'][5]['stack'] = "DSD";
-		$data['outcomes'][6]['stack'] = "OTZ";
-		$data['outcomes'][7]['stack'] = "Men";
+		// $data['outcomes'][4]['stack'] = "Viremia";
+		// $data['outcomes'][5]['stack'] = "DSD";
+		// $data['outcomes'][6]['stack'] = "OTZ";
+		// $data['outcomes'][7]['stack'] = "Men";
 
 
 		foreach ($viremia as $key => $row) {
@@ -175,10 +170,10 @@ class OtzController extends Controller
 			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->beneficiaries;
 
 
-			$data["outcomes"][4]["data"][$key] = ($row->target > $row->beneficiaries ? ($row->target-$row->beneficiaries) : 0);
-			$data["outcomes"][5]["data"][$key] = ($dsd[$key]->target > $dsd[$key]->beneficiaries ? ($dsd[$key]->target-$dsd[$key]->beneficiaries) : 0);
-			$data["outcomes"][6]["data"][$key] = ($otz[$key]->target > $otz[$key]->beneficiaries ? ($otz[$key]->target-$otz[$key]->beneficiaries) : 0);
-			$data["outcomes"][7]["data"][$key] = ($men[$key]->target > $men[$key]->beneficiaries ? ($men[$key]->target-$men[$key]->beneficiaries) : 0);
+			// $data["outcomes"][4]["data"][$key] = ($row->target > $row->beneficiaries ? ($row->target-$row->beneficiaries) : 0);
+			// $data["outcomes"][5]["data"][$key] = ($dsd[$key]->target > $dsd[$key]->beneficiaries ? ($dsd[$key]->target-$dsd[$key]->beneficiaries) : 0);
+			// $data["outcomes"][6]["data"][$key] = ($otz[$key]->target > $otz[$key]->beneficiaries ? ($otz[$key]->target-$otz[$key]->beneficiaries) : 0);
+			// $data["outcomes"][7]["data"][$key] = ($men[$key]->target > $men[$key]->beneficiaries ? ($men[$key]->target-$men[$key]->beneficiaries) : 0);
 		}
 		return view('charts.bar_graph', $data);		
 	}

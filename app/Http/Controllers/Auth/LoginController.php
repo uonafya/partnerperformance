@@ -38,7 +38,7 @@ class LoginController extends Controller
     {
         $partner = auth()->user()->partner;
         session(['session_partner' => $partner]);
-        return '/target';
+        return '/non_mer';
     }
 
     /**
