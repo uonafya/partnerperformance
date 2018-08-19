@@ -575,7 +575,7 @@ class Synch
 
 		foreach ($regimens as $regimen) {
 			$dx .= $regimen->dhis_code . ';';
-			break;
+			// break;
 		}
 
         foreach ($services as $service) {
