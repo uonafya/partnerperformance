@@ -45,6 +45,10 @@ Artisan::command('populate {year?}', function ($year=null) {
 	\App\Synch::populate($year);
 })->describe('Populate data tables with values.');
 
+Artisan::command('regimens {year?}', function ($year=null) {
+	\App\Synch::populate_regimen($year);
+})->describe('Populate regimen tables with values.');
+
 
 
 Artisan::command('targets {year?}', function ($year=null) {

@@ -372,6 +372,33 @@ class Synch
 		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
 	}
 
+	public static function insert_for_regimen($year=null)
+	{
+		if(!$year) $year = date('Y');
+		$table_name = 'd_regimen_totals';
+
+		$i=0;
+		$data_array = [];
+
+		for ($month=1; $month < 13; $month++) { 
+			foreach ($facilities as $k => $val) {
+				$data = array('year' => $year, 'month' => $month, 'facility' => $val->id);
+				$data = array_merge($data, self::get_financial_year_quarter($year, $month) );
+				$data_array[$i] = $data;
+				$i++;
+
+				if ($i == 200) {
+					DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+					$data_array=null;
+			    	$i=0;
+				}
+			}
+		}
+		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+
+        echo 'Completed entry for ' . $table_name . " \n";
+	}
+
 
 	public static function insert_rows($year=null)
 	{
@@ -517,6 +544,83 @@ class Synch
 	        echo  'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
 	} 
+
+	public static function populate_regimen($year=null)
+	{
+		if(!$year) $year = date('Y');
+        $client = new Client(['base_uri' => self::$base]);
+
+        $regimens = DB::table('view_regimen_dhis')->get();
+        $services = DB::table('tbl_service')->get();
+
+        echo 'Begin updates at ' . date('Y-m-d H:i:s a') . " \n";
+
+		$pe = $dx = '';
+		$offset=0;
+		$periods = [];
+		$my_services = [];
+
+		for($month=1; $month < 13; $month++) {
+			if($month < 10) $month = '0' . $month;
+			$pe .= $year . $month . ';';
+			$periods[] = [
+				'name' => $year . $month, 
+				'year' => $year,
+				'month' => $month,
+			];
+		}
+
+		foreach ($regimens as $regimen) {
+			$dx .= $regimen->dhis_code . ';';
+		}
+
+        foreach ($services as $service) {
+        	$sub = $regimens->where('service_id', $service->id)->pluck('dhis_code')->toArray();
+        	$my_services[] = [
+        		'service_id' => $service->id,
+        		'column_name' => $service->column_name,
+        		'codes' => $sub,	
+        	];
+        }
+
+		while (true) {
+			$facilities = Facility::eligible($offset)->get();
+			$offset += 50;
+			if($facilities->isEmpty()) break;
+
+			foreach ($facilities as $facility) {
+				$ou = $facility->DHIScode . ';';
+				$url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
+
+
+		        $response = $client->request('get', $url, [
+		            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+		            // 'http_errors' => false,
+		        ]);
+
+		        $body = json_decode($response->getBody());
+
+		        foreach ($periods as $period) {
+		        	$data['dateupdated'] = date('Y-m-d');
+		        	foreach ($my_services as $my_service) {
+		        		$column = $my_service['column_name'];
+		        		$data[$column] = 0;
+
+		        		foreach ($body->rows as $key => $value){
+		        			if($value[2] == $period['name'] && in_array($value[0], $my_service['codes'])) {
+		        				$data[$column] += $value[3];
+		        			}
+		        		}
+		        	}
+
+		        	DB::connection('mysql_wr')->table('d_regimen_totals')
+		        		->where(['facility' => $facility->id, 'year' => $period['year'], 'month' => $period['month']])
+		        		->update($data);
+		        }
+			}
+			echo  'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
+		}
+	}
 
 	public static function stuff()
 	{
