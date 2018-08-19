@@ -554,6 +554,8 @@ class Synch
         $regimens = DB::table('view_regimen_dhis')->get();
         $services = DB::table('tbl_service')->get();
 
+        $messy_facilities = [];
+
         echo 'Begin updates at ' . date('Y-m-d H:i:s a') . " \n";
 
 		$pe = $dx = '';
@@ -592,7 +594,8 @@ class Synch
 
 			foreach ($facilities as $facility) {
 				$ou = $facility->DHIScode . ';';
-				$url = "analytics?dimension=dx:" . $dx . "co:OzshuDqmXQI;" . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
+				// $url = "analytics?dimension=dx:" . $dx . "co:OzshuDqmXQI;" . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
+				$url = "analytics?dimension=dx:" . $dx . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
 
 				try {
 
@@ -605,9 +608,16 @@ class Synch
 					dd($e->getMessage());
 				}
 
-		        // if($response->getStatusCode() >= 400){
-		        // 	dd($response->getError());
-		        // }
+				$response = $client->request('get', $url, [
+		            'auth' => [env('DHIS_USERNAME'), env('DHIS_PASSWORD')],
+		            'http_errors' => false,
+		        ]);
+
+		        if($response->getStatusCode() == 409){
+		        	// dd($response->getError());
+		        	$messy_facilities[] = $facility->id;
+		        	continue;
+		        }
 
 		        $body = json_decode($response->getBody());
 
@@ -624,9 +634,9 @@ class Synch
 		        		}
 		        	}
 
-		        	// DB::connection('mysql_wr')->table('d_regimen_totals')
-		        	// 	->where(['facility' => $facility->id, 'year' => $period['year'], 'month' => $period['month']])
-		        	// 	->update($data);
+		        	DB::connection('mysql_wr')->table('d_regimen_totals')
+		        		->where(['facility' => $facility->id, 'year' => $period['year'], 'month' => $period['month']])
+		        		->update($data);
 		        }
 			}
 			echo  'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
