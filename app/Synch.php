@@ -600,7 +600,7 @@ class Synch
 			            // 'http_errors' => false,
 			        ]);
 					
-				} catch (\Guzzle\Http\Exception\BadResponseException $e) {
+				} catch (\GuzzleHttp\Exception\ClientException $e) {
 					dd($e->getMessage());
 				}
 
