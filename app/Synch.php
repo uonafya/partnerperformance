@@ -600,7 +600,7 @@ class Synch
 		        ]);
 
 		        if($response->getStatusCode() >= 400){
-		        	dd($response->getBody());
+		        	dd($response->getError());
 		        }
 
 		        $body = json_decode($response->getBody());
