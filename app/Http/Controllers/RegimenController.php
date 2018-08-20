@@ -134,7 +134,6 @@ class RegimenController extends Controller
 			->get();
 
 
-
 		$data['pmtct_rows'] = DB::table(DB::raw($subquery_pmtct))
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
