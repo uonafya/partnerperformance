@@ -97,7 +97,7 @@ class RegimenController extends Controller
 			(
 				SELECT MAX(`id`) 
 				FROM `d_regimen_totals`
-				WHERE {$divisions_query} AND {$date_query} AND art>0
+				WHERE {$date_query} AND art>0
 				GROUP BY facility
 			)
 		) qu";
@@ -109,7 +109,7 @@ class RegimenController extends Controller
 			(
 				SELECT MAX(`id`) 
 				FROM `d_regimen_totals`
-				WHERE {$divisions_query} AND {$date_query} AND pmtct>0
+				WHERE {$date_query} AND pmtct>0
 				GROUP BY facility
 			)
 		) qu";
