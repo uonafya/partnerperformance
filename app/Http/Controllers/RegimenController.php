@@ -95,6 +95,23 @@ class RegimenController extends Controller
 
 		) qu";
 
+		$c = " SELECT partner as div_id, partnername as name, SUM(`qu`.`art`) AS `art`
+			FROM (
+			SELECT facility, art
+			FROM `d_regimen_totals` d
+			RIGHT JOIN
+			(
+				SELECT MAX(`id`) AS max_id
+				FROM `d_regimen_totals`
+				WHERE {$date_query} AND art>0
+				GROUP BY facility
+			) s ON s.max_id=d.id
+
+		) qu
+		JOIN view_facilitys ON view_facilitys.id=qu.facility
+		GROUP BY partner
+		";
+
 		$subquery_pmtct = "(
 			SELECT facility, pmtct
 			FROM `d_regimen_totals` d
@@ -108,20 +125,20 @@ class RegimenController extends Controller
 		) qu";
 
 
-		$data['art_rows'] = DB::connection('mysql')->fromRaw($subquery_art)
+		$data['art_rows'] = DB::table($subquery_art)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
-			->whereRaw($date_query)
+			// ->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
 			->get();
 
 
 
-		$data['pmtct_rows'] = DB::connection('mysql')->fromRaw($subquery_pmtct)
+		$data['pmtct_rows'] = DB::table($subquery_pmtct)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
-			->whereRaw($date_query)
+			// ->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
 			->get();
