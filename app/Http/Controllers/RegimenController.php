@@ -82,14 +82,6 @@ class RegimenController extends Controller
 		$sql_art = $q['select_query'] . ",  SUM(`qu`.`art`) AS `art` ";
 		$sql_pmtct = $q['select_query'] . ", SUM(`pmtct`) AS `pmtct` ";
 
-		// $subquery = "(
-		// 	SELECT facility, MAX(`art`) AS `art`, MAX(`pmtct`) AS `pmtct`
-		// 	FROM `d_regimen_totals`
-		// 	JOIN `view_facilitys` ON `view_facilitys`.`id`=`d_regimen_totals`.`facility`
-		// 	WHERE {$divisions_query} AND {$date_query}
-		// 	GROUP BY facility
-		// ) qu";
-
 		$subquery_art = "(
 			SELECT facility, art
 			FROM `d_regimen_totals` d
@@ -115,26 +107,16 @@ class RegimenController extends Controller
 			) s ON s.max_id=d.id
 		) qu";
 
-		$test_sql = "(
-			SELECT * 
-			FROM *
-			RIGHT JOIN 
-			(
-				SELECT MAX(n.id) as max_id,
-				FROM d_care_and_treatment o
-				JOIN d_hiv_and_tb_treatment n ON n.id=o.id
-				WHERE {$divisions_query} AND {$date_query} AND (o.total_currently_on_art > 0 OR n.`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0)
-				GROUP BY facility
-			)
-		) qu";
 
-		$data['art_rows'] = DB::table($subquery_art)
+		$data['art_rows'] = DB::table($subquery_art)->from()
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
-			->get();
+			->getSQL();
+
+
 
 		$data['pmtct_rows'] = DB::table($subquery_pmtct)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
@@ -142,12 +124,39 @@ class RegimenController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
-			->get();
+			->getSQL();
 
 		$data['div'] = str_random(15);
+
+		dd($data);
 
 		return view('combined.regimen_pmtct', $data);
 
 	}
+
+
+
+		// $subquery = "(
+		// 	SELECT facility, MAX(`art`) AS `art`, MAX(`pmtct`) AS `pmtct`
+		// 	FROM `d_regimen_totals`
+		// 	JOIN `view_facilitys` ON `view_facilitys`.`id`=`d_regimen_totals`.`facility`
+		// 	WHERE {$divisions_query} AND {$date_query}
+		// 	GROUP BY facility
+		// ) qu";
+
+		// $test_sql = "(
+		// 	SELECT * 
+		// 	FROM *
+		// 	RIGHT JOIN 
+		// 	(
+		// 		SELECT MAX(n.id) as max_id,
+		// 		FROM d_care_and_treatment o
+		// 		JOIN d_hiv_and_tb_treatment n ON n.id=o.id
+		// 		WHERE {$divisions_query} AND {$date_query} AND (o.total_currently_on_art > 0 OR n.`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0)
+		// 		GROUP BY facility
+		// 	)
+		// ) qu";
+
+
 
 }
