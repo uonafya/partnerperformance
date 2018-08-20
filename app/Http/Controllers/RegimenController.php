@@ -18,7 +18,7 @@ class RegimenController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
-			->whereRaw("`art` > 0")
+			->whereRaw("`d_regimen_totals`.`art` > 0")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy('year', 'month')
@@ -79,7 +79,7 @@ class RegimenController extends Controller
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$sql_art = $q['select_query'] . ",  SUM(`art`) AS `art` ";
+		$sql_art = $q['select_query'] . ",  SUM(`qu`.`art`) AS `art` ";
 		$sql_pmtct = $q['select_query'] . ", SUM(`pmtct`) AS `pmtct` ";
 
 		// $subquery = "(
