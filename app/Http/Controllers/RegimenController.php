@@ -108,7 +108,7 @@ class RegimenController extends Controller
 		) qu";
 
 
-		$data['art_rows'] = DB::fromRaw($subquery_art)
+		$data['art_rows'] = DB::connection('mysql')->fromRaw($subquery_art)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
 			->whereRaw($date_query)
@@ -118,7 +118,7 @@ class RegimenController extends Controller
 
 
 
-		$data['pmtct_rows'] = DB::fromRaw($subquery_pmtct)
+		$data['pmtct_rows'] = DB::connection('mysql')->fromRaw($subquery_pmtct)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
 			->whereRaw($date_query)
