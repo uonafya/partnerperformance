@@ -80,7 +80,7 @@ class RegimenController extends Controller
 		$q = Lookup::groupby_query();
 
 		$sql_art = $q['select_query'] . ",  SUM(`qu`.`art`) AS `art` ";
-		$sql_pmtct = $q['select_query'] . ", SUM(`pmtct`) AS `pmtct` ";
+		$sql_pmtct = $q['select_query'] . ", SUM(`qu`.`pmtct`) AS `pmtct` ";
 
 		$subquery_art = "(
 			SELECT facility, art
@@ -136,7 +136,7 @@ class RegimenController extends Controller
 
 		$data['pmtct_rows'] = DB::table(DB::raw($subquery_pmtct))
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
-			->selectRaw($sql_art)
+			->selectRaw($sql_pmtct)
 			// ->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
