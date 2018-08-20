@@ -108,23 +108,23 @@ class RegimenController extends Controller
 		) qu";
 
 
-		$data['art_rows'] = DB::table($subquery_art)
+		$data['art_rows'] = DB::fromRaw($subquery_art)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
-			->getSQL();
+			->get();
 
 
 
-		$data['pmtct_rows'] = DB::table($subquery_pmtct)
+		$data['pmtct_rows'] = DB::fromRaw($subquery_pmtct)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
-			->getSQL();
+			->get();
 
 		$data['div'] = str_random(15);
 
