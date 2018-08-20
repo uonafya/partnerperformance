@@ -21,6 +21,9 @@
 			    {{ $partner->name ?? '' }} 
 		    </div>
 			<div class="panel-body" id="user_guide">
+                <p>
+                    Download the template in the link above, fill it in then upload it in the form below.
+                </p>
 				<form action="{{ secure_url('target/set_target') }}" method="post" class="form-horizontal"> 
 					@csrf
 

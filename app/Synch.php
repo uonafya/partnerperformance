@@ -627,9 +627,9 @@ class Synch
 		        		->update($data);
 		        }
 			}
-			// print_r($messy_facilities);
 			echo 'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
+		DB::connection('mysql_wr')->whereIn('id', $messy_facilities)->update(['invalid_dhis' => 1]);
 	}
 
 	public static function stuff()

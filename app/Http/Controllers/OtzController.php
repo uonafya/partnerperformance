@@ -97,6 +97,69 @@ class OtzController extends Controller
 		return view('charts.bar_graph', $data);		
 	}
 
+	public function clinics()
+	{
+		// $date_query = Lookup::date_query(true);
+		$divisions_query = Lookup::divisions_query();
+
+		$select_query = "COUNT(id) AS total ";
+
+		$viremia = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->whereRaw($divisions_query)
+			->where('is_viremia', 1)
+			->get();
+
+		$dsd = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->whereRaw($divisions_query)
+			->where('is_dsd', 1)
+			->get();
+
+		$otz = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->whereRaw($divisions_query)
+			->where('is_otz', 1)
+			->get();
+
+		$men = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->whereRaw($divisions_query)
+			->where('is_men_clinic', 1)
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['stacking_false'] = false;
+
+		$data['outcomes'][0]['name'] = "Viremia Facilities";
+		$data['outcomes'][1]['name'] = "DSD Facilities";
+		$data['outcomes'][2]['name'] = "OTZ Facilities";
+		$data['outcomes'][3]['name'] = "Men Clinics";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "column";
+
+		$data['categories'][0] = "FY 2017";
+		$data['categories'][1] = "FY 2018";
+		$data['categories'][2] = "FY 2019";
+
+		$data["outcomes"][0]["data"] = array_fill(0, 3, 0);
+		$data["outcomes"][1]["data"] = array_fill(0, 3, 0);
+		$data["outcomes"][2]["data"] = array_fill(0, 3, 0);
+		$data["outcomes"][3]["data"] = array_fill(0, 3, 0);
+
+		foreach ($viremia as $key => $row) {
+			$data['categories'][$key] = "FY " . $row->financial_year;
+			$data["outcomes"][0]["data"][$key] = (int) $row->total;
+			$data["outcomes"][1]["data"][$key] = (int) $dsd[$key]->total;
+			$data["outcomes"][2]["data"][$key] = (int) $otz[$key]->total;
+			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total;
+		}
+		return view('charts.bar_graph', $data);		
+	}
+
 	public function beneficiaries()
 	{
 		// $date_query = Lookup::date_query(true);

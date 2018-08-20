@@ -52,6 +52,12 @@ class GeneralController extends Controller
 		return view('base.otz', $data);
 	}
 
+	public function regimen()
+	{
+		$data = Lookup::view_data();
+		return view('base.regimen', $data);
+	}
+
 	public function guide()
 	{
 		return view('base.user_guide', ['no_header' => true]);

@@ -120,9 +120,9 @@ Route::prefix('otz')->name('otz')->group(function(){
 	Route::post('upload', 'OtzController@upload_excel')->name('upload_excel');
 });
 
-Route::prefix('target')->name('target')->group(function(){
-	Route::post('get_data', 'OtzController@get_data')->name('get_data');
-	Route::post('set_target', 'OtzController@set_target')->name('set_target');
+Route::prefix('regimen')->name('regimen')->group(function(){
+	Route::get('reporting', 'RegimenController@reporting')->name('reporting');
+	Route::get('summary', 'RegimenController@summary')->name('summary');
 });
 
 
@@ -133,12 +133,20 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('art', 'GeneralController@art');
 	Route::get('testing', 'GeneralController@testing');
 	Route::get('otz', 'GeneralController@otz');
+	Route::get('regimen', 'GeneralController@regimen');
 
 	Route::get('guide', 'GeneralController@guide');
 });
 
 Route::middleware(['clear_session', 'auth'])->group(function(){
-	Route::get('target', 'GeneralController@targets');
+
+	Route::prefix('target')->name('target')->group(function(){
+		Route::post('get_data', 'OtzController@get_data')->name('get_data');
+		Route::post('set_target', 'OtzController@set_target')->name('set_target');
+
+		Route::get('target', 'GeneralController@targets');
+	});
+	
 	Route::get('non_mer', 'GeneralController@non_mer');
 	Route::resource('user', 'UserController');
 });
