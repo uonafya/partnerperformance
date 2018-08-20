@@ -92,26 +92,27 @@ class RegimenController extends Controller
 
 		$subquery_art = "(
 			SELECT facility, art
-			FROM `d_regimen_totals`
+			FROM `d_regimen_totals` d
 			RIGHT JOIN
 			(
-				SELECT MAX(`id`) 
+				SELECT MAX(`id`) AS max_id
 				FROM `d_regimen_totals`
 				WHERE {$date_query} AND art>0
 				GROUP BY facility
-			)
+			) s ON s.max_id=d.id
+
 		) qu";
 
 		$subquery_pmtct = "(
 			SELECT facility, pmtct
-			FROM `d_regimen_totals`
+			FROM `d_regimen_totals` d
 			RIGHT JOIN
 			(
-				SELECT MAX(`id`) 
+				SELECT MAX(`id`) AS max_id
 				FROM `d_regimen_totals`
 				WHERE {$date_query} AND pmtct>0
 				GROUP BY facility
-			)
+			) s ON s.max_id=d.id
 		) qu";
 
 		$test_sql = "(
