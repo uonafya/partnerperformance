@@ -90,9 +90,9 @@ class OtzController extends Controller
 		foreach ($viremia as $key => $row) {
 			$data['categories'][$key] = "FY " . $row->financial_year;
 			$data["outcomes"][0]["data"][$key] = (int) $row->total;
-			$data["outcomes"][1]["data"][$key] = (int) $dsd[$key]->total;
-			$data["outcomes"][2]["data"][$key] = (int) $otz[$key]->total;
-			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total;
+			$data["outcomes"][1]["data"][$key] = (int) $dsd[$key]->total ?? 0;
+			$data["outcomes"][2]["data"][$key] = (int) $otz[$key]->total ?? 0;
+			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total ?? 0;
 		}
 		return view('charts.bar_graph', $data);		
 	}

@@ -603,7 +603,9 @@ class Synch
 
 		        if($response->getStatusCode() == 409){
 		        	// dd($response->getError());
-		        	$messy_facilities[] = $facility->id;
+		        	// $messy_facilities[] = $facility->id;
+		        	$facility->invalid_dhis = 1;
+		        	$facility->save();
 		        	continue;
 		        }
 
@@ -629,7 +631,7 @@ class Synch
 			}
 			echo 'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
-		DB::connection('mysql_wr')->whereIn('id', $messy_facilities)->update(['invalid_dhis' => 1]);
+		// DB::connection('mysql_wr')->whereIn('id', $messy_facilities)->update(['invalid_dhis' => 1]);
 	}
 
 	public static function stuff()

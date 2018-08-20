@@ -53,8 +53,8 @@ class RegimenController extends Controller
 		$data['div'] = str_random(15);
 
 		$data['outcomes'][0]['name'] = "Current tx MOH 729";
-		$data['outcomes'][1]['name'] = "Current tx old form";
-		$data['outcomes'][2]['name'] = "Current tx new form";
+		$data['outcomes'][1]['name'] = "Current tx MOH 731";
+		$data['outcomes'][2]['name'] = "Current tx MOH 731 rev. 2018";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
