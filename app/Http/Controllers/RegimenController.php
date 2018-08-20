@@ -108,7 +108,7 @@ class RegimenController extends Controller
 		) qu";
 
 
-		$data['art_rows'] = DB::table($subquery_art)->from()
+		$data['art_rows'] = DB::table($subquery_art)
 			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
 			->selectRaw($sql_art)
 			->whereRaw($date_query)
