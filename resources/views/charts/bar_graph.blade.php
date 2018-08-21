@@ -21,7 +21,7 @@
             }],
             yAxis: {
                 title: {
-                    text: {{ $yAxis ?? 'Totals' }}
+                    text: "{{ $yAxis ?? 'Totals' }}"
                 }
             },
 
