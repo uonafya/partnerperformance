@@ -125,8 +125,8 @@ class ArtController extends Controller
 								->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
 							->first();
 
-			$data["outcomes"][4]["data"][$key] = (int) $double_starting->total ?? 0;
-			$data["outcomes"][5]["data"][$key] = (int) $double_current->total ?? 0;
+			$data["outcomes"][4]["data"][$key] = is_object($double_starting) ? (int) $double_starting->total : 0;
+			$data["outcomes"][5]["data"][$key] = is_object($double_current) ? (int) $double_current->total : 0;
 
 
 		}
