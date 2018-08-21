@@ -93,6 +93,7 @@ class OtzController extends Controller
 			$data["outcomes"][2]["data"][$key] = $this->check_null($otz[$key] ?? null);
 			$data["outcomes"][3]["data"][$key] = $this->check_null($men[$key] ?? null);
 		}
+		dd($data);
 		return view('charts.bar_graph', $data);		
 	}
 
@@ -163,6 +164,8 @@ class OtzController extends Controller
 			$data["outcomes"][1]["data"][3] = (int) $targets->men_clinic ?? 0;
 
 		}
+
+		dd($data);
 
 		return view('charts.bar_graph', $data);		
 	}
