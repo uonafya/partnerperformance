@@ -95,15 +95,15 @@ class ArtController extends Controller
 		$data['outcomes'][2]['name'] = "Current tx old form";
 		$data['outcomes'][3]['name'] = "Current tx new form";
 
-		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][4]['name'] = "Reporting New tx twice";
+		$data['outcomes'][5]['name'] = "Reporting Current tx twice";
 
 		$data['outcomes'][0]['type'] = "spline";
 		$data['outcomes'][1]['type'] = "spline";
 		$data['outcomes'][2]['type'] = "spline";
 		$data['outcomes'][3]['type'] = "spline";
+		$data['outcomes'][4]['type'] = "spline";
+		$data['outcomes'][5]['type'] = "spline";
 
 		foreach ($current_art_old as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
@@ -117,8 +117,16 @@ class ArtController extends Controller
 							->where(['year' => $row->year, 'month' => $row->month])
 							->whereRaw("facility IN (" . $start_art_old_q
 								->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
-							->get();
-			dd($double_starting);
+							->first();
+
+			$double_current = $current_art_new_q
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (" . $current_art_old_q
+								->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
+							->first();
+
+			$data["outcomes"][4]["data"][$key] = (int) $double_starting->total ?? 0;
+			$data["outcomes"][5]["data"][$key] = (int) $double_current->total ?? 0;
 
 
 		}
