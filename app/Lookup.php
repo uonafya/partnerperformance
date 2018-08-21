@@ -179,6 +179,62 @@ class Lookup
 		return $query;
 	}
 
+	public static function year_month_query()
+	{
+		if(session('financial')){
+			$cfy = date('Y');
+			if(date('m') > 9) $cfy++;
+
+			$financial_year = session('filter_financial_year');
+			$quarter = session('filter_quarter');
+
+			if(!$quarter){
+				if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
+				else{
+					$month = date('m') - 1;
+					if($month == 9) $financial_year--;
+					if($month == 0) $month=12;
+					return " financial_year='{$financial_year}' and month='{$month}'";
+				}
+			}
+			else{
+				$n = \App\Synch::get_financial_year_quarter(date('Y'), date('m'));
+				$month = self::max_per_quarter($quarter);
+
+				if($financial_year <> $cfy || ($financial_year == $cfy && $quarter <> $n['quarter'])){					
+					return " financial_year='{$financial_year}' and month='{$month}'";
+				}
+				else{
+					$month = date('m') - 1;
+					if($month == 9) $financial_year--;
+					if($month == 0) $month=12;
+					return " financial_year='{$financial_year}' and month='{$month}'";
+
+				}
+			}
+		}
+	}
+
+	public static function max_per_quarter($quarter){
+		switch ($quarter) {
+			case 1:
+				$m = 12;
+				break;
+			case 2:
+				$m = 3;
+				break;
+			case 3:
+				$m = 6;
+				break;
+			case 4:
+				$m = 9;
+				break;			
+			default:
+				break;
+		}
+		return $m;
+	}
+
 	public static function divisions_query()
 	{
 		$query = "1 ";

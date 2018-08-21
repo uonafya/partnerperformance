@@ -127,8 +127,6 @@ class ArtController extends Controller
 
 			$data["outcomes"][4]["data"][$key] = is_object($double_starting) ? (int) $double_starting->total : 0;
 			$data["outcomes"][5]["data"][$key] = is_object($double_current) ? (int) $double_current->total : 0;
-
-
 		}
 		return view('charts.bar_graph', $data);
 	}
@@ -328,6 +326,37 @@ class ArtController extends Controller
 			->get();
 
 		$sql = $q['select_query'] . ", " . $this->former_new_art_query();	
+
+		$data['others'] = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['div'] = str_random(15);
+
+		return view('combined.art_totals', $data);
+	}
+
+	public function current_art()
+	{		
+		$date_query = Lookup::year_month_query();
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
+
+		$sql = $q['select_query'] . ", " . $this->current_art_query();		
+
+		$data['rows'] = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$sql = $q['select_query'] . ", " . $this->former_age_current_query();	
 
 		$data['others'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
