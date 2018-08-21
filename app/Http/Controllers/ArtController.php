@@ -22,13 +22,14 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$start_art_new = DB::table('d_hiv_and_tb_treatment')
+		$start_art_new_q = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
-			->whereRaw($divisions_query)
-			->whereRaw($date_query)
+			->whereRaw($divisions_query);
+
+		$start_art_new = $start_art_new_q->whereRaw($date_query)
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -46,13 +47,23 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$current_art_new = DB::table('d_hiv_and_tb_treatment')
+		$start_art_old_q = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw("DISTINCT facility")
+			->whereRaw("`total_starting_on_art` > 0")
+			->whereRaw($divisions_query);
+
+
+
+		$current_art_new_q = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
 			->whereRaw($divisions_query)
-			->whereRaw($date_query)
+			->whereRaw($date_query);
+
+		$current_art_new = $current_art_new_q->whereRaw($date_query)
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -69,6 +80,12 @@ class ArtController extends Controller
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
 			->get();
+
+		$start_art_old_q = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw("DISTINCT facility")
+			->whereRaw("`total_currently_on_art` > 0")
+			->whereRaw($divisions_query);
 
 
 		$data['div'] = str_random(15);
@@ -95,6 +112,13 @@ class ArtController extends Controller
 			// $data["outcomes"][2]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][2]["data"][$key] = (int) $row->total;
 			$data["outcomes"][3]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
+
+			$double_starting = $start_art_old_q
+							->where(['year' => $row->year, 'month' => $month])
+							->whereRaw("facility IN (" . $start_art_old_q
+								->where(['year' => $row->year, 'month' => $month])->toSql() . ")")
+							->get();
+			dd($double_starting);
 
 
 		}
