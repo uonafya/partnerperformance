@@ -81,7 +81,7 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$start_art_old_q = DB::table('d_care_and_treatment')
+		$current_art_new_q = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw("DISTINCT facility")
 			->whereRaw("`total_currently_on_art` > 0")
