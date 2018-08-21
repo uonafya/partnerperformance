@@ -159,6 +159,17 @@ class ArtController extends Controller
 			->get();
 
 
+		$rows3 = DB::table('d_regimen_totals')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
+			->selectRaw("SUM(art) AS art, SUM(pmtct) AS pmtct ")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
@@ -172,20 +183,23 @@ class ArtController extends Controller
 		$data['outcomes'][0]['name'] = "Below 1";
 		$data['outcomes'][1]['name'] = "Below 15";
 		$data['outcomes'][2]['name'] = "Above 15";
-		$data['outcomes'][3]['name'] = "Target";
+		$data['outcomes'][3]['name'] = "MOH 729 Current tx Total";
+		$data['outcomes'][4]['name'] = "Target";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "column";
-		$data['outcomes'][3]['type'] = "spline";
+		$data['outcomes'][3]['type'] = "column";
+		$data['outcomes'][4]['type'] = "spline";
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = (int) $row->below_1 + $rows2[$key]->below_1;
 			$data["outcomes"][1]["data"][$key] = (int) $row->below_10 + $row->below_15 + $rows2[$key]->below_15;
 			$data["outcomes"][2]["data"][$key] = (int) $row->below_20 + $row->below_25 + $row->above_25 + $rows2[$key]->above_15;
+			$data["outcomes"][3]["data"][$key] = (int) $rows3[$key]->art + $rows3[$key]->pmtct;
 
-			$data["outcomes"][3]["data"][$key] = (int) $target->total;
+			$data["outcomes"][4]["data"][$key] = (int) $target->total;
 		}
 		return view('charts.bar_graph', $data);
 	}

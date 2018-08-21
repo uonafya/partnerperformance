@@ -46,7 +46,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Target Achievement <div class="display_date"></div>
+			    Number of Beneficiaries <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="achievement">
 				<center><div class="loader"></div></center>
