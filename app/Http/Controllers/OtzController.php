@@ -107,25 +107,25 @@ class OtzController extends Controller
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
 			->where('is_viremia', 1)
-			->get();
+			->first();
 
 		$dsd = DB::table('view_facilitys')
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
 			->where('is_dsd', 1)
-			->get();
+			->first();
 
 		$otz = DB::table('view_facilitys')
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
 			->where('is_otz', 1)
-			->get();
+			->first();
 
 		$men = DB::table('view_facilitys')
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
 			->where('is_men_clinic', 1)
-			->get();
+			->first();
 
 		$data['div'] = str_random(15);
 		$data['stacking_false'] = false;
@@ -140,22 +140,12 @@ class OtzController extends Controller
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
 
-		$data['categories'][0] = "FY 2017";
-		$data['categories'][1] = "FY 2018";
-		$data['categories'][2] = "FY 2019";
+		$data['categories'][0] = "Total number of clinics";
+		$data["outcomes"][0]["data"][$key] = (int) $viremia->total ?? 0;
+		$data["outcomes"][1]["data"][$key] = (int) $dsd->total ?? 0;
+		$data["outcomes"][2]["data"][$key] = (int) $otz->total ?? 0;
+		$data["outcomes"][3]["data"][$key] = (int) $men->total ?? 0;
 
-		$data["outcomes"][0]["data"] = array_fill(0, 3, 0);
-		$data["outcomes"][1]["data"] = array_fill(0, 3, 0);
-		$data["outcomes"][2]["data"] = array_fill(0, 3, 0);
-		$data["outcomes"][3]["data"] = array_fill(0, 3, 0);
-
-		foreach ($viremia as $key => $row) {
-			$data['categories'][$key] = "FY " . $row->financial_year;
-			$data["outcomes"][0]["data"][$key] = (int) $row->total;
-			$data["outcomes"][1]["data"][$key] = (int) $dsd[$key]->total ?? 0;
-			$data["outcomes"][2]["data"][$key] = (int) $otz[$key]->total ?? 0;
-			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total ?? 0;
-		}
 		return view('charts.bar_graph', $data);		
 	}
 
