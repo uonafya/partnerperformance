@@ -93,7 +93,7 @@ class OtzController extends Controller
 			$data["outcomes"][2]["data"][$key] = $this->check_null($otz[$key] ?? null);
 			$data["outcomes"][3]["data"][$key] = $this->check_null($men[$key] ?? null);
 		}
-		dd($data);
+		// dd($data);
 		return view('charts.bar_graph', $data);		
 	}
 
@@ -149,7 +149,7 @@ class OtzController extends Controller
 			$financial_year = session('filter_financial_year');
 
 			$targets = DB::table('p_non_mer')
-				->leftJoin('view_facilitys', 'view_facilitys.partner', '=', 'p_non_mer.partner')
+				->leftJoin('partners', 'partners.id', '=', 'p_non_mer.partner')
 				->selectRaw("SUM(viremia) AS viremia, SUM(dsd) AS dsd, SUM(otz) AS otz, SUM(men_clinic) AS men_clinic ")
 				->whereRaw($divisions_query)
 				->where('financial_year', $financial_year)
@@ -165,7 +165,7 @@ class OtzController extends Controller
 
 		}
 
-		dd($data);
+		// dd($data);
 
 		return view('charts.bar_graph', $data);		
 	}
