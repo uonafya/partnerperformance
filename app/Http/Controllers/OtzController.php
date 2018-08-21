@@ -136,12 +136,33 @@ class OtzController extends Controller
 		$data['categories'][3] = "Men Clinics";
 
 		$data['outcomes'][0]['type'] = "column";
-
 		$data['outcomes'][0]['name'] = "Total number of clinics";
+
 		$data["outcomes"][0]["data"][0] = (int) $viremia->total ?? 0;
 		$data["outcomes"][0]["data"][1] = (int) $dsd->total ?? 0;
 		$data["outcomes"][0]["data"][2] = (int) $otz->total ?? 0;
 		$data["outcomes"][0]["data"][3] = (int) $men->total ?? 0;
+
+		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
+
+			$financial_year = session('filter_financial_year');
+
+			$targets = DB::table('p_non_mer')
+				->leftJoin('view_facilitys', 'view_facilitys.partner', '=', 'p_non_mer.partner')
+				->selectRaw("SUM(viremia) AS viremia, SUM(dsd) AS dsd, SUM(otz) AS otz, SUM(men_clinic) AS men_clinic ")
+				->whereRaw($divisions_query)
+				->where('financial_year', $financial_year)
+				->first();
+
+			$data['outcomes'][1]['type'] = "spline";
+			$data['outcomes'][1]['name'] = "Targeted number of clinics";
+
+			$data["outcomes"][1]["data"][0] = (int) $targets->viremia ?? 0;
+			$data["outcomes"][1]["data"][1] = (int) $targets->dsd ?? 0;
+			$data["outcomes"][1]["data"][2] = (int) $targets->otz ?? 0;
+			$data["outcomes"][1]["data"][3] = (int) $targets->men_clinic ?? 0;
+
+		}
 
 		return view('charts.bar_graph', $data);		
 	}
