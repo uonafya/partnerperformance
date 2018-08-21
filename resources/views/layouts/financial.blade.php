@@ -1,4 +1,4 @@
-
+@if(isset($counties))
 <div class="row" id="filter">
 	<div class="col-md-3">
 		<select class="btn filters form-control" id="filter_county">
@@ -88,3 +88,4 @@
 	</div>
 	
 </div>
+@endif

@@ -74,7 +74,7 @@
 
     <script type="text/javascript">
         $(function() {
-            $("#filter").hide();
+            // $("#filter").hide();
         });
     </script>
 @endsection
