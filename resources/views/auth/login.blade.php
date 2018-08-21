@@ -5,9 +5,9 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ $partner->name ?? '' }} 
+                Login 
             </div>
-            <div class="panel-body" id="user_guide">
+            <div class="panel-body" id="login">
 
 
                 <form method="POST" action="{{ secure_url('login') }}" aria-label="{{ __('Login') }}">
@@ -27,6 +27,8 @@
                         </div>
                     </div>
 
+                    <br />
+
                     <div class="form-group">
                         <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
@@ -41,6 +43,8 @@
                         </div>
                     </div>
 
+                    <br />
+
                     <div class="form-group">
                         <div class="col-md-6 offset-md-4">
                             <div class="form-check">
@@ -52,6 +56,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <br />
 
                     <div class="form-group mb-0">
                         <div class="col-md-8 offset-md-4">
