@@ -130,21 +130,18 @@ class OtzController extends Controller
 		$data['div'] = str_random(15);
 		$data['stacking_false'] = false;
 
-		$data['outcomes'][0]['name'] = "Viremia Facilities";
-		$data['outcomes'][1]['name'] = "DSD Facilities";
-		$data['outcomes'][2]['name'] = "OTZ Facilities";
-		$data['outcomes'][3]['name'] = "Men Clinics";
+		$data['categories'][0] = "Viremia Facilities";
+		$data['categories'][1] = "DSD Facilities";
+		$data['categories'][2] = "OTZ Facilities";
+		$data['categories'][3] = "Men Clinics";
 
 		$data['outcomes'][0]['type'] = "column";
-		$data['outcomes'][1]['type'] = "column";
-		$data['outcomes'][2]['type'] = "column";
-		$data['outcomes'][3]['type'] = "column";
 
 		$data['categories'][0] = "Total number of clinics";
-		$data["outcomes"][0]["data"][$key] = (int) $viremia->total ?? 0;
-		$data["outcomes"][1]["data"][$key] = (int) $dsd->total ?? 0;
-		$data["outcomes"][2]["data"][$key] = (int) $otz->total ?? 0;
-		$data["outcomes"][3]["data"][$key] = (int) $men->total ?? 0;
+		$data["outcomes"][0]["data"][0] = (int) $viremia->total ?? 0;
+		$data["outcomes"][0]["data"][1] = (int) $dsd->total ?? 0;
+		$data["outcomes"][0]["data"][2] = (int) $otz->total ?? 0;
+		$data["outcomes"][0]["data"][3] = (int) $men->total ?? 0;
 
 		return view('charts.bar_graph', $data);		
 	}
