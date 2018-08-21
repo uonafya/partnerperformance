@@ -192,8 +192,9 @@ class Lookup
 				if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
 				else{
 					$month = date('m') - 1;
+					if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
-					if($month == 0) $month=12;
+					if($month < 1) $month += 12;
 					return " financial_year='{$financial_year}' and month='{$month}'";
 				}
 			}
@@ -206,10 +207,10 @@ class Lookup
 				}
 				else{
 					$month = date('m') - 1;
+					if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
-					if($month == 0) $month=12;
+					if($month < 1) $month += 12;
 					return " financial_year='{$financial_year}' and month='{$month}'";
-
 				}
 			}
 		}

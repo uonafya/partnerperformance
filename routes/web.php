@@ -13,7 +13,7 @@
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::post('facility/search', 'FilterController@facility')->name('facility.search');
@@ -131,6 +131,7 @@ Route::prefix('regimen')->name('regimen')->group(function(){
 
 Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
+	Route::get('home', 'GeneralController@home');
 	Route::get('pmtct', 'GeneralController@pmtct');
 	Route::get('art', 'GeneralController@art');
 	Route::get('testing', 'GeneralController@testing');
