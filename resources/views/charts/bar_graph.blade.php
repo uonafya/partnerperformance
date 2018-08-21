@@ -19,6 +19,11 @@
             xAxis: [{
                 categories: {!! json_encode($categories) !!}
             }],
+            yAxis: {
+                title: {
+                    text: {{ $yAxis ?? 'Totals' }}
+                }
+            },
 
             tooltip: {
                 borderRadius: 2,

@@ -14,28 +14,30 @@ class ArtController extends Controller
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
 
-		$start_art_new = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
-			->addSelect('year', 'month')
-			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
+		$dates = DB::table('d_hiv_and_tb_treatment')
+			->select('year', 'month')
 			->whereRaw($date_query)
-			->whereRaw($divisions_query)
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
 			->get();
+
+		$start_art_new_q = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw("COUNT(facility) as total")
+			->addSelect('year', 'month')
+			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
+			->whereRaw($divisions_query);
+
+		$start_art_new = $start_art_new_q->whereRaw($date_query)->get();
 
 		$start_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`total_starting_on_art` > 0")
-			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupBy('year', 'month')
-			->orderBy('year', 'asc')
-			->orderBy('month', 'asc')
+			->whereRaw($date_query)
 			->get();
 
 		$current_art_new = DB::table('d_hiv_and_tb_treatment')
@@ -43,11 +45,8 @@ class ArtController extends Controller
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
-			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupBy('year', 'month')
-			->orderBy('year', 'asc')
-			->orderBy('month', 'asc')
+			->whereRaw($date_query)
 			->get();
 
 		$current_art_old = DB::table('d_care_and_treatment')
@@ -55,14 +54,10 @@ class ArtController extends Controller
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`total_currently_on_art` > 0")
-			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupBy('year', 'month')
-			->orderBy('year', 'asc')
-			->orderBy('month', 'asc')
+			->whereRaw($date_query)
 			->get();
 
-		// dd($start_art_old);
 
 		$data['div'] = str_random(15);
 
@@ -81,12 +76,14 @@ class ArtController extends Controller
 		$data['outcomes'][2]['type'] = "spline";
 		$data['outcomes'][3]['type'] = "spline";
 
-		foreach ($start_art_old as $key => $row) {
+		foreach ($dates as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$data["outcomes"][0]["data"][$key] = (int) $row->total;
+			$data["outcomes"][0]["data"][$key] = $this->check_null($start_art_old->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][1]["data"][$key] = $this->check_null($start_art_new->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][2]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][3]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
+
+
 		}
 		return view('charts.bar_graph', $data);
 	}
