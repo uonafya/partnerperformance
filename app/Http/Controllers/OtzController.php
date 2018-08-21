@@ -81,10 +81,10 @@ class OtzController extends Controller
 		$data['categories'][0] = "FY 2018";
 		$data['categories'][1] = "FY 2019";
 
-		$data["outcomes"][0]["data"] = array_fill(0, 3, 0);
-		$data["outcomes"][1]["data"] = array_fill(0, 3, 0);
-		$data["outcomes"][2]["data"] = array_fill(0, 3, 0);
-		$data["outcomes"][3]["data"] = array_fill(0, 3, 0);
+		$data["outcomes"][0]["data"] = array_fill(0, 2, 0);
+		$data["outcomes"][1]["data"] = array_fill(0, 2, 0);
+		$data["outcomes"][2]["data"] = array_fill(0, 2, 0);
+		$data["outcomes"][3]["data"] = array_fill(0, 2, 0);
 
 		foreach ($viremia as $key => $row) {
 			$data['categories'][$key] = "FY " . $row->financial_year;
@@ -289,7 +289,7 @@ class OtzController extends Controller
 		// $data['outcomes'][6]['stack'] = "OTZ";
 		// $data['outcomes'][7]['stack'] = "Men";
 
-		for ($i=0; $i < 8; $i++) { 
+		for ($i=0; $i < 4; $i++) { 
 			$data['outcomes'][$i]['type'] = "column";
 		}
 
