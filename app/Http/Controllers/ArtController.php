@@ -113,7 +113,7 @@ class ArtController extends Controller
 			$data["outcomes"][2]["data"][$key] = (int) $row->total;
 			$data["outcomes"][3]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
 
-			$double_starting = $start_art_old_q
+			$double_starting = $start_art_new_q
 							->where(['year' => $row->year, 'month' => $row->month])
 							->whereRaw("facility IN (" . $start_art_old_q
 								->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
