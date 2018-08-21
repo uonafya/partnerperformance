@@ -224,6 +224,40 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$sql = "
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests,
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos
+		";
+
+		$rows3 = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$sql = "
+			SUM(`total_tested_hiv`) AS tests,
+			SUM(`total_received_hivpos_results`) AS pos
+		";
+
+		$rows4 = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($sql)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+
+
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
@@ -237,24 +271,29 @@ class ArtController extends Controller
 		$data['outcomes'][0]['name'] = "Below 1";
 		$data['outcomes'][1]['name'] = "Below 15";
 		$data['outcomes'][2]['name'] = "Above 15";
-		$data['outcomes'][3]['name'] = "Target";
+		$data['outcomes'][3]['name'] = "Positive Tests";
+		$data['outcomes'][4]['name'] = "Target";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "column";
-		$data['outcomes'][3]['type'] = "spline";
+		$data['outcomes'][3]['type'] = "column";
+		$data['outcomes'][4]['type'] = "spline";
 
-		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][0]['stack'] = 'new_art';
+		$data['outcomes'][1]['stack'] = 'new_art';
+		$data['outcomes'][2]['stack'] = 'new_art';
+		$data['outcomes'][3]['stack'] = 'positives';
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = (int) $row->below_1 + $rows2[$key]->below_1;
 			$data["outcomes"][1]["data"][$key] = (int) $row->below_10 + $row->below_15 + $rows2[$key]->below_15;
 			$data["outcomes"][2]["data"][$key] = (int) $row->below_20 + $row->below_25 + $row->above_25 + $rows2[$key]->above_15;
-			$data["outcomes"][3]["data"][$key] = (int) $target->total;
+
+			$data["outcomes"][3]["data"][$key] = (int) $rows3[$key]->pos + $rows4[$key]->pos;
+
+			$data["outcomes"][4]["data"][$key] = (int) $target->total;
 		}
 		return view('charts.bar_graph', $data);
 	}
