@@ -137,7 +137,7 @@ class OtzController extends Controller
 
 		$data['outcomes'][0]['type'] = "column";
 
-		$data['categories'][0] = "Total number of clinics";
+		$data['outcomes'][0]['name'] = "Total number of clinics";
 		$data["outcomes"][0]["data"][0] = (int) $viremia->total ?? 0;
 		$data["outcomes"][0]["data"][1] = (int) $dsd->total ?? 0;
 		$data["outcomes"][0]["data"][2] = (int) $otz->total ?? 0;
