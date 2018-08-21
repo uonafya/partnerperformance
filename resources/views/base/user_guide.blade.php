@@ -11,6 +11,9 @@
 		width: 130px;
 		display: inline;
 	}
+	p {
+		font-size: 15px;
+	}
 </style>
 
 

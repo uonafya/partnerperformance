@@ -15,8 +15,6 @@ class County extends BaseModel
 
 	// Facilities reporting in both forms
 	// 729 currently art
-	// New on art as a % of enrolled
-	// Positives with new on art - stacks side by side
 	// Age disaggregrates in testing
 	// Login 
 	// Early warning indicators

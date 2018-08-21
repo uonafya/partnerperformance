@@ -55,11 +55,11 @@
 						<li><a href="{{ url('otz') }} ">Non Mer</a></li>	
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{{ url('/guide') }} ">User Guide</a></li>
 						@guest
 							<li><a href="{{ url('/login') }} ">Login</a></li>
 						@endguest	
 						@auth
-							<li><a href="{{ url('/guide') }} ">User Guide</a></li>
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Non-mer Template <b class="caret"></b>
