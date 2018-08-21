@@ -116,7 +116,7 @@ class ArtController extends Controller
 			$double_starting = $start_art_old_q
 							->where(['year' => $row->year, 'month' => $row->month])
 							->whereRaw("facility IN (" . $start_art_old_q
-								->where(['year' => $row->year, 'month' => $row->month])->toSql() . ")")
+								->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
 							->get();
 			dd($double_starting);
 
