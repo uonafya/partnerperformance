@@ -161,7 +161,7 @@ class ArtController extends Controller
 
 		$rows3 = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
-			->selectRaw("SUM(art) AS art, SUM(pmtct) AS pmtct ")
+			->selectRaw("SUM(d_regimen_totals.art) AS art, SUM(pmtct) AS pmtct ")
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -191,6 +191,11 @@ class ArtController extends Controller
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
 		$data['outcomes'][4]['type'] = "spline";
+
+		$data['outcomes'][0]['stack'] = 'current_art';
+		$data['outcomes'][1]['stack'] = 'current_art';
+		$data['outcomes'][2]['stack'] = 'current_art';
+		$data['outcomes'][3]['stack'] = 'moh_729';
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
