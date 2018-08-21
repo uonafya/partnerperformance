@@ -88,11 +88,12 @@ class ArtController extends Controller
 		$data['outcomes'][2]['type'] = "spline";
 		$data['outcomes'][3]['type'] = "spline";
 
-		foreach ($dates as $key => $row) {
+		foreach ($current_art_old as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = $this->check_null($start_art_old->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][1]["data"][$key] = $this->check_null($start_art_new->where('year', $row->year)->where('month', $row->month)->first());
-			$data["outcomes"][2]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
+			// $data["outcomes"][2]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
+			$data["outcomes"][2]["data"][$key] = (int) $row->total;
 			$data["outcomes"][3]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
 
 
