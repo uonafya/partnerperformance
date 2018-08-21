@@ -255,20 +255,20 @@ class OtzController extends Controller
 		$data['outcomes'][2]['name'] = "OTZ Beneficiaries";
 		$data['outcomes'][3]['name'] = "Men Clinics Beneficiaries";
 
-		$data['outcomes'][4]['name'] = "Viremia Shortfall";
-		$data['outcomes'][5]['name'] = "DSD Shortfall";
-		$data['outcomes'][6]['name'] = "OTZ Shortfall";
-		$data['outcomes'][7]['name'] = "Men Clinics Shortfall";
+		// $data['outcomes'][4]['name'] = "Viremia Shortfall";
+		// $data['outcomes'][5]['name'] = "DSD Shortfall";
+		// $data['outcomes'][6]['name'] = "OTZ Shortfall";
+		// $data['outcomes'][7]['name'] = "Men Clinics Shortfall";
 
 		$data['outcomes'][0]['stack'] = "Viremia";
 		$data['outcomes'][1]['stack'] = "DSD";
 		$data['outcomes'][2]['stack'] = "OTZ";
 		$data['outcomes'][3]['stack'] = "Men";
 
-		$data['outcomes'][4]['stack'] = "Viremia";
-		$data['outcomes'][5]['stack'] = "DSD";
-		$data['outcomes'][6]['stack'] = "OTZ";
-		$data['outcomes'][7]['stack'] = "Men";
+		// $data['outcomes'][4]['stack'] = "Viremia";
+		// $data['outcomes'][5]['stack'] = "DSD";
+		// $data['outcomes'][6]['stack'] = "OTZ";
+		// $data['outcomes'][7]['stack'] = "Men";
 
 		for ($i=0; $i < 8; $i++) { 
 			$data['outcomes'][$i]['type'] = "column";
@@ -282,10 +282,10 @@ class OtzController extends Controller
 			$data["outcomes"][3]["data"][$key] = (int) $row->men_clinic_beneficiaries;
 
 
-			$data["outcomes"][4]["data"][$key] = ($row->viremia_target > $row->viremia_beneficiaries ? ($row->viremia_target-$row->viremia_beneficiaries) : 0);
-			$data["outcomes"][5]["data"][$key] = ($row->dsd_target > $row->dsd_beneficiaries ? ($row->dsd_target-$row->dsd_beneficiaries) : 0);
-			$data["outcomes"][6]["data"][$key] = ($row->otz_target > $row->otz_beneficiaries ? ($row->otz_target-$row->otz_beneficiaries) : 0);
-			$data["outcomes"][7]["data"][$key] = ($row->men_clinic_target > $row->men_clinic_beneficiaries ? ($row->men_clinic_target-$row->men_clinic_beneficiaries) : 0);
+			// $data["outcomes"][4]["data"][$key] = ($row->viremia_target > $row->viremia_beneficiaries ? ($row->viremia_target-$row->viremia_beneficiaries) : 0);
+			// $data["outcomes"][5]["data"][$key] = ($row->dsd_target > $row->dsd_beneficiaries ? ($row->dsd_target-$row->dsd_beneficiaries) : 0);
+			// $data["outcomes"][6]["data"][$key] = ($row->otz_target > $row->otz_beneficiaries ? ($row->otz_target-$row->otz_beneficiaries) : 0);
+			// $data["outcomes"][7]["data"][$key] = ($row->men_clinic_target > $row->men_clinic_beneficiaries ? ($row->men_clinic_target-$row->men_clinic_beneficiaries) : 0);
 		}
 		return view('charts.bar_graph', $data);		
 	}
