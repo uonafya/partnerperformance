@@ -12,7 +12,7 @@
 		display: inline;
 	}
 	p {
-		font-size: 15px;
+		font-size: 22px;
 	}
 </style>
 
