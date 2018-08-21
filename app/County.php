@@ -13,4 +13,10 @@ class County extends BaseModel
 		return $this->hasMany('App\Subcounty', 'county');
 	}
 
+	// Facilities reporting in both forms
+	// 729 currently art
+	// New on art as a % of enrolled
+	// Positives with new on art - stacks side by side
+
+
 }
