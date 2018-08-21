@@ -30,7 +30,7 @@ class OtzController extends Controller
 			// ->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->where('viremia_beneficiaries', '>', 0)
-			->where('financial_year', '>', 2016)
+			->where('financial_year', '>', 2017)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
 			->get();
@@ -40,7 +40,7 @@ class OtzController extends Controller
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
 			->where('dsd_beneficiaries', '>', 0)
-			->where('financial_year', '>', 2016)
+			->where('financial_year', '>', 2017)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
 			->get();
@@ -50,7 +50,7 @@ class OtzController extends Controller
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
 			->where('otz_beneficiaries', '>', 0)
-			->where('financial_year', '>', 2016)
+			->where('financial_year', '>', 2017)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
 			->get();
@@ -60,7 +60,7 @@ class OtzController extends Controller
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
 			->where('men_clinic_beneficiaries', '>', 0)
-			->where('financial_year', '>', 2016)
+			->where('financial_year', '>', 2017)
 			->groupBy('financial_year')
 			->orderBy('financial_year', 'asc')
 			->get();
@@ -78,9 +78,8 @@ class OtzController extends Controller
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
 
-		$data['categories'][0] = "FY 2017";
-		$data['categories'][1] = "FY 2018";
-		$data['categories'][2] = "FY 2019";
+		$data['categories'][0] = "FY 2018";
+		$data['categories'][1] = "FY 2019";
 
 		$data["outcomes"][0]["data"] = array_fill(0, 3, 0);
 		$data["outcomes"][1]["data"] = array_fill(0, 3, 0);
@@ -90,9 +89,9 @@ class OtzController extends Controller
 		foreach ($viremia as $key => $row) {
 			$data['categories'][$key] = "FY " . $row->financial_year;
 			$data["outcomes"][0]["data"][$key] = (int) $row->total;
-			$data["outcomes"][1]["data"][$key] = (int) $dsd[$key]->total ?? 0;
-			$data["outcomes"][2]["data"][$key] = (int) $otz[$key]->total ?? 0;
-			$data["outcomes"][3]["data"][$key] = (int) $men[$key]->total ?? 0;
+			$data["outcomes"][1]["data"][$key] = $this->check_null($dsd[$key]);
+			$data["outcomes"][2]["data"][$key] = $this->check_null($otz[$key]);
+			$data["outcomes"][3]["data"][$key] = $this->check_null($men[$key]);
 		}
 		return view('charts.bar_graph', $data);		
 	}

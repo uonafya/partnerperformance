@@ -16,10 +16,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function check_null($object)
+    public function check_null($object, $attr = 'total')
     {
     	if(!$object) return 0;
-    	return (int) $object->total;
+    	return (int) $object->$attr;
     }
 
     public function tested_query()
