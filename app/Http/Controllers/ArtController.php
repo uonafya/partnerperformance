@@ -22,14 +22,13 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$start_art_new_q = DB::table('d_hiv_and_tb_treatment')
+		$start_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
-			->whereRaw($divisions_query);
-
-		$start_art_new = $start_art_new_q->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->whereRaw($date_query)
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -47,23 +46,14 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$start_art_old_q = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("DISTINCT facility")
-			->whereRaw("`total_starting_on_art` > 0")
-			->whereRaw($divisions_query);
-
-
-
 		$current_art_new_q = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
 			->whereRaw($divisions_query)
-			->whereRaw($date_query);
-
-		$current_art_new = $current_art_new_q->whereRaw($date_query)
+			->whereRaw($date_query)
+			->whereRaw($date_query)
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -80,12 +70,6 @@ class ArtController extends Controller
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
 			->get();
-
-		$current_art_old_q = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("DISTINCT facility")
-			->whereRaw("`total_currently_on_art` > 0")
-			->whereRaw($divisions_query);
 
 
 		$data['div'] = str_random(15);
@@ -108,23 +92,12 @@ class ArtController extends Controller
 		foreach ($dates as $key => $row) {
 			if($row->year == date('Y') && $row->month == date('m')) break;
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+			// $data["outcomes"][0]["data"][$key] = (int) $row->total;
+
 			$data["outcomes"][0]["data"][$key] = $this->check_null($start_art_old->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][1]["data"][$key] = $this->check_null($start_art_new->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][2]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
-			// $data["outcomes"][2]["data"][$key] = (int) $row->total;
 			$data["outcomes"][3]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
-
-			// $double_starting = $start_art_new_q
-			// 				->where(['year' => $row->year, 'month' => $row->month])
-			// 				->whereRaw("facility IN (" . $start_art_old_q
-			// 					->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
-			// 				->first();
-
-			// $double_current = $current_art_new_q
-			// 				->where(['year' => $row->year, 'month' => $row->month])
-			// 				->whereRaw("facility IN (" . $current_art_old_q
-			// 					->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
-			// 				->first();
 
 			// DB::enableQueryLog();
 
@@ -157,7 +130,6 @@ class ArtController extends Controller
 							->first();
 
 	 		// return DB::getQueryLog();
-
 
 			$data["outcomes"][4]["data"][$key] = is_object($double_starting) ? (int) $double_starting->total : 0;
 			$data["outcomes"][5]["data"][$key] = is_object($double_current) ? (int) $double_current->total : 0;
@@ -239,6 +211,25 @@ class ArtController extends Controller
 			$data["outcomes"][3]["data"][$key] = (int) $rows3[$key]->art + $rows3[$key]->pmtct;
 
 			$data["outcomes"][4]["data"][$key] = (int) $target->total;
+
+			$duplicate = DB::table('d_care_and_treatment')
+				->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+				->selectRaw($this->former_age_current_query())
+				->where(['year' => $row->year, 'month' => $row->month])
+				->whereRaw($divisions_query)
+				->whereRaw("facility IN (
+					SELECT DISTINCT facility
+					FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+					WHERE  {$divisions_query} AND `on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0 AND 
+					year = {$row->year} AND month = {$row->month}
+				)")
+				->first();
+
+			if(is_object($duplicate)){
+				$data["outcomes"][0]["data"][$key] -= $duplicate->below_1;
+				$data["outcomes"][1]["data"][$key] -= $duplicate->below_15;
+				$data["outcomes"][2]["data"][$key] -= $duplicate->above_15;
+			}
 		}
 		return view('charts.bar_graph', $data);
 	}
