@@ -19,5 +19,7 @@ class IndicatorController extends Controller
 
 		$c = DB::table('view_facilitys')->where('partner', $partner)->groupBy('partner')->get();
 
+		
+
 	}
 }

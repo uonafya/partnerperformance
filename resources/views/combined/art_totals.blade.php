@@ -39,7 +39,8 @@
 				<td> {{ number_format($below_15) }} </td>
 				<td> {{ number_format($above_15 ) }} </td>
 				<td> {{ number_format($total) }} </td>			
-				<td> {{ number_format($row->total + $old->total ) }} </td>
+				{{-- <td> {{ number_format($row->total + $old->total ) }} </td> --}}
+				<td>{{ number_format($row->total) }} / {{ number_format( $old->total ) }}  </td>
 				<td> {{ number_format($discrepancy) }} </td>
 			</tr>
 		@endforeach
