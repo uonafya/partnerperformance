@@ -8,13 +8,13 @@
 				<th>DHIS Code</th>
 			@endif
 			<th>Viremia Beneficiaries</th>
-			<th>Viremia Target</th>
+			<!-- <th>Viremia Target</th> -->
 			<th>DSD Beneficiaries</th>
-			<th>DSD Target</th>
+			<!-- <th>DSD Target</th> -->
 			<th>OTZ Beneficiaries</th>
-			<th>OTZ Target</th>
+			<!-- <th>OTZ Target</th> -->
 			<th>Men Clinic Beneficiaries</th>
-			<th>Men Clinic Target</th>		
+			<!-- <th>Men Clinic Target</th>		 -->
 		</tr>
 	</thead>
 	<tbody>

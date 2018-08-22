@@ -153,9 +153,13 @@ class Other extends Model
 				}
 			}
 		}
+	}
 
-
-
+	public static function delete_data($id=55222){
+		$tables = DB::table('data_set_elements')->selectRaw('Distince table_name')->get();
+		foreach ($tables as $key => $table) {
+			DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
+		}
 	}
 
 }
