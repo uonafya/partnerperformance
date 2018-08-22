@@ -206,9 +206,11 @@
 
 
 
-		$("#treatment").load("{{ secure_url('old/chart/treatment') }}");
-		$("#currenttx").load("{{ secure_url('old/chart/current') }}");
-		$("#newtx").load("{{ secure_url('old/chart/art_new') }}");
+
+		$("#treatment").load("{{ secure_url('art/treatment') }}");
+		$("#currenttx").load("{{ secure_url('art/current_age_breakdown') }}");
+		$("#newtx").load("{{ secure_url('art/new_age_breakdown') }}");
+
 		$("#gender").load("{{ secure_url('old/chart/testing_gender') }}");
 		$("#out_gender").load("{{ secure_url('old/chart/outcome_gender') }}");
 		$("#age").load("{{ secure_url('old/chart/testing_age') }}");

@@ -18,7 +18,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Facilities Count<div class="display_date"></div>
+			    Facilities Count (That have at least one beneficiary)<div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="facilities_count">
 				<center><div class="loader"></div></center>

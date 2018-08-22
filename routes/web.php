@@ -108,6 +108,7 @@ Route::prefix('art')->name('art')->group(function(){
 	Route::get('new_art', 'ArtController@new_art')->name('new_art');
 	Route::get('current_art', 'ArtController@current_art')->name('current_art');
 	
+	Route::get('treatment', 'ArtController@treatment')->name('treatment');
 	Route::get('reporting', 'ArtController@reporting')->name('reporting');
 });
 
