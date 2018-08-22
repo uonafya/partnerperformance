@@ -365,6 +365,7 @@ class ArtController extends Controller
 
 	public function new_art()
 	{		
+        ini_set("memory_limit", "-1");
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
@@ -396,6 +397,7 @@ class ArtController extends Controller
 
 	public function current_art()
 	{		
+        ini_set("memory_limit", "-1");
 		$date_query = Lookup::year_month_query();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
