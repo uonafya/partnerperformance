@@ -436,7 +436,7 @@ class ArtController extends Controller
 		$data['duplicates'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($sql)
-			->where(['year' => $row->year, 'month' => $row->month])
+			->whereRaw($date_query)
 			->whereRaw("facility IN (
 				SELECT DISTINCT facility
 				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
@@ -493,7 +493,7 @@ class ArtController extends Controller
 		$data['duplicates'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($sql)
-			->where(['year' => $row->year, 'month' => $row->month])
+			->whereRaw($date_query)
 			->whereRaw("facility IN (
 				SELECT DISTINCT facility
 				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
