@@ -244,9 +244,9 @@ class ArtController extends Controller
 							->first();
 
 			if(is_object($duplicate2)){
-				$data["outcomes"][0]["data"][$key] -= $duplicate->below_1;
-				$data["outcomes"][1]["data"][$key] -= ($duplicate->below_10 + $duplicate->below_15);
-				$data["outcomes"][2]["data"][$key] -= ($duplicate->below_20 + $duplicate->below_25 + $duplicate->above_25);
+				$data["outcomes"][0]["data"][$key] -= $duplicate2->below_1;
+				$data["outcomes"][1]["data"][$key] -= ($duplicate2->below_10 + $duplicate2->below_15);
+				$data["outcomes"][2]["data"][$key] -= ($duplicate2->below_20 + $duplicate2->below_25 + $duplicate2->above_25);
 			}
 		}
 		return view('charts.bar_graph', $data);
