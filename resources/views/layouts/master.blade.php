@@ -53,6 +53,7 @@
 						<li><a href="{{ url('pmtct') }} ">PMTCT</a></li>	
 						<li><a href="{{ url('art') }} ">ART</a></li>	
 						<li><a href="{{ url('otz') }} ">Non Mer</a></li>	
+						<li><a href="{{ url('regimen') }} ">MOH 729</a></li>	
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="{{ url('/guide') }} ">User Guide</a></li>
