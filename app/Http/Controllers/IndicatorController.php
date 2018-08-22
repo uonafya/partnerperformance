@@ -36,7 +36,7 @@ class IndicatorController extends Controller
 		
 		$rows = DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
-			->selectRaw($this->$raw)
+			->selectRaw($this->raw)
 			->when($financial_year, function($query) use ($financial_year){
 				return $query->where('financial_year', $financial_year);
 			})
