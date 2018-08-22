@@ -433,6 +433,18 @@ class ArtController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
+		$data['duplicates'] = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw($sql)
+			->where(['year' => $row->year, 'month' => $row->month])
+			->whereRaw("facility IN (
+				SELECT DISTINCT facility
+				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+				WHERE  {$divisions_query} AND {$date_query} AND `start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0
+			)")
+			->groupBy($q['group_query'])
+			->get();
+
 		$data['div'] = str_random(15);
 
 		return view('combined.art_totals', $data);
@@ -454,7 +466,19 @@ class ArtController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
-			->get();
+			->get();	
+
+		// $data['duplicates'] = DB::table('d_hiv_and_tb_treatment')
+		// 	->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+		// 	->selectRaw($sql)
+		// 	->whereRaw($date_query)
+		// 	->whereRaw("facility IN (
+		// 		SELECT DISTINCT facility
+		// 		FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
+		// 		WHERE  {$divisions_query} AND {$date_query} AND `total_currently_on_art` > 0 
+		// 	)")
+		// 	->groupBy($q['group_query'])
+		// 	->get();
 
 		$sql = $q['select_query'] . ", " . $this->former_age_current_query();	
 
@@ -466,10 +490,21 @@ class ArtController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
+		$data['duplicates'] = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw($sql)
+			->where(['year' => $row->year, 'month' => $row->month])
+			->whereRaw("facility IN (
+				SELECT DISTINCT facility
+				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+				WHERE  {$divisions_query} AND {$date_query} AND `on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0
+			)")
+			->groupBy($q['group_query'])
+			->get();
+
 		$data['div'] = str_random(15);
 
 		return view('combined.art_totals', $data);
-
 	}
 
 

@@ -19,13 +19,15 @@
 		@foreach($rows as $key => $row)
 			<?php
 				$old = $others->where('div_id', $row->div_id)->first();
-				$below_1 = $row->below_1 + $old->below_1;
-				$below_15 = $row->below_10 + $row->below_15 + $old->below_15;
-				$above_15 =  $row->below_20 + $row->below_25 + $row->above_25 + $old->above_15;
+				$duplicate = $duplicates->where('div_id', $row->div_id)->first();
+				$below_1 = $row->below_1 + $old->below_1 - ($duplicate->below_1 ?? 0);
+				$below_15 = $row->below_10 + $row->below_15 + $old->below_15 - ($duplicate->below_15 ?? 0);
+				$above_15 =  $row->below_20 + $row->below_25 + $row->above_25 + $old->above_15 - ($duplicate->above_15 ?? 0);
 				$total = $below_1 + $below_15 + $above_15;
-				$discrepancy = $row->total + $old->total - $total;
+				$reported_total = $row->total + $old->total - ($duplicate->total ?? 0);
+				$discrepancy = $reported_total - $total;
 			?>
-			@continue(($row->total + $old->total) == 0 && $total == 0)
+			@continue($reported_total == 0 && $total == 0)
 			<tr>
 				<td> {{ $key+1 }} </td>
 				<td> {{ $row->name ?? '' }} </td>
@@ -39,8 +41,7 @@
 				<td> {{ number_format($below_15) }} </td>
 				<td> {{ number_format($above_15 ) }} </td>
 				<td> {{ number_format($total) }} </td>			
-				<td> {{ number_format($row->total + $old->total ) }} </td> 
-				{{-- <td>{{ number_format($row->total) }} / {{ number_format( $old->total ) }}  </td> --}}
+				<td> {{ number_format($reported_total) }} </td> 
 				<td> {{ number_format($discrepancy) }} </td>
 			</tr>
 		@endforeach
