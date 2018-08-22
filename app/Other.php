@@ -143,7 +143,7 @@ class Other
 					KEY `p_identifier`(`partner`, `financial_year`, `quarter`),
 					KEY `c_identifier`(`county`, `financial_year`, `quarter`),
 					KEY `partner` (`partner`),
-					KEY `county` (`county`),
+					KEY `county` (`county`)
 				);
         ";
         DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
