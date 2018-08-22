@@ -347,7 +347,44 @@ class ArtController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->below_10 + $row->below_15 + $rows2[$key]->below_15;
 			$data["outcomes"][2]["data"][$key] = (int) $row->below_20 + $row->below_25 + $row->above_25 + $rows2[$key]->above_15;
 
+			$duplicate2 = DB::table('d_hiv_and_tb_treatment')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+							->selectRaw($this->new_art_query())
+							->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `total_starting_on_art` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			if(is_object($duplicate2)){
+				$data["outcomes"][0]["data"][$key] -= $duplicate2->below_1;
+				$data["outcomes"][1]["data"][$key] -= ($duplicate2->below_10 + $duplicate2->below_15);
+				$data["outcomes"][2]["data"][$key] -= ($duplicate2->below_20 + $duplicate2->below_25 + $duplicate2->above_25);
+			}
+
 			$data["outcomes"][3]["data"][$key] = (int) $rows3[$key]->pos + $rows4[$key]->pos;
+
+			$duplicate_pos = DB::table('d_hiv_testing_and_prevention_services')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+							->selectRaw("SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos")
+							->whereRaw("`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26` > 0")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_hiv_counselling_and_testing d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `total_received_hivpos_results` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			if(is_object($duplicate_pos)){
+				$data["outcomes"][3]["data"][$key] -= $duplicate_pos->pos;
+			}
+
 			$data["outcomes"][4]["data"][$key] = $t;
 		}
 		return view('charts.bar_graph', $data);		
