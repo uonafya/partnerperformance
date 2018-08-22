@@ -138,8 +138,8 @@ class Other extends Model
 		if(!$year) $year = date('Y');
 		$table_name = 'p_early_indicators';
 
-        $partners = DB::('partners')->get();
-        $counties = DB::('countys')->get();
+        $partners = DB::table('partners')->get();
+        $counties = DB::table('countys')->get();
 
 		$i=0;
 		$data_array = [];
@@ -150,9 +150,19 @@ class Other extends Model
 				foreach ($counties as $county) {
 					$data = ['year' => $year, 'month' => $month, 'partner' => $partner->id, 'county' => $county->id];
 					$data = array_merge($data, $fq);
+
+					$data_array[$i] = $data;
+					$i++;
+
+					if ($i == 200) {
+						DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+						$data_array=null;
+				    	$i=0;
+					}
 				}
 			}
 		}
+		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
 	}
 
 	public static function delete_data($id=55222){
