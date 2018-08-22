@@ -79,21 +79,7 @@ class IndicatorController extends Controller
 		$partner = session('session_partner');
 
 		// print_r($data);die();
-
-		// public $raw = "
-		// 	countymflcode AS `County MFL`, name as `County`, 
-		// 	financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
-		// 	MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`,
-		// 	tested AS `Tested`, positive AS `Positives`, new_art AS `New On ART`, linkage AS `Linkage Percentage`,
-		// 	current_tx AS `Current On ART`, net_new_tx AS `Net New On ART`, vl_total AS `VL Total`, 
-		// 	eligible_for_vl AS `Eligible For VL`,
-		// 	pmtct AS `PMTCT`, pmtct_stat AS `PMTCT STAT`, pmtct_new_pos AS `PMTCT New Positives`,
-		// 	pmtct_known_pos AS `PMTCT Known Positives`, pmtct_total_pos AS `PMTCT Total Positives`, 
-		// 	art_pmtct AS `ART PMTCT`, art_uptake_pmtct AS `ART Uptake PMTCT`,
-		// 	eid_lt_2m AS `EID Less 2 Months`, eid_lt_12m AS `EID Less 12 Months`,
-		// 	eid_total AS `EID Total`, eid_pos AS `EID Positives`
-		// ";
-
+		
 		$today = date('Y-m-d');
 
 		foreach ($data as $key => $value) {
@@ -120,7 +106,8 @@ class IndicatorController extends Controller
 
 			$county = DB::where('countymflcode', $value->county_mfl)->first();
 
-			DB::connection('mysql_wr')->table('p_early_indicators')
+			DB::connection('mysql_wr')
+				->table('p_early_indicators')
 				->where([
 					'county' => $county->id, 'partner' => $partner->id, 
 					'financial_year' => $value->financial_year, 'month' => $value->month
