@@ -114,17 +114,38 @@ class ArtController extends Controller
 			// $data["outcomes"][2]["data"][$key] = (int) $row->total;
 			$data["outcomes"][3]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
 
+			// $double_starting = $start_art_new_q
+			// 				->where(['year' => $row->year, 'month' => $row->month])
+			// 				->whereRaw("facility IN (" . $start_art_old_q
+			// 					->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
+			// 				->first();
+
+			// $double_current = $current_art_new_q
+			// 				->where(['year' => $row->year, 'month' => $row->month])
+			// 				->whereRaw("facility IN (" . $current_art_old_q
+			// 					->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
+			// 				->first();
+
 			$double_starting = $start_art_new_q
 							->where(['year' => $row->year, 'month' => $row->month])
-							->whereRaw("facility IN (" . $start_art_old_q
-								->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
+								WHERE {$divisions_query} AND `total_starting_on_art` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
 							->first();
 
 			$double_current = $current_art_new_q
 							->where(['year' => $row->year, 'month' => $row->month])
-							->whereRaw("facility IN (" . $current_art_old_q
-								->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `total_starting_on_art` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
 							->first();
+
 
 			$data["outcomes"][4]["data"][$key] = is_object($double_starting) ? (int) $double_starting->total : 0;
 			$data["outcomes"][5]["data"][$key] = is_object($double_current) ? (int) $double_current->total : 0;
