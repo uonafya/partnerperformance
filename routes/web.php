@@ -128,6 +128,10 @@ Route::prefix('regimen')->name('regimen')->group(function(){
 	Route::get('summary', 'RegimenController@summary')->name('summary');
 });
 
+Route::prefix('indicators')->name('indicators')->group(function(){
+	Route::get('download/{financial_year}', 'IndicatorController@download_excel')->name('download');
+});
+
 
 
 Route::middleware(['clear_session'])->group(function(){

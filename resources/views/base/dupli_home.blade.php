@@ -69,19 +69,6 @@
 	<div class="col-md-6 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Positive Outcomes Gender <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="out_gender">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-6 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
 			    Positive Outcomes Age <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="age">
@@ -89,18 +76,8 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="col-md-6 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Positive Outcomes Age <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="out_age">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
 </div>
+
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -192,10 +169,9 @@
 		$("#treatment").html("<center><div class='loader'></div></center>");		
 		$("#currenttx").html("<center><div class='loader'></div></center>");
 		$("#newtx").html("<center><div class='loader'></div></center>");
+
 		$("#gender").html("<center><div class='loader'></div></center>");
-		$("#out_gender").html("<center><div class='loader'></div></center>");
 		$("#age").html("<center><div class='loader'></div></center>");
-		$("#out_age").html("<center><div class='loader'></div></center>");
 		$("#pmtct").html("<center><div class='loader'></div></center>");
 		$("#eid").html("<center><div class='loader'></div></center>");
 
@@ -212,9 +188,7 @@
 		$("#newtx").load("{{ secure_url('art/new_age_breakdown') }}");
 
 		$("#gender").load("{{ secure_url('old/chart/testing_gender') }}");
-		$("#out_gender").load("{{ secure_url('old/chart/outcome_gender') }}");
 		$("#age").load("{{ secure_url('old/chart/testing_age') }}");
-		$("#out_age").load("{{ secure_url('old/chart/outcome_age') }}");
 		$("#pmtct").load("{{ secure_url('old/chart/pmtct') }}");
 		$("#eid").load("{{ secure_url('old/chart/eid') }}");
 
