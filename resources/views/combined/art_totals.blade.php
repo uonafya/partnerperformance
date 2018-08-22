@@ -17,6 +17,7 @@
 	</thead>
 	<tbody>
 		@foreach($rows as $key => $row)
+			@continue(($row->total + $old->total) == 0)
 			<?php
 				$old = $others->where('div_id', $row->div_id)->first();
 				$below_1 = $row->below_1 + $old->below_1;
