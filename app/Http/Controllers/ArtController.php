@@ -46,7 +46,7 @@ class ArtController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$current_art_new_q = DB::table('d_hiv_and_tb_treatment')
+		$current_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("COUNT(facility) as total")
 			->addSelect('year', 'month')
