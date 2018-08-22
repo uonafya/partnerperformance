@@ -110,13 +110,13 @@ class TestingController extends Controller
 			// 				->first();
 
 
-			$duplicate_pos = DB::select(
-				DB::raw("call proc_get_duplicate_total(?, ?, ?, ?, ?, ?, ?)", 
-					[$old_table, $new_table, $old_column, $new_column, $divisions_query, $row->year, $row->month]
-				))->first();
-
 			// $duplicate_pos = DB::select(
-			// 	DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"))->first();
+			// 	DB::raw("call proc_get_duplicate_total(?, ?, ?, ?, ?, ?, ?)", 
+			// 		[$old_table, $new_table, $old_column, $new_column, $divisions_query, $row->year, $row->month]
+			// 	))->first();
+
+			$duplicate_pos = DB::select(
+				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"))->first();
 
 			$duplicate_tests = DB::table('d_hiv_counselling_and_testing')
 							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
