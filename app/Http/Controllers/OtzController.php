@@ -315,9 +315,13 @@ class OtzController extends Controller
 		$date_query = Lookup::date_query(true);
 		$q = Lookup::groupby_query();
 
+		$select_query = $q['select_query'];
+
+		if(session('filter_groupby') == 5) $select_query .= ", is_viremia, is_dsd, is_otz, is_men_clinic";
+
 		$data['rows'] = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
-			->selectRaw($q['select_query'] . ",
+			->selectRaw($select_query . ",
 			 SUM(viremia_beneficiaries) AS viremia_beneficiaries, SUM(viremia_target) AS viremia_target,
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(otz_beneficiaries) AS otz_beneficiaries, SUM(otz_target) AS otz_target, 
