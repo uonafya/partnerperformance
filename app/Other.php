@@ -182,19 +182,11 @@ class Other
 		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
 	}
 
-	// public static function delete_data($id=55222){
-	// 	$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
-	// 	foreach ($tables as $key => $table) {
-	// 		DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
-	// 	}
-	// 	$tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
-	// 	foreach ($tables as $key => $table) {
-	// 		DB::connection('mysql_wr')->table($table->targets_table_name)->where('facility', $id)->delete();
-	// 	}
-	// 	DB::connection('mysql_wr')->table("d_regimen_totals")->where('facility', $id)->delete();
-	// }
-
 	public static function delete_data($id=55222){
+		$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
+		foreach ($tables as $key => $table) {
+			DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
+		}
 		$tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
 		foreach ($tables as $key => $table) {
 			DB::connection('mysql_wr')->table($table->targets_table_name)->where('facility', $id)->delete();
