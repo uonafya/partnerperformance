@@ -156,5 +156,6 @@ Route::middleware(['clear_session', 'auth'])->group(function(){
 	});
 	
 	Route::get('non_mer', 'GeneralController@non_mer');
+	Route::get('indicators', 'GeneralController@indicators');
 	Route::resource('user', 'UserController');
 });

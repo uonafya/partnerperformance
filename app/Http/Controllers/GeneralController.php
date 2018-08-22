@@ -78,4 +78,11 @@ class GeneralController extends Controller
 		$partner = session('session_partner');
 		return view('forms.upload_nonmer', ['no_header' => true, 'partner' => $partner]);
 	}
+
+	public function indicators()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		return view('forms.upload_indicators', ['no_header' => true, 'partner' => $partner]);
+	}
 }
