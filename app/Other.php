@@ -5,7 +5,7 @@ namespace App;
 use DB;
 use App\Synch;
 
-class Other extends Model
+class Other
 {
 
 	public static function other_targets()
@@ -115,8 +115,20 @@ class Other extends Model
 					tested int(10) DEFAULT NULL,    				
 					positive int(10) DEFAULT NULL,    				
 					new_art int(10) DEFAULT NULL,    				
-					linkage int(10) DEFAULT NULL,    				
+					linkage int(10) DEFAULT NULL,  
 
+					current_tx int(10) DEFAULT NULL,    				
+					net_new_tx int(10) DEFAULT NULL,    				
+					vl_total int(10) DEFAULT NULL,    				
+					eligible_for_vl int(10) DEFAULT NULL, 
+
+					pmtct int(10) DEFAULT NULL,
+					pmtct_stat int(10) DEFAULT NULL,
+					pmtct_new_pos int(10) DEFAULT NULL,
+					pmtct_known_pos int(10) DEFAULT NULL,
+					pmtct_total_pos int(10) DEFAULT NULL,
+
+					pmtct_total_pos int(10) DEFAULT NULL,
 
 
 	        		dateupdated date DEFAULT NULL,
