@@ -635,6 +635,9 @@ class ArtController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
+		// $data['duplicates'] = DB::select(
+		// 		DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column_tests}', '{$new_column_tests}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
 		$data['div'] = str_random(15);
 
 		return view('combined.art_totals', $data);

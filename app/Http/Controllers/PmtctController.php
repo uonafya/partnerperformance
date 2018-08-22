@@ -36,6 +36,12 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$old_table = "`d_pmtct`";
+		$new_table = "`d_prevention_of_mother-to-child_transmission`";
+
+		$old_column = "`haart_(art)`";
+		$new_column = "`on_maternal_haart_total_hv02-20`";
+
 		$data['div'] = str_random(15);
 
 		$data['outcomes'][0]['name'] = "Patients";
@@ -44,7 +50,11 @@ class PmtctController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$data["outcomes"][0]["data"][$key] = (int) $row->total + $rows2[$key]->total;
+
+			$duplicate = DB::select(
+				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->total + $rows2[$key]->total - ($duplicate[0]->total ?? 0);
 		}
 		return view('charts.bar_graph', $data);
 	}
