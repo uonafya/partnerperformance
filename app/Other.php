@@ -133,7 +133,7 @@ class Other extends Model
         DB::connection('mysql_wr')->statement($sql);
 	}
 
-	public static function partner_indicators($year=null)
+	public static function partner_indicators_insert($year=null)
 	{
 		if(!$year) $year = date('Y');
 		$table_name = 'p_early_indicators';
