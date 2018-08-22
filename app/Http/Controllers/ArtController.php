@@ -126,6 +126,8 @@ class ArtController extends Controller
 			// 					->whereRaw('year =' . $row->year . ' AND month=' . $row->month)->toSql() . ")")
 			// 				->first();
 
+			DB::enableQueryLog();
+
 			$double_starting = $start_art_new_q
 							->where(['year' => $row->year, 'month' => $row->month])
 							->whereRaw("facility IN (
@@ -141,10 +143,12 @@ class ArtController extends Controller
 							->whereRaw("facility IN (
 								SELECT DISTINCT facility
 								FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
-								WHERE  {$divisions_query} AND `total_starting_on_art` > 0 AND 
+								WHERE  {$divisions_query} AND `total_currently_on_art` > 0 AND 
 								year = {$row->year} AND month = {$row->month}
 							)")
 							->first();
+							
+	 		return DB::getQueryLog();
 
 
 			$data["outcomes"][4]["data"][$key] = is_object($double_starting) ? (int) $double_starting->total : 0;
