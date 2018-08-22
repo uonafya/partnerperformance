@@ -53,14 +53,14 @@ class TestingController extends Controller
 		
 		$date_query = Lookup::date_query(true);
 
-		$target = DB::table('t_hiv_testing_and_prevention_services')
+		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql2)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
-		$t = round(($target->tests / 12), 2);
+		$target = round(($target_obj->tests / 12), 2);
 
 		$data['div'] = str_random(15);
 
@@ -89,12 +89,45 @@ class TestingController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+
+			$duplicate_pos = DB::table('d_hiv_counselling_and_testing')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+							->selectRaw("SUM(`total_received_hivpos_results`) AS pos")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `positive_total_(sum_hv01-18_to_hv01-27)_hv01-26` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			$duplicate_tests = DB::table('d_hiv_counselling_and_testing')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+							->selectRaw("SUM(`total_tested_hiv`) AS tests")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `tested_total_(sum_hv01-01_to_hv01-10)_hv01-10` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			$tests = $row->tests + $rows2[$key]->tests;
+			if(is_object($duplicate_tests)) $tests -= $duplicate_tests->tests;
+
 			$pos = $row->pos + $rows2[$key]->pos;
-			$neg = $row->tests + $rows2[$key]->tests - $pos;
+			if(is_object($duplicate_pos)) $pos -= $duplicate_pos->pos;
+
+			$neg = $tests - $pos;
 
 			$data["outcomes"][0]["data"][$key] = (int) $pos;
 			$data["outcomes"][1]["data"][$key] = (int) $neg;
-			$data["outcomes"][2]["data"][$key] = $t;
+			$data["outcomes"][2]["data"][$key] = $target;
+
+
+
 			// $data["outcomes"][3]["data"][$key] = Lookup::get_percentage($pos, ($pos + $neg));
 			// $data["outcomes"][4]["data"][$key] = Lookup::get_percentage($target->pos, $target->tests);
 		}
@@ -164,10 +197,38 @@ class TestingController extends Controller
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$pos = $row->pos + $rows2[$key]->pos;
-			$neg = $row->tests + $rows2[$key]->tests - $pos;
 
-			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($pos, ($pos + $neg));
+			$duplicate_pos = DB::table('d_hiv_counselling_and_testing')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+							->selectRaw("SUM(`total_received_hivpos_results`) AS pos")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `positive_total_(sum_hv01-18_to_hv01-27)_hv01-26` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			$duplicate_tests = DB::table('d_hiv_counselling_and_testing')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+							->selectRaw("SUM(`total_tested_hiv`) AS tests")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `tested_total_(sum_hv01-01_to_hv01-10)_hv01-10` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+							
+			$tests = $row->tests + $rows2[$key]->tests;
+			if(is_object($duplicate_tests)) $tests -= $duplicate_tests->tests;
+
+			$pos = $row->pos + $rows2[$key]->pos;
+			if(is_object($duplicate_pos)) $pos -= $duplicate_pos->pos;
+
+			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($pos, $tests);
 			$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($target->pos, $target->tests);
 		}
 		return view('charts.line_graph', $data);		
