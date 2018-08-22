@@ -128,8 +128,13 @@ class Other
 					pmtct_known_pos int(10) DEFAULT NULL,
 					pmtct_total_pos int(10) DEFAULT NULL,
 
-					pmtct_total_pos int(10) DEFAULT NULL,
+					art_pmtct int(10) DEFAULT NULL,
+					art_uptake_pmtct int(10) DEFAULT NULL,
 
+					eid_lt_2m int(10) DEFAULT NULL,
+					eid_lt_12m int(10) DEFAULT NULL,
+					eid_total int(10) DEFAULT NULL,
+					eid_pos int(10) DEFAULT NULL,
 
 	        		dateupdated date DEFAULT NULL,
 					PRIMARY KEY (`id`),
@@ -177,11 +182,24 @@ class Other
 		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
 	}
 
+	// public static function delete_data($id=55222){
+	// 	$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
+	// 	foreach ($tables as $key => $table) {
+	// 		DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
+	// 	}
+	// 	$tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
+	// 	foreach ($tables as $key => $table) {
+	// 		DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
+	// 	}
+	// 	DB::connection('mysql_wr')->table("d_regimen_totals")->where('facility', $id)->delete();
+	// }
+
 	public static function delete_data($id=55222){
-		$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
+		$tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
 		foreach ($tables as $key => $table) {
 			DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
 		}
+		DB::connection('mysql_wr')->table("d_regimen_totals")->where('facility', $id)->delete();
 	}
 
 }
