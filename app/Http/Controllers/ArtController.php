@@ -105,12 +105,13 @@ class ArtController extends Controller
 		$data['outcomes'][4]['type'] = "spline";
 		$data['outcomes'][5]['type'] = "spline";
 
-		foreach ($current_art_old as $key => $row) {
+		foreach ($dates as $key => $row) {
+			if($row->year == date('Y') && $row->month == date('m')) break;
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = $this->check_null($start_art_old->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][1]["data"][$key] = $this->check_null($start_art_new->where('year', $row->year)->where('month', $row->month)->first());
-			// $data["outcomes"][2]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
-			$data["outcomes"][2]["data"][$key] = (int) $row->total;
+			$data["outcomes"][2]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
+			// $data["outcomes"][2]["data"][$key] = (int) $row->total;
 			$data["outcomes"][3]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
 
 			$double_starting = $start_art_new_q
@@ -422,6 +423,7 @@ class ArtController extends Controller
 		$data['div'] = str_random(15);
 
 		return view('combined.art_totals', $data);
+
 	}
 
 

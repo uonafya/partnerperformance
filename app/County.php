@@ -14,7 +14,6 @@ class County extends BaseModel
 	}
 
 	// Facilities reporting in both forms
-	// 729 currently art
 	// Login 
 	// Early warning indicators
 	// 731 both, those reporting 
