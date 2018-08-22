@@ -79,7 +79,7 @@ class IndicatorController extends Controller
 		$partner = session('session_partner');
 
 		// print_r($data);die();
-		
+
 		$today = date('Y-m-d');
 
 		foreach ($data as $key => $value) {
@@ -104,10 +104,9 @@ class IndicatorController extends Controller
 				'dateupdated' => $today,	
 			];
 
-			$county = DB::where('countymflcode', $value->county_mfl)->first();
+			$county = DB::table('countys')->where('countymflcode', $value->county_mfl)->first();
 
-			DB::connection('mysql_wr')
-				->table('p_early_indicators')
+			DB::connection('mysql_wr')->table('p_early_indicators')
 				->where([
 					'county' => $county->id, 'partner' => $partner->id, 
 					'financial_year' => $value->financial_year, 'month' => $value->month
