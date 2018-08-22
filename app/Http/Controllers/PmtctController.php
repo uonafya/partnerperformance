@@ -54,7 +54,8 @@ class PmtctController extends Controller
 			$duplicate = DB::select(
 				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
 
-			$data["outcomes"][0]["data"][$key] = (int) $row->total + $rows2[$key]->total - ($duplicate[0]->total ?? 0);
+			// $data["outcomes"][0]["data"][$key] = (int) $row->total + $rows2[$key]->total - ($duplicate[0]->total ?? 0);
+			$data["outcomes"][0]["data"][$key] = (int) $row->total + $rows2[$key]->total;
 		}
 		return view('charts.bar_graph', $data);
 	}
