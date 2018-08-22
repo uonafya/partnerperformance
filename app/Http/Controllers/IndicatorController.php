@@ -45,13 +45,18 @@ class IndicatorController extends Controller
 			->orderBy('p_early_indicators.id', 'asc')
 			->get();
 
+		foreach ($rows as $key => $row) {
+			$row_array = get_object_vars($row);
+			$data[] = $row_array;
+		}
+
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . 'early_warning_indicators';
 
     	// $path = storage_path('exports/' . $filename . '.xlsx');
     	// if(file_exists($path)) unlink($path);
 
-    	Excel::create($filename, function($excel) use($data, $key){
-    		$excel->sheet('sheet1', function($sheet) use($data, $key){
+    	Excel::create($filename, function($excel) use($data){
+    		$excel->sheet('sheet1', function($sheet) use($data){
     			$sheet->fromArray($data);
     		});
 
