@@ -110,11 +110,6 @@ class TestingController extends Controller
 			// 				->first();
 
 
-			// $duplicate_pos = DB::select(
-			// 	DB::raw("call proc_get_duplicate_total(?, ?, ?, ?, ?, ?, ?)", 
-			// 		[$old_table, $new_table, $old_column, $new_column, $divisions_query, $row->year, $row->month]
-			// 	))->first();
-
 			$duplicate_pos = DB::select(
 				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
 
@@ -133,8 +128,8 @@ class TestingController extends Controller
 			$tests = $row->tests + $rows2[$key]->tests;
 			if(is_object($duplicate_tests)) $tests -= $duplicate_tests->tests;
 
-			$pos = $row->pos + $rows2[$key]->pos;
-			if(is_array($duplicate_pos)) $pos -= ($duplicate_pos[0]->total ?? 0);
+			$pos = $row->pos + $rows2[$key]->pos - ($duplicate_pos[0]->total ?? 0);
+			// if(is_array($duplicate_pos)) $pos -= ($duplicate_pos[0]->total ?? 0);
 
 			$neg = $tests - $pos;
 
