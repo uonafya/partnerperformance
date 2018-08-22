@@ -17,7 +17,6 @@
 	</thead>
 	<tbody>
 		@foreach($rows as $key => $row)
-			@continue(($row->total + $old->total) == 0)
 			<?php
 				$old = $others->where('div_id', $row->div_id)->first();
 				$below_1 = $row->below_1 + $old->below_1;
@@ -25,8 +24,8 @@
 				$above_15 =  $row->below_20 + $row->below_25 + $row->above_25 + $old->above_15;
 				$total = $below_1 + $below_15 + $above_15;
 				$discrepancy = $row->total + $old->total - $total;
-
 			?>
+			@continue(($row->total + $old->total) == 0)
 			<tr>
 				<td> {{ $key+1 }} </td>
 				<td> {{ $row->name ?? '' }} </td>
