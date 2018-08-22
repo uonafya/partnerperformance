@@ -138,7 +138,11 @@ class ArtController extends Controller
 							)")
 							->first();
 
-			$double_current = $current_art_new_q
+			$double_current = DB::table('d_hiv_and_tb_treatment')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+							->selectRaw("COUNT(facility) as total")
+							->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
+							->whereRaw($divisions_query)
 							->where(['year' => $row->year, 'month' => $row->month])
 							->whereRaw("facility IN (
 								SELECT DISTINCT facility
@@ -147,7 +151,7 @@ class ArtController extends Controller
 								year = {$row->year} AND month = {$row->month}
 							)")
 							->first();
-							
+
 	 		return DB::getQueryLog();
 
 
