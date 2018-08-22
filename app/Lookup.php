@@ -187,6 +187,7 @@ class Lookup
 
 			$financial_year = session('filter_financial_year');
 			$quarter = session('filter_quarter');
+			$m = session('filter_month');
 
 			if(!$quarter){
 				if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
@@ -195,6 +196,7 @@ class Lookup
 					if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
 					if($month < 1) $month += 12;
+					if($m) $month = $m;
 					return " financial_year='{$financial_year}' and month='{$month}'";
 				}
 			}
