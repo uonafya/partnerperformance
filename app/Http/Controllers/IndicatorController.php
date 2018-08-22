@@ -32,7 +32,6 @@ class IndicatorController extends Controller
 		$data = [];
 
 		$c = DB::table('view_facilitys')->where('partner', $partner->id)->groupBy('county')->get()->pluck(['county'])->toArray();
-
 		
 		$rows = DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
@@ -40,7 +39,8 @@ class IndicatorController extends Controller
 			->when($financial_year, function($query) use ($financial_year){
 				return $query->where('financial_year', $financial_year);
 			})
-			->where('partner', $partner->id)			
+			->where('partner', $partner->id)
+			->whereIn('county', $c)		
 			->orderBy('name', 'asc')
 			->orderBy('p_early_indicators.id', 'asc')
 			->get();
@@ -50,7 +50,7 @@ class IndicatorController extends Controller
 			$data[] = $row_array;
 		}
 
-		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . 'early_warning_indicators';
+		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . '_early_warning_indicators';
 
     	$path = storage_path('exports/' . $filename . '.xlsx');
     	if(file_exists($path)) unlink($path);
