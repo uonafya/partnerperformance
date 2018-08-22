@@ -41,6 +41,7 @@
 									};
 
 			?>
+			@continue($tests == 0)
 			<tr>
 				<td> {{ $key+1 }} </td>
 				<td> {{ $row->name ?? '' }} </td>
