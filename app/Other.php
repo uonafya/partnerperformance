@@ -189,7 +189,7 @@ class Other
 	// 	}
 	// 	$tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
 	// 	foreach ($tables as $key => $table) {
-	// 		DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
+	// 		DB::connection('mysql_wr')->table($table->targets_table_name)->where('facility', $id)->delete();
 	// 	}
 	// 	DB::connection('mysql_wr')->table("d_regimen_totals")->where('facility', $id)->delete();
 	// }
@@ -197,7 +197,7 @@ class Other
 	public static function delete_data($id=55222){
 		$tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
 		foreach ($tables as $key => $table) {
-			DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
+			DB::connection('mysql_wr')->table($table->targets_table_name)->where('facility', $id)->delete();
 		}
 		DB::connection('mysql_wr')->table("d_regimen_totals")->where('facility', $id)->delete();
 	}
