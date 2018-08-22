@@ -21,14 +21,13 @@
 			    {{ $partner->name ?? '' }} 
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('otz/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
+				<form action="{{ url('indicators/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
 					@csrf
 
           <div class="form-group">
               <label class="col-sm-4 control-label">Upload File</label>
               <div class="col-sm-8">
                   <input class="form-control" name="upload" id="upload" type="file" accept=".xlsx, .xls, .csv" />
-                  <!--  accept=".csv, .xlsx,"  -->
               </div>
           </div>
 

@@ -130,6 +130,7 @@ Route::prefix('regimen')->name('regimen')->group(function(){
 
 Route::prefix('indicators')->name('indicators')->group(function(){
 	Route::get('download/{financial_year}', 'IndicatorController@download_excel')->name('download');
+	Route::post('upload', 'IndicatorController@upload_excel')->name('upload_excel');
 });
 
 
