@@ -565,10 +565,10 @@ class OtzController extends Controller
 			DB::connection('mysql_wr')->table('t_non_mer')
 				->where(['facility' => $fac->id, 'financial_year' => $financial_year])
 				->update([
-					'viremia_beneficiaries' => $value->viremia_beneficiaries,
-					'dsd_beneficiaries' => $value->dsd_beneficiaries,
-					'otz_beneficiaries' => $value->otz_beneficiaries,
-					'men_clinic_beneficiaries' => $value->men_clinic_beneficiaries,
+					'viremia_beneficiaries' => (int) $value->viremia_beneficiaries ?? null,
+					'dsd_beneficiaries' => (int) $value->dsd_beneficiaries ?? null,
+					'otz_beneficiaries' => (int) $value->otz_beneficiaries ?? null,
+					'men_clinic_beneficiaries' => (int) $value->men_clinic_beneficiaries ?? null,
 				]);
 		}
 

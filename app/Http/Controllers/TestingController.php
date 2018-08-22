@@ -176,8 +176,10 @@ class TestingController extends Controller
 	public function summary()
 	{
 		$date_query = Lookup::date_query();
+		$year_month_query = Lookup::year_month_query();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
+
 
 		$sql = $q['select_query'] . ",
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests,
@@ -205,6 +207,30 @@ class TestingController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
+		$data['duplicate_tests'] = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($q['select_query'] . ", SUM(`total_tested_hiv`) AS tests")
+			->whereRaw($date_query)
+			->whereRaw("facility IN (
+				SELECT DISTINCT facility
+				FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
+				WHERE  {$divisions_query} AND {$date_query} AND `tested_total_(sum_hv01-01_to_hv01-10)_hv01-10` > 0
+			)")
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['duplicate_pos'] = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($q['select_query'] . ", SUM(`total_received_hivpos_results`) AS pos")
+			->whereRaw($date_query)
+			->whereRaw("facility IN (
+				SELECT DISTINCT facility
+				FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
+				WHERE  {$divisions_query} AND {$date_query} AND `positive_total_(sum_hv01-18_to_hv01-27)_hv01-26` > 0
+			)")
+			->groupBy($q['group_query'])
+			->get();
+
 		$data['linked'] = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw($q['select_query'] . ", SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) as total")
@@ -218,6 +244,18 @@ class TestingController extends Controller
 			->selectRaw($q['select_query'] . ", SUM(`total_starting_on_art`) as total")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['duplicate_linked'] = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw($q['select_query'] . ", SUM(`total_starting_on_art`) AS linked")
+			->whereRaw($date_query)
+			->whereRaw("facility IN (
+				SELECT DISTINCT facility
+				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+				WHERE  {$divisions_query} AND {$date_query} AND `start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0
+			)")
 			->groupBy($q['group_query'])
 			->get();
 

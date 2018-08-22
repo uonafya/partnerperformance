@@ -26,9 +26,14 @@
 
 				$target = $targets->where('div_id', $row->div_id)->first();
 
-				$tests = $row->tests + $old->tests;
-				$pos = $row->pos + $old->pos;
-				$linked_to_treatment = $l->total + $l2->total;
+
+				$dup_tests = $duplicate_tests->where('div_id', $row->div_id)->first();
+				$dup_pos = $duplicate_pos->where('div_id', $row->div_id)->first();
+				$dup_linked = $duplicate_linked->where('div_id', $row->div_id)->first();
+
+				$tests = $row->tests + $old->tests - ($dup_tests->tests ?? 0);
+				$pos = $row->pos + $old->pos - ($dup_pos->pos ?? 0);
+				$linked_to_treatment = $l->total + $l2->total - ($dup_linked->linked ?? 0);
 
 				$calc_percentage = function($num, $den, $roundby=2)
 									{
