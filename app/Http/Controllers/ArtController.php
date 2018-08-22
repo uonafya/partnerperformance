@@ -212,23 +212,41 @@ class ArtController extends Controller
 
 			$data["outcomes"][4]["data"][$key] = (int) $target->total;
 
-			$duplicate = DB::table('d_care_and_treatment')
-				->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-				->selectRaw($this->former_age_current_query())
-				->where(['year' => $row->year, 'month' => $row->month])
-				->whereRaw($divisions_query)
-				->whereRaw("facility IN (
-					SELECT DISTINCT facility
-					FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
-					WHERE  {$divisions_query} AND `on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0 AND 
-					year = {$row->year} AND month = {$row->month}
-				)")
-				->first();
+			// $duplicate = DB::table('d_care_and_treatment')
+			// 	->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			// 	->selectRaw($this->former_age_current_query())
+			// 	->where(['year' => $row->year, 'month' => $row->month])
+			// 	->whereRaw("facility IN (
+			// 		SELECT DISTINCT facility
+			// 		FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+			// 		WHERE  {$divisions_query} AND `on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0 AND 
+			// 		year = {$row->year} AND month = {$row->month}
+			// 	)")
+			// 	->first();
 
-			if(is_object($duplicate)){
+			// if(is_object($duplicate)){
+			// 	$data["outcomes"][0]["data"][$key] -= $duplicate->below_1;
+			// 	$data["outcomes"][1]["data"][$key] -= $duplicate->below_15;
+			// 	$data["outcomes"][2]["data"][$key] -= $duplicate->above_15;
+			// }
+
+			$duplicate2 = DB::table('d_hiv_and_tb_treatment')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+							->selectRaw($this->current_art_query())
+							->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `total_currently_on_art` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			if(is_object($duplicate2)){
 				$data["outcomes"][0]["data"][$key] -= $duplicate->below_1;
-				$data["outcomes"][1]["data"][$key] -= $duplicate->below_15;
-				$data["outcomes"][2]["data"][$key] -= $duplicate->above_15;
+				$data["outcomes"][1]["data"][$key] -= ($duplicate->below_10 + $duplicate->below_15);
+				$data["outcomes"][2]["data"][$key] -= ($duplicate->below_20 + $duplicate->below_25 + $duplicate->above_25);
 			}
 		}
 		return view('charts.bar_graph', $data);
