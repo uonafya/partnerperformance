@@ -25,7 +25,7 @@
 				$total = $below_1 + $below_15 + $above_15;
 				$discrepancy = $row->total + $old->total - $total;
 			?>
-			{{-- @continue(($row->total + $old->total) == 0) --}}
+			@continue(($row->total + $old->total) == 0 || $total == 0)
 			<tr>
 				<td> {{ $key+1 }} </td>
 				<td> {{ $row->name ?? '' }} </td>
