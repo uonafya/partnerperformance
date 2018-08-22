@@ -86,21 +86,34 @@ class TestingController extends Controller
 		// $data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
 		// $data['outcomes'][4]['tooltip'] = array("valueSuffix" => ' %');
 
+		$old_table = "`d_hiv_counselling_and_testing`";
+		$new_table = "`d_hiv_testing_and_prevention_services`";
+
+		$old_column = "`total_received_hivpos_results`";
+		$new_column = "`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`";
+
+
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 
-			$duplicate_pos = DB::table('d_hiv_counselling_and_testing')
-							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
-							->selectRaw("SUM(`total_received_hivpos_results`) AS pos")
-							->where(['year' => $row->year, 'month' => $row->month])
-							->whereRaw("facility IN (
-								SELECT DISTINCT facility
-								FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
-								WHERE  {$divisions_query} AND `positive_total_(sum_hv01-18_to_hv01-27)_hv01-26` > 0 AND 
-								year = {$row->year} AND month = {$row->month}
-							)")
-							->first();
+			// $duplicate_pos = DB::table('d_hiv_counselling_and_testing')
+			// 				->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			// 				->selectRaw("SUM(`total_received_hivpos_results`) AS pos")
+			// 				->where(['year' => $row->year, 'month' => $row->month])
+			// 				->whereRaw("facility IN (
+			// 					SELECT DISTINCT facility
+			// 					FROM d_hiv_testing_and_prevention_services d JOIN view_facilitys f ON d.facility=f.id
+			// 					WHERE  {$divisions_query} AND `positive_total_(sum_hv01-18_to_hv01-27)_hv01-26` > 0 AND 
+			// 					year = {$row->year} AND month = {$row->month}
+			// 				)")
+			// 				->first();
+
+
+			$duplicate_pos = DB::select(
+				DB::raw("call proc_get_duplicate_total(?, ?, ?, ?, ?, ?, ?)", 
+					[$old_table, $new_table, $old_column, $new_column, $divisions_query, $row->year, $row->month]
+				))->first();
 
 			$duplicate_tests = DB::table('d_hiv_counselling_and_testing')
 							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
