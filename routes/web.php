@@ -87,13 +87,13 @@ Route::prefix('old/table')->name('old.table.')->group(function(){
 
 
 
-Route::prefix('testing')->name('testing')->group(function(){
+Route::prefix('testing')->name('testing.')->group(function(){
 	Route::get('testing_outcomes', 'TestingController@testing_outcomes')->name('testing_outcomes');
 	Route::get('positivity', 'TestingController@positivity')->name('positivity');
 	Route::get('summary', 'TestingController@summary')->name('summary');
 });
 
-Route::prefix('pmtct')->name('pmtct')->group(function(){
+Route::prefix('pmtct')->name('pmtct.')->group(function(){
 	Route::get('haart', 'PmtctController@haart')->name('haart');
 	Route::get('starting_point', 'PmtctController@starting_point')->name('starting_point');
 	Route::get('discovery_positivity', 'PmtctController@discovery_positivity')->name('discovery_positivity');
@@ -101,7 +101,7 @@ Route::prefix('pmtct')->name('pmtct')->group(function(){
 	Route::get('male_testing', 'PmtctController@male_testing')->name('male_testing');
 });
 
-Route::prefix('art')->name('art')->group(function(){
+Route::prefix('art')->name('art.')->group(function(){
 	Route::get('current_age_breakdown', 'ArtController@current_age_breakdown')->name('current_age_breakdown');
 	Route::get('new_age_breakdown', 'ArtController@new_age_breakdown')->name('new_age_breakdown');
 	Route::get('enrolled_age_breakdown', 'ArtController@enrolled_age_breakdown')->name('enrolled_age_breakdown');
@@ -112,7 +112,7 @@ Route::prefix('art')->name('art')->group(function(){
 	Route::get('reporting', 'ArtController@reporting')->name('reporting');
 });
 
-Route::prefix('otz')->name('otz')->group(function(){
+Route::prefix('otz')->name('otz.')->group(function(){
 	Route::get('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
 	Route::get('clinics', 'OtzController@clinics')->name('clinics');
 	Route::get('achievement', 'OtzController@achievement')->name('achievement');
@@ -123,12 +123,12 @@ Route::prefix('otz')->name('otz')->group(function(){
 	Route::post('upload', 'OtzController@upload_excel')->name('upload_excel');
 });
 
-Route::prefix('regimen')->name('regimen')->group(function(){
+Route::prefix('regimen')->name('regimen.')->group(function(){
 	Route::get('reporting', 'RegimenController@reporting')->name('reporting');
 	Route::get('summary', 'RegimenController@summary')->name('summary');
 });
 
-Route::prefix('indicators')->name('indicators')->group(function(){
+Route::prefix('indicators')->name('indicators.')->group(function(){
 	Route::get('download/{financial_year}', 'IndicatorController@download_excel')->name('download');
 	Route::post('upload', 'IndicatorController@upload_excel')->name('upload_excel');
 });
@@ -148,7 +148,7 @@ Route::middleware(['clear_session'])->group(function(){
 });
 
 Route::middleware(['signed'])->group(function(){
-	Route::get('user/passsword/{user}', 'UserController@change_password')->name('user.password');
+	Route::get('user/passsword/{user}', 'GeneralController@change_password')->name('user.password');
 });
 
 Route::middleware(['clear_session', 'auth'])->group(function(){

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Lookup;
+use App\User;
 use DB;
 
 class GeneralController extends Controller
@@ -62,6 +64,15 @@ class GeneralController extends Controller
 	{
 		return view('base.user_guide', ['no_header' => true]);
 	}
+
+
+    public function change_password(Request $request, User $user)
+    {
+        if(Auth::user()) Auth::logout();
+        Auth::login($user);
+        
+        return view('forms.password_update', ['user' => $user]);
+    }
 
 
 	public function targets()
