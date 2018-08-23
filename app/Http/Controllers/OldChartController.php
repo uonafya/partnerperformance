@@ -170,17 +170,17 @@ class OldChartController extends Controller
 
 		$row = DB::table('d_hiv_counselling_and_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
-			->selectRaw($this->old_gender_query())
+			->selectRaw($this->old_gender_pos_query())
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
 		$data['paragraph'] = "
 		<table class='table table-striped'>
-			<tr> <td>Male : </td> <td>" . number_format($row->male_test) . "</td> </tr>
-			<tr> <td>Female : </td> <td>" . number_format($row->female_test) . "</td> </tr>
+			<tr> <td>Male : </td> <td>" . number_format($row->male_pos) . "</td> </tr>
+			<tr> <td>Female : </td> <td>" . number_format($row->female_pos) . "</td> </tr>
 			<tr>
-				<td>Total : </td> <td>" . number_format($row->male_test + $row->female_test) . "</td>
+				<td>Total : </td> <td>" . number_format($row->male_pos + $row->female_pos) . "</td>
 			</tr>
 		</table>			
 		";
@@ -207,7 +207,7 @@ class OldChartController extends Controller
 
 		$row = DB::table('d_hiv_counselling_and_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
-			->selectRaw($this->old_gender_query())
+			->selectRaw($this->old_gender_pos_query())
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
@@ -227,8 +227,8 @@ class OldChartController extends Controller
 		$data['categories'][0] = 'male';
 		$data['categories'][1] = 'female';
 
-		$data["outcomes"][0]["data"][0] = (int) $row->male_test;
-		$data["outcomes"][0]["data"][1] = (int) $row->female_test;
+		$data["outcomes"][0]["data"][0] = (int) $row->male_pos;
+		$data["outcomes"][0]["data"][1] = (int) $row->female_pos;
 
 		return view('charts.bar_graph', $data);
 	}

@@ -1,18 +1,31 @@
 <table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
 	<thead>
 		<tr class="colhead">
-			<th>No</th>
-			<th>Name</th>
-			@if(session('filter_groupby') == 5)
-				<th>MFL Code</th>
-				<th>DHIS Code</th>
+			<th colspan="2">No</th>
+			<th colspan="2">Name</th>
+			@if(session('filter_groupby') != 1 && session('filter_groupby') != 6)
+				<th colspan="2">MFL Code</th>
+				<th colspan="2">DHIS Code</th>
 			@endif
-			<th>Below 1</th>
-			<th>Below 15</th>
-			<th>Above 15</th>
-			<th>Sum Total</th>			
-			<th>Reported Total</th>			
-			<th>Discrepancy</th>			
+			<th rowspan="2">Below 1</th>
+			<th rowspan="2">Below 15</th>
+			<th rowspan="2">Above 15</th>
+			<th rowspan="2">Sum Total</th>			
+			<th rowspan="2">Reported Total</th>			
+			<th colspan="2">Old Form Duplicate Total</th>			
+		</tr>
+		<tr>
+			<th>Old Form</th>
+			<th>New Form</th>
+			<th>Old Form</th>
+			<th>New Form</th>
+			<th>Old Form</th>
+			<th>New Form</th>
+
+			<th>Old Form</th>
+			<th>New Form</th>
+			<th>Old Form</th>
+			<th>New Form</th>			
 		</tr>
 	</thead>
 	<tbody>
@@ -30,8 +43,8 @@
 			@continue($reported_total == 0 && $total == 0)
 			<tr>
 				<td> {{ $key+1 }} </td>
-				<td> {{ $row->name ?? $row->new_name ?? '' }} </td>
-				@if(session('filter_groupby') == 5)
+				<td> {{ $row->name ?? '' }} </td>
+				@if(session('filter_groupby') != 1 && session('filter_groupby') != 6)
 					<td> {{ $row->mfl_code ?? '' }} </td>
 					<td> {{ $row->dhis_code ?? '' }} </td>
 				@endif

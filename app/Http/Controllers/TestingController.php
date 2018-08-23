@@ -218,6 +218,50 @@ class TestingController extends Controller
 		return view('charts.line_graph', $data);		
 	}
 
+	public function testing_gender()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$row = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($this->old_gender_query())
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$row2 = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($this->old_gender_query())
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['paragraph'] = "
+		<table class='table table-striped'>
+			<tr> <td>Male : </td> <td>" . number_format($row->male_test) . "</td> </tr>
+			<tr> <td>Female : </td> <td>" . number_format($row->female_test) . "</td> </tr>
+			<tr>
+				<td>Total : </td> <td>" . number_format($row->male_test + $row->female_test) . "</td>
+			</tr>
+		</table>			
+		";
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes']['name'] = "Tests";
+		$data['outcomes']['colorByPoint'] = true;
+
+
+		$data['outcomes']['data'][0]['name'] = "Male";
+		$data['outcomes']['data'][1]['name'] = "Female";
+
+		$data['outcomes']['data'][0]['y'] = (int) $row->male_test;
+		$data['outcomes']['data'][1]['y'] = (int) $row->female_test;
+
+		return view('charts.pie_chart', $data);
+	}
+
 	public function summary()
 	{
 		$date_query = Lookup::date_query();

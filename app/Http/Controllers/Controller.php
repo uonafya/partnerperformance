@@ -162,7 +162,16 @@ class Controller extends BaseController
 		";
     }
 
-    public function old_gender_query()
+    public function gender_pos_query()
+    {
+    	return "
+    		SUM(`positive_1-9_hv01-17`) AS below_10,
+    		(SUM(`positive_10-14(m)_hv01-18`) + SUM(`positive_15-19(m)_hv01-20`) + SUM(`positive_20-24(m)_hv01-22`) + SUM(`positive_25pos(m)_hv01-24`)) AS male_pos,
+    		(SUM(`positive_10-14(f)_hv01-19`) + SUM(`positive_15-19(f)_hv01-21`) + SUM(`positive_20-24(f)_hv01-23`) + SUM(`positive_25pos(f)_hv01-25`)) AS female_pos
+    	";
+    }
+
+    public function old_gender_pos_query()
     {
     	return "
     		(SUM(`male_under_15yrs_receiving_hiv_pos_results`) + SUM(`male_15-24yrs_receiving_hiv_pos_results`) + SUM(`male_above_25yrs_receiving_hiv_pos_results`)) AS male_test,

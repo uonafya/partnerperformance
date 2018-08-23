@@ -25,7 +25,7 @@ class UserController extends Controller
     public function create()
     {
         $partners = \App\Partner::all();
-        return view('base.register', ['partners' => $partners]);
+        return view('forms.users', ['partners' => $partners]);
     }
 
     /**
@@ -63,7 +63,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $partners = \App\Partner::all();
-        return view('base.register', ['partners' => $partners, 'user' => $user]);
+        return view('forms.users', ['partners' => $partners, 'user' => $user]);
     }
 
     /**
