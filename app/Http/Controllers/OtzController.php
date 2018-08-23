@@ -538,14 +538,13 @@ class OtzController extends Controller
 	{
 		$file = $request->upload->path();
 		// $path = $request->upload->store('public/results/vl');
-		$financial_year = $request->input('financial_year');
+		// $financial_year = $request->input('financial_year');
 
 		$data = Excel::load($file, function($reader){
 			$reader->toArray();
 		})->get();
 
 		$partner = session('session_partner');
-
 		// print_r($data);die();
 
 		foreach ($data as $key => $value) {
@@ -563,7 +562,7 @@ class OtzController extends Controller
 			$fac->save();
 
 			DB::connection('mysql_wr')->table('t_non_mer')
-				->where(['facility' => $fac->id, 'financial_year' => $financial_year])
+				->where(['facility' => $fac->id, 'financial_year' => $value->financial_year])
 				->update([
 					'viremia_beneficiaries' => (int) $value->viremia_beneficiaries ?? null,
 					'dsd_beneficiaries' => (int) $value->dsd_beneficiaries ?? null,

@@ -174,8 +174,8 @@ class Controller extends BaseController
     public function old_gender_pos_query()
     {
     	return "
-    		(SUM(`male_under_15yrs_receiving_hiv_pos_results`) + SUM(`male_15-24yrs_receiving_hiv_pos_results`) + SUM(`male_above_25yrs_receiving_hiv_pos_results`)) AS male_test,
-    		(SUM(`female_under_15yrs_receiving_hiv_pos_results`) + SUM(`female_15-24yrs_receiving_hiv_pos_results`) + SUM(`female_above_25yrs_receiving_hiv_pos_results`)) AS female_test
+    		(SUM(`male_under_15yrs_receiving_hiv_pos_results`) + SUM(`male_15-24yrs_receiving_hiv_pos_results`) + SUM(`male_above_25yrs_receiving_hiv_pos_results`)) AS male_pos,
+    		(SUM(`female_under_15yrs_receiving_hiv_pos_results`) + SUM(`female_15-24yrs_receiving_hiv_pos_results`) + SUM(`female_above_25yrs_receiving_hiv_pos_results`)) AS female_pos
 		";
     }
 

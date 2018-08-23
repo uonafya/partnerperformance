@@ -147,6 +147,10 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('guide', 'GeneralController@guide');
 });
 
+Route::middleware(['signed'])->group(function(){
+	Route::get('user/passsword/{user}', 'UserController@change_password')->name('user.password');
+});
+
 Route::middleware(['clear_session', 'auth'])->group(function(){
 
 	Route::prefix('target')->name('target')->group(function(){

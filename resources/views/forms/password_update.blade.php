@@ -21,16 +21,24 @@
 			    {{ $partner->name ?? '' }} 
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('otz/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
+				<form action="{{ url('user/' . $user->id) }}" method="post" class="form-horizontal"> 
 					@csrf
+                    @method('PUT')
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Upload File</label>
+                        <label class="col-sm-4 control-label">Password</label>
                         <div class="col-sm-8">
-                            <input class="form-control" name="upload" id="upload" type="file" accept=".xlsx, .xls, .csv" />
-                            <!--  accept=".csv, .xlsx,"  -->
+                            <input class="form-control" required name="password" id="password" type="password" />
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Confirm Password</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="confirm_password" type="password" />
+                        </div>
+                    </div>
+
 
                     <div class="col-sm-6 col-sm-offset-6">
                         <button class="btn btn-success" type="submit" name="submit_type" value="release">Submit</button>
@@ -57,18 +65,16 @@
 
     	$(".form-horizontal select").select2();
 
-    	$("select").change(function(){
-    		// get_values();
-		});	
-
-
-
         $(".form-horizontal").validate({
             errorPlacement: function (error, element)
             {
                 element.before(error);
+            },
+            rules: {
+                confirm_password: {
+                    equalTo: "#password"
+                }
             }
-            {{ $val_rules ?? '' }}
         });
     });
 

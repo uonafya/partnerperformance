@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\NewUser;
 
 class UserController extends Controller
 {
@@ -40,6 +43,13 @@ class UserController extends Controller
         $user->fill($request->except('_token'));
         $user->password = env('DEFAULT_PASSWORD');
         $user->save();
+
+        $mail_array = [$user->email]
+        // Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser());
+        Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser());
+
+        session(['toast_message' => 'User Created.']);
+
         return back();
     }
 
@@ -77,7 +87,7 @@ class UserController extends Controller
     {
         $user->fill($request->except('_token'));
         $user->save();
-        return redirect('/user');
+        return redirect('/non_mer');
     }
 
     /**
@@ -89,6 +99,12 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect('/user');
+        return redirect('/non_mer');
+    }
+
+
+    public function change_password(User $user)
+    {
+        return view('forms.password_update', ['user' => $user]);
     }
 }
