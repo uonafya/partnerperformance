@@ -12,8 +12,7 @@
 			<th>Above 15</th>
 			<th>Sum Total</th>			
 			<th>Reported Total</th>			
-			<th>Discrepancy</th>
-			<th>Duplicates</th>			
+			<th>Discrepancy</th>		
 		</tr>
 	</thead>
 	<tbody>

@@ -179,8 +179,9 @@
 		$("#eid").load("{{ secure_url('old/chart/eid') }}");
 
 		$("#summary").load("{{ secure_url('testing/summary') }}");
-		$("#art_new").load("{{ secure_url('old/table/art_new') }}");
-		$("#art_current").load("{{ secure_url('old/table/art_current') }}");
+		$("#art_new").load("{{ secure_url('art/new_art') }}");
+		$("#art_current").load("{{ secure_url('art/current_art') }}");
+		
 	}
 
 
