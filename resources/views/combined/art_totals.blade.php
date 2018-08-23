@@ -51,7 +51,7 @@
 				<td> {{ number_format($total) }} </td>			
 				<td> {{ number_format($reported_total) }} </td> 
 				<td> {{ number_format($discrepancy) }} </td>
-				<td> $dup </td>
+				<td> {{ $dup }} </td>
 			</tr>
 		@endforeach
 	</tbody>	
