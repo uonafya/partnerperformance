@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="col-sm-6 col-sm-offset-6">
-                        <button class="btn btn-success" type="submit" name="submit_type" value="release">Submit</button>
+                        <button class="btn btn-success" type="submit">Submit</button>
                     </div>
                 </form>
 			</div>
