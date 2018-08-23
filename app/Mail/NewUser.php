@@ -34,7 +34,7 @@ class NewUser extends Mailable
      */
     public function build()
     {
-        $this->change_url = URL::temporarySignedRoute('user.password', now()->addDays(7), ['user' => $this->user->id]);
+        $this->change_url = URL::temporarySignedRoute('reset.password', now()->addDays(7), ['user' => $this->user->id]);
 
         return $this->view('mail.new_user');
     }

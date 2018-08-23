@@ -148,7 +148,7 @@ Route::middleware(['clear_session'])->group(function(){
 });
 
 Route::middleware(['signed'])->group(function(){
-	Route::get('user/passsword/{user}', 'GeneralController@change_password')->name('user.password');
+	Route::get('reset/passsword/{user}', 'GeneralController@change_password')->name('reset.password');
 });
 
 Route::middleware(['clear_session', 'auth'])->group(function(){
