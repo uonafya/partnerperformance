@@ -104,7 +104,7 @@ class UserController extends Controller
     }
 
 
-    public function change_password(User $user)
+    public function change_password(Request $request, User $user)
     {
         if(Auth::user()) Auth::logout();
         Auth::login($user);
