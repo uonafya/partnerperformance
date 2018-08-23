@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 use App\Mail\NewUser;
 
@@ -45,8 +46,8 @@ class UserController extends Controller
         $user->save();
 
         $mail_array = [$user->email];
-        Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser());
-        // Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser($user));
+        // Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser());
+        Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser($user));
 
         session(['toast_message' => 'User Created.']);
 
@@ -105,6 +106,9 @@ class UserController extends Controller
 
     public function change_password(User $user)
     {
+        if(Auth::user()) Auth::logout();
+        Auth::login($user);
+        
         return view('forms.password_update', ['user' => $user]);
     }
 }
