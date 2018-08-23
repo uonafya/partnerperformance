@@ -46,7 +46,7 @@ class UserController extends Controller
 
         $mail_array = [$user->email];
         // Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser());
-        Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser());
+        Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser($user));
 
         session(['toast_message' => 'User Created.']);
 
