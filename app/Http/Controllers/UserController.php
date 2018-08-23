@@ -86,7 +86,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->fill($request->except('_token'));
+        $user->fill($request->except(['_token', 'confirm_password']));
         $user->save();
         return redirect('/non_mer');
     }
@@ -108,7 +108,7 @@ class UserController extends Controller
     {
         if(Auth::user()) Auth::logout();
         Auth::login($user);
-        
+
         return view('forms.password_update', ['user' => $user]);
     }
 }

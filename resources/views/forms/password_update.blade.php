@@ -21,7 +21,7 @@
 			    {{ $partner->name ?? '' }} 
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('user/' . $user->id) }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('user/' . $user->id) }}" method="post" class="form-horizontal" id="my_form"> 
 					@csrf
                     @method('PUT')
 
@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Confirm Password</label>
                         <div class="col-sm-8">
-                            <input class="form-control" id="confirm_password" type="password" />
+                            <input class="form-control" id="confirm_password" name="confirm_password" type="password" />
                         </div>
                     </div>
 
@@ -65,7 +65,7 @@
 
     	$(".form-horizontal select").select2();
 
-        $(".form-horizontal").validate({
+        $("#my_form").validate({
             errorPlacement: function (error, element)
             {
                 element.before(error);
