@@ -540,8 +540,8 @@ class ArtController extends Controller
 
 	public function new_art()
 	{		
-        ini_set("memory_limit", "-1");
-        ini_set('max_execution_time', 300);
+        // ini_set("memory_limit", "-1");
+        // ini_set('max_execution_time', 300);
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
@@ -585,13 +585,15 @@ class ArtController extends Controller
 
 	public function current_art()
 	{		
-        ini_set("memory_limit", "-1");
-        ini_set('max_execution_time', 300);
+        // ini_set("memory_limit", "-1");
+        // ini_set('max_execution_time', 300);
 		$date_query = Lookup::year_month_query();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$sql = $q['select_query'] . ", " . $this->current_art_query();		
+		$sql = $q['select_query'] . ", " . $this->current_art_query();	
+
+		DB::enableQueryLog();	
 
 		$data['rows'] = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
@@ -634,6 +636,8 @@ class ArtController extends Controller
 			)")
 			->groupBy($q['group_query'])
 			->get();
+
+		return DB::getQueryLog();
 
 		// $data['duplicates'] = DB::select(
 		// 		DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column_tests}', '{$new_column_tests}', '{$divisions_query}', {$row->year}, {$row->month});"));
