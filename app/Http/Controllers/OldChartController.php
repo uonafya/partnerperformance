@@ -194,8 +194,8 @@ class OldChartController extends Controller
 		$data['outcomes']['data'][0]['name'] = "Male";
 		$data['outcomes']['data'][1]['name'] = "Female";
 
-		$data['outcomes']['data'][0]['y'] = (int) $row->male_test;
-		$data['outcomes']['data'][1]['y'] = (int) $row->female_test;
+		$data['outcomes']['data'][0]['y'] = (int) $row->male_pos;
+		$data['outcomes']['data'][1]['y'] = (int) $row->female_pos;
 
 		return view('charts.pie_chart', $data);
 	}

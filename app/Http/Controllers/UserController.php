@@ -44,7 +44,7 @@ class UserController extends Controller
         $user->password = env('DEFAULT_PASSWORD');
         $user->save();
 
-        $mail_array = [$user->email]
+        $mail_array = [$user->email];
         // Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser());
         Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser());
 
