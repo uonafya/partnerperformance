@@ -12,7 +12,8 @@
 			<th>Above 15</th>
 			<th>Sum Total</th>			
 			<th>Reported Total</th>			
-			<th>Discrepancy</th>			
+			<th>Discrepancy</th>
+			<th>Duplicates</th>			
 		</tr>
 	</thead>
 	<tbody>
@@ -26,6 +27,13 @@
 				$total = $below_1 + $below_15 + $above_15;
 				$reported_total = $row->total + $old->total - ($duplicate->total ?? 0);
 				$discrepancy = $reported_total - $total;
+
+				$dup = '';
+				if($duplicates->where('div_id', $row->div_id)->count() > 1){
+					foreach ($duplicates->where('div_id', $row->div_id) as $d) {
+						$dup .= $d->total . ' / ';
+					}
+				}
 			?>
 			@continue($reported_total == 0 && $total == 0)
 			<tr>
@@ -43,6 +51,7 @@
 				<td> {{ number_format($total) }} </td>			
 				<td> {{ number_format($reported_total) }} </td> 
 				<td> {{ number_format($discrepancy) }} </td>
+				<td> $dup </td>
 			</tr>
 		@endforeach
 	</tbody>	
