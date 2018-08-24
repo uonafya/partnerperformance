@@ -19,6 +19,8 @@
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    {{ $partner->name ?? '' }} 
+          <br />
+          Upload Early Warning Indicators Indicators
 		    </div>
 			<div class="panel-body" id="user_guide">
 				<form action="{{ url('indicators/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
