@@ -50,25 +50,36 @@ class RegimenController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$old_table = "`d_care_and_treatment`";
+		$new_table = "`d_hiv_and_tb_treatment`";
+
+		$old_column = "`total_currently_on_art`";
+		$new_column = "`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`";
+
+
 		$data['div'] = str_random(15);
 
 		$data['outcomes'][0]['name'] = "Current tx MOH 729";
 		$data['outcomes'][1]['name'] = "Current tx MOH 731";
 		$data['outcomes'][2]['name'] = "Current tx MOH 731 rev. 2018";
-
-		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][3]['name'] = "Reporting on 731 old & new";
 
 		$data['outcomes'][0]['type'] = "spline";
 		$data['outcomes'][1]['type'] = "spline";
 		$data['outcomes'][2]['type'] = "spline";
+		$data['outcomes'][3]['type'] = "spline";
 
 		foreach ($current_art_other as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = (int) $row->total;
 			$data["outcomes"][1]["data"][$key] = $this->check_null($current_art_old->where('year', $row->year)->where('month', $row->month)->first());
 			$data["outcomes"][2]["data"][$key] = $this->check_null($current_art_new->where('year', $row->year)->where('month', $row->month)->first());
+
+			$duplicate_reporting = DB::select(
+				DB::raw("CALL `proc_get_reporting_twice`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
+			$data["outcomes"][3]["data"][$key] = (int) ($duplicate_reporting[0]->total ?? 0);
+
 		}
 		return view('charts.bar_graph', $data);
 	}
