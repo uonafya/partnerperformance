@@ -193,7 +193,7 @@
 		    @else
 			    $('#errorAlertDateRange').hide();
 			    $(".js-example-basic-single").select2();
-			    $("#breadcrum").html("{!! $default_breadcrumb !!}");
+			    $("#breadcrum").html("{!! $default_breadcrumb ?? '' !!}");
 		    @endif		    
 
 			$("select").change(function(){
