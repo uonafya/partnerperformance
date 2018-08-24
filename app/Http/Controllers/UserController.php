@@ -88,6 +88,7 @@ class UserController extends Controller
     {
         $user->fill($request->except(['_token', 'confirm_password']));
         $user->save();
+        session(['toast_message' => 'The updates to your profile has been made.']);
         return redirect('/non_mer');
     }
 

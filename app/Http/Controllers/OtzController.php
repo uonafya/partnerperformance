@@ -536,6 +536,12 @@ class OtzController extends Controller
 
 	public function upload_excel(Request $request)
 	{
+		if (!$request->hasFile('upload')){
+	        session(['toast_message' => 'Please select a file before clicking the submit button.']);
+	        session(['toast_error' => 1]);
+			return back();
+		}
+
 		$file = $request->upload->path();
 		// $path = $request->upload->store('public/results/vl');
 		// $financial_year = $request->input('financial_year');
