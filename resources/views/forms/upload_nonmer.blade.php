@@ -20,7 +20,7 @@
 		    <div class="panel-heading">
 			    {{ $partner->name ?? '' }} 
               <br />
-              Upload Non Mer Indicators
+              Upload Non Mer Data Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
 				<form action="{{ url('otz/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
