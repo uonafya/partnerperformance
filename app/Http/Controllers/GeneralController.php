@@ -71,7 +71,7 @@ class GeneralController extends Controller
         if(Auth::user()) Auth::logout();
         Auth::login($user);
         
-        return view('forms.password_update', ['user' => $user]);
+        return view('forms.password_update', ['no_header' => true, 'user' => $user]);
     }
 
 
