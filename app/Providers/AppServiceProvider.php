@@ -13,11 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(env('DB_HOST') != '10.231.111.110'){
-            \Illuminate\Support\Facades\URL::forceScheme('https');
-        }
-        // \Illuminate\Support\Facades\URL::forceScheme('http');
-        \Illuminate\Support\Facades\URL::forceRootUrl(url(''));
+        // if(env('DB_HOST') != '10.231.111.110'){
+        //     \Illuminate\Support\Facades\URL::forceScheme('https');
+        // }
+        \Illuminate\Support\Facades\URL::forceScheme('http');
+        // \Illuminate\Support\Facades\URL::forceRootUrl(url(''));
     }
 
     /**
