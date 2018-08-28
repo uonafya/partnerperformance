@@ -58,7 +58,9 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="{{ url('/guide') }} ">User Guide</a></li>
 						@guest
-							<li><a href="{{ url('/login') }} ">Login</a></li>
+							@if(env('DB_HOST') != '10.231.111.110')
+								<li><a href="{{ url('/login') }} ">Login</a></li>
+							@endif
 						@endguest	
 						@auth
 							<li class="dropdown">
