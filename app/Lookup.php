@@ -120,7 +120,7 @@ class Lookup
 		return [
 			'default_breadcrumb' => $default_breadcrumb,
 			'select_options' => $select_options,
-			'date_url' => secure_url('filter/date'),
+			'date_url' => url('filter/date'),
 		];
 	}
 
@@ -141,7 +141,7 @@ class Lookup
 			'counties' => $counties,
 			'subcounties' => $subcounties,
 			'wards' => $wards,
-			'date_url' => secure_url('filter/date'),
+			'date_url' => url('filter/date'),
 		];
 	}
 
