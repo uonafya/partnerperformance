@@ -90,6 +90,8 @@ Route::prefix('old/table')->name('old.table.')->group(function(){
 
 
 
+
+
 Route::prefix('testing')->name('testing.')->group(function(){
 	Route::get('testing_outcomes', 'TestingController@testing_outcomes')->name('testing_outcomes');
 	Route::get('positivity', 'TestingController@positivity')->name('positivity');
@@ -140,6 +142,7 @@ Route::prefix('indicators')->name('indicators.')->group(function(){
 
 Route::middleware(['clear_session'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
+	Route::get('/config', 'GeneralController@config');
 	Route::get('home', 'GeneralController@home');
 	Route::get('pmtct', 'GeneralController@pmtct');
 	Route::get('art', 'GeneralController@art');

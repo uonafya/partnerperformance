@@ -65,6 +65,11 @@ class GeneralController extends Controller
 		return view('base.user_guide', ['no_header' => true]);
 	}
 
+	public function config()
+	{
+		return phpinfo();
+	}
+
 
     public function change_password(Request $request, User $user)
     {
