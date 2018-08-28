@@ -20,6 +20,7 @@ class CheckLive
             session(['toast_error' => 1]);
             return redirect('/');
         }
+        
         return $next($request);
     }
 }

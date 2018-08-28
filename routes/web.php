@@ -13,7 +13,6 @@
 
 Route::middleware(['check_live'])->group(function(){
 	Auth::routes();
-
 });
 
 
