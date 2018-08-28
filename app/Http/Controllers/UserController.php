@@ -109,6 +109,8 @@ class UserController extends Controller
     {
         if(Auth::user()) Auth::logout();
         Auth::login($user);
+        $partner = $user->partner;
+        session(['session_partner' => $partner]);
 
         return view('forms.password_update', ['user' => $user]);
     }
