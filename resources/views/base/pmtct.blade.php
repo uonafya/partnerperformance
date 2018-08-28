@@ -96,11 +96,11 @@
 		$("#male_testing").html("<center><div class='loader'></div></center>");
 
 
-		$("#haart").load("{{ secure_url('pmtct/haart') }}");
-		$("#starting_point").load("{{ secure_url('pmtct/starting_point') }}");
-		$("#discovery_positivity").load("{{ secure_url('pmtct/discovery_positivity') }}");
-		$("#eid").load("{{ secure_url('pmtct/eid') }}");
-		$("#male_testing").load("{{ secure_url('pmtct/male_testing') }}");
+		$("#haart").load("{{ url('pmtct/haart') }}");
+		$("#starting_point").load("{{ url('pmtct/starting_point') }}");
+		$("#discovery_positivity").load("{{ url('pmtct/discovery_positivity') }}");
+		$("#eid").load("{{ url('pmtct/eid') }}");
+		$("#male_testing").load("{{ url('pmtct/male_testing') }}");
 	}
 
 

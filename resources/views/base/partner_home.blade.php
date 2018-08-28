@@ -120,7 +120,7 @@
 
 		$("select").change(function(){
 			em = $(this).val();
-			var posting = $.post( "{{ secure_url('filter/partner') }}", { partner: em } );
+			var posting = $.post( "{{ url('filter/partner') }}", { partner: em } );
 
 			posting.done(function( data ) {
 			    $("#breadcrum").html(data.crumb);
@@ -161,13 +161,13 @@
 		$("#new_art").html("<center><div class='loader'></div></center>");
 		$("#current_art").html("<center><div class='loader'></div></center>");
 
-		$("#summary").load("{{ secure_url('partner/summary') }}");
-		$("#hiv_testing").load("{{ secure_url('partner/tested') }}");
-		$("#pos_results").load("{{ secure_url('partner/positive') }}");
-		$("#linked").load("{{ secure_url('partner/linked') }}");
-		$("#pmtct").load("{{ secure_url('partner/pmtct') }}");
-		$("#new_art").load("{{ secure_url('partner/new_art') }}");
-		$("#current_art").load("{{ secure_url('partner/current_art') }}");
+		$("#summary").load("{{ url('partner/summary') }}");
+		$("#hiv_testing").load("{{ url('partner/tested') }}");
+		$("#pos_results").load("{{ url('partner/positive') }}");
+		$("#linked").load("{{ url('partner/linked') }}");
+		$("#pmtct").load("{{ url('partner/pmtct') }}");
+		$("#new_art").load("{{ url('partner/new_art') }}");
+		$("#current_art").load("{{ url('partner/current_art') }}");
 	}
 
 </script>

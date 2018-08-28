@@ -54,8 +54,8 @@
 		$("#reporting").html("<center><div class='loader'></div></center>");
 		$("#summary").html("<center><div class='loader'></div></center>");
 
-		$("#reporting").load("{{ secure_url('regimen/reporting') }}");
-		$("#summary").load("{{ secure_url('regimen/summary') }}");
+		$("#reporting").load("{{ url('regimen/reporting') }}");
+		$("#summary").load("{{ url('regimen/summary') }}");
 	}
 
 

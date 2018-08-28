@@ -69,9 +69,9 @@
 		$("#positivity").html("<center><div class='loader'></div></center>");
 		$("#summary").html("<center><div class='loader'></div></center>");
 
-		$("#testing_outcomes").load("{{ secure_url('testing/testing_outcomes') }}");
-		$("#positivity").load("{{ secure_url('testing/positivity') }}");
-		$("#summary").load("{{ secure_url('testing/summary') }}");
+		$("#testing_outcomes").load("{{ url('testing/testing_outcomes') }}");
+		$("#positivity").load("{{ url('testing/positivity') }}");
+		$("#summary").load("{{ url('testing/summary') }}");
 	}
 
 

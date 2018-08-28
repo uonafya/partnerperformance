@@ -113,12 +113,12 @@
 		$("#new_art").html("<center><div class='loader'></div></center>");
 		$("#current_art").html("<center><div class='loader'></div></center>");
 
-		$("#reporting").load("{{ secure_url('art/reporting') }}");
-		$("#current_age_breakdown").load("{{ secure_url('art/current_age_breakdown') }}");
-		$("#new_age_breakdown").load("{{ secure_url('art/new_age_breakdown') }}");
-		$("#enrolled_age_breakdown").load("{{ secure_url('art/enrolled_age_breakdown') }}");
-		$("#new_art").load("{{ secure_url('art/new_art') }}");
-		$("#current_art").load("{{ secure_url('art/current_art') }}");
+		$("#reporting").load("{{ url('art/reporting') }}");
+		$("#current_age_breakdown").load("{{ url('art/current_age_breakdown') }}");
+		$("#new_age_breakdown").load("{{ url('art/new_age_breakdown') }}");
+		$("#enrolled_age_breakdown").load("{{ url('art/enrolled_age_breakdown') }}");
+		$("#new_art").load("{{ url('art/new_art') }}");
+		$("#current_art").load("{{ url('art/current_art') }}");
 	}
 
 

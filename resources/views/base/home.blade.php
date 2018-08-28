@@ -192,19 +192,19 @@
 
 
 
-		$("#treatment").load("{{ secure_url('chart/treatment') }}");
-		$("#currenttx").load("{{ secure_url('chart/current') }}");
-		$("#newtx").load("{{ secure_url('chart/art_new') }}");
-		$("#gender").load("{{ secure_url('chart/testing_gender') }}");
-		$("#out_gender").load("{{ secure_url('chart/outcome_gender') }}");
-		$("#age").load("{{ secure_url('chart/testing_age') }}");
-		$("#out_age").load("{{ secure_url('chart/outcome_age') }}");
-		$("#pmtct").load("{{ secure_url('chart/pmtct') }}");
-		$("#eid").load("{{ secure_url('chart/eid') }}");
+		$("#treatment").load("{{ url('chart/treatment') }}");
+		$("#currenttx").load("{{ url('chart/current') }}");
+		$("#newtx").load("{{ url('chart/art_new') }}");
+		$("#gender").load("{{ url('chart/testing_gender') }}");
+		$("#out_gender").load("{{ url('chart/outcome_gender') }}");
+		$("#age").load("{{ url('chart/testing_age') }}");
+		$("#out_age").load("{{ url('chart/outcome_age') }}");
+		$("#pmtct").load("{{ url('chart/pmtct') }}");
+		$("#eid").load("{{ url('chart/eid') }}");
 
-		$("#summary").load("{{ secure_url('table/summary') }}");
-		$("#art_new").load("{{ secure_url('table/art_new') }}");
-		$("#art_current").load("{{ secure_url('table/art_current') }}");
+		$("#summary").load("{{ url('table/summary') }}");
+		$("#art_new").load("{{ url('table/art_new') }}");
+		$("#art_current").load("{{ url('table/art_current') }}");
 	}
 
 

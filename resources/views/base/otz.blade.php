@@ -83,10 +83,10 @@
 		$("#breakdown").html("<center><div class='loader'></div></center>");
 
 
-		$("#facilities_count").load("{{ secure_url('otz/facilities_count') }}");
-		$("#clinics").load("{{ secure_url('otz/clinics') }}");
-		$("#achievement").load("{{ secure_url('otz/achievement') }}");
-		$("#breakdown").load("{{ secure_url('otz/breakdown') }}");
+		$("#facilities_count").load("{{ url('otz/facilities_count') }}");
+		$("#clinics").load("{{ url('otz/clinics') }}");
+		$("#achievement").load("{{ url('otz/achievement') }}");
+		$("#breakdown").load("{{ url('otz/breakdown') }}");
 	}
 
 

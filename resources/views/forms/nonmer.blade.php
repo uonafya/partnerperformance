@@ -24,7 +24,7 @@
                 <p>
                     Download the template in the link above, fill it in then upload it in the form below.
                 </p>
-				<form action="{{ secure_url('target/set_target') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('target/set_target') }}" method="post" class="form-horizontal"> 
 					@csrf
 
 					<div class="form-group">
@@ -141,7 +141,7 @@
 			financial_year : financial_year,
             facility_id : facility_id
            },
-           url: "{{ secure_url('/target/get_data') }}",
+           url: "{{ url('/target/get_data') }}",
            success: function(data){
            		data = JSON.parse(data);
            		console.log(data);
