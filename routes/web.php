@@ -11,7 +11,11 @@
 |
 */
 
-Auth::routes();
+Route::middleware(['check_live'])->group(function(){
+	Auth::routes();
+
+});
+
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
@@ -151,7 +155,7 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('reset/passsword/{user}', 'GeneralController@change_password')->name('reset.password');
 // });
 
-Route::middleware(['clear_session', 'auth'])->group(function(){
+Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::prefix('target')->name('target')->group(function(){
 		Route::post('get_data', 'OtzController@get_data')->name('get_data');

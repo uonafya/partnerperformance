@@ -57,6 +57,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
 
         'clear_session' => \App\Http\Middleware\ClearSession::class,
+        'check_live' => \App\Http\Middleware\CheckLive::class,
 
         'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'jwt.refresh' => RefreshToken::class
