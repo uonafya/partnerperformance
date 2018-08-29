@@ -4,9 +4,21 @@ namespace App;
 
 use DB;
 use App\Synch;
+use App\User;
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\NewUser;
 
 class Other
 {
+
+	public static function reset_email($id)
+	{
+		$user = User::find($id);
+        $mail_array = [$user->email];
+        Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser($user));
+	}
+
 
 	public static function other_targets()
 	{

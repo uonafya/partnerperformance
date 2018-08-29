@@ -56,6 +56,11 @@ Artisan::command('targets {year?}', function ($year=null) {
 })->describe('Populate target tables with values.');
 
 
+Artisan::command('resend_link {id}', function ($id) {
+	\App\Other::reset_email($id);
+})->describe('');
+
+
 Artisan::command('report', function () {
 	\App\Lookup::send_report();
 })->describe('Send Duplicates Report.');
