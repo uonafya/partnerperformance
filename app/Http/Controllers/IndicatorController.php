@@ -30,7 +30,7 @@ class IndicatorController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		dd($rows);
+		// dd($rows);
 
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
