@@ -21,7 +21,7 @@
         "venturecraft/revisionable": "^1.28"
     },
     "require-dev": {
-        "filp/whoops": "^2.1.4",
+        "filp/whoops": "2.1.4",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",

@@ -6,11 +6,19 @@ use Illuminate\Http\Request;
 use DB;
 use Excel;
 use App\Lookup;
-use App\Facility;
-use App\ViewFacility;
 
 class IndicatorController extends Controller
 {
+
+
+	public function get_stuff()
+	{
+		
+	}
+
+
+
+
 
 	public $raw = "
 		countymflcode AS `County MFL`, name as `County`, 
