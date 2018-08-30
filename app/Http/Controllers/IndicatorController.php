@@ -47,7 +47,9 @@ class IndicatorController extends Controller
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) ($row->tested - $row->pos);
-			$positivity = round(($row->pos / $row->tested * 100), 2);
+
+			$positivity = 0;
+			if($row->tested) $positivity = round(($row->pos / $row->tested * 100), 2);
 			$data["outcomes"][2]["data"][$key] = $positivity;
 
 		}
