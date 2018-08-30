@@ -147,15 +147,16 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('pmtct', 'GeneralController@pmtct');
 	Route::get('art', 'GeneralController@art');
 	Route::get('testing', 'GeneralController@testing');
-	Route::get('otz', 'GeneralController@otz');
 	Route::get('regimen', 'GeneralController@regimen');
+	Route::get('otz', 'GeneralController@otz');
+	Route::get('indicators', 'GeneralController@indicators');
 
 	Route::get('guide', 'GeneralController@guide');
 });
 
-Route::middleware(['signed'])->group(function(){
+// Route::middleware(['signed'])->group(function(){
 	Route::get('reset/password/{user}', 'GeneralController@change_password')->name('reset.password');
-});
+// });
 
 Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
@@ -166,7 +167,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		Route::get('target', 'GeneralController@targets');
 	});
 	
-	Route::get('non_mer', 'GeneralController@non_mer');
-	Route::get('indicators', 'GeneralController@indicators');
+	Route::get('upload_nonmer', 'GeneralController@upload_nonmer');
+	Route::get('upload_indicators', 'GeneralController@upload_indicators');
 	Route::resource('user', 'UserController');
 });

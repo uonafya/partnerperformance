@@ -54,6 +54,13 @@ class GeneralController extends Controller
 		return view('base.otz', $data);
 	}
 
+	public function indicators()
+	{
+		$data = Lookup::view_data();
+		$data['no_fac'] = true;
+		return view('base.indicators', $data);		
+	}
+
 	public function regimen()
 	{
 		$data = Lookup::view_data();
@@ -89,14 +96,14 @@ class GeneralController extends Controller
 		return view('forms.nonmer', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner]);
 	}
 
-	public function non_mer()
+	public function upload_nonmer()
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
 		return view('forms.upload_nonmer', ['no_header' => true, 'partner' => $partner]);
 	}
 
-	public function indicators()
+	public function upload_indicators()
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
