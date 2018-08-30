@@ -11,9 +11,48 @@ class IndicatorController extends Controller
 {
 
 
-	public function get_stuff()
+	public function testing()
 	{
-		
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$data['div'] = str_random(15);
+
+		$rows = DB::table('p_early_indicators')
+			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
+			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
+			->selectRaw("SUM(tested) as tested, SUM(positive) as pos")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		$data['outcomes'][0]['name'] = "Positive Tests";
+		$data['outcomes'][1]['name'] = "Negative Tests";
+		$data['outcomes'][2]['name'] = "Positivity";
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
+			$data["outcomes"][1]["data"][$key] = (int) ($row->tested - $row->pos);
+			$positivity = round(($row->pos / $row->tested * 100), 2);
+			$data["outcomes"][2]["data"][$key] = $positivity;
+
+		}
+
+		return view('charts.dual_axis', $data);
 	}
 
 
