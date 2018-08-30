@@ -73,7 +73,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $partners = \App\Partner::all();
+        $partners = \App\Partner::orderBy('name', 'asc')->get();
         return view('forms.users', ['partners' => $partners, 'user' => $user]);
     }
 
