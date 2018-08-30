@@ -127,7 +127,7 @@ class Other
 					tested int(10) DEFAULT NULL,    				
 					positive int(10) DEFAULT NULL,    				
 					new_art int(10) DEFAULT NULL,    				
-					linkage int(10) DEFAULT NULL,  
+					linkage double(6, 4) DEFAULT NULL,  
 
 					current_tx int(10) DEFAULT NULL,    				
 					net_new_tx int(10) DEFAULT NULL,    				

@@ -92,6 +92,8 @@ class IndicatorController extends Controller
 		return view('charts.dual_axis', $data);
 	}
 
+	// public function 
+
 
 
 
@@ -220,7 +222,7 @@ class IndicatorController extends Controller
 
 			DB::connection('mysql_wr')->table('p_early_indicators')
 				->where([
-					'county' => $county->id, 'partner' => $partner->id, 
+					'county' => $county->id, 'partner' => auth()->user()->partner_id, 
 					'financial_year' => $value->financial_year, 'month' => $value->month
 				])
 				->update($update_data);

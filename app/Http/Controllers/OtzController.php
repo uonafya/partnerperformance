@@ -558,7 +558,7 @@ class OtzController extends Controller
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
 
 			$view_facility = ViewFacility::find($fac->id);
-			if($view_facility->partner != $partner->id) continue;
+			if($view_facility->partner != auth()->user()->partner_id) continue;
 
 			$fac->fill([
 				'is_viremia' => Lookup::clean_boolean($value->is_viremia_yesno), 
