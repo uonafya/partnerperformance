@@ -132,7 +132,7 @@ class IndicatorController extends Controller
 		foreach ($rows as $key => $row) {
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
-			if($data[$i]['Linkage Percentage']) $data[$i]['Linkage Percentage'] = ($data[$i]['Linkage Percentage'] * 100) . '%';
+			if($data[$key]['Linkage Percentage']) $data[$key]['Linkage Percentage'] = ($data[$key]['Linkage Percentage'] * 100) . '%';
 		}
 
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . '_early_warning_indicators';
