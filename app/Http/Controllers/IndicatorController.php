@@ -133,8 +133,10 @@ class IndicatorController extends Controller
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
 			if($data[$key]['Linkage Percentage']){
-				$str = ($data[$key]['Linkage Percentage'] * 100) . "%";
-				$data[$key]['Linkage Percentage'] = str_replace("''", "", $str);
+				// $str = ($data[$key]['Linkage Percentage'] * 100) . "%";
+				// $data[$key]['Linkage Percentage'] = str_replace("''", "", $str);
+
+				$data[$key]['Linkage Percentage'] *= 100;
 			}
 		}
 
