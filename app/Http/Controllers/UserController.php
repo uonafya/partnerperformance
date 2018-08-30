@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $partners = \App\Partner::all();
+        $partners = \App\Partner::orderBy('name', 'asc')->get();
         return view('forms.users', ['partners' => $partners]);
     }
 
