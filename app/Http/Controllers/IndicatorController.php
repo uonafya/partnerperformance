@@ -78,8 +78,10 @@ class IndicatorController extends Controller
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$prev_key = $key-1;
 
-			$pos = $rows[$key]->pos - ($rows[$prev_key]->pos ?? 0);
-			$tested = $rows[$key]->tested - ($rows[$prev_key]->tested ?? 0);
+			$pos = $tested = 0;
+
+			if($row->tested) $pos = $rows[$key]->pos - ($rows[$prev_key]->pos ?? 0);
+			if($row->tested) $tested = $rows[$key]->tested - ($rows[$prev_key]->tested ?? 0);
 
 			$data["outcomes"][0]["data"][$key] = (int) $pos;
 			$data["outcomes"][1]["data"][$key] = (int) ($tested - $pos);
