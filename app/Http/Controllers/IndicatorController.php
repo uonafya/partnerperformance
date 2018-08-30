@@ -33,6 +33,9 @@ class IndicatorController extends Controller
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
 
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
 		$data['outcomes'][2]['name'] = "Positivity";
@@ -48,8 +51,9 @@ class IndicatorController extends Controller
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) ($row->tested - $row->pos);
 
-			$positivity = 0;
-			if($row->tested) $positivity = round(($row->pos / $row->tested * 100), 2);
+			// $positivity = 0;
+			// if($row->tested) $positivity = round(($row->pos / $row->tested * 100), 2);
+			$positivity = round(($row->pos / $row->tested * 100), 2);
 			$data["outcomes"][2]["data"][$key] = $positivity;
 
 		}

@@ -62,4 +62,9 @@ class Handler extends ExceptionHandler
 
         return redirect()->guest('login');
     }
+
+    protected function renderExceptionWithWhoops(Exception $e)
+    {
+        return $this->renderExceptionWithSymfony($e, config('app.debug'));
+    }
 }
