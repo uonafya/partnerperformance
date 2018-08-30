@@ -30,9 +30,24 @@ class IndicatorController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		// dd($rows);
+		$sql2 = "
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
+		";
+		
+		$date_query = Lookup::date_query(true);
+
+		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql2)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$target = round(($target_obj->tests / 12), 2);
 
 		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
 
 		$data['outcomes'][0]['type'] = "column";
@@ -40,11 +55,13 @@ class IndicatorController extends Controller
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
-		$data['outcomes'][2]['name'] = "Positivity";
+		$data['outcomes'][2]['name'] = "Target";
+		$data['outcomes'][3]['name'] = "Positivity";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
 
 
 		foreach ($rows as $key => $row) {
@@ -52,10 +69,11 @@ class IndicatorController extends Controller
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) ($row->tested - $row->pos);
+			$data["outcomes"][2]["data"][$key] = $target;
 
 			$positivity = 0;
 			if($row->tested) $positivity = round(($row->pos / $row->tested * 100), 2);
-			$data["outcomes"][2]["data"][$key] = $positivity;
+			$data["outcomes"][3]["data"][$key] = $positivity;
 
 		}
 
