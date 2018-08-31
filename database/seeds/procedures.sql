@@ -15,8 +15,6 @@ BEGIN
 END //
 DELIMITER ;
 
--- brian
-
 DROP PROCEDURE IF EXISTS `proc_get_duplicate_total_multiple`;
 DELIMITER //
 CREATE PROCEDURE `proc_get_duplicate_total_multiple`
