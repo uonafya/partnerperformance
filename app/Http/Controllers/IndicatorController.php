@@ -21,7 +21,24 @@ class IndicatorController extends Controller
 		$rows = DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
 			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
-			->selectRaw("SUM(tested) as tested, SUM(positive) as pos")
+			->selectRaw("SUM(tested) as tests, SUM(positive) as pos")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+
+		$sql = "
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests,
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos
+		";
+
+		$dhis = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -31,37 +48,52 @@ class IndicatorController extends Controller
 			->get();
 
 		$sql2 = "
-			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos,
-			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
+			SUM(`total_tested_hiv`) AS tests,
+			SUM(`total_received_hivpos_results`) AS pos
 		";
+
+		$dhis_old = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($sql2)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
 		
 		$date_query = Lookup::date_query(true);
 
 		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
-			->selectRaw($sql2)
+			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
 		$target = round(($target_obj->tests / 12), 2);
 
-		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
-		$data['outcomes'][2]['yAxis'] = 1;
-
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "column";
+		$data['outcomes'][4]['type'] = "spline";
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
-		$data['outcomes'][2]['name'] = "Target";
-		$data['outcomes'][3]['name'] = "Positivity";
 
-		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
+		$data['outcomes'][2]['name'] = "Positive Tests";
+		$data['outcomes'][3]['name'] = "Negative Tests";
+
+		$data['outcomes'][4]['name'] = "Target";
+
+		$data['outcomes'][0]['stack'] = 'datim';
+		$data['outcomes'][1]['stack'] = 'datim';
+		$data['outcomes'][2]['stack'] = 'dhis';
+		$data['outcomes'][3]['stack'] = 'dhis';
+
+		// $data['outcomes'][3]['name'] = "Positivity";
 
 
 		// foreach ($rows as $key => $row) {
@@ -73,23 +105,45 @@ class IndicatorController extends Controller
 		// 	$data["outcomes"][3]["data"][$key] = Lookup::get_percentage($row->pos, $row->tested);
 		// }
 
+		$old_table = "`d_hiv_counselling_and_testing`";
+		$new_table = "`d_hiv_testing_and_prevention_services`";
+
+		$old_column = "`total_received_hivpos_results`";
+		$new_column = "`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`";
+
+		$old_column_tests = "`total_tested_hiv`";
+		$new_column_tests = "`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`";
+
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$prev_key = $key-1;
 
-			$pos = $tested = 0;
+			$pos = $tests = 0;
 
-			if($row->tested) $pos = $rows[$key]->pos - ($rows[$prev_key]->pos ?? 0);
-			if($row->tested) $tested = $rows[$key]->tested - ($rows[$prev_key]->tested ?? 0);
+			if($row->tests) $pos = $rows[$key]->pos - ($rows[$prev_key]->pos ?? 0);
+			if($row->tests) $tests = $rows[$key]->tests - ($rows[$prev_key]->tests ?? 0);
 
 			$data["outcomes"][0]["data"][$key] = (int) $pos;
-			$data["outcomes"][1]["data"][$key] = (int) ($tested - $pos);
-			$data["outcomes"][2]["data"][$key] = $target;
-			$data["outcomes"][3]["data"][$key] = Lookup::get_percentage($pos, $tested);
+			$data["outcomes"][1]["data"][$key] = (int) ($tests - $pos);
+
+			$duplicate_pos = DB::select(
+				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
+			$duplicate_tests = DB::select(
+				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column_tests}', '{$new_column_tests}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
+			$tests = $dhis[$key]->tests + $dhis_old[$key]->tests - ($duplicate_tests[0]->total ?? 0);
+			$pos = $dhis[$key]->pos + $dhis_old[$key]->pos - ($duplicate_pos[0]->total ?? 0);
+			// $neg = $tests - $pos;
+
+			$data["outcomes"][2]["data"][$key] = (int) $pos;
+			$data["outcomes"][3]["data"][$key] = (int) ($tests - $pos);
+
+			$data["outcomes"][4]["data"][$key] = $target;
 		}
 
-		return view('charts.dual_axis', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 	// public function 
