@@ -196,7 +196,7 @@ class IndicatorController extends Controller
 			}
 		}
 
-		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . '_early_warning_indicators';
+		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . '_early_warning_indicators_monthly_data';
 
     	$path = storage_path('exports/' . $filename . '.xlsx');
     	if(file_exists($path)) unlink($path);
