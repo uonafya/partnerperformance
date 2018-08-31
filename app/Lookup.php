@@ -280,12 +280,12 @@ class Lookup
 	public static function divisions_query()
 	{
 		$query = " 1 ";
-		if(session('filter_county')) $query .= " AND county='" . session('filter_county') . "' ";
-		if(session('filter_subcounty')) $query .= " AND subcounty_id='" . session('filter_subcounty') . "' ";
-		if(session('filter_ward')) $query .= " AND ward_id='" . session('filter_ward') . "' ";
+		if(session('filter_county')) $query .= " AND county=" . session('filter_county') . " ";
+		if(session('filter_subcounty')) $query .= " AND subcounty_id=" . session('filter_subcounty') . " ";
+		if(session('filter_ward')) $query .= " AND ward_id=" . session('filter_ward') . " ";
 		if(session('filter_facility')) $query .= " AND view_facilitys.id=" . session('filter_facility') . " ";
 		if(session('filter_partner')) $query .= " AND partner=" . session('filter_partner') . " ";
-		if(session('filter_agency')) $query .= " AND funding_agency_id='" . session('filter_agency') . "' ";
+		if(session('filter_agency')) $query .= " AND funding_agency_id=" . session('filter_agency') . " ";
 
 		return $query;
 	}
