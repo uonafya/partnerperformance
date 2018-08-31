@@ -552,10 +552,16 @@ class OtzController extends Controller
 		})->get();
 
 		$partner = session('session_partner');
+		$unidentified = 0;
 		// print_r($data);die();
 
 		foreach ($data as $key => $value) {
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
+
+			if(!$fac){
+				$unidentified++;
+				continue;
+			}
 
 			$view_facility = ViewFacility::find($fac->id);
 			if($view_facility->partner != auth()->user()->partner_id) continue;
@@ -578,7 +584,7 @@ class OtzController extends Controller
 				]);
 		}
 
-		session(['toast_message' => 'The updates have been made.']);
+		session(['toast_message' => "The updates have been made. {$unidentified} facilities could not be found on our system."]);
 		return back();
 	}
 
