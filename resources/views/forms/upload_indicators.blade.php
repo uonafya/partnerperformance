@@ -27,8 +27,8 @@
 					@csrf
 
           <div class="form-group">
-              <label class="col-sm-8 control-label">Upload Early Warning Indicators File (Monthly Data, Not Cumulative)</label>
-              <div class="col-sm-4">
+              <label class="col-sm-5 control-label">Upload Early Warning Indicators File (Monthly Data, Not Cumulative)</label>
+              <div class="col-sm-7">
                   <input class="form-control" name="upload" id="upload" type="file" accept=".xlsx, .xls, .csv" />
               </div>
           </div>
