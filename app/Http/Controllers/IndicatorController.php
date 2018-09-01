@@ -94,7 +94,7 @@ class IndicatorController extends Controller
 		$data['outcomes'][3]['stack'] = 'dhis';
 
 		// $data['outcomes'][3]['name'] = "Positivity";
-		
+
 		$old_table = "`d_hiv_counselling_and_testing`";
 		$new_table = "`d_hiv_testing_and_prevention_services`";
 
@@ -109,7 +109,7 @@ class IndicatorController extends Controller
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
-			$data["outcomes"][1]["data"][$key] = (int) ($row->tested - $row->pos);
+			$data["outcomes"][1]["data"][$key] = (int) ($row->tests - $row->pos);
 
 			$duplicate_pos = DB::select(
 				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
