@@ -1,4 +1,4 @@
-
+@if(isset($counties))
 
 <div class="row" id="filter">
 	<div class="col-md-3">
@@ -62,3 +62,4 @@
     	</div>
     </center>
 </div>
+@endif
