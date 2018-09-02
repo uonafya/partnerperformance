@@ -556,6 +556,14 @@ class OtzController extends Controller
 		// print_r($data);die();
 
 		foreach ($data as $key => $value) {
+			if(!isset($value->mfl_code)){
+				session([
+				'toast_message' => "This upload is incorrect. Please ensure that you are submitting on the right form.",
+				'toast_error' => 1,
+				}]);
+				return back();	
+			}
+
 			$fac = Facility::where('facilitycode', $value->mfl_code)->first();
 
 			if(!$fac){
