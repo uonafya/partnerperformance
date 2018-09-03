@@ -221,7 +221,7 @@ class IndicatorController extends Controller
 				session([
 				'toast_message' => "This upload is incorrect. Please ensure that you are submitting on the right form.",
 				'toast_error' => 1,
-				}]);
+				]);
 				return back();	
 			}
 
