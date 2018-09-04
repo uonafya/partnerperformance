@@ -964,4 +964,15 @@ CREATE OR REPLACE VIEW  `view_regimen_dhis` AS
     WHERE d.target_category='regimen' AND d.target_report='F-MAPS' AND d.target_name LIKE '%facility%'
 );
 
+CREATE OR REPLACE VIEW  `view_dmap_regimen_dhis` AS
+(
+    SELECT d.*, r.category_id, r.service_id, r.line_id, s.name as service, s.column_name
+
+    FROM tbl_dhis_elements d
+    LEFT JOIN tbl_regimen r ON d.target_id=r.id
+    LEFT JOIN tbl_service s ON r.service_id=s.id
+
+    WHERE d.target_category='regimen' AND d.dhis_report LIKE '%729A%'
+);
+
 -- 2018-08-17 12:52:09
