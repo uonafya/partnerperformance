@@ -41,6 +41,30 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Testing Gender* <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="gender">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Testing Age* <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="age">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -56,6 +80,8 @@
 </div>
 
 
+
+
 @endsection
 
 
@@ -67,10 +93,14 @@
 	{
 		$("#testing_outcomes").html("<center><div class='loader'></div></center>");
 		$("#positivity").html("<center><div class='loader'></div></center>");
+		$("#gender").html("<center><div class='loader'></div></center>");
+		$("#age").html("<center><div class='loader'></div></center>");
 		$("#summary").html("<center><div class='loader'></div></center>");
 
 		$("#testing_outcomes").load("{{ url('testing/testing_outcomes') }}");
 		$("#positivity").load("{{ url('testing/positivity') }}");
+		$("#gender").load("{{ url('chart/testing_gender') }}");
+		$("#age").load("{{ url('chart/testing_age') }}");
 		$("#summary").load("{{ url('testing/summary') }}");
 	}
 
