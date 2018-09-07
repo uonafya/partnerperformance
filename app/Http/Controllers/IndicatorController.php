@@ -80,8 +80,8 @@ class IndicatorController extends Controller
 		$data['outcomes'][3]['type'] = "column";
 		$data['outcomes'][4]['type'] = "spline";
 
-		$data['outcomes'][0]['name'] = "Positive Tests";
-		$data['outcomes'][1]['name'] = "Negative Tests";
+		$data['outcomes'][0]['name'] = "Partner Reported Positive Tests";
+		$data['outcomes'][1]['name'] = "Partner Reported Negative Tests";
 
 		$data['outcomes'][2]['name'] = "DHIS Positive Tests";
 		$data['outcomes'][3]['name'] = "DHIS Negative Tests";
