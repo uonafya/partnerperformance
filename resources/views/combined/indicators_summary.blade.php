@@ -14,6 +14,7 @@
 	</thead>
 	<tbody>
 		@foreach($rows as $key => $row)
+			@continue($row->tests == 0)
 			<?php
 				$current_tx = $art->where('div_id', $row->div_id)->first();			
 

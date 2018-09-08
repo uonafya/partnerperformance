@@ -232,6 +232,132 @@ class IndicatorController extends Controller
 		}
 		return view('charts.bar_graph', $data);		
 	}
+	
+
+	public function currenttx()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$rows = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw($this->current_art_query())
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$rows2 = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw($this->former_age_current_query())
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+
+		$rows3 = DB::table('d_regimen_totals')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
+			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$early_rows = DB::table('p_early_indicators')
+			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
+			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
+			->selectRaw("SUM(current_tx) as total")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$date_query = Lookup::date_query(true);
+		$target = DB::table('t_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `total`")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Below 1";
+		$data['outcomes'][1]['name'] = "Below 15";
+		$data['outcomes'][2]['name'] = "Above 15";
+		$data['outcomes'][3]['name'] = "MOH 729 Current tx Total";
+		$data['outcomes'][4]['name'] = "Partner Reported";
+		$data['outcomes'][5]['name'] = "Target";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "column";
+		$data['outcomes'][4]['type'] = "column";
+		$data['outcomes'][5]['type'] = "spline";
+
+		$data['outcomes'][0]['stack'] = 'current_art';
+		$data['outcomes'][1]['stack'] = 'current_art';
+		$data['outcomes'][2]['stack'] = 'current_art';
+		$data['outcomes'][3]['stack'] = 'moh_729';
+		$data['outcomes'][4]['stack'] = 'partner_reported';
+
+
+
+
+		$old_table = "`d_hiv_counselling_and_testing`";
+		$new_table = "`d_hiv_and_tb_treatment`";
+
+		$old_column = "`total_received_hivpos_results`";
+		$new_column = "`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`";
+
+		$old_column_tests = "`total_tested_hiv`";
+		$new_column_tests = "`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`";
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+			$data["outcomes"][0]["data"][$key] = (int) $row->below_1 + $rows2[$key]->below_1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below_10 + $row->below_15 + $rows2[$key]->below_15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->below_20 + $row->below_25 + $row->above_25 + $rows2[$key]->above_15;
+			$data["outcomes"][3]["data"][$key] = (int) $rows3[$key]->total;
+			$data["outcomes"][4]["data"][$key] = (int) $early_rows[$key]->total;
+
+			$duplicate2 = DB::table('d_hiv_and_tb_treatment')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+							->selectRaw($this->current_art_query())
+							->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `total_currently_on_art` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			$data["outcomes"][5]["data"][$key] = (int) $target->total;
+
+
+		}
+		return view('charts.bar_graph', $data);		
+
+
+
+	}
+
 
 	public function summary()
 	{		
