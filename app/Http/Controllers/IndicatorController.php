@@ -232,7 +232,7 @@ class IndicatorController extends Controller
 		}
 		return view('charts.bar_graph', $data);		
 	}
-	
+
 
 	public function currenttx()
 	{
@@ -315,18 +315,6 @@ class IndicatorController extends Controller
 		$data['outcomes'][3]['stack'] = 'moh_729';
 		$data['outcomes'][4]['stack'] = 'partner_reported';
 
-
-
-
-		$old_table = "`d_hiv_counselling_and_testing`";
-		$new_table = "`d_hiv_and_tb_treatment`";
-
-		$old_column = "`total_received_hivpos_results`";
-		$new_column = "`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`";
-
-		$old_column_tests = "`total_tested_hiv`";
-		$new_column_tests = "`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`";
-
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = (int) $row->below_1 + $rows2[$key]->below_1;
@@ -348,14 +336,15 @@ class IndicatorController extends Controller
 							)")
 							->first();
 
+			if(is_object($duplicate2)){
+				$data["outcomes"][0]["data"][$key] -= $duplicate2->below_1;
+				$data["outcomes"][1]["data"][$key] -= ($duplicate2->below_10 + $duplicate2->below_15);
+				$data["outcomes"][2]["data"][$key] -= ($duplicate2->below_20 + $duplicate2->below_25 + $duplicate2->above_25);
+			}
+
 			$data["outcomes"][5]["data"][$key] = (int) $target->total;
-
-
 		}
-		return view('charts.bar_graph', $data);		
-
-
-
+		return view('charts.bar_graph', $data);
 	}
 
 
