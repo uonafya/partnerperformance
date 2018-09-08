@@ -11,7 +11,7 @@ class IndicatorController extends Controller
 {
 
 
-	public function testing()
+	public function testing($positivity=false)
 	{
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
@@ -130,7 +130,110 @@ class IndicatorController extends Controller
 		return view('charts.bar_graph', $data);
 	}
 
-	// public function 
+
+
+	public function positivity()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$data['div'] = str_random(15);
+
+		$rows = DB::table('p_early_indicators')
+			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
+			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
+			->selectRaw("SUM(tested) as tests, SUM(positive) as pos")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+
+		$sql = "
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests,
+			SUM(`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`) AS pos
+		";
+
+		$dhis = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$sql2 = "
+			SUM(`total_tested_hiv`) AS tests,
+			SUM(`total_received_hivpos_results`) AS pos
+		";
+
+		$dhis_old = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw($sql2)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+		
+		$date_query = Lookup::date_query(true);
+
+		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$target = Lookup::get_percentage($target_obj->pos, $target_obj->tests);
+
+		$data['ytitle'] = 'Percentage';
+
+		$data['outcomes'][0]['name'] = "Partner Reported Positivity";
+		$data['outcomes'][1]['name'] = "DHIS Positivity";
+		$data['outcomes'][2]['name'] = "Targeted Positivity";
+
+
+		$old_table = "`d_hiv_counselling_and_testing`";
+		$new_table = "`d_hiv_testing_and_prevention_services`";
+
+		$old_column = "`total_received_hivpos_results`";
+		$new_column = "`positive_total_(sum_hv01-18_to_hv01-27)_hv01-26`";
+
+		$old_column_tests = "`total_tested_hiv`";
+		$new_column_tests = "`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`";
+
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+
+			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
+
+			$duplicate_pos = DB::select(
+				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
+			$duplicate_tests = DB::select(
+				DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column_tests}', '{$new_column_tests}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
+			$tests = $dhis[$key]->tests + $dhis_old[$key]->tests - ($duplicate_tests[0]->total ?? 0);
+			$pos = $dhis[$key]->pos + $dhis_old[$key]->pos - ($duplicate_pos[0]->total ?? 0);
+
+			$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($pos, $tests);
+
+			$data["outcomes"][2]["data"][$key] = $target;
+		}
+
+
+		return view('charts.bar_graph', $data);		
+	}
 
 
 
