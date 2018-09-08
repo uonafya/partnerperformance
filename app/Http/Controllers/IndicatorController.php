@@ -19,8 +19,6 @@ class IndicatorController extends Controller
 		$data['div'] = str_random(15);
 
 		$rows = DB::table('p_early_indicators')
-			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
-			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
 			->selectRaw("SUM(tested) as tests, SUM(positive) as pos")
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
@@ -230,9 +228,28 @@ class IndicatorController extends Controller
 
 			$data["outcomes"][2]["data"][$key] = $target;
 		}
-
-
 		return view('charts.bar_graph', $data);		
+	}
+
+	public function art_summary()
+	{		
+		$date_query = Lookup::year_month_query();
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
+
+		$data['div'] = str_random(15);
+
+		$rows = DB::table('p_early_indicators')
+			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
+			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
+			->selectRaw("SUM(tested) as tests, SUM(positive) as pos")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
 	}
 
 

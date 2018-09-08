@@ -41,7 +41,7 @@
 			<option disabled='true' selected='true'>Group By:</option>
 
 			@foreach($divisions as $division)
-				@continue($division->id > 2 && $division->id < 5)
+				@continue($division->id > 2 && $division->id < 6)
 				<option value="{{ $division->id }}"> {{ $division->name }} </option>
 			@endforeach
 		</select>		
