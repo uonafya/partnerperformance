@@ -23,40 +23,40 @@ class Lookup
 	{
 		switch ($month) {
 			case 1:
-				$value = 'January';
+				$value = 'Jan';
 				break;
 			case 2:
-				$value = 'February';
+				$value = 'Feb';
 				break;
 			case 3:
-				$value = 'March';
+				$value = 'Mar';
 				break;
 			case 4:
-				$value = 'April';
+				$value = 'Apr';
 				break;
 			case 5:
 				$value = 'May';
 				break;
 			case 6:
-				$value = 'June';
+				$value = 'Jun';
 				break;
 			case 7:
-				$value = 'July';
+				$value = 'Jul';
 				break;
 			case 8:
-				$value = 'August';
+				$value = 'Aug';
 				break;
 			case 9:
-				$value = 'September';
+				$value = 'Sep';
 				break;
 			case 10:
-				$value = 'October';
+				$value = 'Oct';
 				break;
 			case 11:
-				$value = 'November';
+				$value = 'Nov';
 				break;
 			case 12:
-				$value = 'December';
+				$value = 'Dec';
 				break;
 			default:
 				$value = '';
@@ -229,14 +229,15 @@ class Lookup
 			$m = session('filter_month');
 
 			if(!$quarter){
-				if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
+				// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
+				if($financial_year <> $cfy) $month=9;
 				else{
 					$month = date('m') - 2;
 					// if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
 					if($month < 1) $month += 12;
 					if($m) $month = $m;
-					return " financial_year='{$financial_year}' and month='{$month}'";
+					// return " financial_year='{$financial_year}' and month='{$month}'";
 				}
 			}
 			else{
@@ -244,17 +245,19 @@ class Lookup
 				$month = self::max_per_quarter($quarter);
 
 				if($financial_year <> $cfy || ($financial_year == $cfy && $quarter <> $n['quarter'])){					
-					return " financial_year='{$financial_year}' and month='{$month}'";
+					// return " financial_year='{$financial_year}' and month='{$month}'";
 				}
 				else{
 					$month = date('m') - 2;
 					// if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
 					if($month < 1) $month += 12;
-					return " financial_year='{$financial_year}' and month='{$month}'";
+					// return " financial_year='{$financial_year}' and month='{$month}'";
 				}
 			}
 		}
+		session(['tx_financial_year' => $financial_year, 'tx_month' => $month]);
+		return " financial_year='{$financial_year}' and month='{$month}'";
 	}
 
 	public static function max_per_quarter($quarter){

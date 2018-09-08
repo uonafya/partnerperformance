@@ -26,4 +26,17 @@ CREATE OR REPLACE VIEW  `view_facilitys` AS
  	LEFT JOIN `wards` on `facilitys`.`ward_id` = `wards`.`id`
  	LEFT JOIN `countys` on `districts`.`county` = `countys`.`id`
  	WHERE `facilitys`.`Flag` = 1);
+
+
+
+ CREATE OR REPLACE VIEW  `p_early_indicators_view` AS
+ (select  `p`.`*`, `partners`.`name` AS `partnername`, 
+ 	`countys`.`name` AS `countyname`,`countys`.`CountyDHISCode`,`countys`.`CountyMFLCode`,
+ 	`partners`.`funding_agency_id`, `funding_agencies`.`name` AS `funding_agency`
+ 	
+ 	FROM `p_early_indicators` `p` 
+ 	LEFT JOIN `partners` on `p`.`partner` = `partners`.`id`
+ 	LEFT JOIN `funding_agencies` on `partners`.`funding_agency_id` = `funding_agencies`.`id`
+ 	LEFT JOIN `countys` on `p`.`county` = `countys`.`id`);
+ 
  

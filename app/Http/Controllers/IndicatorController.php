@@ -19,6 +19,8 @@ class IndicatorController extends Controller
 		$data['div'] = str_random(15);
 
 		$rows = DB::table('p_early_indicators')
+			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
+			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
 			->selectRaw("SUM(tested) as tests, SUM(positive) as pos")
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
@@ -231,25 +233,36 @@ class IndicatorController extends Controller
 		return view('charts.bar_graph', $data);		
 	}
 
-	public function art_summary()
+	public function summary()
 	{		
-		$date_query = Lookup::year_month_query();
+		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
 		$data['div'] = str_random(15);
 
-		$rows = DB::table('p_early_indicators')
-			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
-			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
-			->selectRaw("SUM(tested) as tests, SUM(positive) as pos")
-			->addSelect('year', 'month')
+		$sql = $q['select_query'] . ", SUM(tests) AS tests, SUM(pos) AS pos, SUM(new_art) AS new_art, SUM(net_new_tx) AS net_new_tx";
+
+		$data['rows'] = DB::table('p_early_indicators_view')
+			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupBy('year', 'month')
-			->orderBy('year', 'asc')
-			->orderBy('month', 'asc')
+			->groupBy($q['group_query'])
 			->get();
+
+		$date_query = Lookup::year_month_query();
+
+		$sql = $q['select_query'] . ", SUM(current_tx) AS current_tx ";
+
+		$data['art'] = DB::table('p_early_indicators_view')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['current_tx_date'] =  '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';
+		return view('combined.indicators_summary', $data);
 	}
 
 
