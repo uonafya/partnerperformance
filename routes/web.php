@@ -138,6 +138,7 @@ Route::prefix('indicators')->name('indicators.')->group(function(){
 	Route::get('positivity', 'IndicatorController@positivity')->name('positivity');
 	Route::get('summary', 'IndicatorController@summary')->name('summary');
 	Route::get('currenttx', 'IndicatorController@currenttx')->name('currenttx');
+	Route::get('newtx', 'IndicatorController@newtx')->name('newtx');
 
 	Route::get('download/{financial_year}', 'IndicatorController@download_excel')->name('download');
 	Route::post('upload', 'IndicatorController@upload_excel')->name('upload_excel');

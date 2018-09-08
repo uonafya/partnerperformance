@@ -348,6 +348,107 @@ class IndicatorController extends Controller
 	}
 
 
+	public function newtx()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$rows = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw($this->new_art_query())
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$rows2 = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw($this->former_new_art_query())
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$early_rows = DB::table('p_early_indicators')
+			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
+			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
+			->selectRaw("SUM(new_art) as total")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+
+		$date_query = Lookup::date_query(true);
+		$target = DB::table('t_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `total`")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$t = round(($target->total / 12), 2);
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Below 1";
+		$data['outcomes'][1]['name'] = "Below 15";
+		$data['outcomes'][2]['name'] = "Above 15";
+		$data['outcomes'][3]['name'] = "Partner Reported";
+		$data['outcomes'][4]['name'] = "Monthly Target";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "column";
+		$data['outcomes'][4]['type'] = "spline";
+
+		$data['outcomes'][0]['stack'] = 'new_art';
+		$data['outcomes'][1]['stack'] = 'new_art';
+		$data['outcomes'][2]['stack'] = 'new_art';
+		$data['outcomes'][3]['stack'] = 'partner_reported';
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+			$data["outcomes"][0]["data"][$key] = (int) $row->below_1 + $rows2[$key]->below_1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below_10 + $row->below_15 + $rows2[$key]->below_15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->below_20 + $row->below_25 + $row->above_25 + $rows2[$key]->above_15;
+
+			$duplicate2 = DB::table('d_hiv_and_tb_treatment')
+							->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+							->selectRaw($this->new_art_query())
+							->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
+							->where(['year' => $row->year, 'month' => $row->month])
+							->whereRaw("facility IN (
+								SELECT DISTINCT facility
+								FROM d_care_and_treatment d JOIN view_facilitys f ON d.facility=f.id
+								WHERE  {$divisions_query} AND `total_starting_on_art` > 0 AND 
+								year = {$row->year} AND month = {$row->month}
+							)")
+							->first();
+
+			if(is_object($duplicate2)){
+				$data["outcomes"][0]["data"][$key] -= $duplicate2->below_1;
+				$data["outcomes"][1]["data"][$key] -= ($duplicate2->below_10 + $duplicate2->below_15);
+				$data["outcomes"][2]["data"][$key] -= ($duplicate2->below_20 + $duplicate2->below_25 + $duplicate2->above_25);
+			}
+
+			$data["outcomes"][3]["data"][$key] = (int) $early_rows[$key]->total;
+
+			$data["outcomes"][4]["data"][$key] = $t;
+		}
+		return view('charts.bar_graph', $data);		
+	}
+
 	public function summary()
 	{		
 		$date_query = Lookup::date_query();

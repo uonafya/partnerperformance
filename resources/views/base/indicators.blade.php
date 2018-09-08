@@ -53,6 +53,19 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
+			    New TX <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="newtx">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
 			    Partner Reported Summary <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="summary">
@@ -74,11 +87,13 @@
 		$("#testing").html("<center><div class='loader'></div></center>");
 		$("#positivity").html("<center><div class='loader'></div></center>");
 		$("#currenttx").html("<center><div class='loader'></div></center>");
+		$("#newtx").html("<center><div class='loader'></div></center>");
 		$("#summary").html("<center><div class='loader'></div></center>");
 
 		$("#testing").load("{{ url('indicators/testing') }}");
 		$("#positivity").load("{{ url('indicators/positivity') }}");
 		$("#currenttx").load("{{ url('indicators/currenttx') }}");
+		$("#newtx").load("{{ url('indicators/newtx') }}");
 		$("#summary").load("{{ url('indicators/summary') }}");
 	}
 
