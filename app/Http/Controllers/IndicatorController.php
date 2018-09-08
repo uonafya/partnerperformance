@@ -241,7 +241,7 @@ class IndicatorController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$sql = $q['select_query'] . ", SUM(tested) AS tests, SUM(pos) AS pos, SUM(new_art) AS new_art, SUM(net_new_tx) AS net_new_tx";
+		$sql = $q['select_query'] . ", SUM(tested) AS tests, SUM(positive) AS pos, SUM(new_art) AS new_art, SUM(net_new_tx) AS net_new_tx";
 
 		$data['rows'] = DB::table('p_early_indicators_view')
 			->selectRaw($sql)
