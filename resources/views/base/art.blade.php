@@ -88,7 +88,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Currently On Treatment <span id="current_art_title"></span> <div class="display_date"></div>
+			    Currently On Treatment <span id="current_art_title"></span>
 		    </div>
 			<div class="panel-body" id="current_art">
 				<center><div class="loader"></div></center>
