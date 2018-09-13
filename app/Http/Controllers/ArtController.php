@@ -50,7 +50,7 @@ class ArtController extends Controller
 
 
 		$date_query = Lookup::year_month_query();	
-		$data['recent_name'] = Lookup::year_month_name();	
+		$data['current_name'] = Lookup::year_month_name();	
 
 		$cu_n = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
@@ -79,7 +79,7 @@ class ArtController extends Controller
 
 
 		$date_query = Lookup::year_month_query(true);	
-		$data['current_name'] = Lookup::year_month_name();	
+		$data['recent_name'] = Lookup::year_month_name();	
 
 		$cu_n2 = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
