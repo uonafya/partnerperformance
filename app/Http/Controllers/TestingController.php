@@ -268,7 +268,7 @@ class TestingController extends Controller
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$sql =  $q['select_query'] . "
+		$sql =  $q['select_query'] . ",
 			SUM(`tested_1-9_hv01-01`) as below_10,
 			SUM(`tested_10-14_(m)_hv01-02`) as below_15_m, SUM(`tested_10-14(f)_hv01-03`) as below_15_f,
 			SUM(`tested_15-19_(m)_hv01-04`) as below_20_m, SUM(`tested_15-19(f)_hv01-05`) as below_20_f,
