@@ -95,6 +95,7 @@ Route::prefix('old/table')->name('old.table.')->group(function(){
 Route::prefix('testing')->name('testing.')->group(function(){
 	Route::get('testing_outcomes', 'TestingController@testing_outcomes')->name('testing_outcomes');
 	Route::get('positivity', 'TestingController@positivity')->name('positivity');
+	Route::get('testing_summary', 'TestingController@testing_summary')->name('testing_summary');
 	Route::get('summary', 'TestingController@summary')->name('summary');
 });
 

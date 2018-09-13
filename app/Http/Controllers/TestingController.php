@@ -262,6 +262,33 @@ class TestingController extends Controller
 		return view('charts.pie_chart', $data);
 	}
 
+	public function testing_summary()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
+
+		$sql = "
+			SUM(`tested_1-9_hv01-01`) as below_10,
+			SUM(`tested_10-14_(m)_hv01-02`) as below_15_f, SUM(`tested_10-14(f)_hv01-03`) as below_15_f,
+			SUM(`tested_15-19_(m)_hv01-04`) as below_20_f, SUM(`tested_15-19(f)_hv01-05`) as below_20_f,
+			SUM(`tested_20-24(m)_hv01-06`) as below_25_f, SUM(`tested_20-24(f)_hv01-07`) as below_25_f,
+			SUM(`tested_25pos_(m)_hv01-08`) as above_25_f, SUM(`tested_25pos_(f)_hv01-09`) as above_25_f,
+			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) as total";
+
+		$data['rows'] = DB::table('d_hiv_testing_and_prevention_services')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['div'] = str_random(15);
+
+		return view('combined.testing_summary', $data);
+	}
+
 	public function summary()
 	{
 		$date_query = Lookup::date_query();

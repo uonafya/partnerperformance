@@ -79,6 +79,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Testing By Age And Gender* <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="testing_summary">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 
 
@@ -96,12 +109,14 @@
 		$("#gender").html("<center><div class='loader'></div></center>");
 		$("#age").html("<center><div class='loader'></div></center>");
 		$("#summary").html("<center><div class='loader'></div></center>");
+		$("#testing_summary").html("<center><div class='loader'></div></center>");
 
 		$("#testing_outcomes").load("{{ url('testing/testing_outcomes') }}");
 		$("#positivity").load("{{ url('testing/positivity') }}");
 		$("#gender").load("{{ url('chart/testing_gender') }}");
 		$("#age").load("{{ url('chart/testing_age') }}");
 		$("#summary").load("{{ url('testing/summary') }}");
+		$("#testing_summary").load("{{ url('testing/testing_summary') }}");
 	}
 
 
