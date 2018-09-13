@@ -123,7 +123,7 @@ class ArtController extends Controller
 
 		if(is_object($dup_current2)) $data['current_art_recent'] -= $dup_current2->current; 
 		if(is_object($dup_current)) $data['current_art'] -= $dup_current->current; 
-		if(is_object($dup_new)) $data['new_art'] -= $dup_new->new_art; 
+		// if(is_object($dup_new)) $data['new_art'] -= $dup_new->new_art; 
 
 		$data['current_completion_recent'] = Lookup::get_percentage($data['current_art_recent'], $target->current);
 		$data['current_completion'] = Lookup::get_percentage($data['current_art'], $target->current);
