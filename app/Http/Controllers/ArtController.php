@@ -673,6 +673,7 @@ class ArtController extends Controller
 		// 		DB::raw("CALL `proc_get_duplicate_total`('{$old_table}', '{$new_table}', '{$old_column_tests}', '{$new_column_tests}', '{$divisions_query}', {$row->year}, {$row->month});"));
 
 		$data['div'] = str_random(15);
+		$data['period_name'] = Lookup::year_month_name();
 
 		return view('combined.art_totals', $data);
 	}

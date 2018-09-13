@@ -69,5 +69,9 @@
 				}
 			]
 		});
+
+		@isset($period_name)
+			$('#current_art_title').html("{{ $period_name }}");
+		@endisset
 	});
 </script>
