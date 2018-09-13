@@ -218,7 +218,7 @@ class Lookup
 		}
 	}*/
 
-	public static function year_month_query()
+	public static function year_month_query($other=false)
 	{
 		if(session('financial')){
 			$cfy = date('Y');
@@ -233,6 +233,7 @@ class Lookup
 				if($financial_year <> $cfy) $month=9;
 				else{
 					$month = date('m') - 2;
+					if($other) $month = date('m') - 1;
 					// if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
 					if($month < 1) $month += 12;
@@ -249,6 +250,7 @@ class Lookup
 				}
 				else{
 					$month = date('m') - 2;
+					if($other) $month = date('m') - 1;
 					// if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
 					if($month < 1) $month += 12;
@@ -258,6 +260,11 @@ class Lookup
 		}
 		session(['tx_financial_year' => $financial_year, 'tx_month' => $month]);
 		return " financial_year='{$financial_year}' and month='{$month}'";
+	}
+
+	public static function year_month_name()
+	{
+		return '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';
 	}
 
 	public static function max_per_quarter($quarter){

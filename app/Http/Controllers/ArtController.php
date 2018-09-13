@@ -49,26 +49,53 @@ class ArtController extends Controller
 			->first();
 
 
-		$date_query = Lookup::year_month_query();		
+		$date_query = Lookup::year_month_query();	
+		$data['recent_name'] = Lookup::year_month_name();	
 
 		$cu_n = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`,
-						SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`
-			 ")
+			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current` ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
 		$cu_o = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("SUM(`total_currently_on_art`) AS `current`, 
-							SUM(`total_starting_on_art`) AS `new_art`")
+			->selectRaw("SUM(`total_currently_on_art`) AS `current` ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
 		$dup_current = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw("SUM(`total_currently_on_art`) AS `current`")
+			->whereRaw($date_query)
+			->whereRaw("facility IN (
+				SELECT DISTINCT facility
+				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+				WHERE  {$divisions_query} AND {$date_query} AND `on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0
+			)")
+			->first();
+
+
+		$date_query = Lookup::year_month_query(true);	
+		$data['current_name'] = Lookup::year_month_name();	
+
+		$cu_n2 = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current` ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$cu_o2 = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw("SUM(`total_currently_on_art`) AS `current`")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$dup_current2 = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw("SUM(`total_currently_on_art`) AS `current`")
 			->whereRaw($date_query)
@@ -90,15 +117,19 @@ class ArtController extends Controller
 
 		$data['target'] = $target;
 
+		$data['current_art_recent'] = $cu_n2->current + $cu_o2->current;
 		$data['current_art'] = $cu_n->current + $cu_o->current;
 		$data['new_art'] = $new_n->new_art + $new_o->new_art;
 
+		if(is_object($dup_current2)) $data['current_art_recent'] -= $dup_current2->current; 
 		if(is_object($dup_current)) $data['current_art'] -= $dup_current->current; 
 		if(is_object($dup_new)) $data['new_art'] -= $dup_new->new_art; 
 
+		$data['current_completion_recent'] = Lookup::get_percentage($data['current_art_recent'], $target->current);
 		$data['current_completion'] = Lookup::get_percentage($data['current_art'], $target->current);
 		$data['new_completion'] = Lookup::get_percentage($data['new_art'], $target->new_art);
 
+		$data['current_status_recent'] = Lookup::progress_status($data['current_completion_recent']);
 		$data['current_status'] = Lookup::progress_status($data['current_completion']);
 		$data['new_status'] = Lookup::progress_status($data['new_completion']);
 
