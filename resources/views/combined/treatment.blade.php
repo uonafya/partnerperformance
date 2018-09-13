@@ -12,20 +12,20 @@
 				<td> {{ number_format($target->current) }} </td>	
 				<!-- Actual current is from a different object  -->
 				<td> {{ number_format($current_art) }} </td>				
-				<td> {{ number_format($current_completion) }} </td>				
+				<td> {{ $current_completion }} </td>				
 			</tr>
 			<tr>
 				<td><b>Current on tx {{ $recent_name }}</b></td>
 				<td> {{ number_format($target->current) }} </td>	
 				<!-- Actual current is from a different object  -->
 				<td> {{ number_format($current_art_recent) }} </td>				
-				<td> {{ number_format($current_completion_recent) }} </td>				
+				<td> {{ $current_completion_recent }} </td>				
 			</tr>
 			<tr>
 				<td><b>New on tx</b></td>
 				<td> {{ number_format($target->new_art) }} </td>				
 				<td> {{ number_format($new_art) }} </td>				
-				<td> {{ number_format($new_completion) }} </td>				
+				<td> {{ $new_completion }} </td>				
 			</tr>
 		</table>
 		
