@@ -21,32 +21,29 @@ class ArtController extends Controller
 
 		$new_n = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`,
-						SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`
-			 ")
+			->selectRaw(" SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art` ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
 		$new_o = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("SUM(`total_currently_on_art`) AS `current`, 
-							SUM(`total_starting_on_art`) AS `new_art`")
+			->selectRaw(" SUM(`total_starting_on_art`) AS `new_art`")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
 
 
-		$dup_new = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("SUM(`total_starting_on_art`) AS `new_art`")
-			->whereRaw($date_query)
-			->whereRaw("facility IN (
-				SELECT DISTINCT facility
-				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
-				WHERE  {$divisions_query} AND {$date_query} AND `start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0
-			)")
-			->first();
+		// $dup_new = DB::table('d_care_and_treatment')
+		// 	->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+		// 	->selectRaw("SUM(`total_starting_on_art`) AS `new_art`")
+		// 	->whereRaw($date_query)
+		// 	->whereRaw("facility IN (
+		// 		SELECT DISTINCT facility
+		// 		FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+		// 		WHERE  {$divisions_query} AND {$date_query} AND `start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0
+		// 	)")
+		// 	->first();
 
 
 		$date_query = Lookup::year_month_query();	
@@ -597,17 +594,19 @@ class ArtController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
-		$data['duplicates'] = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw($sql)
-			->whereRaw($date_query)
-			->whereRaw("facility IN (
-				SELECT DISTINCT facility
-				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
-				WHERE  {$divisions_query} AND {$date_query} AND `start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0
-			)")
-			->groupBy($q['group_query'])
-			->get();
+		// $data['duplicates'] = DB::table('d_care_and_treatment')
+		// 	->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+		// 	->selectRaw($sql)
+		// 	->whereRaw($date_query)
+		// 	->whereRaw("facility IN (
+		// 		SELECT DISTINCT facility
+		// 		FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
+		// 		WHERE  {$divisions_query} AND {$date_query} AND `start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0
+		// 	)")
+		// 	->groupBy($q['group_query'])
+		// 	->get();
+
+		$data['duplicates'] = DB::table('countys')->where('id', '<', 0)->get();
 
 		$data['div'] = str_random(15);
 
