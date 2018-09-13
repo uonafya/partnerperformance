@@ -48,7 +48,7 @@
 					<td> {{ number_format($row->below_25_m ) }} </td>
 					<td> {{ number_format($row->below_25_f ) }} </td>
 					<td> {{ number_format($row->above_25_m ) }} </td>
-					<td> {{ number_format($row->above_25_d ) }} </td>
+					<td> {{ number_format($row->above_25_f ) }} </td>
 					<td> {{ number_format($row->total ) }} </td>
 				</tr>
 			@endforeach
