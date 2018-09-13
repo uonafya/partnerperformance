@@ -615,6 +615,8 @@ class IndicatorController extends Controller
 
 			$county = DB::table('countys')->where('countymflcode', $value->county_mfl)->first();
 
+			if(!$county) continue;
+
 			DB::connection('mysql_wr')->table('p_early_indicators')
 				->where([
 					'county' => $county->id, 'partner' => auth()->user()->partner_id, 

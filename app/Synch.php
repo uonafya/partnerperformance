@@ -464,7 +464,7 @@ class Synch
 
         echo 'Begin updates at ' . date('Y-m-d H:i:s a') . " \n";
 
-		$pe = $dx = '';
+		$pe = $dx = $dmap_dx =  '';
 		$offset=0;
 		$periods = [];
 		$my_services = [];
@@ -528,8 +528,8 @@ class Synch
 		        	->where('mflcode', $facility->facilitycode)
 		        	->orWhere('dhiscode', $facility->DHIScode)->first();
 
-		        $dmap = true;
-		        if(!$other_fac || $other_fac->category == "satellite") $dmap = false;
+		        $dmap = false;
+		        if($other_fac && $other_fac->category == "central") $dmap = true;
 
 		        if($dmap){
 					$url = "analytics?dimension=dx:" . $dmap_dx . "&dimension=ou:" . $ou . "&dimension=pe:" . $pe;
@@ -562,6 +562,12 @@ class Synch
 			        				$data[$column] += $value[3];
 			        			}
 			        		}		        			
+		        		}
+		        		else{
+		        			if($other_fac && $other_fac->category == "standalone"){
+		        				$dmap_column = $my_service['dmap_column_name'];
+		        				$data[$dmap_column] = $data[$column];
+		        			} 
 		        		}
 		        	}
 
