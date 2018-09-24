@@ -185,7 +185,7 @@ class Lookup
 			$financial_year = session('filter_financial_year');
 			$quarter = session('filter_quarter');
 
-			$prev_year = $financial_year--;
+			$prev_year = $financial_year-1;
 
 			if($quarter){
 				$month = self::min_per_quarter($quarter);
@@ -222,7 +222,7 @@ class Lookup
 
 	public static function date_range_query($year, $to_year, $month, $to_month)
 	{
-		if($year == $to_year) return " year={$year} AND month between({$month}, {$to_month}) ";
+		if($year == $to_year) return " year={$year} AND month between {$month} and {$to_month} ";
 		return " ((year = '{$year}' AND month >= '{$month}') OR (year = '{$to_year}' AND month <= '{$to_month}') OR (year > '{$year}' AND year > '{$to_year}')) ";
 	}
 
