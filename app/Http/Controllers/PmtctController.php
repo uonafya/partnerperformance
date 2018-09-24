@@ -262,6 +262,8 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		dd($date_query);
+
 		dd($api_rows);
 
 		$data['div'] = str_random(15);
