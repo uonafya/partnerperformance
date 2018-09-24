@@ -262,6 +262,8 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		dd($api_rows);
+
 		$data['div'] = str_random(15);
 		
 		$data['outcomes'][0]['name'] = "> 2 months (DHIS)";
