@@ -447,8 +447,9 @@ class Synch
 		        }
 			}			
 			$offset += 50;
-	        echo  'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
+	        // echo  'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
+		echo "Completed updates at " . date('Y-m-d H:i:s a') . " \n";
 	} 
 
 	public static function populate_regimen($year=null)
@@ -548,6 +549,8 @@ class Synch
 		        		$column = $my_service['column_name'];
 		        		$data[$column] = 0;
 
+		        		if(!$body->rows) continue;
+
 		        		foreach ($body->rows as $key => $value){
 		        			if($value[2] == $period['name'] && in_array($value[0], $my_service['codes'])) {
 		        				$data[$column] += $value[3];
@@ -557,11 +560,13 @@ class Synch
 			        		$column = $my_service['dmap_column_name'];
 			        		$data[$column] = 0;
 
-			        		foreach ($dmap_body->rows as $key => $value){
-			        			if($value[2] == $period['name'] && in_array($value[0], $my_service['dmap_codes'])) {
-			        				$data[$column] += $value[3];
-			        			}
-			        		}		        			
+			        		if($dmap_body){
+				        		foreach ($dmap_body->rows as $key => $value){
+				        			if($value[2] == $period['name'] && in_array($value[0], $my_service['dmap_codes'])) {
+				        				$data[$column] += $value[3];
+				        			}
+				        		}	
+			        		}	        			
 		        		}
 		        		else{
 		        			if($other_fac && $other_fac->category == "standalone"){
@@ -576,8 +581,10 @@ class Synch
 		        		->update($data);
 		        }
 			}
-			echo 'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
+			// echo 'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
+		echo "Completed updates at " . date('Y-m-d H:i:s a') . " \n";
+
 		// DB::connection('mysql_wr')->whereIn('id', $messy_facilities)->update(['invalid_dhis' => 1]);
 	}
 
