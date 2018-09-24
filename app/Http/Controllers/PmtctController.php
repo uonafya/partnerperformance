@@ -274,6 +274,13 @@ class PmtctController extends Controller
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
+
+		$data['outcomes'][0]['stack'] = 'dhis';
+		$data['outcomes'][1]['stack'] = 'dhis';
+		$data['outcomes'][2]['stack'] = 'apidb';
+		$data['outcomes'][3]['stack'] = 'apidb';
+
+
 		// $data['outcomes'][2]['type'] = "spline";
 
 
@@ -284,7 +291,7 @@ class PmtctController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->l2m + $rows2[$key]->l2m;
 
 			$data["outcomes"][2]["data"][$key] = (int) $api_rows[$key]->g2m ?? 0;
-			$data["outcomes"][2]["data"][$key] = (int) $api_rows[$key]->l2m ?? 0;
+			$data["outcomes"][3]["data"][$key] = (int) $api_rows[$key]->l2m ?? 0;
 
 			// $data["outcomes"][2]["data"][$key] = Lookup::get_percentage($data["outcomes"][1]["data"][$key], ($data["outcomes"][1]["data"][$key] + $data["outcomes"][0]["data"][$key]));
 		}
