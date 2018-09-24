@@ -266,8 +266,8 @@ class PmtctController extends Controller
 		
 		$data['outcomes'][0]['name'] = "> 2 months (DHIS)";
 		$data['outcomes'][1]['name'] = "< 2 months (DHIS)";
-		$data['outcomes'][0]['name'] = "> 2 months";
-		$data['outcomes'][1]['name'] = "< 2 months";
+		$data['outcomes'][2]['name'] = "> 2 months";
+		$data['outcomes'][3]['name'] = "< 2 months";
 		// $data['outcomes'][2]['name'] = "< 2 months Contribution";
 
 		$data['outcomes'][0]['type'] = "column";
