@@ -173,10 +173,57 @@ class Lookup
 				if($month) $query .= " AND month='{$month}' ";
 			}
 			else{
-				$query .= " ((year = '{$year}' AND month >= '{$month}') OR (year = '{$to_year}' AND month <= '{$to_month}') OR (year > '{$year}' AND year > '{$to_year}'))  ";
+				$query = self::date_range_query($year, $to_year, $month, $to_month);
 			}
 		}
 		return $query;
+	}
+
+	public static function apidb_date_query($for_target=false)
+	{
+		if(session('financial') || $for_target){
+			$financial_year = session('filter_financial_year');
+			$quarter = session('filter_quarter');
+
+			$prev_year = $financial_year--;
+
+			if($quarter){
+				$month = self::min_per_quarter($quarter);
+				$to_month = self::max_per_quarter($quarter);
+				if($quarter == 1) $query = self::date_range_query($prev_year, $prev_year, $month, $to_month);				
+				else{
+					$query = self::date_range_query($financial_year, $financial_year, $month, $to_month);
+				}
+			}
+			else{
+				$query = self::date_range_query($prev_year, $financial_year, 10, 9);
+			}
+
+		}else{
+			$default = date('Y');
+			$year = session('filter_year', $default);
+			$month = session('filter_month');
+			$to_year = session('to_year');
+			$to_month = session('to_month');
+
+			$query = '';		
+
+			if(!$to_year){
+				$query .= " year='{$year}' ";
+
+				if($month) $query .= " AND month='{$month}' ";
+			}
+			else{
+				$query = self::date_range_query($year, $to_year, $month, $to_month);
+			}
+		}
+		return $query;
+	}
+
+	public static function date_range_query($year, $to_year, $month, $to_month)
+	{
+		if($year == $to_year) return " year={$year} AND month between({$month}, {$to_month}) ";
+		return " ((year = '{$year}' AND month >= '{$month}') OR (year = '{$to_year}' AND month <= '{$to_month}') OR (year > '{$year}' AND year > '{$to_year}')) ";
 	}
 
 	/*public static function year_month_query()
@@ -280,6 +327,26 @@ class Lookup
 				break;
 			case 4:
 				$m = 9;
+				break;			
+			default:
+				break;
+		}
+		return $m;
+	}
+
+	public static function min_per_quarter($quarter){
+		switch ($quarter) {
+			case 1:
+				$m = 10;
+				break;
+			case 2:
+				$m = 1;
+				break;
+			case 3:
+				$m = 4;
+				break;
+			case 4:
+				$m = 7;
 				break;			
 			default:
 				break;

@@ -252,21 +252,29 @@ class PmtctController extends Controller
 
 		$data['div'] = str_random(15);
 		
-		$data['outcomes'][0]['name'] = "< 2 months";
-		$data['outcomes'][1]['name'] = "> 2 months";
+		$data['outcomes'][0]['name'] = "> 2 months";
+		$data['outcomes'][1]['name'] = "< 2 months";
+		$data['outcomes'][2]['name'] = "< 2 months Contribution";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "spline";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
-			$data["outcomes"][0]["data"][$key] = (int) $row->l2m + $rows2[$key]->l2m;
-			$data["outcomes"][1]["data"][$key] = (int) $row->g2m + $rows2[$key]->g2m;
+			$data["outcomes"][0]["data"][$key] = (int) $row->g2m + $rows2[$key]->g2m;
+			$data["outcomes"][1]["data"][$key] = (int) $row->l2m + $rows2[$key]->l2m;
+
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($data["outcomes"][1]["data"][$key], ($data["outcomes"][1]["data"][$key] + $data["outcomes"][0]["data"][$key]));
 		}
-		return view('charts.bar_graph', $data);
+		return view('charts.dual_axis', $data);
 	}
 
 

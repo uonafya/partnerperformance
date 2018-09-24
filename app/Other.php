@@ -19,7 +19,6 @@ class Other
         Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser($user));
 	}
 
-
 	public static function other_targets()
 	{
 		$table_name = 't_non_mer';
