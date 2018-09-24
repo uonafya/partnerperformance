@@ -250,31 +250,45 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
+		$date_query = Lookup::apidb_date_query();
+		$api_rows = DB::table("apidb.site_summary")
+			->join('hcm.view_facilitys', 'view_facilitys.id', '=', 'site_summary.facility')
+			->selectRaw("SUM(`infantsless2m`) as `l2m`, SUM(`infantsabove2m`) as `g2m` ")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
 		$data['div'] = str_random(15);
 		
+		$data['outcomes'][0]['name'] = "> 2 months (DHIS)";
+		$data['outcomes'][1]['name'] = "< 2 months (DHIS)";
 		$data['outcomes'][0]['name'] = "> 2 months";
 		$data['outcomes'][1]['name'] = "< 2 months";
-		$data['outcomes'][2]['name'] = "< 2 months Contribution";
+		// $data['outcomes'][2]['name'] = "< 2 months Contribution";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
-		$data['outcomes'][2]['type'] = "spline";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "column";
+		// $data['outcomes'][2]['type'] = "spline";
 
-		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
 
-		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 			$data["outcomes"][0]["data"][$key] = (int) $row->g2m + $rows2[$key]->g2m;
 			$data["outcomes"][1]["data"][$key] = (int) $row->l2m + $rows2[$key]->l2m;
 
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($data["outcomes"][1]["data"][$key], ($data["outcomes"][1]["data"][$key] + $data["outcomes"][0]["data"][$key]));
+			$data["outcomes"][2]["data"][$key] = (int) $api_rows[$key]->g2m ?? 0;
+			$data["outcomes"][2]["data"][$key] = (int) $api_rows[$key]->l2m ?? 0;
+
+			// $data["outcomes"][2]["data"][$key] = Lookup::get_percentage($data["outcomes"][1]["data"][$key], ($data["outcomes"][1]["data"][$key] + $data["outcomes"][0]["data"][$key]));
 		}
-		return view('charts.dual_axis', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 
