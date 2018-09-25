@@ -379,7 +379,7 @@ class OtzController extends Controller
 
 			$select_query = $q['select_query'] . ", SUM(viremia) AS viremia, SUM(dsd) AS dsd, SUM(otz) AS otz, SUM(men_clinic) AS men_clinic ";
 
-			$data['targets'] = DB::table('p_non_mer')
+			$data['target'] = DB::table('p_non_mer')
 				->leftJoin('partners', 'partners.id', '=', 'p_non_mer.partner')
 				->selectRaw($select_query)
 				->whereRaw($date_query)

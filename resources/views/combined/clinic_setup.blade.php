@@ -46,7 +46,7 @@
 			$o = $otz->where('div_id', $row->div_id)->first()->total ?? 0; 
 			$m = $men_clinic->where('div_id', $row->div_id)->first()->total ?? 0; 
 
-			if(isset($targets)) $t = $targets->where('div_id', $row->div_id)->first();
+			if(isset($targets)) $target = $targets->where('div_id', $row->div_id)->first();
 		?>
 
 			<tr>
