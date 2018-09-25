@@ -337,6 +337,60 @@ class OtzController extends Controller
 
 	}
 
+	public function clinic_setup()
+	{
+		$divisions_query = Lookup::divisions_query();
+		$date_query = Lookup::date_query(true);
+		$q = Lookup::groupby_query();
+
+		$select_query = $q['select_query'] . ", count(id) as total ";
+
+		$data['viremia'] = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->where('is_viremia', 1)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['otz'] = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->where('is_otz', 1)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['dsd'] = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->where('is_dsd', 1)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['men_clinic'] = DB::table('view_facilitys')
+			->selectRaw($select_query)
+			->where('is_men_clinic', 1)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
+
+			$select_query = $q['select_query'] . ", SUM(viremia) AS viremia, SUM(dsd) AS dsd, SUM(otz) AS otz, SUM(men_clinic) AS men_clinic ";
+
+			$data['targets'] = DB::table('p_non_mer')
+				->leftJoin('partners', 'partners.id', '=', 'p_non_mer.partner')
+				->selectRaw($select_query)
+				->whereRaw($date_query)
+				->whereRaw($divisions_query)
+				->groupBy($q['group_query'])
+				->get();
+		}
+
+		$data['div'] = str_random(15);
+
+		return view('combined.clinic_setup', $data);
+	}
+
 
 
 
@@ -571,8 +625,7 @@ class OtzController extends Controller
 				continue;
 			}
 
-			$view_facility = ViewFacility::find($fac->id);
-			if($view_facility->partner != auth()->user()->partner_id) continue;
+			if($fac->partner != auth()->user()->partner_id) continue;
 
 			$fac->fill([
 				'is_viremia' => Lookup::clean_boolean($value->is_viremia_yesno), 
@@ -580,16 +633,26 @@ class OtzController extends Controller
 				'is_otz' => Lookup::clean_boolean($value->is_otz_yesno), 
 				'is_men_clinic' => Lookup::clean_boolean($value->is_men_clinic_yesno),
 			]);
-			$fac->save();
+
+			$viremia = (int) $value->viremia_beneficiaries ?? null;
+			$dsd = (int) $value->dsd_beneficiaries ?? null;
+			$otz = (int) $value->otz_beneficiaries ?? null;
+			$men_clinic = (int) $value->men_clinic_beneficiaries ?? null;
 
 			DB::connection('mysql_wr')->table('t_non_mer')
 				->where(['facility' => $fac->id, 'financial_year' => $value->financial_year])
 				->update([
-					'viremia_beneficiaries' => (int) $value->viremia_beneficiaries ?? null,
-					'dsd_beneficiaries' => (int) $value->dsd_beneficiaries ?? null,
-					'otz_beneficiaries' => (int) $value->otz_beneficiaries ?? null,
-					'men_clinic_beneficiaries' => (int) $value->men_clinic_beneficiaries ?? null,
+					'viremia_beneficiaries' => $viremia,
+					'dsd_beneficiaries' => $dsd,
+					'otz_beneficiaries' => $otz,
+					'men_clinic_beneficiaries' => $men_clinic,
 				]);
+
+			if(!$fac->is_viremia && $viremia) $fac->is_viremia = 1;
+			if(!$fac->is_dsd && $dsd) $fac->is_dsd = 1;
+			if(!$fac->is_otz && $otz) $fac->is_otz = 1;
+			if(!$fac->is_men_clinic && $men_clinic) $fac->is_men_clinic = 1;
+			$fac->save();
 		}
 
 		session(['toast_message' => "The updates have been made. {$unidentified} facilities could not be found on our system."]);

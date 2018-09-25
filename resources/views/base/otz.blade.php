@@ -59,9 +59,22 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Breakdown <div class="display_date"></div>
+			    Beneficiaries Breakdown <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="breakdown">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Clinic Setup Breakdown <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="clinic_setup">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -81,12 +94,14 @@
 		$("#clinics").html("<center><div class='loader'></div></center>");
 		$("#achievement").html("<center><div class='loader'></div></center>");
 		$("#breakdown").html("<center><div class='loader'></div></center>");
+		$("#clinic_setup").html("<center><div class='loader'></div></center>");
 
 
 		$("#facilities_count").load("{{ url('otz/facilities_count') }}");
 		$("#clinics").load("{{ url('otz/clinics') }}");
 		$("#achievement").load("{{ url('otz/achievement') }}");
 		$("#breakdown").load("{{ url('otz/breakdown') }}");
+		$("#clinic_setup").load("{{ url('otz/clinic_setup') }}");
 	}
 
 
