@@ -375,6 +375,8 @@ class OtzController extends Controller
 
 		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
 
+			$q = Lookup::groupby_query(false);
+
 			$select_query = $q['select_query'] . ", SUM(viremia) AS viremia, SUM(dsd) AS dsd, SUM(otz) AS otz, SUM(men_clinic) AS men_clinic ";
 
 			$data['targets'] = DB::table('p_non_mer')

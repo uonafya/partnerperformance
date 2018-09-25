@@ -367,13 +367,14 @@ class Lookup
 		return $query;
 	}
 
-	public static function groupby_query()
+	public static function groupby_query($def=true)
 	{
 		$groupby = session('filter_groupby', 1);
 
 		switch ($groupby) {
 			case 1:
-				$select_query = "partner as div_id, partnername as name";
+				$select_query = "partner as div_id";
+				if($def) $select_query .= ", partnername as name";
 				$group_query = "partner";
 				break;
 			case 2:
@@ -393,7 +394,8 @@ class Lookup
 				$group_query = "view_facilitys.id";
 				break;
 			case 6:
-				$select_query = "funding_agency_id as div_id, funding_agency";
+				$select_query = "funding_agency_id as div_id";
+				if($def) $select_query .= ", funding_agency as name";
 				$group_query = "funding_agency_id";
 				break;			
 			default:
