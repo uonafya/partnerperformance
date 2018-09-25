@@ -393,6 +393,8 @@ class OtzController extends Controller
 		return view('combined.clinic_setup', $data);
 	}
 
+	
+
 
 
 

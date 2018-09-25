@@ -35,7 +35,7 @@
 			$calc_percentage = function($num, $den, $roundby=2)
 								{
 									if(!$den){
-										$val = 0;
+										$val = null;
 									}else{
 										$val = round(($num / $den * 100), $roundby);
 									}
@@ -92,7 +92,7 @@
 
 		$('#{{ $div }}').DataTable({
 			dom: '<"btn"B>lTfgtip',
-			responsive: true,
+			// responsive: true,
 			buttons : [
 				{
 				  text:  'Export to CSV',
