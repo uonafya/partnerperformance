@@ -2,16 +2,16 @@
 	<table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
 		<thead>
 			<tr class="colhead">
-				<th colspan="2">No</th>
-				<th colspan="2">Name</th>
+				<th rowspan="2">No</th>
+				<th rowspan="2">Name</th>
 				@if(session('filter_groupby') == 5)
-					<th colspan="2">MFL Code</th>
-					<th colspan="2">DHIS Code</th>
+					<th rowspan="2">MFL Code</th>
+					<th rowspan="2">DHIS Code</th>
 				@endif
-				<th colspan="2">OTZ Facilities</th>
-				<th rowspan="3">Ages 15-19</th>
-				<th rowspan="3">Ages 19-24</th>
-				<th rowspan="3">Ages 15-24</th>
+				<th rowspan="2">OTZ Facilities</th>
+				<th colspan="3">Ages 15-19</th>
+				<th colspan="3">Ages 19-24</th>
+				<th colspan="3">Ages 15-24</th>
 			</tr>
 			<tr>
 				<th>Currently Suppressed</th>
