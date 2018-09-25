@@ -71,14 +71,13 @@
 			@endforeach
 		</tbody>	
 	</table>
-	{{ $current_range }}
 </div>
 
 
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
 
-		$('#display_current_range').html("{{ $current_range }}");
+		$('.display_current_range').html("{{ $current_range }}");
 
 		$('#{{ $div }}').DataTable({
 			dom: '<"btn"B>lTfgtip',
