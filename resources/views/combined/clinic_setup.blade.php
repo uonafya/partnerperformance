@@ -67,7 +67,7 @@
 				<td> {{ number_format($row->total) }} </td>
 				@isset($targets)
 					<td> {{ $target->dsd }} </td>
-					<td> {{ $calc_percentage($$row->total, $target->dsd) }} </td>
+					<td> {{ $calc_percentage($row->total, $target->dsd) }} </td>
 				@endisset
 
 				<td> {{ number_format($o) }} </td>
