@@ -77,6 +77,8 @@
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
 
+		$('#display_current_range').html("{{ $current_range }}");
+
 		$('#{{ $div }}').DataTable({
 			dom: '<"btn"B>lTfgtip',
 			// responsive: true,

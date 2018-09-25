@@ -444,4 +444,19 @@ class Lookup
     	// if($val == 0) return 'NO';
     	return null;
     }
+
+	public static function get_current_header()
+	{		
+    	$year = ((int) Date('Y'));
+    	$prev_year = ((int) Date('Y')) - 1;
+    	$month = ((int) Date('m')) - 1;
+    	$prev_month = ((int) Date('m'));
+
+    	if($month == 0){
+    		return "(Jan - Dec {$prev_year})";
+    	}
+    	else{
+    		return "(" . self::resolve_month($prev_month) . ", {$prev_year} - " . self::resolve_month($month) . ", {$year})";
+    	}
+	}
 }

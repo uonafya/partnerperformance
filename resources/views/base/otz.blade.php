@@ -85,7 +85,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    OTZ Impact <div class="display_date"></div>
+			    OTZ Impact <div class="display_current_range"></div>
 		    </div>
 			<div class="panel-body" id="otz_breakdown">
 				<center><div class="loader"></div></center>

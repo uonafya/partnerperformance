@@ -422,6 +422,7 @@ class OtzController extends Controller
 		// 	->get();
 
 		$data['div'] = str_random(15);
+		$data['current_range'] = Lookup::get_current_header();
 
 		return view('combined.otz_impact', $data);
 	}
