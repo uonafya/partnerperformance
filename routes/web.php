@@ -124,6 +124,7 @@ Route::prefix('otz')->name('otz.')->group(function(){
 	Route::get('achievement', 'OtzController@achievement')->name('achievement');
 	Route::get('breakdown', 'OtzController@breakdown')->name('breakdown');
 	Route::get('clinic_setup', 'OtzController@clinic_setup')->name('clinic_setup');
+	Route::get('otz_breakdown', 'OtzController@otz_breakdown')->name('otz_breakdown');
 
 
 	Route::get('download/{financial_year}', 'OtzController@download_excel')->name('download');

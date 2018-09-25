@@ -395,7 +395,35 @@ class OtzController extends Controller
 
 	public function otz_breakdown()
 	{
-		
+		$divisions_query = Lookup::divisions_query();
+		$date_query = Lookup::apidb_date_query();
+		$q = Lookup::groupby_query();
+
+		$data['rows'] = DB::table("apidb.vl_site_suppression")
+			->join('hcm.view_facilitys', 'view_facilitys.id', '=', 'vl_site_suppression.facility')
+			->selectRaw($q['select_query'] . ", count(view_facilitys.id) as `facilities`,
+				SUM(`less14_suppressed`) as `less14_suppressed`, SUM(`less14_nonsuppressed`) as `less14_nonsuppressed`, 
+				SUM(`less19_suppressed`) as `less19_suppressed`, SUM(`less19_nonsuppressed`) as `less19_nonsuppressed` 
+				")
+			->where('is_otz', 1)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		// $data['suppression_rows'] = DB::table("apidb.vl_site_summary")
+		// 	->join('hcm.view_facilitys', 'view_facilitys.id', '=', 'vl_site_suppression.facility')
+		// 	->selectRaw($q['select_query'] . ", count(view_facilitys.id) as `facilities`,
+		// 		SUM(`less14_suppressed`) as `less14_suppressed`, SUM(`less14_nonsuppressed`) as `less14_nonsuppressed`, 
+		// 		SUM(`less19_suppressed`) as `less19_suppressed`, SUM(`less19_nonsuppressed`) as `less19_nonsuppressed` 
+		// 		")
+		// 	->where('is_otz', 1)
+		// 	->whereRaw($divisions_query)
+		// 	->groupBy($q['group_query'])
+		// 	->get();
+
+		$data['div'] = str_random(15);
+
+		return view('combined.otz_impact', $data);
 	}
 
 

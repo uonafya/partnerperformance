@@ -81,6 +81,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    OTZ Impact <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="otz_breakdown">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -95,6 +108,7 @@
 		$("#achievement").html("<center><div class='loader'></div></center>");
 		$("#breakdown").html("<center><div class='loader'></div></center>");
 		$("#clinic_setup").html("<center><div class='loader'></div></center>");
+		$("#otz_breakdown").html("<center><div class='loader'></div></center>");
 
 
 		$("#facilities_count").load("{{ url('otz/facilities_count') }}");
@@ -102,6 +116,7 @@
 		$("#achievement").load("{{ url('otz/achievement') }}");
 		$("#breakdown").load("{{ url('otz/breakdown') }}");
 		$("#clinic_setup").load("{{ url('otz/clinic_setup') }}");
+		$("#otz_breakdown").load("{{ url('otz/otz_breakdown') }}");
 	}
 
 
