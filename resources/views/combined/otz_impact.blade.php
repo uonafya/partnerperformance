@@ -71,6 +71,7 @@
 			@endforeach
 		</tbody>	
 	</table>
+	{{ $current_range }}
 </div>
 
 
