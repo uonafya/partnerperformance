@@ -4,6 +4,7 @@
 			<tr class="colhead">
 				<th>No</th>
 				<th>Name</th>
+				<th>Current TX {{ $recent_current_tx_date }}</th>
 				<th>Current TX {{ $current_tx_date }}</th>
 				<th>Net New TX</th>
 				<th>Tests</th>
@@ -17,7 +18,8 @@
 			@foreach($rows as $key => $row)
 				@continue($row->tests == 0)
 				<?php
-					$current_tx = $art->where('div_id', $row->div_id)->first();			
+					$recent_current_tx = $art_recent->where('div_id', $row->div_id)->first();	
+					$current_tx = $art->where('div_id', $row->div_id)->first();	
 
 					$calc_percentage = function($num, $den, $roundby=2)
 										{
@@ -35,6 +37,7 @@
 					<td> {{ $key+1 }} </td>
 					<td> {{ $row->name ?? '' }} </td>
 
+					<td> {{ number_format($recent_current_tx->current_tx) }} </td>
 					<td> {{ number_format($current_tx->current_tx) }} </td>
 
 					<td> {{ number_format($row->net_new_tx) }} </td>

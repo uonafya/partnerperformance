@@ -478,6 +478,17 @@ class IndicatorController extends Controller
 			->get();
 
 		$data['current_tx_date'] =  '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';
+
+		$date_query = Lookup::year_month_query(true);
+
+		$data['art_recent'] = DB::table('p_early_indicators_view')
+			->selectRaw($sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+
+		$data['recent_current_tx_date'] =  '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';
 		return view('combined.indicators_summary', $data);
 	}
 
