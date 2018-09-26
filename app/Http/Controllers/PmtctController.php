@@ -59,6 +59,77 @@ class PmtctController extends Controller
 		return view('charts.bar_graph', $data);
 	}
 
+	public function testing()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$rows = DB::table('d_prevention_of_mother-to-child_transmission')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
+			->selectRaw("SUM(`initial_test_at_anc_hv02-04`) AS `anc`, SUM(`initial_test_at_l&d_hv02-05`) AS `lnd`, 	SUM(`initial_test_at_pnc_pnc<=6wks_hv02-06`) AS `pnc6w`, 
+				SUM(`total_positive_(add_hv02-10_-_hv02-14)_hv02-15`) AS `pos`
+			 ")
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$old_column = "SUM(`total_tested_(pmtct)`) AS `total`, SUM(`total_positive_(pmtct)`) AS `pos` ";
+
+		$rows2 = DB::table('d_pmtct')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pmtct.facility')
+			->selectRaw($old_column)
+			->addSelect('year', 'month')
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy('year', 'month')
+			->orderBy('year', 'asc')
+			->orderBy('month', 'asc')
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Positive Tests";
+		$data['outcomes'][1]['name'] = "Negative Tests";
+		$data['outcomes'][2]['name'] = "Positivity";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "spline";
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		$old_table = "`d_pmtct`";
+		$new_table = "`d_prevention_of_mother-to-child_transmission`";
+
+		// $old_column = "`started_on_art_during_anc`";
+		$new_column = "`initial_test_at_anc_hv02-04`";
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
+
+			$duplicate_pmtct = DB::select(
+				DB::raw("CALL `proc_get_duplicate_multiple`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
+
+			$tests = $row->anc + $row->lnd + $row->pnc6w + $rows2[$key]->anc - ($duplicate_pmtct[0]->total ?? 0);
+			$pos = $row->pos + $rows2[$key]->pos - ($duplicate_pmtct[0]->pos ?? 0);
+
+			$data["outcomes"][0]["data"][$key] = (int) $pos;
+			$data["outcomes"][1]["data"][$key] = (int) ($tests - $pos);
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($pos, $tests);
+		}
+		return view('charts.dual_axis', $data);
+
+	}
+
 	public function starting_point()
 	{
 		$date_query = Lookup::date_query();

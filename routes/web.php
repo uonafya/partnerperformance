@@ -101,6 +101,7 @@ Route::prefix('testing')->name('testing.')->group(function(){
 
 Route::prefix('pmtct')->name('pmtct.')->group(function(){
 	Route::get('haart', 'PmtctController@haart')->name('haart');
+	Route::get('testing', 'PmtctController@testing')->name('testing');
 	Route::get('starting_point', 'PmtctController@starting_point')->name('starting_point');
 	Route::get('discovery_positivity', 'PmtctController@discovery_positivity')->name('discovery_positivity');
 	Route::get('eid', 'PmtctController@eid')->name('eid');
