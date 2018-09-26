@@ -427,6 +427,14 @@ class OtzController extends Controller
 		return view('combined.otz_impact', $data);
 	}
 
+	public function dsd_breakdown()
+	{
+		$divisions_query = Lookup::divisions_query();
+		$date_query = Lookup::apidb_date_query();
+		$q = Lookup::groupby_query();
+		
+	}
+
 
 
 

@@ -87,6 +87,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user->fill($request->except(['_token', 'confirm_password']));
+        $user->last_login = date('Y-m-d H:i:s');
         $user->save();
         session(['toast_message' => 'The updates to your profile has been made.']);
         return redirect('/upload_nonmer');

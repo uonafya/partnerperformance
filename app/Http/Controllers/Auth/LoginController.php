@@ -34,7 +34,10 @@ class LoginController extends Controller
 
     protected function redirectTo()
     {
-        $partner = auth()->user()->partner;
+        $user = auth()->user();
+        $user->last_login = date('Y-m-d H:i:s');
+        $user->save();
+        $partner = $user->partner;
         session(['session_partner' => $partner]);
         return '/upload_nonmer';
     }
