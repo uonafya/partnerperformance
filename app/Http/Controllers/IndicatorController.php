@@ -107,9 +107,9 @@ class IndicatorController extends Controller
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
-		$data['outcomes'][4]['type'] = "column";
-		$data['outcomes'][5]['type'] = "column";
-		$data['outcomes'][6]['type'] = "spline";
+		// $data['outcomes'][4]['type'] = "column";
+		// $data['outcomes'][5]['type'] = "column";
+		$data['outcomes'][4]['type'] = "spline";
 
 		$data['outcomes'][0]['name'] = "Partner Reported Positive Tests";
 		$data['outcomes'][1]['name'] = "Partner Reported Negative Tests";
@@ -117,17 +117,18 @@ class IndicatorController extends Controller
 		$data['outcomes'][2]['name'] = "DHIS Positive Tests";
 		$data['outcomes'][3]['name'] = "DHIS Negative Tests";
 
-		$data['outcomes'][4]['name'] = "DHIS Positive PMTCT";
-		$data['outcomes'][5]['name'] = "DHIS Negative PMTCT";
+		// $data['outcomes'][4]['name'] = "DHIS Positive PMTCT";
+		// $data['outcomes'][5]['name'] = "DHIS Negative PMTCT";
 
-		$data['outcomes'][6]['name'] = "Target";
+		$data['outcomes'][4]['name'] = "Target";
 
 		$data['outcomes'][0]['stack'] = 'datim';
 		$data['outcomes'][1]['stack'] = 'datim';
+
 		$data['outcomes'][2]['stack'] = 'dhis';
 		$data['outcomes'][3]['stack'] = 'dhis';
-		$data['outcomes'][4]['stack'] = 'dhis';
-		$data['outcomes'][5]['stack'] = 'dhis';
+		// $data['outcomes'][4]['stack'] = 'dhis';
+		// $data['outcomes'][5]['stack'] = 'dhis';
 
 		$old_table = "`d_hiv_counselling_and_testing`";
 		$new_table = "`d_hiv_testing_and_prevention_services`";
@@ -161,16 +162,17 @@ class IndicatorController extends Controller
 			$data["outcomes"][2]["data"][$key] = (int) $pos;
 			$data["outcomes"][3]["data"][$key] = (int) ($tests - $pos);
 
-			$duplicate_pmtct = DB::select(
-				DB::raw("CALL `proc_get_duplicate_total_multiple`('{$pold_table}', '{$pnew_table}', '{$psql}', '{$pnew_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
+			// $duplicate_pmtct = DB::select(
+			// 	DB::raw("CALL `proc_get_duplicate_total_multiple`('{$pold_table}', '{$pnew_table}', '{$psql}', '{$pnew_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
 
-			$tests = $prows[$key]->tests + $prows2[$key]->tests - ($duplicate_pmtct[0]->tests ?? 0);
-			$pos = $prows[$key]->pos + $prows2[$key]->pos - ($duplicate_pmtct[0]->pos ?? 0);
+			// $tests = $prows[$key]->tests + $prows2[$key]->tests - ($duplicate_pmtct[0]->tests ?? 0);
+			// $pos = $prows[$key]->pos + $prows2[$key]->pos - ($duplicate_pmtct[0]->pos ?? 0);
 
-			$data["outcomes"][4]["data"][$key] = (int) $pos;
-			$data["outcomes"][5]["data"][$key] = (int) ($tests - $pos);
+			// $data["outcomes"][4]["data"][$key] = (int) $pos;
+			// $data["outcomes"][5]["data"][$key] = (int) ($tests - $pos);
 
-			$data["outcomes"][6]["data"][$key] = $target;
+			// $data["outcomes"][6]["data"][$key] = $target;
+			$data["outcomes"][4]["data"][$key] = $target;
 		}
 
 		return view('charts.bar_graph', $data);
