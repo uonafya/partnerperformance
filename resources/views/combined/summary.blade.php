@@ -41,7 +41,7 @@
 											if(!$den){
 												$val = 0;
 											}else{
-												$val = round(($num / $den * 100), $roundby);
+												$val = round(($num / $den * 100), $roundby) . "%";
 											}
 											return $val;
 										};

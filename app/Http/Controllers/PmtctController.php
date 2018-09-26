@@ -66,7 +66,7 @@ class PmtctController extends Controller
 
 		$rows = DB::table('d_prevention_of_mother-to-child_transmission')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
-			->selectRaw("SUM(`initial_test_at_anc_hv02-04`) AS `anc`, SUM(`initial_test_at_l&d_hv02-05`) AS `lnd`, 	SUM(`initial_test_at_pnc_pnc<=6wks_hv02-06`) AS `pnc6w`, 
+			->selectRaw("(SUM(`initial_test_at_anc_hv02-04`) + SUM(`initial_test_at_l&d_hv02-05`) + 	SUM(`initial_test_at_pnc_pnc<=6wks_hv02-06`)) AS `tests`, 
 				SUM(`total_positive_(add_hv02-10_-_hv02-14)_hv02-15`) AS `pos`
 			 ")
 			->addSelect('year', 'month')
@@ -77,7 +77,7 @@ class PmtctController extends Controller
 			->orderBy('month', 'asc')
 			->get();
 
-		$old_column = "SUM(`total_tested_(pmtct)`) AS `total`, SUM(`total_positive_(pmtct)`) AS `pos` ";
+		$old_column = "SUM(`total_tested_(pmtct)`) AS `tests`, SUM(`total_positive_(pmtct)`) AS `pos` ";
 
 		$rows2 = DB::table('d_pmtct')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pmtct.facility')
@@ -119,7 +119,7 @@ class PmtctController extends Controller
 			$duplicate_pmtct = DB::select(
 				DB::raw("CALL `proc_get_duplicate_total_multiple`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
 
-			$tests = $row->anc + $row->lnd + $row->pnc6w + $rows2[$key]->total - ($duplicate_pmtct[0]->total ?? 0);
+			$tests = $row->tests + $rows2[$key]->tests - ($duplicate_pmtct[0]->tests ?? 0);
 			$pos = $row->pos + $rows2[$key]->pos - ($duplicate_pmtct[0]->pos ?? 0);
 
 			$data["outcomes"][0]["data"][$key] = (int) $pos;
