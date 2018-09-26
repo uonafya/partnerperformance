@@ -119,7 +119,7 @@ class PmtctController extends Controller
 			$duplicate_pmtct = DB::select(
 				DB::raw("CALL `proc_get_duplicate_total_multiple`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
 
-			$tests = $row->anc + $row->lnd + $row->pnc6w + $rows2[$key]->anc - ($duplicate_pmtct[0]->total ?? 0);
+			$tests = $row->anc + $row->lnd + $row->pnc6w + $rows2[$key]->total - ($duplicate_pmtct[0]->total ?? 0);
 			$pos = $row->pos + $rows2[$key]->pos - ($duplicate_pmtct[0]->pos ?? 0);
 
 			$data["outcomes"][0]["data"][$key] = (int) $pos;
