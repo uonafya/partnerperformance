@@ -479,7 +479,7 @@ class IndicatorController extends Controller
 
 		$data['current_tx_date'] =  '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';
 
-		$date_query = Lookup::year_month_query(true);
+		$date_query = Lookup::year_month_query(1);
 
 		$data['art_recent'] = DB::table('p_early_indicators_view')
 			->selectRaw($sql)
@@ -513,6 +513,10 @@ class IndicatorController extends Controller
 	public function download_excel($financial_year)
 	{
 		$partner = session('session_partner');
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
 		$data = [];
 
 		$c = DB::table('view_facilitys')->where('partner', $partner->id)->groupBy('county')->get()->pluck(['county'])->toArray();
@@ -571,6 +575,11 @@ class IndicatorController extends Controller
 		})->get();
 
 		$partner = session('session_partner');
+		
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
 
 		// print_r($data);die();
 

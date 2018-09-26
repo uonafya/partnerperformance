@@ -75,7 +75,7 @@ class ArtController extends Controller
 			->first();
 
 
-		$date_query = Lookup::year_month_query(true);	
+		$date_query = Lookup::year_month_query(1);	
 		$data['recent_name'] = Lookup::year_month_name();	
 
 		$cu_n2 = DB::table('d_hiv_and_tb_treatment')

@@ -265,7 +265,7 @@ class Lookup
 		}
 	}*/
 
-	public static function year_month_query($other=false)
+	public static function year_month_query($deduction=2)
 	{
 		if(session('financial')){
 			$cfy = date('Y');
@@ -279,8 +279,7 @@ class Lookup
 				// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
 				if($financial_year <> $cfy) $month=9;
 				else{
-					$month = date('m') - 2;
-					if($other) $month = date('m') - 1;
+					$month = date('m') - $deduction;
 					// if(date('d') < 10) $month--;
 					if($month == 9) $financial_year--;
 					if($month < 1) $month += 12;

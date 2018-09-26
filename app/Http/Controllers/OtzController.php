@@ -430,9 +430,25 @@ class OtzController extends Controller
 	public function dsd_breakdown()
 	{
 		$divisions_query = Lookup::divisions_query();
-		$date_query = Lookup::apidb_date_query();
+		$date_query = Lookup::date_query(true);
 		$q = Lookup::groupby_query();
-		
+
+		$select_query = $q['select_query'];
+
+		// if(session('filter_groupby') == 5) $select_query .= ", is_viremia, is_dsd, is_otz, is_men_clinic";
+
+		$data['rows'] = DB::table('t_non_mer')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->selectRaw($select_query . ",
+			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
+			->get();
+			
+
+
+
 	}
 
 
@@ -517,6 +533,10 @@ class OtzController extends Controller
 	public function download_excel($financial_year)
 	{
 		$partner = session('session_partner');
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
 		$data = [];
 
 		$rows = DB::table('t_non_mer')
@@ -650,6 +670,10 @@ class OtzController extends Controller
 		})->get();
 
 		$partner = session('session_partner');
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
 		$unidentified = 0;
 		// print_r($data);die();
 
