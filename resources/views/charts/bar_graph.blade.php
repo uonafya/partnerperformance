@@ -60,7 +60,7 @@
                 '#4d79ff',
                 '#80ff00',
                 '#ff8000',
-                '#ff00f',
+                '#00ffff',
                 '#ff4000'
             ],     
             series: {!! json_encode($outcomes) !!}
