@@ -34,9 +34,9 @@
 					$calc_percentage = function($num, $den, $roundby=2)
 										{
 											if(!$den){
-												$val = 0;
+												$val = null;
 											}else{
-												$val = round(($num / $den * 100), $roundby);
+												$val = round(($num / $den * 100), $roundby) . "%";
 											}
 											return $val;
 										};

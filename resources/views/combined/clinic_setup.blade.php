@@ -2,43 +2,54 @@
 	<table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
 		<thead>
 			<tr class="colhead">
-				<th>No</th>
-				<th>Name</th>
+				<th rowspan="2">No</th>
+				<th rowspan="2">Name</th>
 				@if(session('filter_groupby') == 5)
-					<th>MFL Code</th>
-					<th>DHIS Code</th>
+					<th rowspan="2">MFL Code</th>
+					<th rowspan="2">DHIS Code</th>
 				@endif
-				<th>Viremia Clinics</th>
-				@isset($targets)
-					<th>Viremia Target</th>
-					<th>Viremia Achievement</th>
-				@endisset
-				<th>DSD Clinics</th>
-				@isset($targets)
-					<th>DSD Target</th>
-					<th>DSD Achievement</th>
-				@endisset
-				<th>OTZ Clinics</th>
-				@isset($targets)
-					<th>OTZ Target</th>
-					<th>OTZ Achievement</th>
-				@endisset
-				<th>Men Clinic Clinics</th>
-				@isset($targets)
-					<th>Men Clinic Target</th>	
-					<th>Men Clinic Achievement</th>	
-				@endisset	
+				<th colspan="3">Viremia</th>
+				<th colspan="3">DSD</th>
+				<th colspan="3">OTZ</th>
+				<th colspan="3">Men Clinic</th>
 			</tr>
+			<tr>
+				<th>Clinics</th>
+				@isset($targets)
+					<th>Target</th>
+					<th>(%)</th>
+				@endisset
+
+				<th>Clinics</th>
+				@isset($targets)
+					<th>Target</th>
+					<th>(%)</th>
+				@endisset
+
+				<th>Clinics</th>
+				@isset($targets)
+					<th>Target</th>
+					<th>(%)</th>
+				@endisset
+
+				<th>Clinics</th>
+				@isset($targets)
+					<th>Target</th>
+					<th>(%)</th>
+				@endisset					
+			</tr>
+
+			
 		</thead>
 		<tbody>
 			@foreach($dsd as $key => $row)
 			<?php
-				$calc_percentage = function($num, $den, $roundby=2)
+				$calc_percentage = function($num, $den, $roundby=1)
 									{
 										if(!$den){
 											$val = null;
 										}else{
-											$val = round(($num / $den * 100), $roundby);
+											$val = round(($num / $den * 100), $roundby) . "%";
 										}
 										return $val;
 									};
