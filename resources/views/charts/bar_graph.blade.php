@@ -41,7 +41,7 @@
             legend: {
                 layout: 'horizontal',
                 align: 'right',
-                x: -60,
+                x: -50,
                 verticalAlign: 'bottom',
                 y: 5,
                 floating: false,
