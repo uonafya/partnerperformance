@@ -117,7 +117,7 @@ class PmtctController extends Controller
 			$data['categories'][$key] = Lookup::get_category($row->year, $row->month);
 
 			$duplicate_pmtct = DB::select(
-				DB::raw("CALL `proc_get_duplicate_multiple`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
+				DB::raw("CALL `proc_get_duplicate_total_multiple`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$row->year}, {$row->month});"));
 
 			$tests = $row->anc + $row->lnd + $row->pnc6w + $rows2[$key]->anc - ($duplicate_pmtct[0]->total ?? 0);
 			$pos = $row->pos + $rows2[$key]->pos - ($duplicate_pmtct[0]->pos ?? 0);
