@@ -429,20 +429,23 @@ class OtzController extends Controller
 
 	public function dsd_impact()
 	{
+		return $this->impacts('is_dsd', 'combined.dsd_coverage');
+	}
+
+	public function impacts($col, $return_view)
+	{
 		$divisions_query = Lookup::divisions_query();
 		$date_query = Lookup::date_query(true);
 		$q = Lookup::groupby_query();
 
 		$select_query = $q['select_query'];
 
-		// if(session('filter_groupby') == 5) $select_query .= ", is_viremia, is_dsd, is_otz, is_men_clinic";
-
 		$data['rows'] = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query . ", count(*) as facilities,
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
-			->where('is_dsd', 1)
+			->where($col, 1)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
@@ -461,7 +464,7 @@ class OtzController extends Controller
 		$data['art'] = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw($sql)
-			->where('is_dsd', 1)
+			->where($col, 1)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
@@ -475,7 +478,7 @@ class OtzController extends Controller
 		$data['others'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($sql)
-			->where('is_dsd', 1)
+			->where($col, 1)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
@@ -484,7 +487,7 @@ class OtzController extends Controller
 		$data['duplicates'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($sql)
-			->where('is_dsd', 1)
+			->where($col, 1)
 			->whereRaw($date_query)
 			->whereRaw("facility IN (
 				SELECT DISTINCT facility
@@ -496,7 +499,7 @@ class OtzController extends Controller
 
 		$data['div'] = str_random(15);
 
-		return view('combined.dsd_coverage', $data);
+		return view($return_view, $data);
 	}
 
 
