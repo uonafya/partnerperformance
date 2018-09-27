@@ -7,15 +7,21 @@
 				<th>MFL Code</th>
 				<th>DHIS Code</th>
 			@endif
+			<th>DSD Facilities</th>
 			<th>DSD Beneficiaries</th>
-			<th>Current Tx {{ $current_range }}</th>
+			<th>Current TX {{ $current_range }}</th>
 			<th>DSD Coverage</th>					
 		</tr>
 	</thead>
 	<tbody>
 		@foreach($rows as $key => $row)
 			<?php
-				$pmtct = $pmtct_rows->where('div_id', $row->div_id)->first()->pmtct ?? 0;
+
+				$new = $art->where('div_id', $row->div_id)->first()->total ?? 0;
+				$old = $others->where('div_id', $row->div_id)->first()->total ?? 0;
+				$dup = $duplicates->where('div_id', $row->div_id)->first()->total ?? 0;
+
+				$tx = $new + $old - $dup;
 
 				$calc_percentage = function($num, $den, $roundby=2)
 									{
@@ -37,8 +43,10 @@
 				@endif
 
 
-				<td> {{ number_format($row->art + $pmtct) }} </td>
-				<td> {{ number_format($pmtct) }} </td>
+				<td> {{ number_format($row->facilities) }} </td>
+				<td> {{ number_format($row->dsd_beneficiaries) }} </td>
+				<td> {{ number_format($tx) }} </td>
+				<td> {{ $calc_percentage($row->dsd_beneficiaries, $tx) }} </td>
 			</tr>
 		@endforeach
 	</tbody>	
