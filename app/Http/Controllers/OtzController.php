@@ -427,7 +427,7 @@ class OtzController extends Controller
 		return view('combined.otz_impact', $data);
 	}
 
-	public function dsd_breakdown()
+	public function dsd_impact()
 	{
 		$divisions_query = Lookup::divisions_query();
 		$date_query = Lookup::date_query(true);
@@ -439,33 +439,43 @@ class OtzController extends Controller
 
 		$data['rows'] = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
-			->selectRaw($select_query . ",
+			->selectRaw($select_query . ", count(*) as facilities,
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
+			->where('is_dsd', 1)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
 			->get();
 
-		$date_query = Lookup::year_month_query();
+		$date_query = Lookup::year_month_query(6);
+		$data['current_range'] = Lookup::get_current_header();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$sql = $q['select_query'] . ", " . $this->current_art_query();	
+		$sql = $q['select_query'] . ", 
+		(SUM(`on_art_10-14(m)_hv03-030`) + SUM(`on_art_15-19(m)_hv03-032`) + SUM(`on_art_20-24(m)_hv03-034`) + SUM(`on_art_25pos(m)_hv03-036`)) AS `males`,
+		SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
+		";	
 
 		$data['art'] = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw($sql)
+			->where('is_dsd', 1)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
 			->get();	
 
-		$sql = $q['select_query'] . ", " . $this->former_age_current_query();	
+		$sql = $q['select_query'] . ", 
+			(SUM(`currently_on_art_-_male_below_15_years`) + SUM(`currently_on_art_-_male_above_15_years`)) AS `males`,
+			SUM(`total_currently_on_art`) AS `total`
+		";	
 
 		$data['others'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($sql)
+			->where('is_dsd', 1)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
@@ -474,6 +484,7 @@ class OtzController extends Controller
 		$data['duplicates'] = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($sql)
+			->where('is_dsd', 1)
 			->whereRaw($date_query)
 			->whereRaw("facility IN (
 				SELECT DISTINCT facility
@@ -483,9 +494,9 @@ class OtzController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
+		$data['div'] = str_random(15);
 
-
-
+		return view('combined.dsd_coverage', $data);
 	}
 
 

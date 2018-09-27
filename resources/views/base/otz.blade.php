@@ -94,6 +94,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    DSD Impact <div class="display_current_range"></div>
+		    </div>
+			<div class="panel-body" id="dsd_impact">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -109,6 +122,7 @@
 		$("#breakdown").html("<center><div class='loader'></div></center>");
 		$("#clinic_setup").html("<center><div class='loader'></div></center>");
 		$("#otz_breakdown").html("<center><div class='loader'></div></center>");
+		$("#dsd_impact").html("<center><div class='loader'></div></center>");
 
 
 		$("#facilities_count").load("{{ url('otz/facilities_count') }}");
@@ -117,6 +131,7 @@
 		$("#breakdown").load("{{ url('otz/breakdown') }}");
 		$("#clinic_setup").load("{{ url('otz/clinic_setup') }}");
 		$("#otz_breakdown").load("{{ url('otz/otz_breakdown') }}");
+		$("#dsd_impact").load("{{ url('otz/dsd_impact') }}");
 	}
 
 
