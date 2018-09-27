@@ -98,9 +98,22 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    DSD Coverage <div class="display_current_range"></div>
+			    DSD Coverage <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="dsd_impact">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Men Clinic Coverage <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="mens_impact">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -123,6 +136,7 @@
 		$("#clinic_setup").html("<center><div class='loader'></div></center>");
 		$("#otz_breakdown").html("<center><div class='loader'></div></center>");
 		$("#dsd_impact").html("<center><div class='loader'></div></center>");
+		$("#mens_impact").html("<center><div class='loader'></div></center>");
 
 
 		$("#facilities_count").load("{{ url('otz/facilities_count') }}");
@@ -132,6 +146,7 @@
 		$("#clinic_setup").load("{{ url('otz/clinic_setup') }}");
 		$("#otz_breakdown").load("{{ url('otz/otz_breakdown') }}");
 		$("#dsd_impact").load("{{ url('otz/dsd_impact') }}");
+		$("#mens_impact").load("{{ url('otz/mens_impact') }}");
 	}
 
 

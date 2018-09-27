@@ -432,6 +432,11 @@ class OtzController extends Controller
 		return $this->impacts('is_dsd', 'combined.dsd_coverage');
 	}
 
+	public function mens_impact()
+	{
+		return $this->impacts('is_men_clinic', 'combined.men_clinic_coverage');
+	}
+
 	public function impacts($col, $return_view)
 	{
 		$divisions_query = Lookup::divisions_query();

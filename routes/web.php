@@ -126,6 +126,7 @@ Route::prefix('otz')->name('otz.')->group(function(){
 	Route::get('clinic_setup', 'OtzController@clinic_setup')->name('clinic_setup');
 	Route::get('otz_breakdown', 'OtzController@otz_breakdown')->name('otz_breakdown');
 	Route::get('dsd_impact', 'OtzController@dsd_impact')->name('dsd_impact');
+	Route::get('mens_impact', 'OtzController@mens_impact')->name('mens_impact');
 
 
 	Route::get('download/{financial_year}', 'OtzController@download_excel')->name('download');
