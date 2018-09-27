@@ -449,7 +449,7 @@ class OtzController extends Controller
 			->get();
 
 		$date_query = Lookup::year_month_query(6);
-		$data['current_range'] = Lookup::get_current_header();
+		$data['current_range'] = Lookup::year_month_name();
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 

@@ -98,7 +98,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    DSD Impact <div class="display_current_range"></div>
+			    DSD Coverage <div class="display_current_range"></div>
 		    </div>
 			<div class="panel-body" id="dsd_impact">
 				<center><div class="loader"></div></center>
