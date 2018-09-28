@@ -27,9 +27,9 @@
 					$total = $below_1 + $below_15 + $above_15;
 					$reported_total = $row->total + $old->total - ($duplicate->total ?? 0);
 					$discrepancy = $reported_total - $total;
-					
+					// @continue($reported_total == 0 && $total == 0)
 				?>
-				@continue($reported_total == 0 && $total == 0)
+				
 				<tr>
 					<td> {{ $key+1 }} </td>
 					<td> {{ $row->name ?? $row->new_name ?? '' }} </td>
