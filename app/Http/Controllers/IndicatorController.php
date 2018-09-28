@@ -111,6 +111,14 @@ class IndicatorController extends Controller
 		$data['outcomes'][5]['type'] = "column";
 		$data['outcomes'][6]['type'] = "spline";
 
+		// $data['outcomes'][0]['color'] = "#F2784B";
+		// $data['outcomes'][1]['color'] = "#1BA39C";
+		// $data['outcomes'][2]['color'] = "column";
+		// $data['outcomes'][3]['color'] = "column";
+		// $data['outcomes'][4]['color'] = "column";
+		// $data['outcomes'][5]['color'] = "column";
+		// $data['outcomes'][6]['color'] = "#ff4000";
+
 		$data['outcomes'][0]['name'] = "Partner Reported Positive Tests";
 		$data['outcomes'][1]['name'] = "Partner Reported Negative Tests";
 
