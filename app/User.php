@@ -10,6 +10,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    protected $connection = 'mysql_wr';
 
     /**
      * The attributes that are mass assignable.
