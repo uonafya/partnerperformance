@@ -66,7 +66,7 @@ class IndicatorController extends Controller
 		$prows = DB::table('d_prevention_of_mother-to-child_transmission')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
 			->selectRaw("(SUM(`initial_test_at_anc_hv02-04`) + SUM(`initial_test_at_l&d_hv02-05`) + 	SUM(`initial_test_at_pnc_pnc<=6wks_hv02-06`)) AS `tests`, 
-				SUM(`total_positive_(add_hv02-10_-_hv02-14)_hv02-15`) AS `pos`
+				(SUM(`total_positive_(add_hv02-10_-_hv02-14)_hv02-15`) - SUM(`known_positive_at_1st_anc_hv02-10	`)) AS `pos`
 			 ")
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
