@@ -19,138 +19,30 @@ class Other
         Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser($user));
 	}
 
-	public static function other_targets()
-	{
-		$table_name = 't_non_mer';
-    	$sql = "CREATE TABLE `{$table_name}` (
-    				id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    				facility int(10) UNSIGNED DEFAULT 0,
-    				financial_year smallint(4) UNSIGNED DEFAULT 0,
-    				viremia_beneficiaries int(10) DEFAULT NULL,
-    				viremia_target int(10) DEFAULT NULL,
-    				dsd_beneficiaries int(10) DEFAULT NULL,
-    				dsd_target int(10) DEFAULT NULL,
-    				otz_beneficiaries int(10) DEFAULT NULL,
-    				otz_target int(10) DEFAULT NULL,
-    				men_clinic_beneficiaries int(10) DEFAULT NULL,
-    				men_clinic_target int(10) DEFAULT NULL,
-
-	        		dateupdated date DEFAULT NULL,
-					PRIMARY KEY (`id`),
-					KEY `identifier`(`facility`, `financial_year`),
-					KEY `facility` (`facility`)
-				);
-        ";
-        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
-        DB::connection('mysql_wr')->statement($sql);
-	}
-
-    public static function create_merged_tables()
+    public static function other_targets()
     {
-        $art = "
-            current_below1 int(10) DEFAULT NULL,
-            current_below10 int(10) DEFAULT NULL,
-            current_below15_m int(10) DEFAULT NULL,
-            current_below15_f int(10) DEFAULT NULL,
-            current_below20_m int(10) DEFAULT NULL,
-            current_below20_f int(10) DEFAULT NULL,
-            current_below25_m int(10) DEFAULT NULL,
-            current_below25_f int(10) DEFAULT NULL,
-            current_above25_m int(10) DEFAULT NULL,
-            current_above25_f int(10) DEFAULT NULL,
-            current_total int(10) DEFAULT NULL,
-
-            new_below1 int(10) DEFAULT NULL,
-            new_below10 int(10) DEFAULT NULL,
-            new_below15_m int(10) DEFAULT NULL,
-            new_below15_f int(10) DEFAULT NULL,
-            new_below20_m int(10) DEFAULT NULL,
-            new_below20_f int(10) DEFAULT NULL,
-            new_below25_m int(10) DEFAULT NULL,
-            new_below25_f int(10) DEFAULT NULL,
-            new_above25_m int(10) DEFAULT NULL,
-            new_above25_f int(10) DEFAULT NULL,
-            new_total int(10) DEFAULT NULL,
-
-            enrolled_below1 int(10) DEFAULT NULL,
-            enrolled_below10 int(10) DEFAULT NULL,
-            enrolled_below15_m int(10) DEFAULT NULL,
-            enrolled_below15_f int(10) DEFAULT NULL,
-            enrolled_below20_m int(10) DEFAULT NULL,
-            enrolled_below20_f int(10) DEFAULT NULL,
-            enrolled_below25_m int(10) DEFAULT NULL,
-            enrolled_below25_f int(10) DEFAULT NULL,
-            enrolled_above25_m int(10) DEFAULT NULL,
-            enrolled_above25_f int(10) DEFAULT NULL,
-            enrolled_total int(10) DEFAULT NULL,
-        ";
-
-        self::table_base('m_art'. $art);
-
-        $testing = "
-            testing_below1 int(10) DEFAULT NULL,
-            testing_below10 int(10) DEFAULT NULL,
-            testing_below15_m int(10) DEFAULT NULL,
-            testing_below15_f int(10) DEFAULT NULL,
-            testing_below20_m int(10) DEFAULT NULL,
-            testing_below20_f int(10) DEFAULT NULL,
-            testing_below25_m int(10) DEFAULT NULL,
-            testing_below25_f int(10) DEFAULT NULL,
-            testing_above25_m int(10) DEFAULT NULL,
-            testing_above25_f int(10) DEFAULT NULL,
-            testing_total int(10) DEFAULT NULL,
-
-            positive_below1 int(10) DEFAULT NULL,
-            positive_below10 int(10) DEFAULT NULL,
-            positive_below15_m int(10) DEFAULT NULL,
-            positive_below15_f int(10) DEFAULT NULL,
-            positive_below20_m int(10) DEFAULT NULL,
-            positive_below20_f int(10) DEFAULT NULL,
-            positive_below25_m int(10) DEFAULT NULL,
-            positive_below25_f int(10) DEFAULT NULL,
-            positive_above25_m int(10) DEFAULT NULL,
-            positive_above25_f int(10) DEFAULT NULL,
-            positive_total int(10) DEFAULT NULL,
-        ";
-
-        self::table_base('m_testing'. $testing);
-
-        $pmtct = "
-            haart_total int(10) DEFAULT NULL,
-            
-            haart_total int(10) DEFAULT NULL,
-        ";
-    }
-
-    public static function table_base($table_name, $columns)
-    {
+        $table_name = 't_non_mer';
         $sql = "CREATE TABLE `{$table_name}` (
                     id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                     facility int(10) UNSIGNED DEFAULT 0,
-                    year smallint(4) UNSIGNED DEFAULT 0,
-                    month tinyint(3) UNSIGNED DEFAULT 0,
                     financial_year smallint(4) UNSIGNED DEFAULT 0,
-                    quarter tinyint(3) UNSIGNED DEFAULT 0,
-        ";
+                    viremia_beneficiaries int(10) DEFAULT NULL,
+                    viremia_target int(10) DEFAULT NULL,
+                    dsd_beneficiaries int(10) DEFAULT NULL,
+                    dsd_target int(10) DEFAULT NULL,
+                    otz_beneficiaries int(10) DEFAULT NULL,
+                    otz_target int(10) DEFAULT NULL,
+                    men_clinic_beneficiaries int(10) DEFAULT NULL,
+                    men_clinic_target int(10) DEFAULT NULL,
 
-        $sql_end = "
-                dateupdated date DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                KEY `identifier`(`facility`, `year`, `month`),
-                KEY `identifier_other`(`facility`, `financial_year`, `quarter`),
-                KEY `facility` (`facility`),
-                KEY `specific_time` (`year`, `month`),
-                KEY `specific_period` (`financial_year`, `quarter`)
-            );
+                    dateupdated date DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    KEY `identifier`(`facility`, `financial_year`),
+                    KEY `facility` (`facility`)
+                );
         ";
         DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
-        $complete_sql =  $sql . $columns . $sql_end;
-        DB::connection('mysql_wr')->statement($complete_sql);
-    }
-
-    public static function merge_records()
-    {
-
+        DB::connection('mysql_wr')->statement($sql);
     }
 
 	public static function insert_others($year)
