@@ -277,20 +277,20 @@ class Lookup
 
 			if(!$quarter){
 				// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
-				// if($financial_year <> $cfy) $month=9;
-				// else{
+				if($financial_year <> $cfy) $month = 9 - ($deduction-1);
+				else{
 					$month = date('m') - $deduction;
 					// if(date('d') < 10) $month--;
 					// if($month == 9) $financial_year--;
-					if($financial_year == $cfy && $month < 10 && date('m') > 9) $financial_year--;
+					if($month < 10 && date('m') > 9) $financial_year--;
 					if($month < 1) $month += 12;
 					if($m) $month = $m;
 					// return " financial_year='{$financial_year}' and month='{$month}'";
-				// }
+				}
 			}
 			else{
 				$n = \App\Synch::get_financial_year_quarter(date('Y'), date('m'));
-				$month = self::max_per_quarter($quarter);
+				$month = self::max_per_quarter($quarter) - ($deduction-1);
 
 				if($financial_year <> $cfy || ($financial_year == $cfy && $quarter <> $n['quarter'])){					
 					// return " financial_year='{$financial_year}' and month='{$month}'";
