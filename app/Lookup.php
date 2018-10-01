@@ -282,7 +282,7 @@ class Lookup
 					$month = date('m') - $deduction;
 					// if(date('d') < 10) $month--;
 					// if($month == 9) $financial_year--;
-					if($month < 10 && date('m') > 9) $financial_year--;
+					if($financial_year == $cfy && $month < 10 && date('m') > 9) $financial_year--;
 					if($month < 1) $month += 12;
 					if($m) $month = $m;
 					// return " financial_year='{$financial_year}' and month='{$month}'";
