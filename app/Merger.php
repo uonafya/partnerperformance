@@ -153,7 +153,7 @@ class Merger
 
     	$known_pos_new = $row->{'known_positive_at_1st_anc_hv02-03'} ?? $row->{'known_positive_at_1st_anc_hv02-10'};
 
-    	$data['known_pos_anc'] = self::merged_value(, $old_row->{'known_positive_status_(at_entry_into_anc)'});
+    	$data['known_pos_anc'] = self::merged_value($known_pos_new, $old_row->{'known_positive_status_(at_entry_into_anc)'});
 
     	$data['initial_test_anc'] = self::merged_value($row->{'initial_test_at_anc_hv02-04'}, $old_row->{'started_on_art_during_anc'});
     	$data['initial_test_lnd'] = $row->{'initial_test_at_l&d_hv02-05'};
