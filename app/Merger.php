@@ -203,66 +203,6 @@ class Merger
     }
 
 
-    public static function old_merge_testing($year=null)
-    {
-        if(!$year) $year = date('Y');
-        ini_set("memory_limit", "-1");
-        $limit=500;
-        $today = date('Y-m-d');
-
-        for ($month=1; $month < 13; $month++) { 
-            if($year == date('Y') && $month > date('m')) break;
-            $offset=0;
-
-            while (true) {
-                $rows = DB::table('d_hiv_testing_and_prevention_services')
-                        ->where(['year' => $year, 'month' => $month])
-                        ->limit($limit)->offset($offset)->get();
-
-                $old_rows = DB::table('d_hiv_counselling_and_testing')
-                        ->where(['year' => $year, 'month' => $month])
-                        ->limit($limit)->offset($offset)->get();
-
-                if($rows->isEmpty()) break;
-
-                foreach ($rows as $key => $row) {
-                    $old_row = $old_rows[$key];
-                    if($row->facility != $old_row->facility) $old_row = $old_rows->where('facility', $row->facility)->first();
-                    
-                    $data['testing_total'] = self::merged_value($row->{'tested_total_(sum_hv01-01_to_hv01-10)_hv01-10'}, $old_row->total_tested_hiv);
-                    $data['first_test_hiv'] = self::merged_value($row->{'tested_new_hv01-13'}, $old_row->first_testing_hiv );
-                    $data['repeat_test_hiv'] = self::merged_value($row->{'tested_repeat_hv01-14'}, $old_row->repeat_testing_hiv );
-                    $data['facility_test_hiv'] = self::merged_value($row->{'tested_facility_hv01-11'}, $old_row->{'static_testing_hiv_(health_facility)'} );
-                    $data['outreach_test_hiv'] = self::merged_value($row->{'tested_community_hv01-12'}, $old_row->outreach_testing_hiv );
-
-
-                    $data['positive_below10'] = $row->{'positive_1-9_hv01-17'};
-
-                    $data['positive_below15_m'] = self::merged_value($row->{'positive_10-14(m)_hv01-18'}, $old_row->male_under_15yrs_receiving_hiv_pos_results);
-                    $data['positive_below15_f'] = self::merged_value($row->{'positive_10-14(f)_hv01-19'}, $old_row->female_under_15yrs_receiving_hiv_pos_results);
-
-                    $data['positive_below20_m'] = $row->{'positive_15-19(m)_hv01-20'};
-                    $data['positive_below20_f'] = $row->{'positive_15-19(f)_hv01-21'};
-
-                    $data['positive_below25_m'] = self::merged_value($row->{'positive_20-24(m)_hv01-22'}, $old_row->{'male_15-24yrs_receiving_hiv_pos_results'}	);
-                    $data['positive_below25_f'] = self::merged_value($row->{'positive_20-24(f)_hv01-23'}, $old_row->{'female_15-24yrs_receiving_hiv_pos_results'});
-
-                    $data['positive_above25_m'] = self::merged_value($row->{'positive_25pos(m)_hv01-24'}, $old_row->{'male_above_25yrs_receiving_hiv_pos_results'});
-                    $data['positive_above25_f'] = self::merged_value($row->{'positive_25pos(f)_hv01-25'}, $old_row->{'female_above_25yrs_receiving_hiv_pos_results'});
-
-                    $data['positive_total'] = self::merged_value($row->{'positive_total_(sum_hv01-18_to_hv01-27)_hv01-26'}, $old_row->total_received_hivpos_results);
-                    $data['dateupdated'] = $today;
-
-                    DB::connection('mysql_wr')->table("m_testing")
-                    			->where(['facility' => $row->facility, 'year' => $year, 'month' => $month])
-                    			->update($data);
-                }
-
-                $offset += $limit;
-            }
-        }
-    }
-
     public static function create_merged_tables()
     {
         $art = "
@@ -303,7 +243,7 @@ class Merger
             enrolled_total int(10) DEFAULT NULL,
         ";
 
-        self::table_base('m_art'. $art);
+        self::table_base('m_art', $art);
 
         $testing = "
             testing_total int(10) DEFAULT NULL,
@@ -324,7 +264,7 @@ class Merger
             positive_total int(10) DEFAULT NULL,
         ";
 
-        self::table_base('m_testing'. $testing);
+        self::table_base('m_testing', $testing);
 
         $pmtct = "
             tested_pmtct int(10) DEFAULT NULL,
@@ -365,7 +305,7 @@ class Merger
 
         ";
 
-        self::table_base('m_pmtct'. $pmtct);
+        self::table_base('m_pmtct', $pmtct);
     }
 
     public static function insert_rows($year=null)
@@ -422,5 +362,65 @@ class Merger
         DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
         $complete_sql =  $sql . $columns . $sql_end;
         DB::connection('mysql_wr')->statement($complete_sql);
+    }
+
+    public static function old_merge_testing($year=null)
+    {
+        if(!$year) $year = date('Y');
+        ini_set("memory_limit", "-1");
+        $limit=500;
+        $today = date('Y-m-d');
+
+        for ($month=1; $month < 13; $month++) { 
+            if($year == date('Y') && $month > date('m')) break;
+            $offset=0;
+
+            while (true) {
+                $rows = DB::table('d_hiv_testing_and_prevention_services')
+                        ->where(['year' => $year, 'month' => $month])
+                        ->limit($limit)->offset($offset)->get();
+
+                $old_rows = DB::table('d_hiv_counselling_and_testing')
+                        ->where(['year' => $year, 'month' => $month])
+                        ->limit($limit)->offset($offset)->get();
+
+                if($rows->isEmpty()) break;
+
+                foreach ($rows as $key => $row) {
+                    $old_row = $old_rows[$key];
+                    if($row->facility != $old_row->facility) $old_row = $old_rows->where('facility', $row->facility)->first();
+                    
+                    $data['testing_total'] = self::merged_value($row->{'tested_total_(sum_hv01-01_to_hv01-10)_hv01-10'}, $old_row->total_tested_hiv);
+                    $data['first_test_hiv'] = self::merged_value($row->{'tested_new_hv01-13'}, $old_row->first_testing_hiv );
+                    $data['repeat_test_hiv'] = self::merged_value($row->{'tested_repeat_hv01-14'}, $old_row->repeat_testing_hiv );
+                    $data['facility_test_hiv'] = self::merged_value($row->{'tested_facility_hv01-11'}, $old_row->{'static_testing_hiv_(health_facility)'} );
+                    $data['outreach_test_hiv'] = self::merged_value($row->{'tested_community_hv01-12'}, $old_row->outreach_testing_hiv );
+
+
+                    $data['positive_below10'] = $row->{'positive_1-9_hv01-17'};
+
+                    $data['positive_below15_m'] = self::merged_value($row->{'positive_10-14(m)_hv01-18'}, $old_row->male_under_15yrs_receiving_hiv_pos_results);
+                    $data['positive_below15_f'] = self::merged_value($row->{'positive_10-14(f)_hv01-19'}, $old_row->female_under_15yrs_receiving_hiv_pos_results);
+
+                    $data['positive_below20_m'] = $row->{'positive_15-19(m)_hv01-20'};
+                    $data['positive_below20_f'] = $row->{'positive_15-19(f)_hv01-21'};
+
+                    $data['positive_below25_m'] = self::merged_value($row->{'positive_20-24(m)_hv01-22'}, $old_row->{'male_15-24yrs_receiving_hiv_pos_results'} );
+                    $data['positive_below25_f'] = self::merged_value($row->{'positive_20-24(f)_hv01-23'}, $old_row->{'female_15-24yrs_receiving_hiv_pos_results'});
+
+                    $data['positive_above25_m'] = self::merged_value($row->{'positive_25pos(m)_hv01-24'}, $old_row->{'male_above_25yrs_receiving_hiv_pos_results'});
+                    $data['positive_above25_f'] = self::merged_value($row->{'positive_25pos(f)_hv01-25'}, $old_row->{'female_above_25yrs_receiving_hiv_pos_results'});
+
+                    $data['positive_total'] = self::merged_value($row->{'positive_total_(sum_hv01-18_to_hv01-27)_hv01-26'}, $old_row->total_received_hivpos_results);
+                    $data['dateupdated'] = $today;
+
+                    DB::connection('mysql_wr')->table("m_testing")
+                                ->where(['facility' => $row->facility, 'year' => $year, 'month' => $month])
+                                ->update($data);
+                }
+
+                $offset += $limit;
+            }
+        }
     }
 }
