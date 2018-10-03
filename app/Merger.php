@@ -188,7 +188,7 @@ class Merger
         $data['start_art_anc'] = self::merged_value($row->{'start_haart_anc_hv02-17'}, $old_row->{'started_on_art_during_anc'});
         $data['start_art_lnd'] = $row->{'start_haart_l&d_hv02-18'};
         $data['start_art_pnc'] = $row->{'start_haart_pnc<=6wks_hv02-19'};
-        $data['start_art_pnc6m'] = $row->{'start_haart_pnc>_6weeks_to_6_months_hv02-21'};
+        $data['start_art_pnc_6m'] = $row->{'start_haart_pnc>_6weeks_to_6_months_hv02-21'};
 
         $data['known_status_before_male'] = $row->{'known_status_1st_contact_hv02-29'};
         $data['initial_male_test_anc'] = self::merged_value($row->{'initial_test_at_anc_male_hv02-30'}, $old_row->{'male_partners_tested_-(_anc/l&d)'});
