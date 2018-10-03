@@ -51,6 +51,27 @@ Artisan::command('regimens {year?}', function ($year=null) {
 
 
 
+Artisan::command('merge:all {year?}', function ($year=null) {
+	\App\Merger::testing($year);
+	\App\Merger::art($year);
+	\App\Merger::pmtct($year);
+})->describe('Merge the testing, art and pmtct records.');
+
+
+Artisan::command('merge:testing {year?}', function ($year=null) {
+	\App\Merger::testing($year);
+})->describe('Merge the testing records.');
+
+Artisan::command('merge:art {year?}', function ($year=null) {
+	\App\Merger::art($year);
+})->describe('Merge the art records.');
+
+Artisan::command('merge:pmtct {year?}', function ($year=null) {
+	\App\Merger::pmtct($year);
+})->describe('Merge the pmtct records.');
+
+
+
 Artisan::command('targets {year?}', function ($year=null) {
 	\App\TargetInsert::insert($year);
 })->describe('Populate target tables with values.');
