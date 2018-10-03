@@ -63,8 +63,8 @@ class Merger
 			        			->where(['facility' => $row->facility, 'year' => $year, 'month' => $month])
 			        			->update($data);
                 }
+                $offset+=$limit;
             }
-            $offset+=$limit;
             echo "Completed merging for {$merged_table} for month {$month} at " . date('Y-m-d H:i:s a') . " \n";
         }
 	}
