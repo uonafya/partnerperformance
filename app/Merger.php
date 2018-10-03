@@ -311,6 +311,7 @@ class Merger
     public static function insert_rows($year=null)
     {        
         if(!$year) $year = date('Y');
+        $facilities = \App\Facility::select('id')->get();
         $tables = ['m_testing', 'm_art', 'm_pmtct'];
 
         foreach ($tables as $table) {
