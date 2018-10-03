@@ -200,6 +200,8 @@ class Merger
                 $old_row->{'pcr_(from3_to_8_months)_infant_testing_(initial_test_only)'}));
 
         $data['confirmed_pos'] = self::merged_value($row->{'infected_24mths_hv02-47'}, $old_row->{'total_confirmed_positive_infant_test_result_by_pcr'});
+
+        return $data;
     }
 
 
