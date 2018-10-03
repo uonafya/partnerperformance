@@ -64,6 +64,8 @@ class Merger
 			        			->update($data);
                 }
             }
+            $offset+=$limit;
+            echo "Completed merging for {$merged_table} for month {$month} at " . date('Y-m-d H:i:s a') . " \n";
         }
 	}
 
