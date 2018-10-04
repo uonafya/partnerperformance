@@ -59,7 +59,8 @@ class TestingController extends Controller
 				$t = $target_obj->where('div_id', $row->div_id)->first()->tests ?? 0;
 				$data["outcomes"][2]["data"][$key] = round(($t / $divisor), 2);
 			}
-		}
+		}	
+		return view('charts.bar_graph', $data);
 	}
 
 }
