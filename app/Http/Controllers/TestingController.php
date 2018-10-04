@@ -16,7 +16,7 @@ class TestingController extends Controller
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback('tests'))
 			->whereRaw($date_query)
 			->get();
 
