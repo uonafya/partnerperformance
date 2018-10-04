@@ -117,9 +117,11 @@ class Controller extends BaseController
 		}
 		else{
 			$var = Lookup::groupby_query();
+			$raw = DB::raw($var['select_query']);
 
-	    	return function($query) use($date_query, $divisions_query, $var){
-	    		return $query->whereRaw($divisions_query)
+	    	return function($query) use($date_query, $divisions_query, $var, $raw){
+	    		return $query->addSelect($raw)
+	    			->whereRaw($divisions_query)
 	    			->whereRaw($date_query)
 	    			->groupBy($var['group_query']);
 	    	};			
