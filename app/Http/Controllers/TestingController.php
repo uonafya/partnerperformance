@@ -56,7 +56,7 @@ class TestingController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) ($row->tests - $row->pos);
 			if(isset($target)) $data["outcomes"][2]["data"][$key] = $target;
 			else{
-				$t = $target_obj->where('div_id', $row->div_id)->first()->tests;
+				$t = $target_obj->where('div_id', $row->div_id)->first()->tests ?? 0;
 				$data["outcomes"][2]["data"][$key] = round(($t / $divisor), 2);
 			}
 		}
