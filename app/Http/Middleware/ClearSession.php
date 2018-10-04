@@ -42,10 +42,10 @@ class ClearSession
 
         session([
             'financial' => true,
-            'filter_year' => date('Y'),
             'filter_financial_year' => $f,
-            // 'filter_financial_year' => date('Y'),
             'filter_groupby' => 1,
+            // 'filter_year' => date('Y'),
+            // 'filter_financial_year' => date('Y'),
         ]);
 
         return $next($request);

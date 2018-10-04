@@ -15,11 +15,13 @@ use \App\ViewFacility;
 
 class FilterController extends Controller
 {
+
 	public function filter_date(Request $request)
 	{
+		$default = session('filter_year');
 		$default_financial = session('filter_financial_year');
 
-		$year = $request->input('year');
+		$year = $request->input('year', $default);
 		$month = $request->input('month');
 
 		$to_year = $request->input('to_year');
@@ -33,40 +35,47 @@ class FilterController extends Controller
 
 		session($range);
 
-		$display_date = ' (October, ' . ($financial_year-1) . ' - September ' . $financial_year . ')';
-		if($quarter){
-			switch ($quarter) {
-				case 1:
-					$display_date = "(October - December " . ($financial_year-1) . ")";
-					break;
-				case 2:
-					$display_date = "(January - March " . $financial_year . ")";
-					break;
-				case 3:
-					$display_date = "(April - June " . $financial_year . ")";
-					break;
-				case 4:
-					$display_date = "(July - September " . $financial_year . ")";
-					break;					
-				default:
-					break;
+		if(session('financial')){
+			$display_date = ' (October, ' . ($financial_year-1) . ' - September ' . $financial_year . ')';
+			if($quarter){
+				switch ($quarter) {
+					case 1:
+						$display_date = "(October - December " . ($financial_year-1) . ")";
+						break;
+					case 2:
+						$display_date = "(January - March " . $financial_year . ")";
+						break;
+					case 3:
+						$display_date = "(April - June " . $financial_year . ")";
+						break;
+					case 4:
+						$display_date = "(July - September " . $financial_year . ")";
+						break;					
+					default:
+						break;
+				}
 			}
-		}
-		if($month){
-			if($month < 10) $display_date = '(' . $financial_year . ' ' . Lookup::resolve_month($month) . ')';
-			if($month > 9) $display_date = '(' . ($financial_year-1) . ' ' . Lookup::resolve_month($month) . ')';
-		}
-		if($to_year){
-			if($year == $to_year) 
-				$display_date = '(' . Lookup::resolve_month($month) . ' - ' . Lookup::resolve_month($to_month) . " {$year})";
-			else{
-				$display_date = "(" . Lookup::resolve_month($month) . ", {$year} - " . Lookup::resolve_month($to_month) . ", {$to_year})";
-			}
-		}
+		}else{
+			$display_date = $year . ' ' . Lookup::resolve_month($month);
+		}		
 
 		return ['year' => $year, 'prev_year' => $prev_year, 'range' => $range, 'display_date' => $display_date];
 	}
 
+	public function filter_partner(Request $request)
+	{
+		$partner = $request->input('partner');
+		if($partner == null || !is_numeric($partner)) $partner = null;
+
+		session(['filter_partner' => $partner]);
+
+		$name = "All Partners";
+
+		if($partner || $partner == 0) $name = Partner::find($partner)->name ?? '';
+		$crumb = Lookup::set_crumb($name);
+
+		return  ['partner' => $partner, 'crumb' => $crumb];
+	}
 
 	public function filter_any(Request $request)
 	{
@@ -78,6 +87,8 @@ class FilterController extends Controller
 
 		return [$var => $val];
 	}
+
+
 
     public function facility(Request $request)
     {
@@ -92,6 +103,7 @@ class FilterController extends Controller
 
 	public function get_current_header()
 	{
+
     	$year = ((int) Date('Y'));
     	$prev_year = ((int) Date('Y')) - 1;
     	$month = ((int) Date('m')) - 1;

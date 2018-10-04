@@ -11,6 +11,7 @@ use \App\Ward;
 use \App\Facility;
 
 use Excel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 
@@ -67,7 +68,21 @@ class Lookup
 
 	}
 
-	public static function get_category($year, $month)
+	public static function get_category($row)
+	{
+		$groupby = session('filter_groupby', 1);
+		if($groupby > 9){
+			if($groupby == 10) return 'Calendar Year ' . $row->year;
+			if($groupby == 11) return 'FY ' . $row->financial_year;
+			if($groupby == 12) return self::resolve_month($row->month) . ', ' . $row->year;
+			if($groupby == 13) return "FY {$row->financial_year} Q {$row->quarter}";
+		}
+		else{
+			return $row->name;
+		}	
+	} 
+
+	public static function get_month_category($year, $month)
 	{
 		$m = self::resolve_month($month);
 		return substr($m, 0, 3) . ', ' . $year;
@@ -81,6 +96,35 @@ class Lookup
 			$val = round(($num / $den * 100), $roundby);
 		}
 		return $val;
+	}
+
+	public static function get_target_divisor()
+	{
+		$groupby = session('filter_groupby', 1);
+		if($groupby > 9){
+			if($groupby == 10 || $groupby == 11) return 1;
+			if($groupby == 12) return 12;
+			if($groupby == 13) return 4;
+		}
+		else{			
+			$financial_year = session('filter_financial_year');
+			$quarter = session('filter_quarter');
+
+			$year = session('filter_year');
+			$month = session('filter_month');
+			$to_year = session('to_year');
+			$to_month = session('to_month');
+
+			if($quarter) return 4;
+			if($to_year){
+				$first = Carbon::create($year, $month, 1);
+				$second = Carbon::create($to_year, $to_month, 1);
+				$months = $second->diffInMonths($first);
+				return (12 / $months);
+			}
+			if($month) return 12;
+			return 1;
+		}
 	}
 
 	public static function progress_status($val)
@@ -152,31 +196,49 @@ class Lookup
 
 	public static function date_query($for_target=false)
 	{
-		if(session('financial') || $for_target){
-			$financial_year = session('filter_financial_year');
-			$quarter = session('filter_quarter');
-			$query = " financial_year='{$financial_year}'";
+		$financial_year = session('filter_financial_year');
+		$quarter = session('filter_quarter');
 
-			if($quarter && !$for_target) $query .= " AND quarter='{$quarter}'";
-		}else{
-			$default = date('Y');
-			$year = session('filter_year', $default);
-			$month = session('filter_month');
-			$to_year = session('to_year');
-			$to_month = session('to_month');
+		$year = session('filter_year');
+		$month = session('filter_month');
+		$to_year = session('to_year');
+		$to_month = session('to_month');
 
-			$query = '';		
+		if($for_target) return " financial_year='{$financial_year}'";
 
-			if(!$to_year){
-				$query .= " year='{$year}' ";
+		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month);
 
-				if($month) $query .= " AND month='{$month}' ";
-			}
-			else{
-				$query = self::date_range_query($year, $to_year, $month, $to_month);
-			}
-		}
+		$query = " financial_year='{$financial_year}'";
+		if($quarter) $query .= " AND quarter='{$quarter}'";
+		if($month) $query .= " AND quarter='{$quarter}'";
+
 		return $query;
+
+		// if(session('financial') || $for_target){
+		// 	$financial_year = session('filter_financial_year');
+		// 	$quarter = session('filter_quarter');
+		// 	$query = " financial_year='{$financial_year}'";
+
+		// 	if($quarter && !$for_target) $query .= " AND quarter='{$quarter}'";
+		// }else{
+		// 	$default = date('Y');
+		// 	$year = session('filter_year', $default);
+		// 	$month = session('filter_month');
+		// 	$to_year = session('to_year');
+		// 	$to_month = session('to_month');
+
+		// 	$query = '';		
+
+		// 	if(!$to_year){
+		// 		$query .= " year='{$year}' ";
+
+		// 		if($month) $query .= " AND month='{$month}' ";
+		// 	}
+		// 	else{
+		// 		$query = self::date_range_query($year, $to_year, $month, $to_month);
+		// 	}
+		// }
+		// return $query;
 	}
 
 	public static function apidb_date_query($for_target=false)
@@ -397,6 +459,14 @@ class Lookup
 				$select_query = "funding_agency_id as div_id";
 				if($def) $select_query .= ", funding_agency as name";
 				$group_query = "funding_agency_id";
+				break;
+			case 10:
+				$select_query = "year";
+				$group_query = "year";
+				break;
+			case 11:
+				$select_query = "financial_year";
+				$group_query = "financial_year";
 				break;			
 			default:
 				break;
