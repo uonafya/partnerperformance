@@ -30,7 +30,7 @@
 					<td> {{ number_format($row->pos) }} </td>
 					<td> {{ $calc_percentage($row->pos, $row->tests) }} </td>
 					<td> {{ number_format($linked_to_treatment) }} </td>			
-					<td> {{ $calc_percentage($linked_to_treatment, $$row->pos)  }} </td>
+					<td> {{ $calc_percentage($linked_to_treatment, $row->pos)  }} </td>
 					<td> {{ number_format($target['tests']) }} </td>
 					<td> {{ number_format($target['pos']) }} </td>			
 					<td> {{ $calc_percentage($target['pos'], $target['tests'])  }} </td>
