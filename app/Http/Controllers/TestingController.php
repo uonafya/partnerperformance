@@ -172,6 +172,8 @@ class TestingController extends Controller
 			->when(true, $this->target_callback())
 			->get();
 
+		dd($data);
+
 		return view('tables.summary', $data);
 	}
 

@@ -3,7 +3,7 @@
 		<thead>
 			<tr class="colhead">
 				<th>No</th>
-				@component('partials.columns')
+				@component('partials.columns')@endcomponent
 				<th>Tested</th>
 				<th>Positives</th>
 				<th>Positivity (%)</th>
@@ -25,7 +25,7 @@
 				@continue($tests == 0)
 				<tr>
 					<td> {{ $key+1 }} </td>
-					@component('partials.rows', ['row' => $row])
+					@component('partials.rows', ['row' => $row])@endcomponent
 
 					<td> {{ number_format($row->tests) }} </td>
 					<td> {{ number_format($row->pos) }} </td>
@@ -41,4 +41,4 @@
 	</table>
 </div>
 
-@component('partials.table_footer', ['div' => $div])
+@component('partials.table_footer', ['div' => $div])@endcomponent
