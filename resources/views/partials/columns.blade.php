@@ -1,4 +1,4 @@
-
+{{ $slot ?? '' }}
 				@if(session('filter_groupby') == 5)
 					<th {{ $cols ?? '' }}>Name</th>
 					<th {{ $cols ?? '' }}>MFL Code</th>

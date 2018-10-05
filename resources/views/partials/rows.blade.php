@@ -1,3 +1,4 @@
+{{ $slot ?? '' }}
 
 					@if(session('filter_groupby') == 5)
 						<td> {{ $row->name ?? $row->new_name ?? '' }} </td>
