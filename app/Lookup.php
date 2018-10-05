@@ -229,6 +229,7 @@ class Lookup
 			}
 			return null;
 		};
+		return $data;
 	}
 
 	public static function get_val($groupby, $row, $collection, $attribute, $number_format=false)
