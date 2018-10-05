@@ -189,6 +189,74 @@ class Lookup
 		];
 	}
 
+	public static function table_data()
+	{
+		$data['div'] = str_random(15);
+		$data['groupby'] = session('filter_groupby', 1);
+		$data['i'] = 0;
+
+		$data['calc_percentage'] = function($num, $den, $roundby=2)
+			{
+				if(!$den){
+					$val = null;
+				}else{
+					$val = round(($num / $den * 100), $roundby) . "%";
+				}
+				return $val;
+			};
+
+		$data['get_val'] = function($groupby, $row, $collection, $attribute, $number_format=false)
+		{
+			if($groupby > 9){
+				if($groupby == 10) $match = $collection->where('year', $row->year)->first();
+				if($groupby == 11) $match = $collection->where('financial_year', $row->financial_year)->first();
+				if($groupby == 12) $match = $collection->where('year', $row->year)->where('month', $row->month)->first();
+				if($groupby == 13) $match = $collection->where('financial_year', $row->financial_year)->where('quarter', $row->quarter)->first();
+			}
+			else{
+				$match = $collection->where('div_id', $row->div_id)->first();
+			}
+			if($match){
+				if(is_array($attribute)){
+					$data = [];
+					foreach ($attribute as $key => $value) {
+						$data[$value] = $match->$value ?? null;
+					}
+				}
+				$val = $match->$attribute ?? null;
+				if($number_format) return number_format($val);
+				return $val;
+			}
+			return null;
+		};
+	}
+
+	public static function get_val($groupby, $row, $collection, $attribute, $number_format=false)
+	{
+		$groupby = session('filter_groupby', 1);
+		if($groupby > 9){
+			if($groupby == 10) $match = $collection->where('year', $row->year)->first();
+			if($groupby == 11) $match = $collection->where('financial_year', $row->financial_year)->first();
+			if($groupby == 12) $match = $collection->where('year', $row->year)->where('month', $row->month)->first();
+			if($groupby == 13) $match = $collection->where('financial_year', $row->financial_year)->where('quarter', $row->quarter)->first();
+		}
+		else{
+			$match = $collection->where('div_id', $row->div_id)->first();
+		}
+		if($match){
+			if(is_array($attribute)){
+				$data = [];
+				foreach ($attribute as $key => $value) {
+					$data[$value] = $match->$value ?? null;
+				}
+			}
+			$val = $match->$attribute ?? null;
+			if($number_format) return number_format($val);
+			return $val;
+		}
+		return null;		
+	}
+
 	public static function set_crumb($name = '')
 	{
 		return "<a href='javascript:void(0)' class='alert-link'><center><strong>{$name}</strong></center></a>";
@@ -437,6 +505,50 @@ class Lookup
 			case 1:
 				$select_query = "partner as div_id";
 				if($def) $select_query .= ", partnername as name";
+				$group_query = "partner";
+				break;
+			case 2:
+				$select_query = "county as div_id, countyname as name, CountyDHISCode as dhis_code, CountyMFLCode as mfl_code";
+				$group_query = "county";
+				break;
+			case 3:
+				$select_query = "subcounty_id as div_id, subcounty as name, SubCountyDHISCode as dhis_code, SubCountyMFLCode as mfl_code";
+				$group_query = "subcounty_id";
+				break;
+			case 4:
+				$select_query = "ward_id as div_id, wardname as name, WardDHISCode as dhis_code, WardMFLCode as mfl_code";
+				$group_query = "ward_id";
+				break;
+			case 5:
+				$select_query = "view_facilitys.id as div_id, name, new_name, DHIScode as dhis_code, facilitycode as mfl_code";
+				$group_query = "view_facilitys.id";
+				break;
+			case 6:
+				$select_query = "funding_agency_id as div_id";
+				if($def) $select_query .= ", funding_agency as name";
+				$group_query = "funding_agency_id";
+				break;
+			case 10:
+				$select_query = "year";
+				$group_query = "year";
+				break;
+			case 11:
+				$select_query = "financial_year";
+				$group_query = "financial_year";
+				break;			
+			default:
+				break;
+		}
+		return ['select_query' => $select_query, 'group_query' => $group_query];
+	}
+
+	public static function groupby_query_indicators()
+	{
+		$groupby = session('filter_groupby', 1);
+
+		switch ($groupby) {
+			case 1:
+				$select_query = "partner as div_id, partners.name";
 				$group_query = "partner";
 				break;
 			case 2:
