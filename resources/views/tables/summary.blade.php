@@ -22,7 +22,6 @@
 					$linked_to_treatment = $get_val($groupby, $row, $linked, 'newtx');
 					$target = $get_val($groupby, $row, $targets, ['tests', 'pos']);
 				?>
-				@continue($tests == 0)
 				<tr>
 					<td> {{ $key+1 }} </td>
 					@component('partials.rows', ['row' => $row])@endcomponent
