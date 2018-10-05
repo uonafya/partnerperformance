@@ -222,10 +222,13 @@ class Lookup
 					foreach ($attribute as $key => $value) {
 						$data[$value] = $match->$value ?? null;
 					}
+					return $data;
 				}
-				$val = $match->$attribute ?? null;
-				if($number_format) return number_format($val);
-				return $val;
+				else{
+					$val = $match->$attribute ?? null;
+					if($number_format) return number_format($val);
+					return $val;					
+				}
 			}
 			return null;
 		};
