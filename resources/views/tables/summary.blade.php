@@ -23,7 +23,7 @@
 					$target = $get_val($groupby, $row, $targets, ['tests', 'pos']);
 				?>
 				<tr>
-					<td> {{ $key+1 }} </td>
+					<td> {{ $i }} </td>
 					@component('partials.rows', ['row' => $row])@endcomponent
 
 					<td> {{ number_format($row->tests) }} </td>

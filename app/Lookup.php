@@ -235,7 +235,7 @@ class Lookup
 		return $data;
 	}
 
-	public static function get_val($groupby, $row, $collection, $attribute, $number_format=false)
+	public static function get_val($row, $collection, $attribute, $number_format=false)
 	{
 		$groupby = session('filter_groupby', 1);
 		if($groupby > 9){
@@ -253,10 +253,13 @@ class Lookup
 				foreach ($attribute as $key => $value) {
 					$data[$value] = $match->$value ?? null;
 				}
+				return $data;
 			}
-			$val = $match->$attribute ?? null;
-			if($number_format) return number_format($val);
-			return $val;
+			else{
+				$val = $match->$attribute ?? null;
+				if($number_format) return number_format($val);
+				return $val;				
+			}
 		}
 		return null;		
 	}
@@ -313,7 +316,7 @@ class Lookup
 		// return $query;
 	}
 
-	public static function apidb_date_query($for_target=false)
+	public static function apidb_date_query_old($for_target=false)
 	{
 		if(session('financial') || $for_target){
 			$financial_year = session('filter_financial_year');
@@ -351,6 +354,40 @@ class Lookup
 				$query = self::date_range_query($year, $to_year, $month, $to_month);
 			}
 		}
+		return $query;
+	}
+
+	public static function apidb_date_query($for_target=false)
+	{
+		$financial_year = session('filter_financial_year');
+		$quarter = session('filter_quarter');
+
+		$year = session('filter_year');
+		$month = session('filter_month');
+		$to_year = session('to_year');
+		$to_month = session('to_month');
+
+		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month);
+
+		$prev_year = $financial_year-1;
+
+		if($quarter){
+			$month = self::min_per_quarter($quarter);
+			$to_month = self::max_per_quarter($quarter);
+			if($quarter == 1) $query = self::date_range_query($prev_year, $prev_year, $month, $to_month);				
+			else{
+				$query = self::date_range_query($financial_year, $financial_year, $month, $to_month);
+			}
+		}
+		else if($month){
+			if($month > 9) $query = "year={$prev_year} ";
+			if($month < 10) $query = "year={$financial_year} ";
+			$query .= " and month={$month} ";
+		}
+		else{
+			$query = self::date_range_query($prev_year, $financial_year, 10, 9);
+		}
+
 		return $query;
 	}
 

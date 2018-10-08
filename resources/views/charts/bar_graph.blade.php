@@ -1,5 +1,7 @@
 <div id="{{$div}}"></div>
 
+{!! $paragraph ?? '' !!}
+
 <script type="text/javascript">
 	
     $(function () {
