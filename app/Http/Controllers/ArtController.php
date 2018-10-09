@@ -139,7 +139,7 @@ class ArtController extends Controller
 		$old_column_cu = "total_currently_on_art";
 		$new_column_cu = "on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038";
 
-		foreach ($dates as $key => $row) {
+		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 
 			$data["outcomes"][0]["data"][$key] = (int) Lookup::get_val($row, $start_art_old, 'total');
