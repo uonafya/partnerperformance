@@ -17,9 +17,9 @@
 				<tr>
 					<td> {{ $key+1 }} </td>
 					@component('partials.rows', ['row' => $row])@endcomponent
-					<td> {{ number_format($row->below_1) }} </td>
-					<td> {{ number_format($row->below_15) }} </td>
-					<td> {{ number_format($row->above_15 ) }} </td>
+					<td> {{ number_format($row->below1) }} </td>
+					<td> {{ number_format($row->below15) }} </td>
+					<td> {{ number_format($row->above15 ) }} </td>
 					<td> {{ number_format($row->actual_total) }} </td>			
 					<td> {{ number_format($row->reported_total) }} </td> 
 					<td> {{ number_format($row->reported_total - $row->actual_total) }} </td> 
