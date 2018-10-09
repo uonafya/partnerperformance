@@ -363,7 +363,7 @@ class ArtController extends Controller
 			(SUM(new_below10) + SUM(new_below15_m) + SUM(new_below15_f)) AS below15,
 			(SUM(new_below20_m) + SUM(new_below20_f) + SUM(new_below25_m) + SUM(new_below25_f) + SUM(new_above25_m) + SUM(new_above25_f)) AS above15,
 			SUM(new_total) AS reported_total,
-			(SUM(new_below1) + SUM(new_below10) + SUM(new_below15_m) + SUM(new_below15_f) + SUM(new_below20_m) + SUM(new_below20_f) + SUM(new_below25_m) + SUM(new_below25_f) + SUM(new_above25_m) + SUM(new_above25_f)) AS actual_total,
+			(SUM(new_below1) + SUM(new_below10) + SUM(new_below15_m) + SUM(new_below15_f) + SUM(new_below20_m) + SUM(new_below20_f) + SUM(new_below25_m) + SUM(new_below25_f) + SUM(new_above25_m) + SUM(new_above25_f)) AS actual_total
 		";	
 
 		$data['rows'] = DB::table('m_art')
@@ -390,7 +390,7 @@ class ArtController extends Controller
 			(SUM(current_below10) + SUM(current_below15_m) + SUM(current_below15_f)) AS below15,
 			(SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS above15,
 			SUM(current_total) AS reported_total,
-			(SUM(current_below1) + SUM(current_below10) + SUM(current_below15_m) + SUM(current_below15_f) + SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS actual_total,			
+			(SUM(current_below1) + SUM(current_below10) + SUM(current_below15_m) + SUM(current_below15_f) + SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS actual_total			
 		";	
 
 		$data['rows'] = DB::table('m_art')
