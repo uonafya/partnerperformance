@@ -596,7 +596,7 @@ class Lookup
 		$groupby = session('filter_groupby', 1);
 
 		if($groupby == 12) return ['year', $row->year, 'month', $row->month];
-		else if($groupby == 13) return ['year', $row->year, 'month', $row->month];
+		else if($groupby == 13) return ['financial_year', $row->financial_year, 'quarter', $row->quarter];
 		else{
 			$d = [];
 			$q = self::groupby_query();
