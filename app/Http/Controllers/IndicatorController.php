@@ -228,11 +228,11 @@ class IndicatorController extends Controller
 			->get();
 
 		$date_query = Lookup::date_query(true);
-		$target = DB::table('t_hiv_and_tb_treatment')
+		$target_obj = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `total`")
 			->when(true, $this->target_callback())
-			->first();
+			->get();
 
 		$groupby = session('filter_groupby', 1);
 		// $divisor = Lookup::get_target_divisor();
@@ -314,11 +314,11 @@ class IndicatorController extends Controller
 			->get();
 
 		$date_query = Lookup::date_query(true);
-		$target = DB::table('t_hiv_and_tb_treatment')
+		$target_obj = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `total`")
 			->when(true, $this->target_callback())
-			->first();
+			->get();
 
 		$groupby = session('filter_groupby', 1);
 		$divisor = Lookup::get_target_divisor();

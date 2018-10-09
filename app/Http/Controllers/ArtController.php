@@ -160,4 +160,252 @@ class ArtController extends Controller
 		}
 		return view('charts.bar_graph', $data);
 	}
+
+	public function current_age_breakdown()
+	{
+		$date_query = Lookup::date_query();
+		$groupby = session('filter_groupby', 1);
+
+		if($groupby != 12) $date_query = Lookup::year_month_query();
+
+		$sql = "
+			SUM(current_below1) AS below1,
+			(SUM(current_below10) + SUM(current_below15_m) + SUM(current_below15_f)) AS below15,
+			(SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS above15
+		";	
+
+		$rows = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('above15'))
+			->whereRaw($date_query)
+			->get();
+
+		$rows3 = DB::table('d_regimen_totals')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
+			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
+			->when(true, $this->get_callback())
+			->whereRaw($date_query)
+			->get();
+
+		$date_query = Lookup::date_query(true);
+		$target_obj = DB::table('t_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `total`")
+			->when(true, $this->target_callback())
+			->get();
+
+		$groupby = session('filter_groupby', 1);
+		// $divisor = Lookup::get_target_divisor();
+		$divisor = 1;
+
+		if($groupby > 9){
+			$t = $target_obj->first()->total;
+			$target = round(($t / $divisor), 2);
+		}
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Below 1";
+		$data['outcomes'][1]['name'] = "Below 15";
+		$data['outcomes'][2]['name'] = "Above 15";
+		$data['outcomes'][3]['name'] = "MOH 729 Current tx Total";
+		$data['outcomes'][4]['name'] = "Target";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "column";
+		$data['outcomes'][4]['type'] = "spline";
+
+		$data['outcomes'][0]['stack'] = 'current_art';
+		$data['outcomes'][1]['stack'] = 'current_art';
+		$data['outcomes'][2]['stack'] = 'current_art';
+		$data['outcomes'][3]['stack'] = 'moh_729';
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->below1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->above15;
+
+			$data["outcomes"][3]["data"][$key]  = (int) Lookup::get_val($row, $rows3, 'total');
+
+			if(isset($target)) $data["outcomes"][4]["data"][$key] = $target;
+			else{				
+				$t = $target_obj->where('div_id', $row->div_id)->first()->total ?? 0;
+				$data["outcomes"][4]["data"][$key] = round(($t / $divisor), 2);
+			}
+		}
+		return view('charts.bar_graph', $data);
+	}
+
+	public function new_age_breakdown()
+	{
+		$date_query = Lookup::date_query();
+
+		$sql = "
+			SUM(new_below1) AS below1,
+			(SUM(new_below10) + SUM(new_below15_m) + SUM(new_below15_f)) AS below15,
+			(SUM(new_below20_m) + SUM(new_below20_f) + SUM(new_below25_m) + SUM(new_below25_f) + SUM(new_above25_m) + SUM(new_above25_f)) AS above15
+		";	
+
+		$rows = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('above15'))
+			->whereRaw($date_query)
+			->get();
+
+		$rows3 = DB::table('m_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->selectRaw("SUM(positive_total) AS total ")
+			->when(true, $this->get_callback())
+			->whereRaw($date_query)
+			->get();
+
+		$date_query = Lookup::date_query(true);
+		$target_obj = DB::table('t_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `total`")
+			->when(true, $this->target_callback())
+			->get();
+
+		$groupby = session('filter_groupby', 1);
+		$divisor = Lookup::get_target_divisor();
+
+		if($groupby > 9){
+			$t = $target_obj->first()->total;
+			$target = round(($t / $divisor), 2);
+		}
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Below 1";
+		$data['outcomes'][1]['name'] = "Below 15";
+		$data['outcomes'][2]['name'] = "Above 15";
+		$data['outcomes'][3]['name'] = "Positive Tests";
+		$data['outcomes'][4]['name'] = "Target";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "column";
+		$data['outcomes'][4]['type'] = "spline";
+
+		$data['outcomes'][0]['stack'] = 'new_art';
+		$data['outcomes'][1]['stack'] = 'new_art';
+		$data['outcomes'][2]['stack'] = 'new_art';
+		$data['outcomes'][3]['stack'] = 'positives';
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->below1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->above15;
+
+			$data["outcomes"][3]["data"][$key]  = (int) Lookup::get_val($row, $rows3, 'total');
+
+			if(isset($target)) $data["outcomes"][4]["data"][$key] = $target;
+			else{				
+				$t = $target_obj->where('div_id', $row->div_id)->first()->total ?? 0;
+				$data["outcomes"][4]["data"][$key] = round(($t / $divisor), 2);
+			}
+		}
+		return view('charts.bar_graph', $data);
+	}
+
+	public function enrolled_age_breakdown()
+	{
+		$date_query = Lookup::date_query();
+
+		$sql = "
+			SUM(enrolled_below1) AS below1,
+			(SUM(enrolled_below10) + SUM(enrolled_below15_m) + SUM(enrolled_below15_f)) AS below15,
+			(SUM(enrolled_below20_m) + SUM(enrolled_below20_f) + SUM(enrolled_below25_m) + SUM(enrolled_below25_f) + SUM(enrolled_above25_m) + SUM(enrolled_above25_f)) AS above15
+		";	
+
+		$rows = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('above15'))
+			->whereRaw($date_query)
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Below 1";
+		$data['outcomes'][1]['name'] = "Below 15";
+		$data['outcomes'][2]['name'] = "Above 15";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->below1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->above15;
+		}
+		return view('charts.bar_graph', $data);
+	}
+
+	public function new_art()
+	{
+		$date_query = Lookup::date_query();
+		$data = Lookup::table_data();
+
+		$sql = "
+			SUM(new_below1) AS below1,
+			(SUM(new_below10) + SUM(new_below15_m) + SUM(new_below15_f)) AS below15,
+			(SUM(new_below20_m) + SUM(new_below20_f) + SUM(new_below25_m) + SUM(new_below25_f) + SUM(new_above25_m) + SUM(new_above25_f)) AS above15,
+			SUM(new_total) AS reported_total,
+			(SUM(new_below1) + SUM(new_below10) + SUM(new_below15_m) + SUM(new_below15_f) + SUM(new_below20_m) + SUM(new_below20_f) + SUM(new_below25_m) + SUM(new_below25_f) + SUM(new_above25_m) + SUM(new_above25_f)) AS actual_total,
+		";	
+
+		$data['rows'] = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('above15'))
+			->whereRaw($date_query)
+			->get();
+
+		return view('tables.art_totals', $data);
+	}
+
+
+	public function current_art()
+	{
+		$data = Lookup::table_data();
+		$date_query = Lookup::date_query();
+		$groupby = session('filter_groupby', 1);
+
+		if($groupby != 12) $date_query = Lookup::year_month_query();
+
+		$sql = "
+			SUM(current_below1) AS below1,
+			(SUM(current_below10) + SUM(current_below15_m) + SUM(current_below15_f)) AS below15,
+			(SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS above15,
+			SUM(current_total) AS reported_total,
+			(SUM(current_below1) + SUM(current_below10) + SUM(current_below15_m) + SUM(current_below15_f) + SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS actual_total,			
+		";	
+
+		$data['rows'] = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('above15'))
+			->whereRaw($date_query)
+			->get();
+		$data['period_name'] = Lookup::year_month_name();
+
+
+		return view('tables.art_totals', $data);
+	}
+
+
+
+
 }
