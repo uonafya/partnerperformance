@@ -68,3 +68,31 @@ BEGIN
     
 END //
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS `proc_get_double_reporting`;
+DELIMITER //
+CREATE PROCEDURE `proc_get_double_reporting`
+(IN old_table VARCHAR(100), new_table VARCHAR(100), old_column VARCHAR(100), new_column VARCHAR(100), divisions_query VARCHAR(150), date_query VARCHAR(150),
+first_col VARCHAR(100), first_val INT(11), second_col VARCHAR(100), second_val INT(11))
+BEGIN
+
+  SET @QUERY = CONCAT("SELECT COUNT(`facility`) AS `total` FROM ", old_table, " d JOIN view_facilitys f ON d.facility=f.id ");
+  SET @QUERY = CONCAT(@QUERY, "WHERE ", date_query, " AND `facility` IN ");
+  SET @QUERY = CONCAT(@QUERY, "(SELECT DISTINCT `facility` FROM ", new_table, " dd JOIN view_facilitys ff ON dd.facility=ff.id
+    WHERE ", date_query, " AND ", divisions_query, " AND ", new_column, " > 0   ");
+
+  SET @QUERY = CONCAT(@QUERY, " AND ", first_col, " = ", first_val, " ");
+
+  IF (second_col != 0 && second_col != '') THEN
+    SET @QUERY = CONCAT(@QUERY, " AND ", second_col, " = ", second_val, " ");
+  END IF;
+
+  SET @QUERY = CONCAT(@QUERY, " ) ");
+
+  SET @QUERY = CONCAT(@QUERY, " AND ", old_column, " > 0 ");
+
+    PREPARE stmt FROM @QUERY;
+    EXECUTE stmt;
+    
+END //
+DELIMITER ;

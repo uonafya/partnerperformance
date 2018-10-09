@@ -362,31 +362,25 @@ class OtzController extends Controller
 
 	public function dsd_impact()
 	{
-		return $this->impacts('is_dsd', 'combined.dsd_coverage');
+		return $this->impacts('is_dsd', 'tables.dsd_coverage');
 	}
 
 	public function mens_impact()
 	{
-		return $this->impacts('is_men_clinic', 'combined.men_clinic_coverage');
+		return $this->impacts('is_men_clinic', 'tables.men_clinic_coverage');
 	}
 
 	public function impacts($col, $return_view)
 	{
-		$divisions_query = Lookup::divisions_query();
-		$date_query = Lookup::date_query(true);
-		$q = Lookup::groupby_query();
-
-		$select_query = $q['select_query'];
+		$data = Lookup::table_data();
 
 		$data['rows'] = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
-			->selectRaw($select_query . ", count(*) as facilities,
+			->selectRaw("count(*) as facilities,
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
 			->where($col, 1)
-			->whereRaw($date_query)
-			->whereRaw($divisions_query)
-			->groupBy($q['group_query'])
+			->when(true, $this->target_callback())
 			->get();
 
 		$date_query = Lookup::year_month_query(6);
@@ -394,48 +388,18 @@ class OtzController extends Controller
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
 
-		$sql = $q['select_query'] . ", 
-		(SUM(`on_art_10-14(m)_hv03-030`) + SUM(`on_art_15-19(m)_hv03-032`) + SUM(`on_art_20-24(m)_hv03-034`) + SUM(`on_art_25pos(m)_hv03-036`)) AS `males`,
-		SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) as total
+		$sql = " 
+		(SUM(`current_below15_m`) + SUM(`current_below20_m`) + SUM(`current_below25_m`) + SUM(`current_above25_m`)) AS `males`,
+		SUM(`current_total`) as total
 		";	
 
-		$data['art'] = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+		$data['art'] = DB::table('d_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
 			->selectRaw($sql)
 			->where($col, 1)
 			->whereRaw($date_query)
-			->whereRaw($divisions_query)
-			->groupBy($q['group_query'])
-			->get();	
-
-		$sql = $q['select_query'] . ", 
-			(SUM(`currently_on_art_-_male_below_15_years`) + SUM(`currently_on_art_-_male_above_15_years`)) AS `males`,
-			SUM(`total_currently_on_art`) AS `total`
-		";	
-
-		$data['others'] = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw($sql)
-			->where($col, 1)
-			->whereRaw($date_query)
-			->whereRaw($divisions_query)
-			->groupBy($q['group_query'])
+			->when(true, $this->get_callback('total'))
 			->get();
-
-		$data['duplicates'] = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw($sql)
-			->where($col, 1)
-			->whereRaw($date_query)
-			->whereRaw("facility IN (
-				SELECT DISTINCT facility
-				FROM d_hiv_and_tb_treatment d JOIN view_facilitys f ON d.facility=f.id
-				WHERE  {$divisions_query} AND {$date_query} AND `on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0
-			)")
-			->groupBy($q['group_query'])
-			->get();
-
-		$data['div'] = str_random(15);
 
 		return view($return_view, $data);
 	}

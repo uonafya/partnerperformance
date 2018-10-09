@@ -576,11 +576,37 @@ class Lookup
 			case 11:
 				$select_query = "financial_year";
 				$group_query = "financial_year";
+				break;	
+			case 12:
+				$select_query = "year, month";
+				$group_query = "year, month";
+				break;	
+			case 13:
+				$select_query = "financial_year, quarter";
+				$group_query = "financial_year, quarter";
 				break;			
 			default:
 				break;
 		}
 		return ['select_query' => $select_query, 'group_query' => $group_query];
+	}
+
+	public static function duplicate_parameters($row)
+	{
+		$groupby = session('filter_groupby', 1);
+
+		if($groupby == 12) return ['year', $row->year, 'month', $row->month];
+		else if($groupby == 13) return ['year', $row->year, 'month', $row->month];
+		else{
+			$d = [];
+			$q = self::groupby_query();
+			if($groupby < 10) $d = [$q['group_query'], $row->div_id];
+			else{
+				$col = $q['group_query'];
+				$d = [$col, $row->$col];
+			}
+			return array_merge($d, ['', '']);
+		}
 	}
 
 	public static function groupby_query_indicators()

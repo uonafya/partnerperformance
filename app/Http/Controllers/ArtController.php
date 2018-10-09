@@ -1,0 +1,163 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use DB;
+use App\Lookup;
+
+class ArtController extends Controller
+{
+
+	public function treatement()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();	
+
+		$newtx = DB::table('d_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+			->selectRaw(" SUM(`new_total`) AS `new_art` ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$date_query = Lookup::year_month_query(1);	
+		$data['recent_name'] = Lookup::year_month_name();	
+
+		$cutx = DB::table('d_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+			->selectRaw(" SUM(`current_total`) AS `current_art` ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$date_query = Lookup::year_month_query(2);	
+		$data['current_name'] = Lookup::year_month_name();	
+
+		$cutx_old = DB::table('d_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+			->selectRaw(" SUM(`current_total`) AS `current_art` ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$date_query = Lookup::date_query(true);
+		$target = DB::table('t_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`, 
+							SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['target'] = $target;
+
+		$data['div'] = str_random(15);
+
+		$data['current_art_recent'] = $cutx->current_art;
+		$data['current_art'] = $cutx_old->current_art;
+		$data['new_art'] = $newtx->new_art;
+
+		$data['current_completion_recent'] = Lookup::get_percentage($data['current_art_recent'], $target->current);
+		$data['current_completion'] = Lookup::get_percentage($data['current_art'], $target->current);
+		$data['new_completion'] = Lookup::get_percentage($data['new_art'], $target->new_art);
+
+		$data['current_status_recent'] = Lookup::progress_status($data['current_completion_recent']);
+		$data['current_status'] = Lookup::progress_status($data['current_completion']);
+		$data['new_status'] = Lookup::progress_status($data['new_completion']);
+
+		return view('combined.treatment', $data);
+	}
+
+	public function reporting()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$rows = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw("COUNT(facility) as total")
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$start_art_new = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw("COUNT(facility) as total")
+			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$start_art_old = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw("COUNT(facility) as total")
+			->whereRaw("`total_starting_on_art` > 0")
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$current_art_new = DB::table('d_hiv_and_tb_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->selectRaw("COUNT(facility) as total")
+			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$current_art_old = DB::table('d_care_and_treatment')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->selectRaw("COUNT(facility) as total")
+			->whereRaw("`total_currently_on_art` > 0")
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "New tx old form";
+		$data['outcomes'][1]['name'] = "New tx new form";
+		$data['outcomes'][2]['name'] = "Current tx old form";
+		$data['outcomes'][3]['name'] = "Current tx new form";
+
+		$data['outcomes'][4]['name'] = "Reporting New tx twice";
+		$data['outcomes'][5]['name'] = "Reporting Current tx twice";
+
+		$data['outcomes'][0]['type'] = "spline";
+		$data['outcomes'][1]['type'] = "spline";
+		$data['outcomes'][2]['type'] = "spline";
+		$data['outcomes'][3]['type'] = "spline";
+		$data['outcomes'][4]['type'] = "spline";
+		$data['outcomes'][5]['type'] = "spline";
+
+		$old_table = "d_care_and_treatment";
+		$new_table = "d_hiv_and_tb_treatment";
+
+		$old_column = "total_starting_on_art";
+		$new_column = "start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026";
+
+		$old_column_cu = "total_currently_on_art";
+		$new_column_cu = "on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038";
+
+		foreach ($dates as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) Lookup::get_val($row, $start_art_old, 'total');
+			$data["outcomes"][1]["data"][$key] = (int) Lookup::get_val($row, $start_art_new, 'total');
+			$data["outcomes"][2]["data"][$key] = (int) Lookup::get_val($row, $current_art_old, 'total');
+			$data["outcomes"][3]["data"][$key] = (int) Lookup::get_val($row, $current_art_new, 'total');
+
+			$params = Lookup::duplicate_parameters($row);
+
+			$duplicate_new = DB::select(
+				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', '{$divisions_query}', {$date_query}, '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
+
+			$duplicate_cu = DB::select(
+				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column_cu}', '{$new_column_cu}', '{$divisions_query}', {$date_query}, '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
+
+			$data["outcomes"][4]["data"][$key] = (int) ($duplicate_new[0]->total ?? 0);
+			$data["outcomes"][5]["data"][$key] = (int) ($duplicate_cu[0]->total ?? 0);
+		}
+		return view('charts.bar_graph', $data);
+	}
+}

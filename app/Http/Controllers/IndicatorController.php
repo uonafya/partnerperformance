@@ -268,12 +268,12 @@ class IndicatorController extends Controller
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			$data["outcomes"][0]["data"][$key] = $row->below1;
-			$data["outcomes"][1]["data"][$key] = $row->below15;
-			$data["outcomes"][2]["data"][$key] = $row->above15;
+			$data["outcomes"][0]["data"][$key] = (int) $row->below1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->above15;
 
-			$data["outcomes"][3]["data"][$key]  = Lookup::get_val($row, $rows3, 'total');
-			$data["outcomes"][4]["data"][$key]  = Lookup::get_val($row, $early_rows, 'total');
+			$data["outcomes"][3]["data"][$key]  = (int) Lookup::get_val($row, $rows3, 'total');
+			$data["outcomes"][4]["data"][$key]  = (int) Lookup::get_val($row, $early_rows, 'total');
 
 			if(isset($target)) $data["outcomes"][5]["data"][$key] = $target;
 			else{				
@@ -353,12 +353,12 @@ class IndicatorController extends Controller
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			$data["outcomes"][0]["data"][$key] = $row->below1;
-			$data["outcomes"][1]["data"][$key] = $row->below15;
-			$data["outcomes"][2]["data"][$key] = $row->above15;
+			$data["outcomes"][0]["data"][$key] = (int) $row->below1;
+			$data["outcomes"][1]["data"][$key] = (int) $row->below15;
+			$data["outcomes"][2]["data"][$key] = (int) $row->above15;
 
-			$data["outcomes"][3]["data"][$key]  = Lookup::get_val($row, $rows3, 'total');
-			$data["outcomes"][4]["data"][$key]  = Lookup::get_val($row, $early_rows, 'total');
+			$data["outcomes"][3]["data"][$key] = (int) Lookup::get_val($row, $rows3, 'total');
+			$data["outcomes"][4]["data"][$key] = (int) Lookup::get_val($row, $early_rows, 'total');
 
 			if(isset($target)) $data["outcomes"][5]["data"][$key] = $target;
 			else{				
@@ -390,7 +390,7 @@ class IndicatorController extends Controller
 			->whereRaw($date_query)
 			->get();
 
-		$data['current_tx_date'] =  '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';
+		$data['current_tx_date'] =  Lookup::year_month_name();
 		return view('tables.indicators_summary', $data);
 	}
 
