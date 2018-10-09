@@ -157,8 +157,6 @@ class ArtController extends Controller
 			$duplicate_cu = DB::select(
 				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column_cu}', '`{$new_column_cu}`', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
 
-	 		return DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column_cu}', '`{$new_column_cu}`', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');");
-
 			$data["outcomes"][4]["data"][$key] = (int) ($duplicate_new[0]->total ?? 0);
 			$data["outcomes"][5]["data"][$key] = (int) ($duplicate_cu[0]->total ?? 0);
 		}

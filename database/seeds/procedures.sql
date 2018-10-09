@@ -83,7 +83,7 @@ BEGIN
 
   SET @QUERY = CONCAT(@QUERY, " AND ", first_col, " = ", first_val, " ");
 
-  IF (second_col != 0 && second_col != '') THEN
+  IF (second_col != '') THEN
     SET @QUERY = CONCAT(@QUERY, " AND ", second_col, " = ", second_val, " ");
   END IF;
 
