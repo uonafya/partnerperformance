@@ -197,7 +197,7 @@ class PmtctController extends Controller
 		$api_rows = DB::table("apidb.site_summary")
 			->join('hcm.view_facilitys', 'view_facilitys.id', '=', 'site_summary.facility')
 			->selectRaw("SUM(`infantsless2m`) as `l2m`, SUM(`infantsabove2m`) as `g2m` ")
-			->when(true, $this->get_callback('initial_pcr_2m'))
+			->when(true, $this->get_callback('l2m'))
 			->whereRaw($date_query)
 			->get();
 
