@@ -52,7 +52,7 @@
 		</select>		
 	</div>	
 
-	<div class="col-md-2">
+	<div class="col-md-3">
 		<select class="btn filters form-control" id="filter_agency">
 			<option disabled='true' selected='true'>Select Funding Agency</option>
 			<option value='null' selected='true'>All Funding Agencies</option>
@@ -73,7 +73,7 @@
 		</select>		
 	</div>	
 
-	<div class="col-md-5">
+	<div class="col-md-4">
 		<center>
 			<a href="javascript:void(0)" onclick="date_filter('financial_year', 2018, '{{ $date_url }}')" class="alert-link"> FY 2018 </a>|
 			<a href="javascript:void(0)" onclick="date_filter('financial_year', 2019, '{{ $date_url }}')" class="alert-link"> FY 2019 </a>|
