@@ -9,7 +9,7 @@ use App\Lookup;
 class ArtController extends Controller
 {
 
-	public function treatement()
+	public function treatment()
 	{
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();	
