@@ -14,8 +14,8 @@ class ArtController extends Controller
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();	
 
-		$newtx = DB::table('d_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+		$newtx = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw(" SUM(`new_total`) AS `new_art` ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -24,8 +24,8 @@ class ArtController extends Controller
 		$date_query = Lookup::year_month_query(1);	
 		$data['recent_name'] = Lookup::year_month_name();	
 
-		$cutx = DB::table('d_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+		$cutx = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw(" SUM(`current_total`) AS `current_art` ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -34,8 +34,8 @@ class ArtController extends Controller
 		$date_query = Lookup::year_month_query(2);	
 		$data['current_name'] = Lookup::year_month_name();	
 
-		$cutx_old = DB::table('d_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+		$cutx_old = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw(" SUM(`current_total`) AS `current_art` ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
