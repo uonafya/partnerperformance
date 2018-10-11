@@ -220,8 +220,8 @@ class TestingController extends Controller
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
 
-		$row = DB::table('d_hiv_counselling_and_testing')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+		$row = DB::table('m_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(positive_below_10) as below_10,
 					(SUM(positive_below_15_m) + SUM(positive_below_20_m) + SUM(positive_below_25_m) + SUM(positive_above_25_m)) AS male_pos,
 					(SUM(positive_below_15_f) + SUM(positive_below_20_f) + SUM(positive_below_25_f) + SUM(positive_above_25_f)) AS female_pos
