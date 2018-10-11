@@ -147,9 +147,7 @@ class ArtController extends Controller
 			$data["outcomes"][2]["data"][$key] = (int) Lookup::get_val($row, $current_art_old, 'total');
 			$data["outcomes"][3]["data"][$key] = (int) Lookup::get_val($row, $current_art_new, 'total');
 
-			$params = Lookup::duplicate_parameters($row);
-
-			
+			$params = Lookup::duplicate_parameters($row);			
 
 			$duplicate_new = DB::select(
 				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column}', '`{$new_column}`', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
