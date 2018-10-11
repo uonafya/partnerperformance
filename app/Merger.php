@@ -181,6 +181,7 @@ class Merger
         $data['total_positive_pmtct'] = self::merged_value($row->{'total_positive_(add_hv02-10_-_hv02-14)_hv02-15'}, $old_row->{'total_positive_(pmtct)'});
 
         $data['total_new_positive_pmtct'] = $data['total_positive_pmtct'] - $data['known_pos_anc'];
+        if($data['total_new_positive_pmtct'] < 0) $data['total_new_positive_pmtct'] = $data['total_positive_pmtct'];
 
         $data['haart_total'] = self::merged_value($row->{'on_maternal_haart_total_hv02-20'}, $old_row->{'haart_(art)'});
 
