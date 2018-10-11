@@ -304,13 +304,6 @@ class IndicatorController extends Controller
 			->whereRaw($date_query)
 			->get();
 
-		$rows3 = DB::table('d_regimen_totals')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
-			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
-			->when(true, $this->get_callback())
-			->whereRaw($date_query)
-			->get();
-
 		$early_rows = DB::table('p_early_indicators_view')
 			->selectRaw("SUM(new_art) as total ")
 			->when(true, $this->get_callback())
@@ -337,22 +330,19 @@ class IndicatorController extends Controller
 		$data['outcomes'][0]['name'] = "Below 1";
 		$data['outcomes'][1]['name'] = "Below 15";
 		$data['outcomes'][2]['name'] = "Above 15";
-		$data['outcomes'][3]['name'] = "MOH 729 Current tx Total";
-		$data['outcomes'][4]['name'] = "Partner Reported";
-		$data['outcomes'][5]['name'] = "Target";
+		$data['outcomes'][3]['name'] = "Partner Reported";
+		$data['outcomes'][4]['name'] = "Target";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "column";
-		$data['outcomes'][4]['type'] = "column";
-		$data['outcomes'][5]['type'] = "spline";
+		$data['outcomes'][4]['type'] = "spline";
 
 		$data['outcomes'][0]['stack'] = 'new_art';
 		$data['outcomes'][1]['stack'] = 'new_art';
 		$data['outcomes'][2]['stack'] = 'new_art';
-		$data['outcomes'][3]['stack'] = 'moh_729';
-		$data['outcomes'][4]['stack'] = 'partner_reported';
+		$data['outcomes'][3]['stack'] = 'partner_reported';
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -361,13 +351,12 @@ class IndicatorController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->below15;
 			$data["outcomes"][2]["data"][$key] = (int) $row->above15;
 
-			$data["outcomes"][3]["data"][$key] = (int) Lookup::get_val($row, $rows3, 'total');
-			$data["outcomes"][4]["data"][$key] = (int) Lookup::get_val($row, $early_rows, 'total');
+			$data["outcomes"][3]["data"][$key] = (int) Lookup::get_val($row, $early_rows, 'total');
 
-			if(isset($target)) $data["outcomes"][5]["data"][$key] = $target;
+			if(isset($target)) $data["outcomes"][4]["data"][$key] = $target;
 			else{				
 				$t = $target_obj->where('div_id', $row->div_id)->first()->total ?? 0;
-				$data["outcomes"][5]["data"][$key] = round(($t / $divisor), 2);
+				$data["outcomes"][4]["data"][$key] = round(($t / $divisor), 2);
 			}
 		}
 		return view('charts.bar_graph', $data);
