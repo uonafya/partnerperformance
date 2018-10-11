@@ -150,14 +150,12 @@ class IndicatorController extends Controller
 			->when(true, $this->target_callback())
 			->get();
 
-		dd($target_obj);
-
 		$groupby = session('filter_groupby', 1);
 		$divisor = Lookup::get_target_divisor();
 
 		if($groupby > 9){
-			$t_tests = $target_obj->first()->tests;
-			$t_pos = $target_obj->first()->pos;
+			$t_tests = $target_obj->first()->tests ?? 0;
+			$t_pos = $target_obj->first()->pos ?? 0;
 			// $target = round(($t / $divisor), 2);
 			$target = Lookup::get_percentage($t_pos, $t_tests);
 		}
@@ -189,8 +187,10 @@ class IndicatorController extends Controller
 			if(isset($target)) $data["outcomes"][4]["data"][$key] = $target;
 			else{				
 				$obj = $target_obj->where('div_id', $row->div_id)->first();
-				$target_tests = round(($obj->tests / $divisor), 2);
-				$target_pos = round(($obj->pos / $divisor), 2);
+				// $target_tests = round(($obj->tests / $divisor), 2);
+				// $target_pos = round(($obj->pos / $divisor), 2);
+				$target_tests = $obj->tests ?? 0;
+				$target_pos = $obj->pos ?? 0;
 				$data["outcomes"][4]["data"][$key] = Lookup::get_percentage($obj->pos, $obj->tests);
 			}
 		}
