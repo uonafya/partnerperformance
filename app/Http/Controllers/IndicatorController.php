@@ -194,7 +194,8 @@ class IndicatorController extends Controller
 				$target_pos = $obj->pos ?? 0;
 				$data["outcomes"][4]["data"][$key] = Lookup::get_percentage($target_pos, $target_tests);
 			}
-		}
+		}		
+		return view('charts.bar_graph', $data);
 	}	
 
 	public function currenttx()
