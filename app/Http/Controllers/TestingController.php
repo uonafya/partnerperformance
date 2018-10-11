@@ -267,7 +267,7 @@ class TestingController extends Controller
 				(SUM(positive_below15_m) + SUM(positive_below15_f)) as below_15,
 				(SUM(positive_below20_m) + SUM(positive_below20_f)) as below_20,
 				(SUM(positive_below25_m) + SUM(positive_below25_f)) as below_25,
-				(SUM(positive_above25_m) + SUM(positive_above25_f)) as above_25,
+				(SUM(positive_above25_m) + SUM(positive_above25_f)) as above_25
 			 ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
