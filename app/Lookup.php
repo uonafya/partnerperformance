@@ -285,7 +285,7 @@ class Lookup
 
 		$query = " financial_year='{$financial_year}'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
-		if($month) $query .= " AND quarter='{$quarter}'";
+		if($month) $query .= " AND month='{$month}'";
 
 		return $query;
 
