@@ -113,8 +113,8 @@
 
 		$("#testing_outcomes").load("{{ url('testing/testing_outcomes') }}");
 		$("#positivity").load("{{ url('testing/positivity') }}");
-		$("#gender").load("{{ url('chart/testing_gender') }}");
-		$("#age").load("{{ url('chart/testing_age') }}");
+		$("#gender").load("{{ url('testing/testing_gender') }}");
+		$("#age").load("{{ url('testing/testing_age') }}");
 		$("#summary").load("{{ url('testing/summary') }}");
 		$("#testing_summary").load("{{ url('testing/testing_summary') }}");
 	}
