@@ -130,14 +130,14 @@ class ArtController extends Controller
 		$data['outcomes'][4]['type'] = "spline";
 		$data['outcomes'][5]['type'] = "spline";
 
-		$old_table = "d_care_and_treatment";
-		$new_table = "d_hiv_and_tb_treatment";
+		$old_table = "`d_care_and_treatment`";
+		$new_table = "`d_hiv_and_tb_treatment`";
 
-		$old_column = "total_starting_on_art";
-		$new_column = "start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026";
+		$old_column = "`total_starting_on_art";
+		$new_column = "`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`";
 
-		$old_column_cu = "total_currently_on_art";
-		$new_column_cu = "on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038";
+		$old_column_cu = "`total_currently_on_art`";
+		$new_column_cu = "`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`";
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -150,10 +150,10 @@ class ArtController extends Controller
 			$params = Lookup::duplicate_parameters($row);			
 
 			$duplicate_new = DB::select(
-				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column}', '`{$new_column}`', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
+				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
 
 			$duplicate_cu = DB::select(
-				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column_cu}', '`{$new_column_cu}`', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
+				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column_cu}', '{$new_column_cu}', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
 
 			$data["outcomes"][4]["data"][$key] = (int) ($duplicate_new[0]->total ?? 0);
 			$data["outcomes"][5]["data"][$key] = (int) ($duplicate_cu[0]->total ?? 0);
