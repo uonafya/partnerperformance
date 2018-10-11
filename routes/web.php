@@ -95,6 +95,8 @@ Route::prefix('testing')->name('testing.')->group(function(){
 	Route::get('testing_outcomes', 'TestingController@testing_outcomes')->name('testing_outcomes');
 	Route::get('testing_age', 'TestingController@testing_age')->name('testing_age');
 	Route::get('testing_gender', 'TestingController@testing_gender')->name('testing_gender');
+	Route::get('pos_age', 'TestingController@pos_age')->name('pos_age');
+	Route::get('pos_gender', 'TestingController@pos_gender')->name('pos_gender');
 	Route::get('positivity', 'TestingController@positivity')->name('positivity');
 	Route::get('testing_summary', 'TestingController@testing_summary')->name('testing_summary');
 	Route::get('summary', 'TestingController@summary')->name('summary');

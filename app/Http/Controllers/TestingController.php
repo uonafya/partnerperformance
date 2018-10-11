@@ -215,6 +215,98 @@ class TestingController extends Controller
 		return view('charts.line_graph', $data);
 	}
 
+	public function pos_gender()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$row = DB::table('d_hiv_counselling_and_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->selectRaw("SUM(below_10) as below_10,
+					(SUM(below_15_m) + SUM(below_20_m) + SUM(below_25_m) + SUM(above_25_m)) AS male_pos,
+					(SUM(below_15_f) + SUM(below_20_f) + SUM(below_25_f) + SUM(above_25_f)) AS female_pos
+				")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['paragraph'] = "
+		<table class='table table-striped'>
+			<tr> <td>Below 10 (Not disaggregated) : </td> <td>" . number_format($row->below_10) . "</td> </tr>
+			<tr> <td>Male : </td> <td>" . number_format($row->male_pos) . "</td> </tr>
+			<tr> <td>Female : </td> <td>" . number_format($row->female_pos) . "</td> </tr>
+			<tr>
+				<td>Total : </td> <td>" . number_format($row->male_pos + $row->female_pos) . "</td>
+			</tr>
+		</table>			
+		";
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes']['name'] = "Tests";
+		$data['outcomes']['colorByPoint'] = true;
+
+
+		$data['outcomes']['data'][0]['name'] = "Male";
+		$data['outcomes']['data'][1]['name'] = "Female";
+
+		$data['outcomes']['data'][0]['y'] = (int) $row->male_pos;
+		$data['outcomes']['data'][1]['y'] = (int) $row->female_pos;
+
+		return view('charts.pie_chart', $data);
+	}
+
+	public function pos_age()
+	{
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+
+		$row = DB::table('m_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->selectRaw("SUM(below_10) as below_10,
+				(SUM(below_15_m) + SUM(below_15_f)) as below_15,
+				(SUM(below_20_m) + SUM(below_20_f)) as below_20,
+				(SUM(below_25_m) + SUM(below_25_f)) as below_25,
+				(SUM(above_25_m) + SUM(above_25_f)) as above_25,
+			 ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->first();
+
+		$data['paragraph'] = "
+		<table class='table table-striped'>
+			<tr> <td>&lt; 10 : </td> <td>" . number_format($row->below_10) . "</td> </tr>
+			<tr> <td>&lt; 15 : </td> <td>" . number_format($row->below_15) . "</td> </tr>
+			<tr> <td>&lt; 20 : </td> <td>" . number_format($row->below_20) . "</td> </tr>
+			<tr> <td>&lt; 25 : </td> <td>" . number_format($row->below_25) . "</td> </tr>
+			<tr> <td>&gt; 25 : </td> <td>" . number_format($row->above_25) . "</td> </tr>
+			<tr>
+				<td>Total : </td> <td>" . number_format($row->below_10 + $row->below_15 + $row->below_20 + $row->below_25 + $row->above_25) . "</td>
+			</tr>
+		</table>			
+		";
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes']['name'] = "Tests";
+		$data['outcomes']['colorByPoint'] = true;
+
+
+		$data['outcomes']['data'][0]['name'] = "&lt; 10";
+		$data['outcomes']['data'][1]['name'] = "&lt; 15";
+		$data['outcomes']['data'][2]['name'] = "&lt; 20";
+		$data['outcomes']['data'][3]['name'] = "&lt; 25";
+		$data['outcomes']['data'][4]['name'] = "&gt; 25";
+
+		$data['outcomes']['data'][0]['y'] = (int) ($row->below_10);
+		$data['outcomes']['data'][1]['y'] = (int) ($row->below_15);
+		$data['outcomes']['data'][2]['y'] = (int) $row->below_20;
+		$data['outcomes']['data'][3]['y'] = (int) $row->below_25;
+		$data['outcomes']['data'][4]['y'] = (int) $row->above_25;
+
+		return view('charts.pie_chart', $data);
+	}
+
 	public function testing_summary()
 	{
 		$date_query = Lookup::date_query();

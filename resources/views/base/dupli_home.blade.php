@@ -173,8 +173,8 @@
 		$("#currenttx").load("{{ url('art/current_age_breakdown') }}");
 		$("#newtx").load("{{ url('art/new_age_breakdown') }}");
 
-		$("#gender").load("{{ url('old/chart/testing_gender') }}");
-		$("#age").load("{{ url('old/chart/testing_age') }}");
+		$("#gender").load("{{ url('testing/pos_gender') }}");
+		$("#age").load("{{ url('testing/pos_age') }}");
 		$("#pmtct").load("{{ url('pmtct/testing') }}");
 		$("#eid").load("{{ url('pmtct/eid') }}");
 
