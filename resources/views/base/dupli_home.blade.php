@@ -96,7 +96,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    EID <div class="display_date"></div>
+			    EID Initial PCR <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="eid">
 				<center><div class="loader"></div></center>
@@ -175,8 +175,8 @@
 
 		$("#gender").load("{{ url('old/chart/testing_gender') }}");
 		$("#age").load("{{ url('old/chart/testing_age') }}");
-		$("#pmtct").load("{{ url('old/chart/pmtct') }}");
-		$("#eid").load("{{ url('old/chart/eid') }}");
+		$("#pmtct").load("{{ url('pmtct/testing') }}");
+		$("#eid").load("{{ url('pmtct/eid') }}");
 
 		$("#summary").load("{{ url('testing/summary') }}");
 		$("#art_new").load("{{ url('art/new_art') }}");
