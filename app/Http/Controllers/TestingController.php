@@ -222,9 +222,9 @@ class TestingController extends Controller
 
 		$row = DB::table('d_hiv_counselling_and_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
-			->selectRaw("SUM(below_10) as below_10,
-					(SUM(below_15_m) + SUM(below_20_m) + SUM(below_25_m) + SUM(above_25_m)) AS male_pos,
-					(SUM(below_15_f) + SUM(below_20_f) + SUM(below_25_f) + SUM(above_25_f)) AS female_pos
+			->selectRaw("SUM(positive_below_10) as below_10,
+					(SUM(positive_below_15_m) + SUM(positive_below_20_m) + SUM(positive_below_25_m) + SUM(positive_above_25_m)) AS male_pos,
+					(SUM(positive_below_15_f) + SUM(positive_below_20_f) + SUM(positive_below_25_f) + SUM(positive_above_25_f)) AS female_pos
 				")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -263,11 +263,11 @@ class TestingController extends Controller
 
 		$row = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
-			->selectRaw("SUM(below_10) as below_10,
-				(SUM(below_15_m) + SUM(below_15_f)) as below_15,
-				(SUM(below_20_m) + SUM(below_20_f)) as below_20,
-				(SUM(below_25_m) + SUM(below_25_f)) as below_25,
-				(SUM(above_25_m) + SUM(above_25_f)) as above_25,
+			->selectRaw("SUM(positive_below_10) as below_10,
+				(SUM(positive_below_15_m) + SUM(positive_below_15_f)) as below_15,
+				(SUM(positive_below_20_m) + SUM(positive_below_20_f)) as below_20,
+				(SUM(positive_below_25_m) + SUM(positive_below_25_f)) as below_25,
+				(SUM(positive_above_25_m) + SUM(positive_above_25_f)) as above_25,
 			 ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
