@@ -189,9 +189,10 @@ class IndicatorController extends Controller
 				$obj = $target_obj->where('div_id', $row->div_id)->first();
 				// $target_tests = round(($obj->tests / $divisor), 2);
 				// $target_pos = round(($obj->pos / $divisor), 2);
+				// $data["outcomes"][4]["data"][$key] = Lookup::get_percentage($obj->pos, $obj->tests);
 				$target_tests = $obj->tests ?? 0;
 				$target_pos = $obj->pos ?? 0;
-				$data["outcomes"][4]["data"][$key] = Lookup::get_percentage($obj->pos, $obj->tests);
+				$data["outcomes"][4]["data"][$key] = Lookup::get_percentage($target_pos, $target_tests);
 			}
 		}
 	}	
