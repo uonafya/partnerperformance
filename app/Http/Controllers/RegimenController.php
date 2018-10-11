@@ -11,6 +11,7 @@ class RegimenController extends Controller
 	public function reporting()
 	{
 		$date_query = Lookup::date_query();
+		dd($date_query);
 		$divisions_query = Lookup::divisions_query();
 
 		$current_art_other = DB::table('d_regimen_totals')
