@@ -2,7 +2,7 @@
 	<thead>
 		<tr class="colhead">
 			<th>No</th>
-			@component('partials.columns')@endcomponent
+			@include('partials.columns')
 			<th>Men Clinic Facilities</th>
 			<th>Men Clinic Beneficiaries</th>
 			<th>Current TX Men {{ $current_range }}</th>
@@ -16,7 +16,7 @@
 			?>
 			<tr>
 				<td> {{ $key+1 }} </td>
-				@component('partials.rows', ['row' => $row])@endcomponent
+				@include('partials.rows', ['row' => $row])
 				<td> {{ number_format($row->facilities) }} </td>
 				<td> {{ number_format($row->men_clinic_beneficiaries) }} </td>
 				<td> {{ number_format($tx) }} </td>
@@ -26,4 +26,4 @@
 	</tbody>	
 </table>
 
-@component('partials.table_footer', ['div' => $div])@endcomponent
+@include('partials.table_footer', ['div' => $div])

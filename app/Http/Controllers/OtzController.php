@@ -393,8 +393,8 @@ class OtzController extends Controller
 		SUM(`current_total`) as total
 		";	
 
-		$data['art'] = DB::table('d_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+		$data['art'] = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($sql)
 			->where($col, 1)
 			->whereRaw($date_query)
