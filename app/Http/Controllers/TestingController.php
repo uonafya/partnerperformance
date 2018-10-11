@@ -263,7 +263,7 @@ class TestingController extends Controller
 
 		$row = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
-			->selectRaw("SUM(positive_below_10) as below_10,
+			->selectRaw("SUM(positive_below10) as below_10,
 				(SUM(positive_below15_m) + SUM(positive_below15_f)) as below_15,
 				(SUM(positive_below20_m) + SUM(positive_below20_f)) as below_20,
 				(SUM(positive_below25_m) + SUM(positive_below25_f)) as below_25,
