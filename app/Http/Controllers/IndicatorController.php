@@ -150,6 +150,8 @@ class IndicatorController extends Controller
 			->when(true, $this->target_callback())
 			->get();
 
+		dd($target_obj);
+
 		$groupby = session('filter_groupby', 1);
 		$divisor = Lookup::get_target_divisor();
 

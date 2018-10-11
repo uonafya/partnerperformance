@@ -76,8 +76,17 @@ CREATE PROCEDURE `proc_get_double_reporting`
 first_col VARCHAR(100), first_val INT(11), second_col VARCHAR(100), second_val INT(11))
 BEGIN
 
-  SET @QUERY = CONCAT("SELECT COUNT(`facility`) AS `total` FROM ", old_table, " d JOIN view_facilitys f ON d.facility=f.id ");
-  SET @QUERY = CONCAT(@QUERY, "WHERE ", date_query, " AND `facility` IN ");
+  SET @QUERY = CONCAT("SELECT COUNT(DISTINCT `facility`) AS `total` FROM ", old_table, " d JOIN view_facilitys f ON d.facility=f.id ");
+  SET @QUERY = CONCAT(@QUERY, "WHERE ", date_query, "  ");
+
+  SET @QUERY = CONCAT(@QUERY, " AND ", first_col, " = ", first_val, " ");
+
+  IF (second_col != '') THEN
+    SET @QUERY = CONCAT(@QUERY, " AND ", second_col, " = ", second_val, " ");
+  END IF;
+
+  SET @QUERY = CONCAT(@QUERY, "  AND `facility` IN ");
+
   SET @QUERY = CONCAT(@QUERY, "(SELECT DISTINCT `facility` FROM ", new_table, " dd JOIN view_facilitys ff ON dd.facility=ff.id
     WHERE ", date_query, " AND ", divisions_query, " AND ", new_column, " > 0   ");
 
