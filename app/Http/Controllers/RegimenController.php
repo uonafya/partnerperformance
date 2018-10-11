@@ -81,7 +81,7 @@ class RegimenController extends Controller
 		$date_query = Lookup::year_month_query();
 
 		$data['rows'] = DB::table('d_regimen_totals')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'qu.facility')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
 			->selectRaw("SUM(art) as art, SUM(pmtct) as pmtct")
 			->when(true, $this->get_callback('art'))
 			->whereRaw($date_query)
