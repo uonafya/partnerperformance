@@ -448,7 +448,10 @@ class Lookup
 
 			if(!$quarter){
 				// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
-				if($financial_year <> $cfy) $month = 9 - ($deduction-1);
+				if($financial_year <> $cfy){
+					$month = 9 - ($deduction-1);
+					if($m) $month = $m;
+				}
 				else{
 					$month = date('m') - $deduction;
 					// if(date('d') < 10) $month--;
