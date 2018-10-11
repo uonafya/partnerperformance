@@ -8,7 +8,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach($art_rows as $key => $row)
+		@foreach($rows as $key => $row)
 			<tr>
 				<td> {{ $key+1 }} </td>
 				@include('partials.rows', ['row' => $row])
