@@ -59,7 +59,9 @@ Route::prefix('art')->name('art.')->group(function(){
 });
 
 Route::prefix('vmmc')->name('vmmc.')->group(function(){
+	Route::get('testing', 'CircumcisionController@testing')->name('testing');
 	Route::get('summary', 'CircumcisionController@summary')->name('summary');
+	Route::get('adverse', 'CircumcisionController@adverse')->name('adverse');
 });
 
 Route::prefix('otz')->name('otz.')->group(function(){

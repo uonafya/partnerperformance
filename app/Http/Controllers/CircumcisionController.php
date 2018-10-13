@@ -9,6 +9,44 @@ use App\Lookup;
 class CircumcisionController extends Controller
 {
 
+	public function testing()
+	{
+		$date_query = Lookup::date_query();
+
+		$rows = DB::table('m_circumcision')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_circumcision.facility')
+			->selectRaw("SUM(circumcised_neg) AS neg, SUM(circumcised_pos) as pos, SUM(circumcised_nk) as unknown,
+				(SUM(circumcised_neg) + SUM(circumcised_pos) + SUM(circumcised_nk) as unknown) AS total
+				")
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Positive";
+		$data['outcomes'][1]['name'] = "Negative";
+		$data['outcomes'][2]['name'] = "Unknown Status";
+		$data['outcomes'][3]['name'] = "Positivity";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "spline";
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
+			$data["outcomes"][1]["data"][$key] = (int) $row->neg;
+			$data["outcomes"][2]["data"][$key] = (int) $row->unknown;
+
+			$data["outcomes"][3]["data"][$key] = Lookup::get_percentage($row->pos, $row->total);
+
+		}
+		return view('charts.bar_graph', $data);
+	}
+
 	public function summary()
 	{		
 		$date_query = Lookup::date_query();
@@ -27,5 +65,24 @@ class CircumcisionController extends Controller
 			->get();
 
 		return view('tables.circumcision_summary', $data);
+	}
+
+	public function adverse()
+	{		
+		$date_query = Lookup::date_query();
+		$data = Lookup::table_data();
+
+		$sql = "SUM(ae_during_moderate) AS ae_during_moderate, SUM(ae_during_severe) AS ae_during_severe, 
+			SUM(ae_post_moderate) AS ae_post_moderate, SUM(ae_post_severe) AS ae_post_severe, 
+			(SUM(ae_during_moderate) + SUM(ae_during_severe) + SUM(ae_post_moderate) + SUM(ae_post_severe)) as total";
+
+		$data['rows'] = DB::table('m_circumcision')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_circumcision.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		return view('tables.circumcision_ae', $data);
 	}
 }

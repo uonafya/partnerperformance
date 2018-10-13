@@ -17,10 +17,10 @@
 		</thead>
 		<tbody>
 			@foreach($rows as $key => $row)
+				@continue($row->total == 0)
 				<?php
 					$i++;
 					$sum_total= $row->below1 + $row->below10 + $row->below15 + $row->below20 + $row->below25 + $row->above25;
-					// @continue($row->total == 0)
 				?>
 				<tr>
 					<td> {{ $i }} </td>
