@@ -38,6 +38,11 @@ class CircumcisionController extends Controller
 		$data['outcomes'][1]['yAxis'] = 1;
 		$data['outcomes'][2]['yAxis'] = 1;
 
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
+
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
