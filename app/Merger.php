@@ -234,6 +234,8 @@ class Merger
         $data['ae_during_severe'] = self::merged_value($row->{'ae_during_severe_hv04-14'}, $old_row->{'during_-_ae(s)_severe_adverse_events_(circumcision)'});
         $data['ae_post_moderate'] = self::merged_value($row->{'ae_post_moderate_hv04-15'}, $old_row->{'post_-_ae(s)_moderate_adverse_events_(circumcision)'});
         $data['ae_post_severe'] = self::merged_value($row->{'ae_post_severe_hv04-16'}, $old_row->{'post_-_ae(s)_severe_adverse_events_(circumcision)'});
+
+        return $data;
     }
 
 
