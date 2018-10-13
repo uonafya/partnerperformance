@@ -48,6 +48,12 @@ class GeneralController extends Controller
 		return view('base.testing', $data);
 	}
 
+	public function vmmc()
+	{
+		$data = Lookup::view_data();
+		return view('base.vmmc', $data);
+	}
+
 	public function otz()
 	{
 		$data = Lookup::view_data();

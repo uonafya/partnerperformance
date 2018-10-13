@@ -26,7 +26,110 @@ Route::prefix('filter')->name('filter.')->group(function(){
 	Route::post('partner', 'FilterController@filter_partner')->name('partner');
 });
 
-Route::prefix('partner')->name('partner.')->group(function(){
+
+Route::prefix('testing')->name('testing.')->group(function(){
+	Route::get('testing_outcomes', 'TestingController@testing_outcomes')->name('testing_outcomes');
+	Route::get('testing_age', 'TestingController@testing_age')->name('testing_age');
+	Route::get('testing_gender', 'TestingController@testing_gender')->name('testing_gender');
+	Route::get('pos_age', 'TestingController@pos_age')->name('pos_age');
+	Route::get('pos_gender', 'TestingController@pos_gender')->name('pos_gender');
+	Route::get('positivity', 'TestingController@positivity')->name('positivity');
+	Route::get('testing_summary', 'TestingController@testing_summary')->name('testing_summary');
+	Route::get('summary', 'TestingController@summary')->name('summary');
+});
+
+Route::prefix('pmtct')->name('pmtct.')->group(function(){
+	Route::get('haart', 'PmtctController@haart')->name('haart');
+	Route::get('testing', 'PmtctController@testing')->name('testing');
+	Route::get('starting_point', 'PmtctController@starting_point')->name('starting_point');
+	Route::get('discovery_positivity', 'PmtctController@discovery_positivity')->name('discovery_positivity');
+	Route::get('eid', 'PmtctController@eid')->name('eid');
+	Route::get('male_testing', 'PmtctController@male_testing')->name('male_testing');
+});
+
+Route::prefix('art')->name('art.')->group(function(){
+	Route::get('current_age_breakdown', 'ArtController@current_age_breakdown')->name('current_age_breakdown');
+	Route::get('new_age_breakdown', 'ArtController@new_age_breakdown')->name('new_age_breakdown');
+	Route::get('enrolled_age_breakdown', 'ArtController@enrolled_age_breakdown')->name('enrolled_age_breakdown');
+	Route::get('new_art', 'ArtController@new_art')->name('new_art');
+	Route::get('current_art', 'ArtController@current_art')->name('current_art');
+	
+	Route::get('treatment', 'ArtController@treatment')->name('treatment');
+	Route::get('reporting', 'ArtController@reporting')->name('reporting');
+});
+
+Route::prefix('vmmc')->name('vmmc.')->group(function(){
+	Route::get('summary', 'CircumcisionController@summary')->name('summary');
+});
+
+Route::prefix('otz')->name('otz.')->group(function(){
+	Route::get('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
+	Route::get('clinics', 'OtzController@clinics')->name('clinics');
+	Route::get('achievement', 'OtzController@achievement')->name('achievement');
+	Route::get('breakdown', 'OtzController@breakdown')->name('breakdown');
+	Route::get('clinic_setup', 'OtzController@clinic_setup')->name('clinic_setup');
+	Route::get('otz_breakdown', 'OtzController@otz_breakdown')->name('otz_breakdown');
+	Route::get('dsd_impact', 'OtzController@dsd_impact')->name('dsd_impact');
+	Route::get('mens_impact', 'OtzController@mens_impact')->name('mens_impact');
+
+
+	Route::get('download/{financial_year}', 'OtzController@download_excel')->name('download');
+	Route::post('upload', 'OtzController@upload_excel')->name('upload_excel');
+});
+
+Route::prefix('regimen')->name('regimen.')->group(function(){
+	Route::get('reporting', 'RegimenController@reporting')->name('reporting');
+	Route::get('summary', 'RegimenController@summary')->name('summary');
+});
+
+Route::prefix('indicators')->name('indicators.')->group(function(){
+	Route::get('testing', 'IndicatorController@testing')->name('testing');
+	Route::get('positivity', 'IndicatorController@positivity')->name('positivity');
+	Route::get('summary', 'IndicatorController@summary')->name('summary');
+	Route::get('currenttx', 'IndicatorController@currenttx')->name('currenttx');
+	Route::get('newtx', 'IndicatorController@newtx')->name('newtx');
+
+	Route::get('download/{financial_year}', 'IndicatorController@download_excel')->name('download');
+	Route::post('upload', 'IndicatorController@upload_excel')->name('upload_excel');
+});
+
+
+
+Route::middleware(['clear_session'])->group(function(){
+	Route::get('/', 'GeneralController@dupli_home');
+	Route::get('/config', 'GeneralController@config');
+	Route::get('home', 'GeneralController@home');
+	Route::get('pmtct', 'GeneralController@pmtct');
+	Route::get('art', 'GeneralController@art');
+	Route::get('testing', 'GeneralController@testing');
+	Route::get('vmmc', 'GeneralController@vmmc');
+	Route::get('regimen', 'GeneralController@regimen');
+	Route::get('otz', 'GeneralController@otz');
+	Route::get('indicators', 'GeneralController@indicators');
+
+	Route::get('guide', 'GeneralController@guide');
+});
+
+// Route::middleware(['signed'])->group(function(){
+	Route::get('reset/password/{user}', 'GeneralController@change_password')->name('reset.password');
+// });
+
+Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
+
+	Route::prefix('target')->name('target')->group(function(){
+		Route::post('get_data', 'OtzController@get_data')->name('get_data');
+		Route::post('set_target', 'OtzController@set_target')->name('set_target');
+
+		Route::get('target', 'GeneralController@targets');
+	});
+	
+	Route::get('upload_nonmer', 'GeneralController@upload_nonmer');
+	Route::get('upload_indicators', 'GeneralController@upload_indicators');
+	Route::resource('user', 'UserController');
+});
+
+
+/*Route::prefix('partner')->name('partner.')->group(function(){
 
 	Route::get('summary', 'PartnerController@summary')->name('summary');
 
@@ -85,104 +188,4 @@ Route::prefix('old/table')->name('old.table.')->group(function(){
 	Route::get('summary_breakdown', 'OldTableController@summary_breakdown')->name('summary_breakdown');
 	Route::get('art_new', 'OldTableController@art_new')->name('art_new');
 	Route::get('art_current', 'OldTableController@art_current')->name('art_current');
-});
-
-
-
-
-
-Route::prefix('testing')->name('testing.')->group(function(){
-	Route::get('testing_outcomes', 'TestingController@testing_outcomes')->name('testing_outcomes');
-	Route::get('testing_age', 'TestingController@testing_age')->name('testing_age');
-	Route::get('testing_gender', 'TestingController@testing_gender')->name('testing_gender');
-	Route::get('pos_age', 'TestingController@pos_age')->name('pos_age');
-	Route::get('pos_gender', 'TestingController@pos_gender')->name('pos_gender');
-	Route::get('positivity', 'TestingController@positivity')->name('positivity');
-	Route::get('testing_summary', 'TestingController@testing_summary')->name('testing_summary');
-	Route::get('summary', 'TestingController@summary')->name('summary');
-});
-
-Route::prefix('pmtct')->name('pmtct.')->group(function(){
-	Route::get('haart', 'PmtctController@haart')->name('haart');
-	Route::get('testing', 'PmtctController@testing')->name('testing');
-	Route::get('starting_point', 'PmtctController@starting_point')->name('starting_point');
-	Route::get('discovery_positivity', 'PmtctController@discovery_positivity')->name('discovery_positivity');
-	Route::get('eid', 'PmtctController@eid')->name('eid');
-	Route::get('male_testing', 'PmtctController@male_testing')->name('male_testing');
-});
-
-Route::prefix('art')->name('art.')->group(function(){
-	Route::get('current_age_breakdown', 'ArtController@current_age_breakdown')->name('current_age_breakdown');
-	Route::get('new_age_breakdown', 'ArtController@new_age_breakdown')->name('new_age_breakdown');
-	Route::get('enrolled_age_breakdown', 'ArtController@enrolled_age_breakdown')->name('enrolled_age_breakdown');
-	Route::get('new_art', 'ArtController@new_art')->name('new_art');
-	Route::get('current_art', 'ArtController@current_art')->name('current_art');
-	
-	Route::get('treatment', 'ArtController@treatment')->name('treatment');
-	Route::get('reporting', 'ArtController@reporting')->name('reporting');
-});
-
-Route::prefix('otz')->name('otz.')->group(function(){
-	Route::get('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
-	Route::get('clinics', 'OtzController@clinics')->name('clinics');
-	Route::get('achievement', 'OtzController@achievement')->name('achievement');
-	Route::get('breakdown', 'OtzController@breakdown')->name('breakdown');
-	Route::get('clinic_setup', 'OtzController@clinic_setup')->name('clinic_setup');
-	Route::get('otz_breakdown', 'OtzController@otz_breakdown')->name('otz_breakdown');
-	Route::get('dsd_impact', 'OtzController@dsd_impact')->name('dsd_impact');
-	Route::get('mens_impact', 'OtzController@mens_impact')->name('mens_impact');
-
-
-	Route::get('download/{financial_year}', 'OtzController@download_excel')->name('download');
-	Route::post('upload', 'OtzController@upload_excel')->name('upload_excel');
-});
-
-Route::prefix('regimen')->name('regimen.')->group(function(){
-	Route::get('reporting', 'RegimenController@reporting')->name('reporting');
-	Route::get('summary', 'RegimenController@summary')->name('summary');
-});
-
-Route::prefix('indicators')->name('indicators.')->group(function(){
-	Route::get('testing', 'IndicatorController@testing')->name('testing');
-	Route::get('positivity', 'IndicatorController@positivity')->name('positivity');
-	Route::get('summary', 'IndicatorController@summary')->name('summary');
-	Route::get('currenttx', 'IndicatorController@currenttx')->name('currenttx');
-	Route::get('newtx', 'IndicatorController@newtx')->name('newtx');
-
-	Route::get('download/{financial_year}', 'IndicatorController@download_excel')->name('download');
-	Route::post('upload', 'IndicatorController@upload_excel')->name('upload_excel');
-});
-
-
-
-Route::middleware(['clear_session'])->group(function(){
-	Route::get('/', 'GeneralController@dupli_home');
-	Route::get('/config', 'GeneralController@config');
-	Route::get('home', 'GeneralController@home');
-	Route::get('pmtct', 'GeneralController@pmtct');
-	Route::get('art', 'GeneralController@art');
-	Route::get('testing', 'GeneralController@testing');
-	Route::get('regimen', 'GeneralController@regimen');
-	Route::get('otz', 'GeneralController@otz');
-	Route::get('indicators', 'GeneralController@indicators');
-
-	Route::get('guide', 'GeneralController@guide');
-});
-
-// Route::middleware(['signed'])->group(function(){
-	Route::get('reset/password/{user}', 'GeneralController@change_password')->name('reset.password');
-// });
-
-Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
-
-	Route::prefix('target')->name('target')->group(function(){
-		Route::post('get_data', 'OtzController@get_data')->name('get_data');
-		Route::post('set_target', 'OtzController@set_target')->name('set_target');
-
-		Route::get('target', 'GeneralController@targets');
-	});
-	
-	Route::get('upload_nonmer', 'GeneralController@upload_nonmer');
-	Route::get('upload_indicators', 'GeneralController@upload_indicators');
-	Route::resource('user', 'UserController');
-});
+});*/
