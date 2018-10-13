@@ -55,7 +55,8 @@ Artisan::command('merge:all {year?}', function ($year=null) {
 	\App\Merger::testing($year);
 	\App\Merger::art($year);
 	\App\Merger::pmtct($year);
-})->describe('Merge the testing, art and pmtct records.');
+	\App\Merger::circumcision($year);
+})->describe('Merge the testing, art, pmtct and circumcision records.');
 
 
 Artisan::command('merge:testing {year?}', function ($year=null) {
@@ -69,6 +70,10 @@ Artisan::command('merge:art {year?}', function ($year=null) {
 Artisan::command('merge:pmtct {year?}', function ($year=null) {
 	\App\Merger::pmtct($year);
 })->describe('Merge the pmtct records.');
+
+Artisan::command('merge:circumcision {year?}', function ($year=null) {
+	\App\Merger::circumcision($year);
+})->describe('Merge the circumcision records.');
 
 
 

@@ -30,6 +30,11 @@ class Merger
         self::merge_rows($year, 'merge_pmtct', 'd_prevention_of_mother-to-child_transmission', 'd_pmtct', 'm_pmtct');
     }
 
+    public static function circumcision($year=null)
+    {
+        self::merge_rows($year, 'merge_circumcision', 'd_medical_male_circumcision', 'd_voluntary_male_circumcision', 'm_circumcision');
+    }
+
 	public static function merge_rows($year, $function_name, $new_table, $old_table, $merged_table)
 	{
         if(!$year) $year = date('Y');
@@ -207,117 +212,165 @@ class Merger
         return $data;
     }
 
+    public static function merge_circumcision($row, $old_row)
+    {
+        $data['circumcised_below1'] = $row->{'circumcised_1-9yr_hv04-02'};
+        $data['circumcised_below10'] = $row->{'circumcised_1-9yr_hv04-02'};
+        $data['circumcised_below15'] = self::merged_value($row->{'circumcised_10-14_hv04-03'}, $old_row->{'circumcised_0-14_yrs'});
+        $data['circumcised_below20'] = $row->{'circumcised_15-19_hv04-04'};
+        $data['circumcised_below25'] = self::merged_value($row->{'circumcised_20-24_hv04-05'}, $old_row->{'circumcised_15-24_yrs'});
+        $data['circumcised_above25'] = self::merged_value($row->{'circumcised_25pos_hv04-06'}, $old_row->{'circumcised_25_yrs_and_above'});
+        $data['circumcised_total'] = self::merged_value($row->{'circumcised_total_hv04-07'}, $old_row->{'total_circumcised'});
+
+        $data['circumcised_pos'] = self::merged_value($row->{'circumcised_hivpos_hv04-08'}, $old_row->{'positive_-hiv_status_(at_circumcision)'});
+        $data['circumcised_neg'] = self::merged_value($row->{'circumcised_hiv-_hv04-09'}, $old_row->{'negative_-hiv_status_(at_circumcision)'});
+        $data['circumcised_nk'] = self::merged_value($row->{'circumcised_hiv_nk_hv04-10'}, $old_row->{'unknown_-hiv_status_(at_circumcision)'});
+
+
+        $data['circumcised_surgical'] = $row->{'surgical_hv04-11'};
+        $data['circumcised_devices'] = $row->{'devices_hv04-12'};
+
+        $data['ae_during_moderate'] = self::merged_value($row->{'ae_during_moderate_hv04-13'}, $old_row->{'during_-_ae(s)_moderate_adverse_events_(circumcision)'});
+        $data['ae_during_severe'] = self::merged_value($row->{'ae_during_severe_hv04-14'}, $old_row->{'during_-_ae(s)_severe_adverse_events_(circumcision)'});
+        $data['ae_post_moderate'] = self::merged_value($row->{'ae_post_moderate_hv04-15'}, $old_row->{'post_-_ae(s)_moderate_adverse_events_(circumcision)'});
+        $data['ae_post_severe'] = self::merged_value($row->{'ae_post_severe_hv04-16'}, $old_row->{'post_-_ae(s)_severe_adverse_events_(circumcision)'});
+    }
+
 
     public static function create_merged_tables()
     {
-        $art = "
-            current_below1 int(10) DEFAULT NULL,
-            current_below10 int(10) DEFAULT NULL,
-            current_below15_m int(10) DEFAULT NULL,
-            current_below15_f int(10) DEFAULT NULL,
-            current_below20_m int(10) DEFAULT NULL,
-            current_below20_f int(10) DEFAULT NULL,
-            current_below25_m int(10) DEFAULT NULL,
-            current_below25_f int(10) DEFAULT NULL,
-            current_above25_m int(10) DEFAULT NULL,
-            current_above25_f int(10) DEFAULT NULL,
-            current_total int(10) DEFAULT NULL,
+        // $art = "
+        //     current_below1 int(10) DEFAULT NULL,
+        //     current_below10 int(10) DEFAULT NULL,
+        //     current_below15_m int(10) DEFAULT NULL,
+        //     current_below15_f int(10) DEFAULT NULL,
+        //     current_below20_m int(10) DEFAULT NULL,
+        //     current_below20_f int(10) DEFAULT NULL,
+        //     current_below25_m int(10) DEFAULT NULL,
+        //     current_below25_f int(10) DEFAULT NULL,
+        //     current_above25_m int(10) DEFAULT NULL,
+        //     current_above25_f int(10) DEFAULT NULL,
+        //     current_total int(10) DEFAULT NULL,
 
-            new_below1 int(10) DEFAULT NULL,
-            new_below10 int(10) DEFAULT NULL,
-            new_below15_m int(10) DEFAULT NULL,
-            new_below15_f int(10) DEFAULT NULL,
-            new_below20_m int(10) DEFAULT NULL,
-            new_below20_f int(10) DEFAULT NULL,
-            new_below25_m int(10) DEFAULT NULL,
-            new_below25_f int(10) DEFAULT NULL,
-            new_above25_m int(10) DEFAULT NULL,
-            new_above25_f int(10) DEFAULT NULL,
-            new_total int(10) DEFAULT NULL,
+        //     new_below1 int(10) DEFAULT NULL,
+        //     new_below10 int(10) DEFAULT NULL,
+        //     new_below15_m int(10) DEFAULT NULL,
+        //     new_below15_f int(10) DEFAULT NULL,
+        //     new_below20_m int(10) DEFAULT NULL,
+        //     new_below20_f int(10) DEFAULT NULL,
+        //     new_below25_m int(10) DEFAULT NULL,
+        //     new_below25_f int(10) DEFAULT NULL,
+        //     new_above25_m int(10) DEFAULT NULL,
+        //     new_above25_f int(10) DEFAULT NULL,
+        //     new_total int(10) DEFAULT NULL,
 
-            enrolled_below1 int(10) DEFAULT NULL,
-            enrolled_below10 int(10) DEFAULT NULL,
-            enrolled_below15_m int(10) DEFAULT NULL,
-            enrolled_below15_f int(10) DEFAULT NULL,
-            enrolled_below20_m int(10) DEFAULT NULL,
-            enrolled_below20_f int(10) DEFAULT NULL,
-            enrolled_below25_m int(10) DEFAULT NULL,
-            enrolled_below25_f int(10) DEFAULT NULL,
-            enrolled_above25_m int(10) DEFAULT NULL,
-            enrolled_above25_f int(10) DEFAULT NULL,
-            enrolled_total int(10) DEFAULT NULL,
+        //     enrolled_below1 int(10) DEFAULT NULL,
+        //     enrolled_below10 int(10) DEFAULT NULL,
+        //     enrolled_below15_m int(10) DEFAULT NULL,
+        //     enrolled_below15_f int(10) DEFAULT NULL,
+        //     enrolled_below20_m int(10) DEFAULT NULL,
+        //     enrolled_below20_f int(10) DEFAULT NULL,
+        //     enrolled_below25_m int(10) DEFAULT NULL,
+        //     enrolled_below25_f int(10) DEFAULT NULL,
+        //     enrolled_above25_m int(10) DEFAULT NULL,
+        //     enrolled_above25_f int(10) DEFAULT NULL,
+        //     enrolled_total int(10) DEFAULT NULL,
+        // ";
+
+        // self::table_base('m_art', $art);
+
+        // $testing = "
+        //     testing_total int(10) DEFAULT NULL,
+        //     first_test_hiv int(10) DEFAULT NULL,
+        //     repeat_test_hiv int(10) DEFAULT NULL,
+        //     facility_test_hiv int(10) DEFAULT NULL,
+        //     outreach_test_hiv int(10) DEFAULT NULL,
+
+        //     positive_below10 int(10) DEFAULT NULL,
+        //     positive_below15_m int(10) DEFAULT NULL,
+        //     positive_below15_f int(10) DEFAULT NULL,
+        //     positive_below20_m int(10) DEFAULT NULL,
+        //     positive_below20_f int(10) DEFAULT NULL,
+        //     positive_below25_m int(10) DEFAULT NULL,
+        //     positive_below25_f int(10) DEFAULT NULL,
+        //     positive_above25_m int(10) DEFAULT NULL,
+        //     positive_above25_f int(10) DEFAULT NULL,
+        //     positive_total int(10) DEFAULT NULL,
+        // ";
+
+        // self::table_base('m_testing', $testing);
+
+        // $pmtct = "
+        //     tested_pmtct int(10) DEFAULT NULL,
+
+        //     known_pos_anc int(10) DEFAULT NULL,
+
+        //     initial_test_anc int(10) DEFAULT NULL,
+        //     initial_test_lnd int(10) DEFAULT NULL,
+        //     initial_test_pnc int(10) DEFAULT NULL,
+
+        //     positives_anc int(10) DEFAULT NULL,
+        //     positives_lnd int(10) DEFAULT NULL,
+        //     positives_pnc int(10) DEFAULT NULL,
+        //     positives_pnc6m int(10) DEFAULT NULL,
+
+        //     total_positive_pmtct int(10) DEFAULT NULL,
+        //     total_new_positive_pmtct int(10) DEFAULT NULL,
+
+        //     haart_total int(10) DEFAULT NULL,
+
+        //     on_haart_anc int(10) DEFAULT NULL,
+        //     start_art_anc int(10) DEFAULT NULL,
+        //     start_art_lnd int(10) DEFAULT NULL,
+        //     start_art_pnc int(10) DEFAULT NULL,
+        //     start_art_pnc_6m int(10) DEFAULT NULL,
+
+        //     known_status_before_male int(10) DEFAULT NULL,
+
+        //     initial_male_test_anc int(10) DEFAULT NULL,
+        //     initial_male_test_lnd int(10) DEFAULT NULL,
+        //     initial_male_test_pnc int(10) DEFAULT NULL,
+
+        //     known_status_male int(10) DEFAULT NULL,
+
+        //     initial_pcr_2m int(10) DEFAULT NULL,
+        //     initial_pcr_12m int(10) DEFAULT NULL,
+        //     confirmed_pos int(10) DEFAULT NULL,
+        // ";
+
+        // self::table_base('m_pmtct', $pmtct);
+
+        $circumcision = "
+            circumcised_below1 int(10) DEFAULT NULL,
+            circumcised_below10 int(10) DEFAULT NULL,
+            circumcised_below15 int(10) DEFAULT NULL,
+            circumcised_below20 int(10) DEFAULT NULL,
+            circumcised_below25 int(10) DEFAULT NULL,
+            circumcised_above25 int(10) DEFAULT NULL,
+            circumcised_total int(10) DEFAULT NULL,
+
+            circumcised_pos int(10) DEFAULT NULL,
+            circumcised_neg int(10) DEFAULT NULL,
+            circumcised_nk int(10) DEFAULT NULL,
+
+            circumcised_surgical int(10) DEFAULT NULL,
+            circumcised_devices int(10) DEFAULT NULL,
+
+            ae_during_moderate int(10) DEFAULT NULL,
+            ae_during_severe int(10) DEFAULT NULL,
+            ae_post_moderate int(10) DEFAULT NULL,
+            ae_post_severe int(10) DEFAULT NULL,
         ";
 
-        self::table_base('m_art', $art);
-
-        $testing = "
-            testing_total int(10) DEFAULT NULL,
-            first_test_hiv int(10) DEFAULT NULL,
-            repeat_test_hiv int(10) DEFAULT NULL,
-            facility_test_hiv int(10) DEFAULT NULL,
-            outreach_test_hiv int(10) DEFAULT NULL,
-
-            positive_below10 int(10) DEFAULT NULL,
-            positive_below15_m int(10) DEFAULT NULL,
-            positive_below15_f int(10) DEFAULT NULL,
-            positive_below20_m int(10) DEFAULT NULL,
-            positive_below20_f int(10) DEFAULT NULL,
-            positive_below25_m int(10) DEFAULT NULL,
-            positive_below25_f int(10) DEFAULT NULL,
-            positive_above25_m int(10) DEFAULT NULL,
-            positive_above25_f int(10) DEFAULT NULL,
-            positive_total int(10) DEFAULT NULL,
-        ";
-
-        self::table_base('m_testing', $testing);
-
-        $pmtct = "
-            tested_pmtct int(10) DEFAULT NULL,
-
-            known_pos_anc int(10) DEFAULT NULL,
-
-            initial_test_anc int(10) DEFAULT NULL,
-            initial_test_lnd int(10) DEFAULT NULL,
-            initial_test_pnc int(10) DEFAULT NULL,
-
-            positives_anc int(10) DEFAULT NULL,
-            positives_lnd int(10) DEFAULT NULL,
-            positives_pnc int(10) DEFAULT NULL,
-            positives_pnc6m int(10) DEFAULT NULL,
-
-            total_positive_pmtct int(10) DEFAULT NULL,
-            total_new_positive_pmtct int(10) DEFAULT NULL,
-
-            haart_total int(10) DEFAULT NULL,
-
-            on_haart_anc int(10) DEFAULT NULL,
-            start_art_anc int(10) DEFAULT NULL,
-            start_art_lnd int(10) DEFAULT NULL,
-            start_art_pnc int(10) DEFAULT NULL,
-            start_art_pnc_6m int(10) DEFAULT NULL,
-
-            known_status_before_male int(10) DEFAULT NULL,
-
-            initial_male_test_anc int(10) DEFAULT NULL,
-            initial_male_test_lnd int(10) DEFAULT NULL,
-            initial_male_test_pnc int(10) DEFAULT NULL,
-
-            known_status_male int(10) DEFAULT NULL,
-
-            initial_pcr_2m int(10) DEFAULT NULL,
-            initial_pcr_12m int(10) DEFAULT NULL,
-            confirmed_pos int(10) DEFAULT NULL,
-
-        ";
-
-        self::table_base('m_pmtct', $pmtct);
+        self::table_base('m_circumcision', $circumcision);
     }
 
     public static function insert_rows($year=null)
     {        
         if(!$year) $year = date('Y');
         $facilities = \App\Facility::select('id')->get();
-        $tables = ['m_testing', 'm_art', 'm_pmtct'];
+        // $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision'];
+        $tables = ['m_circumcision'];
 
         foreach ($tables as $table) {
 
