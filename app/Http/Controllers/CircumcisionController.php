@@ -34,6 +34,10 @@ class CircumcisionController extends Controller
 		$data['outcomes'][2]['type'] = "column";
 		$data['outcomes'][3]['type'] = "spline";
 
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+		$data['outcomes'][2]['yAxis'] = 1;
+
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
@@ -44,7 +48,7 @@ class CircumcisionController extends Controller
 			$data["outcomes"][3]["data"][$key] = Lookup::get_percentage($row->pos, $row->total);
 
 		}
-		return view('charts.bar_graph', $data);
+		return view('charts.dual_axis', $data);
 	}
 
 	public function summary()
