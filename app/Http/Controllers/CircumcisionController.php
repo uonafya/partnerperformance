@@ -14,10 +14,10 @@ class CircumcisionController extends Controller
 		$date_query = Lookup::date_query();
 		$data = Lookup::table_data();
 
-		$sql = "SUM(circumcised_below1) AS circumcised_below1, SUM(circumcised_below10) AS circumcised_below10, 
-			SUM(circumcised_below15) AS circumcised_below15, SUM(circumcised_below20) AS circumcised_below20, 
-			SUM(circumcised_below25) AS circumcised_below25, SUM(circumcised_above25) AS circumcised_above25, 
-			SUM(circumcised_total) AS circumcised_total";
+		$sql = "SUM(circumcised_below1) AS below1, SUM(circumcised_below10) AS below10, 
+			SUM(circumcised_below15) AS below15, SUM(circumcised_below20) AS below20, 
+			SUM(circumcised_below25) AS below25, SUM(circumcised_above25) AS above25, 
+			SUM(circumcised_total) AS total";
 
 		$data['rows'] = DB::table('m_circumcision')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_circumcision.facility')
