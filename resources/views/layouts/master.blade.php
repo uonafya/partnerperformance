@@ -190,7 +190,7 @@
 
 			    if (!error_check){
 			    	var date_range_data = {'year': from[1], 'month' : from[0], 'to_year': to[1], 'to_month' : to[0]};
-			    	date_filter('', date_range_data, '{{ $date_url }}');
+			    	date_filter('', date_range_data, "{{ $date_url ?? '' }}");
 			    }
 
 		    });
