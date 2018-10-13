@@ -174,6 +174,26 @@
 		            $(this).datepicker('setDate', new Date(year, month, 1));
 		        }
 		    });
+
+		    $("button").click(function () {
+			    var first, second;
+			    first = $(".date-picker[name=startDate]").val();
+			    second = $(".date-picker[name=endDate]").val();
+		    
+			    from = format_date(first);
+			    /* from is an array
+			     	[0] => month
+			     	[1] => year*/
+			    to 	= format_date(second);
+
+			    var error_check = check_error_date_range(from, to);
+
+			    if (!error_check){
+			    	var date_range_data = {'year': from[1], 'month' : from[0], 'to_year': to[1], 'to_month' : to[0]};
+			    	date_filter('', date_range_data, '{{ $date_url }}');
+			    }
+
+		    });
 	    	
 	        $.ajaxSetup({
 	            headers: {
