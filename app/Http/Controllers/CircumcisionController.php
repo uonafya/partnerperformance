@@ -16,7 +16,7 @@ class CircumcisionController extends Controller
 		$rows = DB::table('m_circumcision')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_circumcision.facility')
 			->selectRaw("SUM(circumcised_neg) AS neg, SUM(circumcised_pos) as pos, SUM(circumcised_nk) as unknown,
-				(SUM(circumcised_neg) + SUM(circumcised_pos) + SUM(circumcised_nk) as unknown) AS total
+				(SUM(circumcised_neg) + SUM(circumcised_pos) + SUM(circumcised_nk)) AS total
 				")
 			->when(true, $this->get_callback('total'))
 			->whereRaw($date_query)
