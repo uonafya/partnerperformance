@@ -68,6 +68,7 @@
 			<option disabled='true' selected='true'>Group By:</option>
 
 			@foreach($divisions as $division)
+				@continue(str_contains(url()->current(), 'otz') && ($division->id > 11 || $division->id == 10))
 				<option value="{{ $division->id }}"> {{ $division->name }} </option>
 			@endforeach
 		</select>		
