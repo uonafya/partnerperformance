@@ -133,7 +133,7 @@ class ArtController extends Controller
 		$old_table = "`d_care_and_treatment`";
 		$new_table = "`d_hiv_and_tb_treatment`";
 
-		$old_column = "`total_starting_on_art";
+		$old_column = "`total_starting_on_art`";
 		$new_column = "`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`";
 
 		$old_column_cu = "`total_currently_on_art`";
