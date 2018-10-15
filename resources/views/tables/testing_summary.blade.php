@@ -5,9 +5,9 @@
 				<th rowspan="2">No</th>
 				@include('partials.columns', ['cols' => 'rowspan=2'])
 				<th rowspan="2">Below 10</th>
-				<th colspan="2">Below 15</th>
-				<th colspan="2">Below 20</th>
-				<th colspan="2">Below 25</th>
+				<th colspan="2">10-14</th>
+				<th colspan="2">15-19</th>
+				<th colspan="2">20-24</th>
 				<th colspan="2">Above 25</th>		
 				<th rowspan="2">Reported Total</th>			
 			</tr>

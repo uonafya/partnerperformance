@@ -162,6 +162,22 @@ class Merger
 
     	$data['current_total'] = self::merged_value($row->{'on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038'}, $old_row->total_currently_on_art);
 
+
+        $below15 = $old_row->male_below_15_years_screened_for_tb + $old_row->female_under_15_years_screened_for_tb;
+        $above15 = $old_row->male_15_years_and_older_screened_for_tb + $old_row->female_15_years_and_older_screened_for_tb;
+
+        $data['tb_screened_below1'] = $row->{'screen_for_tb_<1_hv03-051'};
+        $data['tb_screened_below10'] = $row->{'screen_for_tb_1-9_hv03-052'};
+        $data['tb_screened_below15'] = self::merged_value($row->{'screen_for_tb_10-14_hv03-053'}, $below15);
+        $data['tb_screened_below20'] = $row->{'screen_for_tb_15-19_hv03-054'};
+        $data['tb_screened_below25'] = $row->{'screen_for_tb_20-24_hv03-055'};
+        $data['tb_screened_above25'] = self::merged_value($row->{'screen_for_tb_25pos_hv03-056'}, $above15); 
+        $data['tb_screened_total'] = self::merged_value($row->{'screen_for_tb_total_hv03-057'}, $old_row->{'total_screened_for_tb'});
+
+        $data['tb_starting_art'] = self::merged_value($row->{'tb_start_haart_hv03-083'}, $old_row->{'tb_patient_starting_on_art'}); 
+        $data['tb_already_on_art'] = $row->{'tb_already_on_haart_hv03-082'}; 
+        $data['tb_art_total'] = $row->{'tb_total_on_haart(hv03-082pos083)_hv03-084'};   
+
     	return $data;
     }
 
