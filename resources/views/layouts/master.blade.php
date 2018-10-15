@@ -53,6 +53,7 @@
 						<li><a href="{{ url('pmtct') }} ">PMTCT</a></li>	
 						<li><a href="{{ url('art') }} ">ART</a></li>	
 						<li><a href="{{ url('vmmc') }} ">VMMC</a></li>	
+						<li><a href="{{ url('tb') }} ">TB</a></li>	
 						<li><a href="{{ url('indicators') }} ">Indicators</a></li>	
 						<li><a href="{{ url('otz') }} ">Non Mer</a></li>	
 						<li><a href="{{ url('regimen') }} ">MOH 729</a></li>	

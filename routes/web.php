@@ -64,6 +64,13 @@ Route::prefix('vmmc')->name('vmmc.')->group(function(){
 	Route::get('adverse', 'CircumcisionController@adverse')->name('adverse');
 });
 
+Route::prefix('tb')->name('tb.')->group(function(){
+	Route::get('known_status', 'TBController@known_status')->name('known_status');
+	Route::get('newly_tested', 'TBController@newly_tested')->name('newly_tested');
+	Route::get('tb_screening', 'TBController@tb_screening')->name('tb_screening');
+	Route::get('ipt', 'TBController@ipt')->name('ipt');
+});
+
 Route::prefix('otz')->name('otz.')->group(function(){
 	Route::get('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
 	Route::get('clinics', 'OtzController@clinics')->name('clinics');
@@ -105,6 +112,7 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('art', 'GeneralController@art');
 	Route::get('testing', 'GeneralController@testing');
 	Route::get('vmmc', 'GeneralController@vmmc');
+	Route::get('tb', 'GeneralController@tb');
 	Route::get('regimen', 'GeneralController@regimen');
 	Route::get('otz', 'GeneralController@otz');
 	Route::get('indicators', 'GeneralController@indicators');
