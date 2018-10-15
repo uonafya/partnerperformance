@@ -41,4 +41,8 @@
 	</table>
 </div>
 
+@isset($paragraph)
+	<p>{!! $paragraph !!}</p> 
+@endisset
+
 @include('partials.table_footer', ['div' => $div])

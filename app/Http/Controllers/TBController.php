@@ -108,6 +108,8 @@ class TBController extends Controller
 			->whereRaw($date_query)
 			->get();
 
+		$data['paragraph'] = "The TB screened data from the new form is in the form above. However, the data from the old form is only above and below 15 years. In combining the data, below15 in the old form was merged with 10-14 and above 15 was merged with &gt;25.";
+
 		return view('tables.circumcision_summary', $data);
 	}
 
