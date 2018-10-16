@@ -27,7 +27,7 @@
 					@csrf
 
           <div class="form-group">
-              <label class="col-sm-5 control-label">Financial Year</label>
+              <label class="col-sm-3 control-label">Financial Year</label>
               <select class="col-sm-7 select_tag" name="financial_year">
                 <option value="2018" selected>2018</option>
                 <option value="2019">2019</option>
@@ -35,7 +35,7 @@
           </div>
 
           <div class="form-group">
-              <label class="col-sm-5 control-label">Months (You can select multiple months)</label>
+              <label class="col-sm-3 control-label">Months (You can select multiple months)</label>
               <select class="col-sm-7 select_tag" required multiple="multiple" name="months[]">
                 <option value="1">Jan</option>
                 <option value="2">Feb</option>
@@ -53,7 +53,7 @@
           </div>
 
           <div class="form-group">
-              <label class="col-sm-5 control-label">Data Items (You can select multiple data items)</label>
+              <label class="col-sm-3 control-label">Data Items (You can select multiple data items)</label>
               <select class="col-sm-7 select_tag" required multiple="multiple" name="items[]">
                 <option value="screened">Index Clients Screened</option>
                 <option value="contacts_identified">Contacts Identified</option>
