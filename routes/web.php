@@ -102,6 +102,10 @@ Route::prefix('indicators')->name('indicators.')->group(function(){
 	Route::post('upload', 'IndicatorController@upload_excel')->name('upload_excel');
 });
 
+Route::prefix('pns')->name('pns.')->group(function(){
+	Route::post('download', 'PNSController@download_excel')->name('download');
+});
+
 
 
 Route::middleware(['clear_session'])->group(function(){
@@ -133,6 +137,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		Route::get('target', 'GeneralController@targets');
 	});
 	
+	Route::get('pns/download', 'GeneralController@download_pns');
 	Route::get('upload_nonmer', 'GeneralController@upload_nonmer');
 	Route::get('upload_indicators', 'GeneralController@upload_indicators');
 	Route::resource('user', 'UserController');
