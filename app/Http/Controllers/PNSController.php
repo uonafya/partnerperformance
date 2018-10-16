@@ -119,7 +119,7 @@ class PNSController extends Controller
 			session(['session_partner' => $partner]);
 		}
 
-		dd($data);
+		// dd($data);
 
 		$today = date('Y-m-d');
 
