@@ -26,6 +26,10 @@
 				<form action="{{ url('pns/download') }}" method="post" class="form-horizontal"> 
 					@csrf
 
+          <p>
+            After downloading, do not delete any prefilled column. You can delete any of the other columns if you do not wish to upload its data. You can also delete any rows other that the first row that is used as column headers.
+          </p>
+
           <div class="form-group">
               <label class="col-sm-3 control-label">Financial Year</label>
               <select class="col-sm-7 select_tag" name="financial_year">

@@ -104,6 +104,7 @@ Route::prefix('indicators')->name('indicators.')->group(function(){
 
 Route::prefix('pns')->name('pns.')->group(function(){
 	Route::post('download', 'PNSController@download_excel')->name('download');
+	Route::post('upload', 'PNSController@upload_excel')->name('upload');
 });
 
 
