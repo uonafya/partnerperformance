@@ -131,7 +131,7 @@ class PNSController extends Controller
 			$str = str_replace(' ', '_', strtolower($value));
 			foreach ($this->ages_array as $key2 => $value2) {
 				$column_name = $key . '_' . $key2;
-				$key_name = $str . '_' . tr_replace(' ', '_', strtolower($value2));
+				$key_name = $str . '_' . str_replace(' ', '_', strtolower($value2));
 				$columns[$key_name] = $column_name;
 			}
 		}
