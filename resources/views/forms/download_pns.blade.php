@@ -37,6 +37,9 @@
           <div class="form-group">
               <label class="col-sm-3 control-label">Months (You can select multiple months)</label>
               <select class="col-sm-7 select_tag" required multiple="multiple" name="months[]">
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
                 <option value="1">Jan</option>
                 <option value="2">Feb</option>
                 <option value="3">Mar</option>
@@ -46,9 +49,6 @@
                 <option value="7">Jul</option>
                 <option value="8">Aug</option>
                 <option value="9">Sep</option>
-                <option value="10">Oct</option>
-                <option value="11">Nov</option>
-                <option value="12">Dec</option>
               </select>
           </div>
 

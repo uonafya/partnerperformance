@@ -74,7 +74,7 @@
 									<li><a href="{{ url('indicators/download/2019') }} ">2019</a></li>
 								</ul>
 							</li>
-							<li><a href="{{ url('/upload_indicators') }} ">Upload Indicators</a></li>
+							<li><a href="{{ url('/indicators/upload') }} ">Upload Indicators</a></li>
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Non-mer Template <b class="caret"></b>
@@ -85,7 +85,7 @@
 									<li><a href="{{ url('otz/download/2019') }} ">2019</a></li>
 								</ul>
 							</li>
-							<li><a href="{{ url('/upload_nonmer') }} ">Upload Non-Mer</a></li>
+							<li><a href="{{ url('/otz/upload') }} ">Upload Non-Mer</a></li>
 							@if(auth()->user()->user_type_id == 1)
 								<li><a href="{{ url('/user/create') }} ">Create User</a></li>
 							@endif

@@ -26,22 +26,22 @@ class PNSController extends Controller
 	];
 
 	public $ages_array = [
-		'unknown_m' => 'unknown male',
-		'unknown_f' => 'unknown female',
-		'below_1' => 'below 1',
+		'unknown_m' => 'Unknown Male',
+		'unknown_f' => 'Unknown Female',
+		'below_1' => 'Below 1',
 		'below_10' => '1-9',
-		'below_15_m' => '10-14 male',
-		'below_15_f' => '10-14 female',
-		'below_20_m' => '15-19 male',
-		'below_20_f' => '15-19 female',
-		'below_25_m' => '20-24 male',
-		'below_25_f' => '20-24 female',
-		'below_30_m' => '25-29 male',
-		'below_30_f' => '25-29 female',
-		'below_50_m' => '30-49 male',
-		'below_50_f' => '30-49 female',
-		'above_50_m' => 'above 50 male',
-		'above_50_f' => 'above 50 female',
+		'below_15_m' => '10-14 Male',
+		'below_15_f' => '10-14 Female',
+		'below_20_m' => '15-19 Male',
+		'below_20_f' => '15-19 Female',
+		'below_25_m' => '20-24 Male',
+		'below_25_f' => '20-24 Female',
+		'below_30_m' => '25-29 Male',
+		'below_30_f' => '25-29 Female',
+		'below_50_m' => '30-49 Male',
+		'below_50_f' => '30-49 Female',
+		'above_50_m' => 'Above 50 Male',
+		'above_50_f' => 'Above 50 Female',
 	];
 
 	public function download_excel(Request $request)
@@ -97,5 +97,47 @@ class PNSController extends Controller
     	})->store('xlsx');
 
     	return response()->download($path);
+	}
+
+	public function upload_excel(Request $request)
+	{
+		if (!$request->hasFile('upload')){
+	        session(['toast_message' => 'Please select a file before clicking the submit button.']);
+	        session(['toast_error' => 1]);
+			return back();
+		}
+		$file = $request->upload->path();
+
+		$data = Excel::load($file, function($reader){
+			$reader->toArray();
+		})->get();
+
+		$partner = session('session_partner');
+		
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
+
+		dd($data);
+
+		// print_r($data);die();
+
+		$today = date('Y-m-d');
+
+		$columns = [];
+
+		foreach ($this->item_array as $key => $value) {
+			$str = str_replace(' ', '_', strtolower($value));
+			foreach ($this->ages_array as $key2 => $value2) {
+				$column_name = $key . '_' . $key2;
+				$key_name = $str . '_' . tr_replace(' ', '_', strtolower($value2));
+				$columns[$key_name] = $column_name;
+			}
+		}
+
+		dd($columns);
+
+		// foreach ($data as $key => $value)
 	}
 }

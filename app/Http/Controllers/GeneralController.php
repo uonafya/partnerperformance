@@ -115,6 +115,13 @@ class GeneralController extends Controller
 		return view('forms.download_pns', ['no_header' => true, 'partner' => $partner]);
 	}
 
+	public function upload_pns()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		return view('forms.upload_pns', ['no_header' => true, 'partner' => $partner]);
+	}
+
 	public function upload_nonmer()
 	{
 		$user = auth()->user();
