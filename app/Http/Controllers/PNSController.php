@@ -121,8 +121,6 @@ class PNSController extends Controller
 
 		// dd($data);
 
-		// print_r($data);die();
-
 		$today = date('Y-m-d');
 
 		$columns = [];
@@ -136,8 +134,20 @@ class PNSController extends Controller
 			}
 		}
 
-		dd($columns);
+		foreach ($data as $row){
+			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
+			if(!$fac) continue;
+			$update_data = ['dateupdated' => $today];
+			foreach ($row as $key => $value) {
+				if(isset($columns[$key])) $update_data[$columns[$key]] = (int) $value;
+			}
 
-		// foreach ($data as $key => $value)
+			DB::connection('mysql_wr')->table('d_pns')
+				->where(['facility' => $fac->id, 'financial_year' => $row->financial_year, 'month' => $row->month])
+				->update($update_data);
+		}
+
+		session(['toast_message' => "The updates have been made."]);
+		return back();
 	}
 }
