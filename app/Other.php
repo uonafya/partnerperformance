@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Support\Facades\Mail;
 
 use App\Mail\NewUser;
+use App\Mail\CustomMail;
 
 class Other
 {
@@ -18,6 +19,15 @@ class Other
         $mail_array = [$user->email];
         Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser($user));
 	}
+
+    public static function send_pns()
+    {
+        $users = User::where('user_type_id', 2)->get();
+
+        foreach ($users as $user) {
+            Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'vojiambo@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail($user));
+        }
+    }
 
     public static function other_targets()
     {

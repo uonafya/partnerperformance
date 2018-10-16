@@ -11,9 +11,6 @@ use App\ViewFacility;
 
 class PNSController extends Controller
 {
-	// vojiambo@usaid.gov
-
-
 
 	public $item_array = [
 		'screened' => 'Index Clients Screened',

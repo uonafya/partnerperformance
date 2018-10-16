@@ -64,6 +64,8 @@
 							<li><a href="{{ url('/login') }} ">Login</a></li>
 						@endguest	
 						@auth
+							<li><a href="{{ url('/pns/download') }} ">Download PNS Template</a></li>
+							<li><a href="{{ url('/pns/upload') }} ">PNS Upload</a></li>
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Indicators Template <b class="caret"></b>

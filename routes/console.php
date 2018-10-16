@@ -49,6 +49,10 @@ Artisan::command('regimens {year?}', function ($year=null) {
 	\App\Synch::populate_regimen($year);
 })->describe('Populate regimen tables with values.');
 
+Artisan::command('notify', function () {
+	\App\Other::send_pns();
+})->describe('Send emails to all partners.');
+
 
 
 Artisan::command('merge:all {year?}', function ($year=null) {
