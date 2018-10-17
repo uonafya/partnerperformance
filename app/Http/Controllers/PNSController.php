@@ -140,7 +140,7 @@ class PNSController extends Controller
 			}
 
 			DB::connection('mysql_wr')->table('d_pns')
-				->where(['facility' => $fac->id, 'financial_year' => $row->financial_year, 'month' => $row->month])
+				->where(['facility' => $fac->id, 'year' => $row->calendar_year, 'month' => $row->month])
 				->update($update_data);
 		}
 

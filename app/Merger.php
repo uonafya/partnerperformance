@@ -35,6 +35,13 @@ class Merger
         self::merge_rows($year, 'merge_circumcision', 'd_medical_male_circumcision', 'd_voluntary_male_circumcision', 'm_circumcision');
     }
 
+    public static function keypop($year=null)
+    {
+        self::merge_rows($year, 'merge_keypop_testing', 'd_hiv_testing_and_prevention_services', 'd_hiv_counselling_and_testing', 'm_keypop');
+        self::merge_rows($year, 'merge_keypop_art', 'd_hiv_and_tb_treatment', null, 'm_keypop');
+        self::merge_rows($year, 'merge_keypop_mat', 'd_methadone_assisted_therapy', null, 'm_keypop');
+    }
+
 	public static function merge_rows($year, $function_name, $new_table, $old_table, $merged_table)
 	{
         if(!$year) $year = date('Y');
@@ -51,15 +58,20 @@ class Merger
                         ->where(['year' => $year, 'month' => $month])
                         ->limit($limit)->offset($offset)->get();
 
-                $old_rows = DB::table($old_table)
-                        ->where(['year' => $year, 'month' => $month])
-                        ->limit($limit)->offset($offset)->get();
+                if($old_table != null){
+                    $old_rows = DB::table($old_table)
+                            ->where(['year' => $year, 'month' => $month])
+                            ->limit($limit)->offset($offset)->get();
+                }
 
                 if($rows->isEmpty()) break;
 
                 foreach ($rows as $key => $row) {
-                    $old_row = $old_rows[$key];
-                    if($row->facility != $old_row->facility) $old_row = $old_rows->where('facility', $row->facility)->first();
+                    $old_row=null;
+                    if($old_table != null){
+                        $old_row = $old_rows[$key];
+                        if($row->facility != $old_row->facility) $old_row = $old_rows->where('facility', $row->facility)->first();
+                    }
 
                     $data = self::$function_name($row, $old_row);
 			        $data['dateupdated'] = $today;
@@ -254,6 +266,36 @@ class Merger
         return $data;
     }
 
+    public static function merge_keypop_testing($row, $old_row)
+    {
+        $data['tested'] = $row->{'tested_keypop_hv01-16'};
+        $data['positive'] = $row->{'positive_keypop_hv01-29'};
+
+        $data['tested_couples'] = self::merged_value($row->{'tested_couples_hv01-15'}, $old_row->couples_testing);
+        $data['discordant_couples'] = self::merged_value($row->{'discordant_hv01-28'}, $old_row->discordant_couples_receiving_results);
+
+        return $data;
+    }
+
+    public static function merge_keypop_art($row, $old_row)
+    {
+        $data['enrolled'] = $row->{'enrolled_in_care_keypop_hv03-012'};        
+        $data['current_tx'] = $row->{'on_art_keypop_(hiv3-038_plus_hiv3-050)_hv03-039'};        
+        $data['new_tx'] = $row->{'start_art_keypop_hv03-027'};
+
+        return $data;    
+    }
+
+    public static function merge_keypop_mat($row, $old_row)
+    {
+        $data['mat_total'] = $row->{'keypop_on_mat_hv06-01'}; 
+        $data['mat_clients_pos'] = $row->{'mat_clients_hivpos_hv06-02'}; 
+        $data['mat_on_art'] = $row->{'hivpos_mat_clients_on_art_hv06-03'}; 
+        $data['keypop_pwid'] = $row->{'keypop_who_are_pwid_hv06-04'}; 
+
+        return $data;    
+    }
+
 
     public static function create_merged_tables()
     {
@@ -358,37 +400,55 @@ class Merger
 
         // self::table_base('m_pmtct', $pmtct);
 
-        $circumcision = "
-            circumcised_below1 int(10) DEFAULT NULL,
-            circumcised_below10 int(10) DEFAULT NULL,
-            circumcised_below15 int(10) DEFAULT NULL,
-            circumcised_below20 int(10) DEFAULT NULL,
-            circumcised_below25 int(10) DEFAULT NULL,
-            circumcised_above25 int(10) DEFAULT NULL,
-            circumcised_total int(10) DEFAULT NULL,
+        // $circumcision = "
+        //     circumcised_below1 int(10) DEFAULT NULL,
+        //     circumcised_below10 int(10) DEFAULT NULL,
+        //     circumcised_below15 int(10) DEFAULT NULL,
+        //     circumcised_below20 int(10) DEFAULT NULL,
+        //     circumcised_below25 int(10) DEFAULT NULL,
+        //     circumcised_above25 int(10) DEFAULT NULL,
+        //     circumcised_total int(10) DEFAULT NULL,
 
-            circumcised_pos int(10) DEFAULT NULL,
-            circumcised_neg int(10) DEFAULT NULL,
-            circumcised_nk int(10) DEFAULT NULL,
+        //     circumcised_pos int(10) DEFAULT NULL,
+        //     circumcised_neg int(10) DEFAULT NULL,
+        //     circumcised_nk int(10) DEFAULT NULL,
 
-            circumcised_surgical int(10) DEFAULT NULL,
-            circumcised_devices int(10) DEFAULT NULL,
+        //     circumcised_surgical int(10) DEFAULT NULL,
+        //     circumcised_devices int(10) DEFAULT NULL,
 
-            ae_during_moderate int(10) DEFAULT NULL,
-            ae_during_severe int(10) DEFAULT NULL,
-            ae_post_moderate int(10) DEFAULT NULL,
-            ae_post_severe int(10) DEFAULT NULL,
+        //     ae_during_moderate int(10) DEFAULT NULL,
+        //     ae_during_severe int(10) DEFAULT NULL,
+        //     ae_post_moderate int(10) DEFAULT NULL,
+        //     ae_post_severe int(10) DEFAULT NULL,
+        // ";
+
+        // self::table_base('m_circumcision', $circumcision);
+
+        $keypop = "
+            tested int(10) DEFAULT NULL,
+            positive int(10) DEFAULT NULL,
+            enrolled int(10) DEFAULT NULL,
+            current_tx int(10) DEFAULT NULL,
+            new_tx int(10) DEFAULT NULL,
+
+            mat_total int(10) DEFAULT NULL,
+            mat_clients_pos int(10) DEFAULT NULL,
+            mat_on_art int(10) DEFAULT NULL,
+            keypop_pwid int(10) DEFAULT NULL,
+
+            tested_couples int(10) DEFAULT NULL,
+            discordant_couples int(10) DEFAULT NULL,
         ";
 
-        self::table_base('m_circumcision', $circumcision);
+        self::table_base('m_keypop', $keypop);
     }
 
     public static function insert_rows($year=null)
     {        
         if(!$year) $year = date('Y');
         $facilities = \App\Facility::select('id')->get();
-        // $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision'];
-        $tables = ['m_circumcision'];
+        // $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision', 'm_keypop'];
+        $tables = ['m_keypop'];
 
         foreach ($tables as $table) {
 
