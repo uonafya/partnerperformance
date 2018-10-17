@@ -19,19 +19,19 @@
 				<th colspan="6"><center>50 and Above</center></th>				
 			</tr>
 			<tr>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
-				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
+				<th colspan="3"><center>Suppressed</center></th> <th colspan="3"><center>Non Suppressed</center></th>
 			</tr>
 			<tr>
 				<th>Male</th> <th>Female</th> <th>Unknown</th> <th>Male</th> <th>Female</th> <th>Unknown</th>
