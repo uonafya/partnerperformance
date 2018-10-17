@@ -79,6 +79,10 @@ Artisan::command('merge:circumcision {year?}', function ($year=null) {
 	\App\Merger::circumcision($year);
 })->describe('Merge the circumcision records.');
 
+Artisan::command('merge:keypop {year?}', function ($year=null) {
+	\App\Merger::keypop($year);
+})->describe('Merge the keypop records.');
+
 
 
 Artisan::command('targets {year?}', function ($year=null) {
