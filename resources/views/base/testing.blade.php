@@ -65,6 +65,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Discordancy <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="discordancy">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -108,6 +121,7 @@
 		$("#positivity").html("<center><div class='loader'></div></center>");
 		$("#gender").html("<center><div class='loader'></div></center>");
 		$("#age").html("<center><div class='loader'></div></center>");
+		$("#discordancy").html("<center><div class='loader'></div></center>");
 		$("#summary").html("<center><div class='loader'></div></center>");
 		$("#testing_summary").html("<center><div class='loader'></div></center>");
 
@@ -115,6 +129,7 @@
 		$("#positivity").load("{{ url('testing/positivity') }}");
 		$("#gender").load("{{ url('testing/testing_gender') }}");
 		$("#age").load("{{ url('testing/testing_age') }}");
+		$("#discordancy").load("{{ url('testing/discordancy') }}");
 		$("#summary").load("{{ url('testing/summary') }}");
 		$("#testing_summary").load("{{ url('testing/testing_summary') }}");
 	}

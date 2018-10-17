@@ -37,7 +37,7 @@ class Merger
 
     public static function keypop($year=null)
     {
-        self::merge_rows($year, 'merge_keypop_testing', 'd_hiv_testing_and_prevention_services', 'd_hiv_counselling_and_testing', 'm_keypop');
+        self::merge_rows($year, 'merge_keypop_testing', 'd_hiv_testing_and_prevention_services', null, 'm_keypop');
         self::merge_rows($year, 'merge_keypop_art', 'd_hiv_and_tb_treatment', null, 'm_keypop');
         self::merge_rows($year, 'merge_keypop_mat', 'd_methadone_assisted_therapy', null, 'm_keypop');
     }
@@ -93,6 +93,9 @@ class Merger
         $data['repeat_test_hiv'] = self::merged_value($row->{'tested_repeat_hv01-14'}, $old_row->repeat_testing_hiv );
         $data['facility_test_hiv'] = self::merged_value($row->{'tested_facility_hv01-11'}, $old_row->{'static_testing_hiv_(health_facility)'} );
         $data['outreach_test_hiv'] = self::merged_value($row->{'tested_community_hv01-12'}, $old_row->outreach_testing_hiv );
+
+        $data['tested_couples'] = self::merged_value($row->{'tested_couples_hv01-15'}, $old_row->couples_testing);
+        $data['discordant_couples'] = self::merged_value($row->{'discordant_hv01-28'}, $old_row->discordant_couples_receiving_results);
 
 
         $data['positive_below10'] = $row->{'positive_1-9_hv01-17'};
@@ -271,9 +274,6 @@ class Merger
         $data['tested'] = $row->{'tested_keypop_hv01-16'};
         $data['positive'] = $row->{'positive_keypop_hv01-29'};
 
-        $data['tested_couples'] = self::merged_value($row->{'tested_couples_hv01-15'}, $old_row->couples_testing);
-        $data['discordant_couples'] = self::merged_value($row->{'discordant_hv01-28'}, $old_row->discordant_couples_receiving_results);
-
         return $data;
     }
 
@@ -345,6 +345,9 @@ class Merger
         //     repeat_test_hiv int(10) DEFAULT NULL,
         //     facility_test_hiv int(10) DEFAULT NULL,
         //     outreach_test_hiv int(10) DEFAULT NULL,
+
+                // tested_couples int(10) DEFAULT NULL,
+                // discordant_couples int(10) DEFAULT NULL,
 
         //     positive_below10 int(10) DEFAULT NULL,
         //     positive_below15_m int(10) DEFAULT NULL,
@@ -435,9 +438,6 @@ class Merger
             mat_clients_pos int(10) DEFAULT NULL,
             mat_on_art int(10) DEFAULT NULL,
             keypop_pwid int(10) DEFAULT NULL,
-
-            tested_couples int(10) DEFAULT NULL,
-            discordant_couples int(10) DEFAULT NULL,
         ";
 
         self::table_base('m_keypop', $keypop);

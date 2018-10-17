@@ -306,6 +306,46 @@ class TestingController extends Controller
 
 		return view('charts.pie_chart', $data);
 	}
+	
+	public function discordancy()
+	{
+		$date_query = Lookup::date_query();
+
+		$rows = DB::table('m_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->selectRaw("SUM(tested_couples) AS tests, SUM(discordant_couples) as pos")
+			->when(true, $this->get_callback('tests'))
+			->whereRaw($date_query)
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Discordant Couples";
+		$data['outcomes'][1]['name'] = "Cocordant Couples";
+		$data['outcomes'][2]['name'] = "Discordancy";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "spline";
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
+			$data["outcomes"][1]["data"][$key] = (int) $row->tests - $row->pos;
+
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
+
+		}
+		return view('charts.dual_axis', $data);
+	}
 
 	public function testing_summary()
 	{

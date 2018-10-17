@@ -90,7 +90,7 @@ class UserController extends Controller
         $user->last_login = date('Y-m-d H:i:s');
         $user->save();
         session(['toast_message' => 'The updates to your profile has been made.']);
-        return redirect('/upload_nonmer');
+        return redirect('/pns/download');
     }
 
     /**
@@ -102,7 +102,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect('/upload_nonmer');
+        return redirect('/pns/download');
     }
 
 

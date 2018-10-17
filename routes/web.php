@@ -34,6 +34,7 @@ Route::prefix('testing')->name('testing.')->group(function(){
 	Route::get('pos_age', 'TestingController@pos_age')->name('pos_age');
 	Route::get('pos_gender', 'TestingController@pos_gender')->name('pos_gender');
 	Route::get('positivity', 'TestingController@positivity')->name('positivity');
+	Route::get('discordancy', 'TestingController@discordancy')->name('discordancy');
 	Route::get('testing_summary', 'TestingController@testing_summary')->name('testing_summary');
 	Route::get('summary', 'TestingController@summary')->name('summary');
 });
@@ -69,6 +70,12 @@ Route::prefix('tb')->name('tb.')->group(function(){
 	Route::get('newly_tested', 'TBController@newly_tested')->name('newly_tested');
 	Route::get('tb_screening', 'TBController@tb_screening')->name('tb_screening');
 	Route::get('ipt', 'TBController@ipt')->name('ipt');
+});
+
+Route::prefix('keypop')->name('keypop.')->group(function(){
+	Route::get('testing', 'KeypopController@testing')->name('testing');
+	Route::get('current_tx', 'KeypopController@current_tx')->name('current_tx');
+	Route::get('summary', 'KeypopController@summary')->name('summary');
 });
 
 Route::prefix('otz')->name('otz.')->group(function(){

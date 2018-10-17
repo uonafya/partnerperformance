@@ -60,6 +60,12 @@ class GeneralController extends Controller
 		return view('base.tb', $data);
 	}
 
+	public function keypop()
+	{
+		$data = Lookup::view_data();
+		return view('base.keypop', $data);
+	}
+
 	public function otz()
 	{
 		$data = Lookup::view_data();
