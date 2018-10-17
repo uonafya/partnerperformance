@@ -4,19 +4,19 @@
 			<tr class="colhead">
 				<th rowspan="3">No</th>
 				@include('partials.columns', ['cols' => 'rowspan=3'])
-				<th colspan="6">All Ages</th>
-				<th colspan="6">Below 1</th>
-				<th colspan="6">1-4</th>
-				<th colspan="6">5-9</th>
-				<th colspan="6">10-14</th>
-				<th colspan="6">15-19</th>
-				<th colspan="6">20-24</th>
-				<th colspan="6">25-29</th>
-				<th colspan="6">30-34</th>
-				<th colspan="6">35-39</th>
-				<th colspan="6">40-44</th>
-				<th colspan="6">45-49</th>
-				<th colspan="6">50 and Above</th>				
+				<th colspan="6"><center>All Ages</center></th>
+				<th colspan="6"><center>Below 1</center></th>
+				<th colspan="6"><center>1-4</center></th>
+				<th colspan="6"><center>5-9</center></th>
+				<th colspan="6"><center>10-14</center></th>
+				<th colspan="6"><center>15-19</center></th>
+				<th colspan="6"><center>20-24</center></th>
+				<th colspan="6"><center>25-29</center></th>
+				<th colspan="6"><center>30-34</center></th>
+				<th colspan="6"><center>35-39</center></th>
+				<th colspan="6"><center>40-44</center></th>
+				<th colspan="6"><center>45-49</center></th>
+				<th colspan="6"><center>50 and Above</center></th>				
 			</tr>
 			<tr>
 				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
@@ -34,7 +34,6 @@
 				<th colspan="3">Suppressed</th> <th colspan="3">Non Suppressed</th>
 			</tr>
 			<tr>
-				<th>Male</th> <th>Female</th> <th>Unknown</th> <th>Male</th> <th>Female</th> <th>Unknown</th>
 				<th>Male</th> <th>Female</th> <th>Unknown</th> <th>Male</th> <th>Female</th> <th>Unknown</th>
 				<th>Male</th> <th>Female</th> <th>Unknown</th> <th>Male</th> <th>Female</th> <th>Unknown</th>
 				<th>Male</th> <th>Female</th> <th>Unknown</th> <th>Male</th> <th>Female</th> <th>Unknown</th>

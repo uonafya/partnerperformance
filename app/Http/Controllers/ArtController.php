@@ -514,8 +514,6 @@ class ArtController extends Controller
 			->when(true, $this->get_callback('total'))
 			->get();
 
-		dd($rows);
-
 		return view('tables.current_suppression', $data);
 	}
 
