@@ -42,7 +42,7 @@ class KeypopController extends Controller
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) $row->tests - $row->pos;
-			if(!$row->tests) $data["outcomes"][1]["data"][$key] = (int) $row->pos;
+			if(!$row->tests) $data["outcomes"][1]["data"][$key] = 0;
 
 			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
 			if(!$row->tests) $data["outcomes"][2]["data"][$key] = 100;
