@@ -405,6 +405,118 @@ class ArtController extends Controller
 		return view('tables.art_totals', $data);
 	}
 
+	public function current_suppression()
+	{
+		$data = Lookup::table_data();
+		$groupby = session('filter_groupby', 1);
+
+		if($groupby > 9) return null;
+
+		$sql = "
+			SUM(`below1_m_sup`) AS below1_m_sup,
+			SUM(`below1_f_sup`) AS below1_f_sup,
+			SUM(`below1_u_sup`) AS below1_u_sup,
+			SUM(`below1_m_nonsup`) AS below1_m_nonsup,
+			SUM(`below1_f_nonsup`) AS below1_f_nonsup,
+			SUM(`below1_u_nonsup`) AS below1_u_nonsup,
+
+			SUM(`below5_m_sup`) AS below5_m_sup,
+			SUM(`below5_f_sup`) AS below5_f_sup,
+			SUM(`below5_u_sup`) AS below5_u_sup,
+			SUM(`below5_m_nonsup`) AS below5_m_nonsup,
+			SUM(`below5_f_nonsup`) AS below5_f_nonsup,
+			SUM(`below5_u_nonsup`) AS below5_u_nonsup,
+
+			SUM(`below10_m_sup`) AS below10_m_sup,
+			SUM(`below10_f_sup`) AS below10_f_sup,
+			SUM(`below10_u_sup`) AS below10_u_sup,
+			SUM(`below10_m_nonsup`) AS below10_m_nonsup,
+			SUM(`below10_f_nonsup`) AS below10_f_nonsup,
+			SUM(`below10_u_nonsup`) AS below10_u_nonsup,
+
+			SUM(`below15_m_sup`) AS below15_m_sup,
+			SUM(`below15_f_sup`) AS below15_f_sup,
+			SUM(`below15_u_sup`) AS below15_u_sup,
+			SUM(`below15_m_nonsup`) AS below15_m_nonsup,
+			SUM(`below15_f_nonsup`) AS below15_f_nonsup,
+			SUM(`below15_u_nonsup`) AS below15_u_nonsup,
+
+			SUM(`below20_m_sup`) AS below20_m_sup,
+			SUM(`below20_f_sup`) AS below20_f_sup,
+			SUM(`below20_u_sup`) AS below20_u_sup,
+			SUM(`below20_m_nonsup`) AS below20_m_nonsup,
+			SUM(`below20_f_nonsup`) AS below20_f_nonsup,
+			SUM(`below20_u_nonsup`) AS below20_u_nonsup,
+
+			SUM(`below25_m_sup`) AS below25_m_sup,
+			SUM(`below25_f_sup`) AS below25_f_sup,
+			SUM(`below25_u_sup`) AS below25_u_sup,
+			SUM(`below25_m_nonsup`) AS below25_m_nonsup,
+			SUM(`below25_f_nonsup`) AS below25_f_nonsup,
+			SUM(`below25_u_nonsup`) AS below25_u_nonsup,
+
+			SUM(`below30_m_sup`) AS below30_m_sup,
+			SUM(`below30_f_sup`) AS below30_f_sup,
+			SUM(`below30_u_sup`) AS below30_u_sup,
+			SUM(`below30_m_nonsup`) AS below30_m_nonsup,
+			SUM(`below30_f_nonsup`) AS below30_f_nonsup,
+			SUM(`below30_u_nonsup`) AS below30_u_nonsup,
+
+			SUM(`below35_m_sup`) AS below35_m_sup,
+			SUM(`below35_f_sup`) AS below35_f_sup,
+			SUM(`below35_u_sup`) AS below35_u_sup,
+			SUM(`below35_m_nonsup`) AS below35_m_nonsup,
+			SUM(`below35_f_nonsup`) AS below35_f_nonsup,
+			SUM(`below35_u_nonsup`) AS below35_u_nonsup,
+
+			SUM(`below40_m_sup`) AS below40_m_sup,
+			SUM(`below40_f_sup`) AS below40_f_sup,
+			SUM(`below40_u_sup`) AS below40_u_sup,
+			SUM(`below40_m_nonsup`) AS below40_m_nonsup,
+			SUM(`below40_f_nonsup`) AS below40_f_nonsup,
+			SUM(`below40_u_nonsup`) AS below40_u_nonsup,
+
+			SUM(`below45_m_sup`) AS below45_m_sup,
+			SUM(`below45_f_sup`) AS below45_f_sup,
+			SUM(`below45_u_sup`) AS below45_u_sup,
+			SUM(`below45_m_nonsup`) AS below45_m_nonsup,
+			SUM(`below45_f_nonsup`) AS below45_f_nonsup,
+			SUM(`below45_u_nonsup`) AS below45_u_nonsup,
+
+			SUM(`below50_m_sup`) AS below50_m_sup,
+			SUM(`below50_f_sup`) AS below50_f_sup,
+			SUM(`below50_u_sup`) AS below50_u_sup,
+			SUM(`below50_m_nonsup`) AS below50_m_nonsup,
+			SUM(`below50_f_nonsup`) AS below50_f_nonsup,
+			SUM(`below50_u_nonsup`) AS below50_u_nonsup,
+
+			SUM(`above50_m_sup`) AS above50_m_sup,
+			SUM(`above50_f_sup`) AS above50_f_sup,
+			SUM(`above50_u_sup`) AS above50_u_sup,
+			SUM(`above50_m_nonsup`) AS above50_m_nonsup,
+			SUM(`above50_f_nonsup`) AS above50_f_nonsup,
+			SUM(`above50_u_nonsup`) AS above50_u_nonsup,
+
+			SUM(`total_m_sup`) AS total_m_sup,
+			SUM(`total_f_sup`) AS total_f_sup,
+			SUM(`total_u_sup`) AS total_u_sup,
+			SUM(`total_m_nonsup`) AS total_m_nonsup,
+			SUM(`total_f_nonsup`) AS total_f_nonsup,
+			SUM(`total_u_nonsup`) AS total_u_nonsup,
+
+			(SUM(`total_m_sup`) + SUM(`total_f_sup`) + SUM(`total_u_sup`) + SUM(`total_m_nonsup`) + SUM(`total_f_nonsup`) + SUM(`total_u_nonsup`)) AS total
+		";
+
+
+		$data['rows'] = DB::table('apidb.vl_site_suppression_datim')
+			->join('hcm.view_facilitys', 'view_facilitys.id', '=', 'vl_site_suppression_datim.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('total'))
+			->get();
+
+		return view('tables.current_suppression', $data);
+	}
+
 
 
 
