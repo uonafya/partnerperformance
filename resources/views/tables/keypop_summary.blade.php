@@ -24,8 +24,8 @@
 					<td> {{ number_format($row->tests) }} </td>
 					<td> {{ number_format($row->pos) }} </td>
 					<td> {{ $calc_percentage($row->pos, $row->tests) }} </td>
-					<td> {{ number_format($row->newtx) }} </td>			
-					<td> {{ $calc_percentage($row->newtx, $row->pos)  }} </td>
+					<td> {{ number_format($row->new_tx) }} </td>			
+					<td> {{ $calc_percentage($row->new_tx, $row->pos)  }} </td>
 				</tr>
 			@endforeach
 		</tbody>	
