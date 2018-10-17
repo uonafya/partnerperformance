@@ -25,7 +25,7 @@ class Other
         $users = User::where('user_type_id', 2)->get();
 
         foreach ($users as $user) {
-            Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'vojiambo@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail($user));
+            Mail::to($user->email)->cc(['jbatuka@usaid.gov', 'vojiambo@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail($user));
         }
     }
 
