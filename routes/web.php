@@ -125,6 +125,7 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('testing', 'GeneralController@testing');
 	Route::get('vmmc', 'GeneralController@vmmc');
 	Route::get('tb', 'GeneralController@tb');
+	Route::get('keypop', 'GeneralController@keypop');
 	Route::get('regimen', 'GeneralController@regimen');
 	Route::get('otz', 'GeneralController@otz');
 	Route::get('indicators', 'GeneralController@indicators');
