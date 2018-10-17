@@ -101,7 +101,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Current Suppression FY 2018
+			    Current Suppression (FY 2018)
 		    </div>
 			<div class="panel-body" id="current_suppression">
 				<center><div class="loader"></div></center>
