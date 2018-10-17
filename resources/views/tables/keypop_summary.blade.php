@@ -13,7 +13,7 @@
 		</thead>
 		<tbody>
 			@foreach($rows as $key => $row)
-				@continue($row->tests == 0)
+				@continue($row->tests == 0 && $row->pos == 0)
 				<?php
 					$i++;
 				?>
