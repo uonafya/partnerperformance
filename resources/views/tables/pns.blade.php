@@ -25,9 +25,10 @@
 		</thead>
 		<tbody>
 			@foreach($rows as $row)
-				@continue($row->total == 0)
+				
 				<?php
 					$i++;
+					// @continue($row->total == 0)
 				?>
 				<tr>
 					<td> {{ $i }} </td>
@@ -36,7 +37,7 @@
 					@foreach($ages_array as $key => $value)
 						<td> {{ number_format($row->$key) }} </td>
 					@endforeach
-					
+
 					<td> {{ number_format($row->total) }} </td>
 				</tr>
 			@endforeach
