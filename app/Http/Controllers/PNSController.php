@@ -79,7 +79,7 @@ class PNSController extends Controller
 			->get();
 
 		foreach ($rows as $row) {
-			if(!$row->name) $row->name = $row->new_name;
+			if(!$row->Facility) $row->Facility = $row->new_name;
 			unset($row->new_name);
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
