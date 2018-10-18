@@ -23,10 +23,7 @@ class PNSController extends Controller
 			->selectRaw($this->get_query($item))
 			->when(true, $this->get_callback('total'))
 			->whereRaw($date_query)
-			->having('total', '>', 0)
 			->get();
-
-		dd($data_rows);
 
 		return view('tables.pns', $data);
 	}
@@ -37,7 +34,7 @@ class PNSController extends Controller
 		$final = '(';
 		foreach ($this->ages_array as $key => $value) {
 			$sql .= "SUM({$item}_{$key}) AS {$key}, ";
-			$final .= "SUM({$item}_{$key}) + ";
+			$final .= "IFNULL(SUM({$item}_{$key}), 0) + ";
 		}
 		$final = substr($final, 0, -2);
 		$final .= ") as total ";
