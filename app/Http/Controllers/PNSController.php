@@ -54,7 +54,7 @@ class PNSController extends Controller
 		$months = $request->input('months');
 		$financial_year = $request->input('financial_year', 2018);
 
-		$sql = "facilitycode AS `MFL Code`, name AS `Facility`, 
+		$sql = "facilitycode AS `MFL Code`, name AS `Facility`, newname, 
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
 		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name` ";
 
@@ -79,6 +79,8 @@ class PNSController extends Controller
 			->get();
 
 		foreach ($rows as $row) {
+			if(!$row->name) $row->name = $row->newname;
+			unset($row->newname);
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
 		}
