@@ -28,7 +28,10 @@
 
 
           <p style="font-size: 16;">
-            If you are getting a file is too big error, try saving the excel file as a csv and then try again.
+            If you are getting a <br />
+            <b>413 Request Entity Too Large</b> Error  <br />
+
+            try saving the excel file as a csv and then try again.
           </p>
 
           <div class="form-group">

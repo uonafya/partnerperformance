@@ -164,7 +164,7 @@ class PNSController extends Controller
 
 		$stuff = [];
 
-		foreach ($data as $row){
+		foreach ($data as $row_key => $row){
 			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 			if(!$fac) continue;
 			$update_data = ['dateupdated' => $today];
@@ -176,7 +176,7 @@ class PNSController extends Controller
 				->where(['facility' => $fac->id, 'year' => $row->calendar_year, 'month' => $row->month])
 				->update($update_data);
 
-			$stuff[] = $update_data;
+			if($row_key > 180) $stuff[] = $update_data;
 		}
 
 		dd($stuff);
