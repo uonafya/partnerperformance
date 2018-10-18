@@ -111,6 +111,8 @@ Route::prefix('indicators')->name('indicators.')->group(function(){
 });
 
 Route::prefix('pns')->name('pns.')->group(function(){
+	Route::get('get_table/{item}', 'PNSController@get_table')->name('get_table');
+
 	Route::post('download', 'PNSController@download_excel')->name('download');
 	Route::post('upload', 'PNSController@upload_excel')->name('upload');
 });
@@ -129,6 +131,7 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('keypop', 'GeneralController@keypop');
 	Route::get('regimen', 'GeneralController@regimen');
 	Route::get('otz', 'GeneralController@otz');
+	Route::get('pns', 'GeneralController@pns');
 	Route::get('indicators', 'GeneralController@indicators');
 
 	Route::get('guide', 'GeneralController@guide');

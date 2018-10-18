@@ -12,6 +12,36 @@ use App\ViewFacility;
 class PNSController extends Controller
 {
 
+	public function get_table($item)
+	{		
+		$date_query = Lookup::date_query();
+		$data = Lookup::table_data();
+		$data['ages_array'] = $this->ages_array;
+
+		$data['rows'] = DB::table('d_pns')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->selectRaw($this->get_query($item))
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		return view('tables.pns', $data);
+	}
+
+	public function get_query($item)
+	{
+		$sql = '';
+		$final = '(';
+		foreach ($this->ages_array as $key => $value) {
+			$sql .= "SUM({$item}_{$key}) AS {$key}, ";
+			$final .= "SUM({$item}_{$key}) + ";
+		}
+		$final = substr($final, 0, -2);
+		$final .= ") as total "
+		$sql .= $final;
+		return $sql;
+	}
+
 	public $item_array = [
 		'screened' => 'Index Clients Screened',
 		'contacts_identified' => 'Contacts Identified',

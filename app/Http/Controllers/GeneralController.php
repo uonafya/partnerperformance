@@ -72,6 +72,12 @@ class GeneralController extends Controller
 		return view('base.otz', $data);
 	}
 
+	public function pns()
+	{
+		$data = Lookup::view_data();
+		return view('base.pns', $data);
+	}
+
 	public function indicators()
 	{
 		$data = Lookup::view_data();
