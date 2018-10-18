@@ -57,6 +57,7 @@
 						<li><a href="{{ url('keypop') }} ">KeyPOP</a></li>	
 						<li><a href="{{ url('indicators') }} ">Indicators</a></li>	
 						<li><a href="{{ url('otz') }} ">Non Mer</a></li>	
+						<li><a href="{{ url('pns') }} ">PNS</a></li>	
 						<li><a href="{{ url('regimen') }} ">MOH 729</a></li>	
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
