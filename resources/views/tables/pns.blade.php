@@ -25,7 +25,7 @@
 		</thead>
 		<tbody>
 			@foreach($rows as $row)
-				
+				@continue($row->total == 0)
 				<?php
 					$i++;
 					// @continue($row->total == 0)
