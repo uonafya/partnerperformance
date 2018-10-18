@@ -23,7 +23,10 @@ class PNSController extends Controller
 			->selectRaw($this->get_query($item))
 			->when(true, $this->get_callback('total'))
 			->whereRaw($date_query)
+			->having('total', '>', 0)
 			->get();
+
+		dd($data_rows);
 
 		return view('tables.pns', $data);
 	}
@@ -39,7 +42,7 @@ class PNSController extends Controller
 		$final = substr($final, 0, -2);
 		$final .= ") as total ";
 		$sql .= $final;
-		dd($sql);
+		// dd($sql);
 		return $sql;
 	}
 
