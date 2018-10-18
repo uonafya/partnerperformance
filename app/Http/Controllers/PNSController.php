@@ -162,6 +162,8 @@ class PNSController extends Controller
 			}
 		}
 
+		$stuff = [];
+
 		foreach ($data as $row){
 			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 			if(!$fac) continue;
@@ -173,7 +175,11 @@ class PNSController extends Controller
 			DB::connection('mysql_wr')->table('d_pns')
 				->where(['facility' => $fac->id, 'year' => $row->calendar_year, 'month' => $row->month])
 				->update($update_data);
+
+			$stuff[] = $update_data;
 		}
+
+		dd($stuff);
 
 		session(['toast_message' => "The updates have been made."]);
 		return back();
