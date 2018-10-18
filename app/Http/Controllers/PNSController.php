@@ -39,6 +39,7 @@ class PNSController extends Controller
 		$final = substr($final, 0, -2);
 		$final .= ") as total ";
 		$sql .= $final;
+		dd($sql);
 		return $sql;
 	}
 
