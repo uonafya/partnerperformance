@@ -12,6 +12,11 @@ use App\ViewFacility;
 class PNSController extends Controller
 {
 
+	public function summary_chart()
+	{
+		$
+	}
+
 	public function get_table($item)
 	{		
 		$date_query = Lookup::date_query();
@@ -28,17 +33,19 @@ class PNSController extends Controller
 		return view('tables.pns', $data);
 	}
 
-	public function get_query($item)
+	public function get_query($item, $columns_array=null, $add_final=true)
 	{
 		$sql = '';
 		$final = '(';
-		foreach ($this->ages_array as $key => $value) {
+		if(!$columns_array) $columns_array = $this->ages_array;
+		foreach ($columns_array as $key => $value) {
+			if(is_numeric($key)) $key = $value;
 			$sql .= "SUM({$item}_{$key}) AS {$key}, ";
 			$final .= "IFNULL(SUM({$item}_{$key}), 0) + ";
 		}
 		$final = substr($final, 0, -2);
 		$final .= ") as total ";
-		$sql .= $final;
+		if($add_final) $sql .= $final;
 		return $sql;
 	}
 
@@ -70,6 +77,27 @@ class PNSController extends Controller
 		'above_50_m' => 'Above 50 Male',
 		'above_50_f' => 'Above 50 Female',
 	];
+
+	public $ages_array2 = [
+		 => '10-14 Male',
+		'below_15_f' => '10-14 Female',
+		 => '15-19 Male',
+		'below_20_f' => '15-19 Female',
+		 => '20-24 Male',
+		'below_25_f' => '20-24 Female',
+		 => '25-29 Male',
+		'below_30_f' => '25-29 Female',
+		 => '30-49 Male',
+		'below_50_f' => '30-49 Female',
+		 => 'Above 50 Male',
+		'above_50_f' => 'Above 50 Female',
+	];
+
+	public $male_array = ['below_15_m', 'below_20_m', 'below_25_m', 'below_30_m', 'below_50_m', 'above_50_m'];
+	public $female_array = ['below_15_f', 'below_20_f', 'below_25_f', 'below_30_f', 'below_50_f', 'above_50_f'];
+
+	public $mf_array = ['below_15_m', 'below_20_m', 'below_25_m', 'below_30_m', 'below_50_m', 'above_50_m',
+	'below_15_f', 'below_20_f', 'below_25_f', 'below_30_f', 'below_50_f', 'above_50_f'];
 
 	public function download_excel(Request $request)
 	{
