@@ -78,21 +78,6 @@ class PNSController extends Controller
 		'above_50_f' => 'Above 50 Female',
 	];
 
-	public $ages_array2 = [
-		 => '10-14 Male',
-		'below_15_f' => '10-14 Female',
-		 => '15-19 Male',
-		'below_20_f' => '15-19 Female',
-		 => '20-24 Male',
-		'below_25_f' => '20-24 Female',
-		 => '25-29 Male',
-		'below_30_f' => '25-29 Female',
-		 => '30-49 Male',
-		'below_50_f' => '30-49 Female',
-		 => 'Above 50 Male',
-		'above_50_f' => 'Above 50 Female',
-	];
-
 	public $male_array = ['below_15_m', 'below_20_m', 'below_25_m', 'below_30_m', 'below_50_m', 'above_50_m'];
 	public $female_array = ['below_15_f', 'below_20_f', 'below_25_f', 'below_30_f', 'below_50_f', 'above_50_f'];
 
