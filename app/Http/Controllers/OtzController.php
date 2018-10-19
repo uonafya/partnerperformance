@@ -495,7 +495,7 @@ class OtzController extends Controller
 		$rows = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year AS `Financial Year`, name AS `Facility`, partnername AS `Partner Name`, facilitycode AS `MFL Code`, DHIScode AS `DHIS Code`, 
-				subcounty AS `Subcounty Name`, `countyname` AS `County Name`,
+				subcounty AS `Subcounty Name`, `countyname` AS `County Name`, is_pns AS `Is PNS (YES/NO)`,
 				is_viremia AS `Is Viremia (YES/NO)`, is_dsd AS `Is DSD (YES/NO)`, is_otz AS `Is OTZ (YES/NO)`, is_men_clinic AS `Is Men Clinic (YES/NO)`,
 				viremia_beneficiaries AS `Viremia Beneficiaries`, dsd_beneficiaries AS `DSD Beneficiaries`, otz_beneficiaries AS `OTZ Beneficiaries`, men_clinic_beneficiaries AS `Men Clinic Beneficiaries` ")
 			->when($financial_year, function($query) use ($financial_year){
@@ -508,6 +508,7 @@ class OtzController extends Controller
 		foreach ($rows as $key => $row) {
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
+			$data[$key]['Is PNS (YES/NO)'] = Lookup::get_boolean($row_array['Is PNS (YES/NO)']);
 			$data[$key]['Is Viremia (YES/NO)'] = Lookup::get_boolean($row_array['Is Viremia (YES/NO)']);
 			$data[$key]['Is DSD (YES/NO)'] = Lookup::get_boolean($row_array['Is DSD (YES/NO)']);
 			$data[$key]['Is OTZ (YES/NO)'] = Lookup::get_boolean($row_array['Is OTZ (YES/NO)']);
@@ -588,6 +589,7 @@ class OtzController extends Controller
 			if($fac->partner != auth()->user()->partner_id) continue;
 
 			$fac->fill([
+				'is_pns' => Lookup::clean_boolean($value->is_pns_yesno), 
 				'is_viremia' => Lookup::clean_boolean($value->is_viremia_yesno), 
 				'is_dsd' => Lookup::clean_boolean($value->is_dsd_yesno), 
 				'is_otz' => Lookup::clean_boolean($value->is_otz_yesno), 
