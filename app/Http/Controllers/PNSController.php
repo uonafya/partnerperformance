@@ -14,7 +14,7 @@ class PNSController extends Controller
 
 	public function summary_chart()
 	{
-		$
+		// $
 	}
 
 	public function get_table($item)
