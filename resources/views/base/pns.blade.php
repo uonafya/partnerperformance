@@ -141,7 +141,7 @@
 		$("#new_pos").html("<center><div class='loader'></div></center>");
 		$("#linked_haart").html("<center><div class='loader'></div></center>");
 
-		$("#summary_chart").load("{{ url('pns/get_table/summary_chart') }}");
+		$("#summary_chart").load("{{ url('pns/summary_chart') }}");
 		$("#screened").load("{{ url('pns/get_table/screened') }}");
 		$("#contacts_identified").load("{{ url('pns/get_table/contacts_identified') }}");
 		$("#pos_contacts").load("{{ url('pns/get_table/pos_contacts') }}");
