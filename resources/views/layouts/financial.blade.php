@@ -85,6 +85,23 @@
 					</select>		
 				</div>	
 			</div>	
+
+			@if(ends_with(url()->current(), 'pns'))
+
+				<div class="row">
+					<div class="col-md-12">
+						<select class="btn filters form-control" id="filter_pns_age">
+							<option disabled='true'>Select Age Category</option>
+							<option value='null' selected='true'>All Age Categories</option>
+
+							@foreach($ages as $key => $value)
+								<option value="{{ $key }}"> {{ $value }} </option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+
+			@endif
 		</div>	
 
 		<div class="col-md-5">

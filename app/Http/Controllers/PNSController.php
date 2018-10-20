@@ -15,7 +15,7 @@ class PNSController extends Controller
 	public function summary_chart()
 	{
 		$date_query = Lookup::date_query();
-		$ages = session('filter_pns_age', $this->mf_array);
+		$ages = $this->get_ages();
 		$sql = '';
 
 		$data['div'] = str_random(15);
@@ -59,6 +59,13 @@ class PNSController extends Controller
 		return view('charts.bar_graph', $data);
 
 
+	}
+
+	public function get_ages()
+	{
+		$ages = session('filter_pns_age', $this->mf_array);
+		if($ages == [] || in_array('null', $ages)) $ages = $this->mf_array;
+		return $ages;
 	}
 
 	public function get_table($item)
@@ -125,7 +132,7 @@ class PNSController extends Controller
 	public $male_array = ['below_15_m', 'below_20_m', 'below_25_m', 'below_30_m', 'below_50_m', 'above_50_m'];
 	public $female_array = ['below_15_f', 'below_20_f', 'below_25_f', 'below_30_f', 'below_50_f', 'above_50_f'];
 
-	public $mf_array = ['below_15_m', 'below_20_m', 'below_25_m', 'below_30_m', 'below_50_m', 'above_50_m',
+	public $mf_array = ['unknown_m', 'unknown_f', 'below_1', 'below_10', 'below_15_m', 'below_20_m', 'below_25_m', 'below_30_m', 'below_50_m', 'above_50_m',
 	'below_15_f', 'below_20_f', 'below_25_f', 'below_30_f', 'below_50_f', 'above_50_f'];
 
 	public function download_excel(Request $request)

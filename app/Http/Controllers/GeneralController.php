@@ -75,6 +75,24 @@ class GeneralController extends Controller
 	public function pns()
 	{
 		$data = Lookup::view_data();
+		$data['ages'] = [
+			'unknown_m' => 'Unknown Male',
+			'unknown_f' => 'Unknown Female',
+			'below_1' => 'Below 1',
+			'below_10' => '1-9',
+			'below_15_m' => '10-14 Male',
+			'below_15_f' => '10-14 Female',
+			'below_20_m' => '15-19 Male',
+			'below_20_f' => '15-19 Female',
+			'below_25_m' => '20-24 Male',
+			'below_25_f' => '20-24 Female',
+			'below_30_m' => '25-29 Male',
+			'below_30_f' => '25-29 Female',
+			'below_50_m' => '30-49 Male',
+			'below_50_f' => '30-49 Female',
+			'above_50_m' => 'Above 50 Male',
+			'above_50_f' => 'Above 50 Female',
+		];
 		return view('base.pns', $data);
 	}
 
