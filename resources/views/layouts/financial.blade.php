@@ -90,7 +90,7 @@
 
 				<div class="row">
 					<div class="col-md-12">
-						<select class="btn filters form-control" id="filter_pns_age">
+						<select class="btn filters form-control" multiple="multiple" id="filter_pns_age">
 							<option disabled='true'>Select Age Category</option>
 							<option value='null' selected='true'>All Age Categories</option>
 
