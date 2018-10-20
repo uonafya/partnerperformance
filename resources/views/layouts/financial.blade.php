@@ -2,8 +2,8 @@
 <div class="row" id="filter">
 	<div class="col-md-3">
 		<select class="btn filters form-control" id="filter_county">
-			<option disabled='true' selected='true'>Select County</option>
-			<option value='null' selected='true'>All Counties</option>
+			<option disabled='true'>Select County</option>
+			<option value='null'>All Counties</option>
 
 			@foreach($counties as $county)
 				<option value="{{ $county->id }}"> {{ $county->name }} </option>
@@ -13,8 +13,8 @@
 
 	<div class="col-md-3">
 		<select class="btn filters form-control" id="filter_subcounty">
-			<option disabled='true' selected='true'>Select Subcounty</option>
-			<option value='null' selected='true'>All Subcounties</option>
+			<option disabled='true'>Select Subcounty</option>
+			<option value='null'>All Subcounties</option>
 
 			@foreach($subcounties as $subcounty)
 				<option value="{{ $subcounty->id }}"> {{ $subcounty->name }} </option>
@@ -24,8 +24,8 @@
 
 	<div class="col-md-3">
 		<select class="btn filters form-control" id="filter_ward">
-			<option disabled='true' selected='true'>Select Ward</option>
-			<option value='null' selected='true'>All Wards</option>
+			<option disabled='true'>Select Ward</option>
+			<option value='null'>All Wards</option>
 
 			@foreach($wards as $ward)
 				<option value="{{ $ward->id }}"> {{ $ward->name }} </option>
@@ -35,8 +35,8 @@
 
 	<div class="col-md-3">
 		<select class="btn filters form-control" multiple="multiple" id="filter_partner">
-			<option disabled='true' selected='true'>Select Partner</option>
-			<option value='null' selected='true'>All Partners</option>
+			<option disabled='true'>Select Partner</option>
+			<option value='null'>All Partners</option>
 
 			@foreach($partners as $partner)
 				<option value="{{ $partner->id }}"> {{ $partner->name }} </option>
@@ -46,16 +46,16 @@
 
 	<div class="col-md-3">
 		<select class="btn form-control" id="filter_facility">
-			<option disabled='true' selected='true'>Select Facility</option>
-			<option value='null' selected='true'>All Facilities</option>
+			<option disabled='true'>Select Facility</option>
+			<option value='null'>All Facilities</option>
 
 		</select>		
 	</div>	
 
 	<div class="col-md-3">
 		<select class="btn filters form-control" id="filter_agency">
-			<option disabled='true' selected='true'>Select Funding Agency</option>
-			<option value='null' selected='true'>All Funding Agencies</option>
+			<option disabled='true'>Select Funding Agency</option>
+			<option value='null'>All Funding Agencies</option>
 
 			@foreach($agencies as $agency)
 				<option value="{{ $agency->id }}"> {{ $agency->name }} </option>
@@ -65,7 +65,7 @@
 
 	<div class="col-md-2">
 		<select class="btn filters form-control" id="filter_groupby">
-			<option disabled='true' selected='true'>Group By:</option>
+			<option disabled='true'>Group By:</option>
 
 			@foreach($divisions as $division)
 				@continue(str_contains(url()->current(), 'otz') && ($division->id > 11 || $division->id == 10))
