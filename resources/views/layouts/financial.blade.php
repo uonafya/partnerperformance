@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="col-md-3">
-		<select class="btn filters form-control" id="filter_partner">
+		<select class="btn filters form-control" multiple="multiple" id="filter_partner">
 			<option disabled='true' selected='true'>Select Partner</option>
 			<option value='null' selected='true'>All Partners</option>
 
