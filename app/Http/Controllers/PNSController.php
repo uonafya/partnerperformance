@@ -14,7 +14,51 @@ class PNSController extends Controller
 
 	public function summary_chart()
 	{
-		// $
+		$date_query = Lookup::date_query();
+		$ages = session('filter_pns_age', $this->mf_array);
+		$sql = '';
+
+		$data['div'] = str_random(15);
+		$data['stacking_false'] = true;
+		$i=0;
+
+		foreach ($this->item_array as $item => $name) {
+			$data['outcomes'][$i]['name'] = $name;
+			$data['outcomes'][$i]['type'] = 'column';
+			$subsql = '(';
+			foreach ($ages as $age) {
+				$subsql .= "IFNULL(SUM({$item}_{$age}), 0) + ";
+			}
+			$subsql = substr($subsql, 0, -2);
+			$subsql .= ") as {$item}, ";
+			$sql .= $subsql;
+			$i++;
+		}
+		$sql = substr($sql, 0, -2);
+
+		$rows = DB::table('d_pns')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('screened'))
+			->whereRaw($date_query)
+			->having('screened', '>', 0)
+			->get();
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->screened;
+			$data["outcomes"][1]["data"][$key] = (int) $row->contacts_identified;
+			$data["outcomes"][2]["data"][$key] = (int) $row->pos_contacts;
+			$data["outcomes"][3]["data"][$key] = (int) $row->eligible_contacts;
+			$data["outcomes"][4]["data"][$key] = (int) $row->contacts_tested;
+			$data["outcomes"][5]["data"][$key] = (int) $row->new_pos;
+			$data["outcomes"][6]["data"][$key] = (int) $row->linked_haart;
+		}	
+		return view('charts.bar_graph', $data);
+
+
 	}
 
 	public function get_table($item)
@@ -25,7 +69,7 @@ class PNSController extends Controller
 
 		$data['rows'] = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
-			->selectRaw($this->get_query($item))
+			->selectRaw($this->get_table_query($item))
 			->when(true, $this->get_callback('total'))
 			->whereRaw($date_query)
 			->get();
@@ -33,7 +77,7 @@ class PNSController extends Controller
 		return view('tables.pns', $data);
 	}
 
-	public function get_query($item, $columns_array=null, $add_final=true)
+	public function get_table_query($item, $columns_array=null, $add_final=true)
 	{
 		$sql = '';
 		$final = '(';
