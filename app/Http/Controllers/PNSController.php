@@ -36,6 +36,8 @@ class PNSController extends Controller
 		}
 		$sql = substr($sql, 0, -2);
 
+		dd($data);
+
 		$rows = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
 			->selectRaw($sql)
