@@ -53,34 +53,37 @@
 
 		<div class="col-md-8">
 
-			<div class="col-md-5">
-				<select class="btn form-control" id="filter_facility">
-					<option disabled='true'>Select Facility</option>
-					<option value='null' selected='true'>All Facilities</option>
+			<div class="row">
 
-				</select>		
-			</div>	
+				<div class="col-md-5">
+					<select class="btn form-control" id="filter_facility">
+						<option disabled='true'>Select Facility</option>
+						<option value='null' selected='true'>All Facilities</option>
 
-			<div class="col-md-5">
-				<select class="btn filters form-control" id="filter_agency">
-					<option disabled='true'>Select Funding Agency</option>
-					<option value='null' selected='true'>All Funding Agencies</option>
+					</select>		
+				</div>	
 
-					@foreach($agencies as $agency)
-						<option value="{{ $agency->id }}"> {{ $agency->name }} </option>
-					@endforeach
-				</select>		
-			</div>		
+				<div class="col-md-5">
+					<select class="btn filters form-control" id="filter_agency">
+						<option disabled='true'>Select Funding Agency</option>
+						<option value='null' selected='true'>All Funding Agencies</option>
 
-			<div class="col-md-2">
-				<select class="btn filters form-control" id="filter_groupby">
-					<option disabled='true' selected='true'>Group By:</option>
+						@foreach($agencies as $agency)
+							<option value="{{ $agency->id }}"> {{ $agency->name }} </option>
+						@endforeach
+					</select>		
+				</div>		
 
-					@foreach($divisions as $division)
-						@continue(str_contains(url()->current(), 'otz') && ($division->id > 11 || $division->id == 10))
-						<option value="{{ $division->id }}"> {{ $division->name }} </option>
-					@endforeach
-				</select>		
+				<div class="col-md-2">
+					<select class="btn filters form-control" id="filter_groupby">
+						<option disabled='true' selected='true'>Group By:</option>
+
+						@foreach($divisions as $division)
+							@continue(str_contains(url()->current(), 'otz') && ($division->id > 11 || $division->id == 10))
+							<option value="{{ $division->id }}"> {{ $division->name }} </option>
+						@endforeach
+					</select>		
+				</div>	
 			</div>	
 		</div>	
 
