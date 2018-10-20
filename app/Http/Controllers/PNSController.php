@@ -36,8 +36,7 @@ class PNSController extends Controller
 		}
 		$sql = substr($sql, 0, -2);
 
-		dd($data);
-		
+		dd($sql);
 
 		$rows = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
