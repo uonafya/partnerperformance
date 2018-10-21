@@ -236,11 +236,13 @@ class PNSController extends Controller
 			foreach ($row as $key => $value) {
 				if(isset($columns[$key])){
 					$update_data[$columns[$key]] = (int) $value;
-					if(((int) $value) > 0){
-						$fac->is_pns == 1;
-						$fac->save();
-					}
+					if(((int) $value) > 0) $hasdata = true;
 				}
+			}
+
+			if($hasdata){
+				$fac->is_pns = 1;
+				$fac->save();
 			}
 
 			DB::connection('mysql_wr')->table('d_pns')
