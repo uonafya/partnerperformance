@@ -31,6 +31,7 @@ class ClearSession
         session()->forget('filter_agency');
 
         session()->forget('filter_groupby');
+        session()->forget('filter_pns_age');
 
         $m = date('m');
 

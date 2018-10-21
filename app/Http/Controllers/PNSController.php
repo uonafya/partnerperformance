@@ -231,9 +231,16 @@ class PNSController extends Controller
 		foreach ($data as $row_key => $row){
 			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 			if(!$fac) continue;
+			$hasdata = false;
 			$update_data = ['dateupdated' => $today];
 			foreach ($row as $key => $value) {
-				if(isset($columns[$key])) $update_data[$columns[$key]] = (int) $value;
+				if(isset($columns[$key])){
+					$update_data[$columns[$key]] = (int) $value;
+					if($update_data[$columns[$key]] > 0 && $fac->is_pns == 0){
+						$fac->is_pns == 1;
+						$fac->save();
+					}
+				}
 			}
 
 			DB::connection('mysql_wr')->table('d_pns')
