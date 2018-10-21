@@ -250,8 +250,6 @@ class PNSController extends Controller
 			if($row_key > 180) $stuff[] = $update_data;
 		}
 
-		dd($stuff);
-
 		session(['toast_message' => "The updates have been made."]);
 		return back();
 	}
