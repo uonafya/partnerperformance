@@ -236,7 +236,7 @@ class PNSController extends Controller
 			foreach ($row as $key => $value) {
 				if(isset($columns[$key])){
 					$update_data[$columns[$key]] = (int) $value;
-					if($update_data[$columns[$key]] > 0){
+					if(((int) $value) > 0){
 						$fac->is_pns == 1;
 						$fac->save();
 					}
