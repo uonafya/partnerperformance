@@ -240,7 +240,7 @@ class PNSController extends Controller
 				}
 			}
 
-			if($hasdata){
+			if($hasdata && !$fac->is_pns){
 				$fac->is_pns = 1;
 				$fac->save();
 			}
