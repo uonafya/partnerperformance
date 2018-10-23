@@ -16,7 +16,8 @@ class ArtController extends Controller
 
 		$newtx = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->selectRaw(" SUM(`new_total`) AS `new_art` ")
+			->selectRaw(" SUM(`new_total`) AS `new_art`, COUNT(DISTINCT view_facilitys.id) as reported ")
+			->where('new_total', '>', 0)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
@@ -26,7 +27,8 @@ class ArtController extends Controller
 
 		$cutx = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->selectRaw(" SUM(`current_total`) AS `current_art` ")
+			->selectRaw(" SUM(`current_total`) AS `current_art`, COUNT(DISTINCT view_facilitys.id) as reported ")
+			->where('current_total', '>', 0)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
@@ -36,7 +38,8 @@ class ArtController extends Controller
 
 		$cutx_old = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->selectRaw(" SUM(`current_total`) AS `current_art` ")
+			->selectRaw(" SUM(`current_total`) AS `current_art`, COUNT(DISTINCT view_facilitys.id) as reported ")
+			->where('current_total', '>', 0)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->first();
@@ -57,6 +60,10 @@ class ArtController extends Controller
 		$data['current_art_recent'] = $cutx->current_art;
 		$data['current_art'] = $cutx_old->current_art;
 		$data['new_art'] = $newtx->new_art;
+
+		$data['current_reported_recent'] = $cutx->reported;
+		$data['current_reported'] = $cutx_old->reported;
+		$data['new_reported'] = $newtx->reported;
 
 		$data['current_completion_recent'] = Lookup::get_percentage($data['current_art_recent'], $target->current);
 		$data['current_completion'] = Lookup::get_percentage($data['current_art'], $target->current);

@@ -6,6 +6,7 @@
 				<td><b>Target</b></td>
 				<td><b>Result</b></td>
 				<td><b>% Achievement</b></td>
+				<td><b>Facilities Reported</b></td>
 			</tr>
 			<tr>
 				<td><b>Current on tx {{ $current_name }}</b></td>
@@ -13,6 +14,7 @@
 				<!-- Actual current is from a different object  -->
 				<td> {{ number_format($current_art) }} </td>				
 				<td> {{ $current_completion }} </td>				
+				<td> {{ $current_reported }} </td>				
 			</tr>
 			<tr>
 				<td><b>Current on tx {{ $recent_name }}</b></td>
@@ -20,12 +22,14 @@
 				<!-- Actual current is from a different object  -->
 				<td> {{ number_format($current_art_recent) }} </td>				
 				<td> {{ $current_completion_recent }} </td>				
+				<td> {{ $current_reported_recent }} </td>				
 			</tr>
 			<tr>
 				<td><b>New on tx</b></td>
 				<td> {{ number_format($target->new_art) }} </td>				
 				<td> {{ number_format($new_art) }} </td>				
 				<td> {{ $new_completion }} </td>				
+				<td> {{ $new_reported }} </td>				
 			</tr>
 		</table>
 		
