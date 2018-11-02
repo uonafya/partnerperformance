@@ -139,6 +139,7 @@ class OtzController extends Controller
 
 			$data['outcomes'][1]['type'] = "spline";
 			$data['outcomes'][1]['name'] = "Targeted number of clinics";
+			$data['outcomes'][1]['color'] = "#000000";
 
 			$data["outcomes"][1]["data"][0] = (int) $targets->viremia ?? 0;
 			$data["outcomes"][1]["data"][1] = (int) $targets->dsd ?? 0;
@@ -571,6 +572,7 @@ class OtzController extends Controller
 		// print_r($data);die();
 
 		foreach ($data as $key => $value) {
+			if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
 			if(!isset($value->mfl_code)){
 				session([
 				'toast_message' => "This upload is incorrect. Please ensure that you are submitting on the right form.",
@@ -586,7 +588,7 @@ class OtzController extends Controller
 				continue;
 			}
 
-			if($fac->partner != auth()->user()->partner_id) continue;
+			// if($fac->partner != auth()->user()->partner_id) continue;
 
 			$fac->fill([
 				'is_pns' => Lookup::clean_boolean($value->is_pns_yesno), 

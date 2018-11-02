@@ -135,6 +135,7 @@ class PNSController extends Controller
 	public $mf_array = ['unknown_m', 'unknown_f', 'below_1', 'below_10', 'below_15_m', 'below_20_m', 'below_25_m', 'below_30_m', 'below_50_m', 'above_50_m',
 	'below_15_f', 'below_20_f', 'below_25_f', 'below_30_f', 'below_50_f', 'above_50_f'];
 
+
 	public function download_excel(Request $request)
 	{
 		$partner = session('session_partner');
@@ -229,6 +230,7 @@ class PNSController extends Controller
 		$stuff = [];
 
 		foreach ($data as $row_key => $row){
+			if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
 			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 			if(!$fac) continue;
 			$hasdata = false;

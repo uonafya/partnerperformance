@@ -556,23 +556,23 @@ class Synch
 		        				$data[$column] += $value[3];
 		        			}
 		        		}
-		        		if($dmap){
-			        		$column = $my_service['dmap_column_name'];
-			        		$data[$column] = 0;
+		        		// if($dmap){
+			        	// 	$column = $my_service['dmap_column_name'];
+			        	// 	$data[$column] = 0;
 
-			        		if($dmap_body){
-				        		foreach ($dmap_body->rows as $key => $value){
-				        			if($value[2] == $period['name'] && in_array($value[0], $my_service['dmap_codes'])) {
-				        				$data[$column] += $value[3];
-				        			}
-				        		}	
-			        		}	        			
-		        		}
-		        		else{
-		        			if($other_fac && $other_fac->category == "standalone"){
-		        				$dmap_column = $my_service['dmap_column_name'];
-		        				$data[$dmap_column] = $data[$column];
-		        			} 
+			        	// 	if($dmap_body){
+				        // 		foreach ($dmap_body->rows as $key => $value){
+				        // 			if($value[2] == $period['name'] && in_array($value[0], $my_service['dmap_codes'])) {
+				        // 				$data[$column] += $value[3];
+				        // 			}
+				        // 		}	
+			        	// 	}	        			
+		        		// }
+		        		// else{
+		        		// 	if($other_fac && $other_fac->category == "standalone"){
+		        		// 		$dmap_column = $my_service['dmap_column_name'];
+		        		// 		$data[$dmap_column] = $data[$column];
+		        		// 	} 
 		        		}
 		        	}
 
