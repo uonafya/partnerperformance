@@ -223,6 +223,7 @@ class PNSController extends Controller
 			foreach ($this->ages_array as $key2 => $value2) {
 				$column_name = $key . '_' . $key2;
 				$key_name = $str . '_' . str_replace(' ', '_', strtolower($value2));
+				$key_name = str_replace('-', '_', $key_name);
 				$columns[$key_name] = $column_name;
 			}
 		}
