@@ -228,8 +228,6 @@ class PNSController extends Controller
 			}
 		}
 
-		dd($columns);
-
 		$stuff = [];
 
 		foreach ($data as $row_key => $row){
