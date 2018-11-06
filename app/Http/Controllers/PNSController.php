@@ -259,4 +259,40 @@ class PNSController extends Controller
 		session(['toast_message' => "The updates have been made."]);
 		return back();
 	}
+
+	public function upload_facilities(Request $request)
+	{
+		ini_set('memory_limit', '-1');
+		if (!$request->hasFile('upload')){
+	        session(['toast_message' => 'Please select a file before clicking the submit button.']);
+	        session(['toast_error' => 1]);
+			return back();
+		}
+		$file = $request->upload->path();
+
+		if(auth()->user()->user_type_id != 1) return back();
+
+		$data = Excel::load($file, function($reader){
+			$reader->toArray();
+		})->get();
+
+		$partner = $request->input('partner');
+		$type = $request->input('type');
+
+		$mflcodes = [];
+
+		dd($data);
+
+		foreach ($data as $key => $row) {
+			$mflcodes[] = $row->mfl_code;
+		}
+
+		DB::table('facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+		DB::table('apidb.facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+		DB::table('national_db.facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+
+
+		session(['toast_message' => "The updates have been made."]);
+		return back();
+	}
 }

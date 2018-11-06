@@ -151,6 +151,9 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		Route::get('target', 'GeneralController@targets');
 	});
 	
+	Route::get('facilities/upload', 'GeneralController@upload_facilities');
+	Route::post('facilities/upload', 'PNSController@upload_facilities');
+
 	Route::get('pns/download', 'GeneralController@download_pns');
 	Route::get('pns/upload', 'GeneralController@upload_pns');
 	Route::get('otz/upload', 'GeneralController@upload_nonmer');

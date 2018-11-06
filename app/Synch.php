@@ -447,7 +447,7 @@ class Synch
 		        }
 			}			
 			$offset += 50;
-	        // echo  'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
+	        echo  'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
 		echo "Completed updates at " . date('Y-m-d H:i:s a') . " \n";
 	} 

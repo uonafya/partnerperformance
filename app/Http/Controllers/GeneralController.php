@@ -165,4 +165,12 @@ class GeneralController extends Controller
 		$partner = session('session_partner');
 		return view('forms.upload_indicators', ['no_header' => true, 'partner' => $partner]);
 	}
+
+	public function upload_facilities()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+        $partners = \App\Partner::orderBy('name', 'asc')->get();
+		return view('forms.upload_facilities', ['no_header' => true, 'partners' => $partners]);
+	}
 }
