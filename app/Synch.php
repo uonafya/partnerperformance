@@ -573,7 +573,7 @@ class Synch
 		        		// 		$dmap_column = $my_service['dmap_column_name'];
 		        		// 		$data[$dmap_column] = $data[$column];
 		        		// 	} 
-		        		}
+		        		// }
 		        	}
 
 		        	DB::connection('mysql_wr')->table('d_regimen_totals')
