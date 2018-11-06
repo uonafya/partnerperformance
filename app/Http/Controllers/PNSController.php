@@ -276,7 +276,7 @@ class PNSController extends Controller
 			$reader->toArray();
 		})->get();
 
-		$partner = $request->input('partner');
+		$partner = $request->input('partner_id');
 		$type = $request->input('type');
 
 		$mflcodes = [];
@@ -287,9 +287,9 @@ class PNSController extends Controller
 
 		dd($partner);
 
-		DB::table('facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
-		DB::table('apidb.facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
-		DB::table('national_db.facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+		DB::table('facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+		DB::table('apidb.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+		DB::table('national_db.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
 
 
 		session(['toast_message' => "The updates have been made."]);
