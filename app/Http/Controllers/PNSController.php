@@ -108,9 +108,9 @@ class PNSController extends Controller
 		$data['rows'] = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
 			->selectRaw($sql)
-			->when(true, $this->get_callback('screened'))
+			->when(true, $this->get_callback('contacts_identified'))
 			->whereRaw($date_query)
-			->having('screened', '>', 0)
+			->having('contacts_identified', '>', 0)
 			->get();
 
 		return view('tables.pns_summary', $data);
