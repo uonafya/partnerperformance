@@ -277,7 +277,6 @@ class PNSController extends Controller
 		})->get();
 
 		$partner = $request->input('partner_id');
-		$type = $request->input('type');
 
 		$mflcodes = [];
 
@@ -285,7 +284,7 @@ class PNSController extends Controller
 			$mflcodes[] = $row->mfl_code;
 		}
 
-		dd($partner);
+		// dd($mflcodes);
 
 		DB::table('facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
 		DB::table('apidb.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
