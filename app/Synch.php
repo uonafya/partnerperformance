@@ -583,8 +583,8 @@ class Synch
 			}
 			// echo 'Completed updates for ' . $offset . " facilities at " . date('Y-m-d H:i:s a') . " \n";
 		}
-		
-		// echo "Completed updates at " . date('Y-m-d H:i:s a') . " \n";
+
+		echo "Completed regimen updates at " . date('Y-m-d H:i:s a') . " \n";
 
 		// DB::connection('mysql_wr')->whereIn('id', $messy_facilities)->update(['invalid_dhis' => 1]);
 	}
