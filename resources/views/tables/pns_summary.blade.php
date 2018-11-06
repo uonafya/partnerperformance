@@ -16,9 +16,6 @@
 	</thead>
 	<tbody>
 		@foreach($rows as $key => $row)
-			<?php
-				$tx = $get_val($groupby, $row, $art, 'total');
-			?>
 			<tr>
 				<td> {{ $key+1 }} </td>
 				@include('partials.rows', ['row' => $row])
