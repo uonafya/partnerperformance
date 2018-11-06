@@ -57,8 +57,6 @@ class PNSController extends Controller
 			$data["outcomes"][6]["data"][$key] = (int) $row->linked_haart;
 		}	
 		return view('charts.bar_graph', $data);
-
-
 	}
 
 	public function get_ages()
@@ -82,6 +80,54 @@ class PNSController extends Controller
 			->get();
 
 		return view('tables.pns', $data);
+	}
+
+	public function summary_table()
+	{
+		$date_query = Lookup::date_query();
+		$ages = $this->get_ages();
+		$sql = '';
+
+		$data = Lookup::table_data();
+		$i=0;
+
+		foreach ($this->item_array as $item => $name) {
+			$data['outcomes'][$i]['name'] = $name;
+			$data['outcomes'][$i]['type'] = 'column';
+			$subsql = '(';
+			foreach ($ages as $age) {
+				$subsql .= "IFNULL(SUM({$item}_{$age}), 0) + ";
+			}
+			$subsql = substr($subsql, 0, -2);
+			$subsql .= ") as {$item}, ";
+			$sql .= $subsql;
+			$i++;
+		}
+		$sql = substr($sql, 0, -2);
+
+		$data['rows'] = DB::table('d_pns')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('screened'))
+			->whereRaw($date_query)
+			->having('screened', '>', 0)
+			->get();
+
+		return view('tables.pns_summary', $data);
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->screened;
+			$data["outcomes"][1]["data"][$key] = (int) $row->contacts_identified;
+			$data["outcomes"][2]["data"][$key] = (int) $row->pos_contacts;
+			$data["outcomes"][3]["data"][$key] = (int) $row->eligible_contacts;
+			$data["outcomes"][4]["data"][$key] = (int) $row->contacts_tested;
+			$data["outcomes"][5]["data"][$key] = (int) $row->new_pos;
+			$data["outcomes"][6]["data"][$key] = (int) $row->linked_haart;
+		}	
+		return view('charts.bar_graph', $data);
 	}
 
 	public function get_table_query($item, $columns_array=null, $add_final=true)

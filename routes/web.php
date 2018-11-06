@@ -112,6 +112,7 @@ Route::prefix('indicators')->name('indicators.')->group(function(){
 
 Route::prefix('pns')->name('pns.')->group(function(){
 	Route::get('summary_chart', 'PNSController@summary_chart')->name('summary_chart');
+	Route::get('summary_table', 'PNSController@summary_table')->name('summary_table');
 	Route::get('get_table/{item}', 'PNSController@get_table')->name('get_table');
 
 	Route::post('download', 'PNSController@download_excel')->name('download');

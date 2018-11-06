@@ -31,6 +31,19 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
+			    PNS Summary <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="summary_table">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
 			    Index Clients Screened <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="screened">
@@ -133,6 +146,7 @@
 	function reload_page()
 	{
 		$("#summary_chart").html("<center><div class='loader'></div></center>");
+		$("#summary_table").html("<center><div class='loader'></div></center>");
 		$("#screened").html("<center><div class='loader'></div></center>");
 		$("#contacts_identified").html("<center><div class='loader'></div></center>");
 		$("#pos_contacts").html("<center><div class='loader'></div></center>");
@@ -142,6 +156,7 @@
 		$("#linked_haart").html("<center><div class='loader'></div></center>");
 
 		$("#summary_chart").load("{{ url('pns/summary_chart') }}");
+		$("#summary_table").load("{{ url('pns/summary_table') }}");
 		$("#screened").load("{{ url('pns/get_table/screened') }}");
 		$("#contacts_identified").load("{{ url('pns/get_table/contacts_identified') }}");
 		$("#pos_contacts").load("{{ url('pns/get_table/pos_contacts') }}");
