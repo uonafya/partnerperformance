@@ -587,6 +587,14 @@ class OtzController extends Controller
 				$unidentified++;
 				continue;
 			}
+			
+			if($fac->partner != $partner->id){
+				$fac->partner = $partner->id;
+				$fac->save();
+
+				DB::table('apidb.facilitys')->where('facilitycode', $fac->facilitycode)->update(['partner' => $partner->id]);
+				DB::table('national_db.facilitys')->where('facilitycode', $fac->facilitycode)->update(['partner' => $partner->id]);
+			}
 
 			// if($fac->partner != auth()->user()->partner_id) continue;
 

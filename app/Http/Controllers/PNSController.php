@@ -281,6 +281,13 @@ class PNSController extends Controller
 			if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
 			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 			if(!$fac) continue;
+			if($fac->partner != $partner->id){
+				$fac->partner = $partner->id;
+				$fac->save();
+
+				DB::table('apidb.facilitys')->where('facilitycode', $fac->facilitycode)->update(['partner' => $partner->id]);
+				DB::table('national_db.facilitys')->where('facilitycode', $fac->facilitycode)->update(['partner' => $partner->id]);
+			}
 			$hasdata = false;
 			$update_data = ['dateupdated' => $today];
 			foreach ($row as $key => $value) {
@@ -299,7 +306,6 @@ class PNSController extends Controller
 				->where(['facility' => $fac->id, 'year' => $row->calendar_year, 'month' => $row->month])
 				->update($update_data);
 
-			if($row_key > 180) $stuff[] = $update_data;
 		}
 
 		session(['toast_message' => "The updates have been made."]);
