@@ -281,11 +281,11 @@ class PNSController extends Controller
 
 		$mflcodes = [];
 
-		dd($data);
-
 		foreach ($data as $key => $row) {
 			$mflcodes[] = $row->mfl_code;
 		}
+
+		dd($mflcodes);
 
 		DB::table('facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
 		DB::table('apidb.facilities')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
