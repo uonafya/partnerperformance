@@ -34,11 +34,6 @@ class TestingController extends Controller
 		$groupby = session('filter_groupby', 1);
 		$divisor = Lookup::get_target_divisor();
 
-		if($groupby > 9){
-			$t = $target_obj->first()->tests;
-			$target = round(($t / $divisor), 2);
-		}
-
 		$data['div'] = str_random(15);
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
@@ -48,6 +43,16 @@ class TestingController extends Controller
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "spline";
+
+		if($groupby > 9){
+			$t = $target_obj->first()->tests;
+			$target = round(($t / $divisor), 2);
+		}
+		else{
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];			
+		}
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -310,6 +315,7 @@ class TestingController extends Controller
 	public function discordancy()
 	{
 		$date_query = Lookup::date_query();
+    	$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
@@ -334,6 +340,12 @@ class TestingController extends Controller
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		if($groupby < 10){
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
