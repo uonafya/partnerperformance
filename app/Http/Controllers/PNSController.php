@@ -83,7 +83,7 @@ class PNSController extends Controller
 
 		$data['outcomes'][0]['name'] = "PNS New Positives";
 		$data['outcomes'][1]['name'] = "DHIS Positives Less PNS";
-		$data['outcomes'][2]['name'] = "PNS Positivity Contribution";
+		$data['outcomes'][2]['name'] = "PNS Contribution To Positives";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
