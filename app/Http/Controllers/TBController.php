@@ -12,6 +12,7 @@ class TBController extends Controller
 	public function known_status()
 	{
 		$date_query = Lookup::date_query();
+    	$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
@@ -37,8 +38,16 @@ class TBController extends Controller
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 
+		if($groupby < 10){
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
+
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
+
+			if($row->total < $row->pos) $row->total = $row->pos;
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) $row->total - $row->pos;
@@ -52,6 +61,7 @@ class TBController extends Controller
 	public function newly_tested()
 	{
 		$date_query = Lookup::date_query();
+    	$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
@@ -76,6 +86,12 @@ class TBController extends Controller
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		if($groupby < 10){
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);

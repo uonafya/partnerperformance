@@ -12,6 +12,7 @@ class CircumcisionController extends Controller
 	public function testing()
 	{
 		$date_query = Lookup::date_query();
+		$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('m_circumcision')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_circumcision.facility')
@@ -42,6 +43,12 @@ class CircumcisionController extends Controller
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
+
+		if($groupby < 10){
+			$data['outcomes'][3]['lineWidth'] = 0;
+			$data['outcomes'][3]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][3]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
