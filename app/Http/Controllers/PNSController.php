@@ -62,6 +62,7 @@ class PNSController extends Controller
 	public function pns_contribution()
 	{
 		$date_query = Lookup::date_query();
+    	$groupby = session('filter_groupby', 1);		
 
 		$data['ages_array'] = $this->ages_array;
 
@@ -96,9 +97,11 @@ class PNSController extends Controller
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
 
-		$data['outcomes'][2]['lineWidth'] = 0;
-		$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
-		$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		if($groupby < 10){
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
 
 		$i = 0;
 

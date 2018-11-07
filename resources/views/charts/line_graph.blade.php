@@ -8,6 +8,9 @@
             text: "",
             x: -20
         },
+        chart: {
+            zoomType: 'xy'
+        },
         xAxis: {
             categories: {!! json_encode($categories) !!}
         },
@@ -22,8 +25,7 @@
             }]
         },
         tooltip: {
-            valueSuffix: "",
-
+            valueSuffix: ""
         },
         legend: {
             /*layout: 'vertical',

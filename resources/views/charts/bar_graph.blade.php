@@ -18,6 +18,9 @@
             title: {
                 text: ''
             },
+            chart: {
+                zoomType: 'xy'
+            },
             xAxis: [{
                 categories: {!! json_encode($categories) !!}
             }],
