@@ -47,12 +47,13 @@ class TBController extends Controller
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			if($row->total < $row->pos) $row->total = $row->pos;
+			$total = $row->total;
+			if($row->total < $row->pos) $total = $row->pos;
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
-			$data["outcomes"][1]["data"][$key] = (int) $row->total - $row->pos;
+			$data["outcomes"][1]["data"][$key] = (int) $total - $row->pos;
 
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->total);
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $total);
 
 		}
 		return view('charts.dual_axis', $data);
