@@ -96,6 +96,10 @@ class PNSController extends Controller
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
 
+		$data['outcomes'][2]['lineWidth'] = 0;
+		$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 2];
+		$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+
 		$i = 0;
 
 		foreach ($rows as $key => $row) {
