@@ -96,12 +96,16 @@ class PNSController extends Controller
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
 
+		$i = 0;
+
 		foreach ($rows as $key => $row) {
-			$data['categories'][$key] = Lookup::get_category($row);
+			if($row->total == 0) continue;
+			$data['categories'][$i] = Lookup::get_category($row);
 			$dhis = (int) Lookup::get_val($row, $rows2, 'total');
-			$data["outcomes"][0]["data"][$key] = (int) $row->total;	
-			$data["outcomes"][1]["data"][$key] = $dhis - $row->total;
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->total, $dhis);
+			$data["outcomes"][0]["data"][$i] = (int) $row->total;	
+			$data["outcomes"][1]["data"][$i] = $dhis - $row->total;
+			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->total, $dhis);
+			$i++;
 		}
 		return view('charts.dual_axis', $data);
 	}
