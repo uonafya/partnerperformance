@@ -33,7 +33,7 @@
 		    <div class="panel-heading">
 			    PNS Contribution to DHIS Positives <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="summary_chart">
+			<div class="panel-body" id="pns_contribution">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
