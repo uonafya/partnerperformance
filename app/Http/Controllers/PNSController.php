@@ -59,6 +59,53 @@ class PNSController extends Controller
 		return view('charts.bar_graph', $data);
 	}
 
+	public function pns_contribution()
+	{
+		$date_query = Lookup::date_query();
+
+		$data['ages_array'] = $this->ages_array;
+
+		$rows = DB::table('d_pns')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->selectRaw($this->get_table_query('new_pos'))
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$rows2 = DB::table('m_testing')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->selectRaw("SUM(positive_total) AS `pos` ")
+			->when(true, $this->get_callback('total'))
+			->whereRaw($date_query)
+			->get();
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "PNS New Positives";
+		$data['outcomes'][1]['name'] = "DHIS Positives Less PNS";
+		$data['outcomes'][2]['name'] = "PNS Positivity Contribution";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "spline";
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+			$dhis = (int) Lookup::get_val($row, $rows2, 'total');
+			$data["outcomes"][0]["data"][$key] = (int) $row->total;	
+			$data["outcomes"][1]["data"][$key] = $dhis - $row->total;
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->total, $dhis);
+		}
+		return view('charts.dual_axis', $data);
+	}
+
 	public function get_ages()
 	{
 		$ages = session('filter_pns_age', $this->mf_array);
