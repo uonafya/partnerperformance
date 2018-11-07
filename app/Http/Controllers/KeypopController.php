@@ -47,7 +47,7 @@ class KeypopController extends Controller
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			if($row->tests < $row->pos) $row->tests = $row->pos;
+			if($row->tests < $row->pos) $row->tests += $row->pos;
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) $row->tests - $row->pos;

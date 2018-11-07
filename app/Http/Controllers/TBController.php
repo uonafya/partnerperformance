@@ -47,7 +47,7 @@ class TBController extends Controller
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			if($row->total < $row->pos) $row->total = $row->pos;
+			if($row->total < $row->pos) $row->total += $row->pos;
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) $row->total - $row->pos;
@@ -96,7 +96,7 @@ class TBController extends Controller
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			if($row->total < $row->pos) $row->total = $row->pos;
+			if($row->total < $row->pos) $row->total += $row->pos;
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) $row->total - $row->pos;
