@@ -20,7 +20,7 @@
 		    <div class="panel-heading">
 			    Newly Tested HIV Testing Outcomes Of TB Patients(*) <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="known_status">
+			<div class="panel-body" id="newly_tested">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 		    <div class="panel-heading">
 			    Known HIV Statuses Of TB Patients(*) <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="newly_tested">
+			<div class="panel-body" id="known_status">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
