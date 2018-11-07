@@ -101,7 +101,7 @@ class PNSController extends Controller
 		foreach ($rows as $key => $row) {
 			if($row->total == 0) continue;
 			$data['categories'][$i] = Lookup::get_category($row);
-			$dhis = (int) Lookup::get_val($row, $rows2, 'total');
+			$dhis = (int) Lookup::get_val($row, $rows2, 'pos');
 			$data["outcomes"][0]["data"][$i] = (int) $row->total;	
 			$data["outcomes"][1]["data"][$i] = $dhis - $row->total;
 			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->total, $dhis);
