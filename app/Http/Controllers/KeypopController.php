@@ -12,6 +12,7 @@ class KeypopController extends Controller
 	public function testing()
 	{
 		$date_query = Lookup::date_query();
+    	$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('m_keypop')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_keypop.facility')
@@ -37,8 +38,16 @@ class KeypopController extends Controller
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 
+		if($groupby < 10){
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
+
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
+
+			if($row->tests < $row->pos) $row->tests = $row->pos;
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$key] = (int) $row->tests - $row->pos;
