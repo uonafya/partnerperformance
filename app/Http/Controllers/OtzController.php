@@ -139,6 +139,10 @@ class OtzController extends Controller
 
 			$data['outcomes'][1]['type'] = "spline";
 			$data['outcomes'][1]['name'] = "Targeted number of clinics";
+
+			$data['outcomes'][1]['lineWidth'] = 0;
+			$data['outcomes'][1]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][1]['states'] = ['hover' => ['lineWidthPlus' => 0]];
 			// $data['outcomes'][1]['color'] = "#000000";
 
 			$data["outcomes"][1]["data"][0] = (int) $targets->viremia ?? 0;
