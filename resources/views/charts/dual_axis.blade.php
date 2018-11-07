@@ -9,9 +9,9 @@
                     stacking: 'normal'
                 }
             },
-            chart: {
+            /*chart: {
                 zoomType: 'xy'
-            },
+            },*/
             title: {
                 text: ''
             },
