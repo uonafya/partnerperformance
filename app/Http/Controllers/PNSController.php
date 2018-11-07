@@ -73,7 +73,7 @@ class PNSController extends Controller
 			->get();
 
 		$rows2 = DB::table('m_testing')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(positive_total) AS `pos` ")
 			->when(true, $this->get_callback('total'))
 			->whereRaw($date_query)
