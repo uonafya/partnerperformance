@@ -178,12 +178,6 @@ class IndicatorController extends Controller
 		$data['outcomes'][3]['name'] = "DHIS PMTCT Positivity";
 		$data['outcomes'][4]['name'] = "Targeted Positivity";
 
-		if($groupby < 10){
-			$data['outcomes'][3]['lineWidth'] = 0;
-			$data['outcomes'][3]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][3]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
-
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			
@@ -281,6 +275,12 @@ class IndicatorController extends Controller
 		$data['outcomes'][3]['stack'] = 'moh_729';
 		$data['outcomes'][4]['stack'] = 'partner_reported';
 
+		if($groupby < 10){
+			$data['outcomes'][5]['lineWidth'] = 0;
+			$data['outcomes'][5]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][5]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
+
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 
@@ -355,6 +355,12 @@ class IndicatorController extends Controller
 		$data['outcomes'][1]['stack'] = 'new_art';
 		$data['outcomes'][2]['stack'] = 'new_art';
 		$data['outcomes'][3]['stack'] = 'partner_reported';
+
+		if($groupby < 10){
+			$data['outcomes'][4]['lineWidth'] = 0;
+			$data['outcomes'][4]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][4]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
