@@ -78,7 +78,7 @@ class Lookup
 			if($groupby == 13) return "FY {$row->financial_year} Q {$row->quarter}";
 		}
 		else{
-			return $row->name;
+			return $row->name ?? '';
 		}	
 	} 
 

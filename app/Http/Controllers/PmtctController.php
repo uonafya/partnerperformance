@@ -226,8 +226,6 @@ class PmtctController extends Controller
 		$data['outcomes'][2]['stack'] = 'apidb';
 		$data['outcomes'][3]['stack'] = 'apidb';
 
-		dd($rows);
-
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 
