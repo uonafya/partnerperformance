@@ -522,25 +522,25 @@ class OtzController extends Controller
 
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_non_mer_indicators_' . $financial_year;
 
-    	Excel::create($filename, function($excel) use($data, $key){
-    		$excel->sheet('sheet1', function($sheet) use($data, $key){
+    	Excel::create($filename, function($excel) use($data){
+    		$excel->sheet('sheet1', function($sheet) use($data){
     			$sheet->fromArray($data);
 
-	    		$letter_array = ['F', 'G', 'H', 'I'];
+	    		// $letter_array = ['F', 'G', 'H', 'I'];
 
-	    		for ($i=0; $i < $key; $i++) { 
-	    			foreach ($letter_array as $letter) {
-	    				$cell_no = $i+1;
-	    				// $sheet->
-	    				$objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
-	    				$objValidation->setType('list');
-	    				$objValidation->setErrorStyle('information');
-	    				$objValidation->setAllowBlank(true);
-	    				$objValidation->setPromptTitle('Pick from list');
-	    				$objValidation->setPrompt('Please pick a value from the drop-down list.');
-	    				$objValidation->setFormula1('"YES,NO"');
-	    			}
-	    		}
+	    		// for ($i=0; $i < $key; $i++) { 
+	    		// 	foreach ($letter_array as $letter) {
+	    		// 		$cell_no = $i+1;
+	    		// 		// $sheet->
+	    		// 		$objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
+	    		// 		$objValidation->setType('list');
+	    		// 		$objValidation->setErrorStyle('information');
+	    		// 		$objValidation->setAllowBlank(true);
+	    		// 		$objValidation->setPromptTitle('Pick from list');
+	    		// 		$objValidation->setPrompt('Please pick a value from the drop-down list.');
+	    		// 		$objValidation->setFormula1('"YES,NO"');
+	    		// 	}
+	    		// }
     		});
 
     	})->store('xlsx');
