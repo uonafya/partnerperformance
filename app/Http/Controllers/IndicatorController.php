@@ -436,8 +436,6 @@ class IndicatorController extends Controller
 		$data = [];
 
 		$c = DB::table('view_facilitys')->select('county')->where('partner', $partner->id)->groupBy('county')->get()->pluck(['county'])->toArray();
-
-		dd($c);
 		
 		$rows = DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
@@ -450,6 +448,8 @@ class IndicatorController extends Controller
 			->orderBy('name', 'asc')
 			->orderBy('p_early_indicators.id', 'asc')
 			->get();
+
+		dd($rows);
 
 		foreach ($rows as $key => $row) {
 			$row_array = get_object_vars($row);
