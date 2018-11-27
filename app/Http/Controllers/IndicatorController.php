@@ -436,8 +436,6 @@ class IndicatorController extends Controller
 		$data = [];
 
 		$c = DB::table('view_facilitys')->select('county')->where('partner', $partner->id)->groupBy('county')->get()->pluck(['county'])->toArray();
-
-		dd(DB::table('view_facilitys')->select('county')->where('partner', 0)->groupBy('county')->get());
 		
 		$rows = DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
@@ -464,9 +462,9 @@ class IndicatorController extends Controller
 
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . '_early_warning_indicators_monthly_data';
 
-    	$path = storage_path('exports/' . $filename);
-    	// $path = storage_path('exports/' . $filename . '.xlsx');
-    	// if(file_exists($path)) unlink($path);
+    	// $path = storage_path('exports/' . $filename);
+    	$path = storage_path('exports/' . $filename . '.xlsx');
+    	if(file_exists($path)) unlink($path);
 
 
 
@@ -475,9 +473,9 @@ class IndicatorController extends Controller
     			$sheet->fromArray($data);
     		});
 
-    	})->store('csv');
+    	})->store('xlsx');
 
-    	return response()->download($path . '.csv');
+    	return response()->download($path);
 	}
 
 
