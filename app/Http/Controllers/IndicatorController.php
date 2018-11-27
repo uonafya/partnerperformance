@@ -437,7 +437,7 @@ class IndicatorController extends Controller
 
 		$c = DB::table('view_facilitys')->select('county')->where('partner', $partner->id)->groupBy('county')->get()->pluck(['county'])->toArray();
 
-		dd(DB::table('view_facilitys')->select('county')->where('partner', $partner->id)->groupBy('county')->get());
+		dd(DB::table('view_facilitys')->select('county')->where('partner', 0)->groupBy('county')->get());
 		
 		$rows = DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
