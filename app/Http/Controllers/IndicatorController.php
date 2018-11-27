@@ -449,8 +449,6 @@ class IndicatorController extends Controller
 			->orderBy('p_early_indicators.id', 'asc')
 			->get();
 
-		dd($rows);
-
 		foreach ($rows as $key => $row) {
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
