@@ -576,7 +576,7 @@ class OtzController extends Controller
 		// print_r($data);die();
 
 		foreach ($data as $key => $value) {
-			if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
+			if(!is_numeric($value->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
 			if(!isset($value->mfl_code)){
 				session([
 				'toast_message' => "This upload is incorrect. Please ensure that you are submitting on the right form.",
