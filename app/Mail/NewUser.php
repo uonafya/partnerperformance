@@ -34,7 +34,22 @@ class NewUser extends Mailable
      */
     public function build()
     {
-        $this->change_url = URL::temporarySignedRoute('reset.password', now()->addDays(7), ['user' => $this->user->id]);
+        $change_url = URL::temporarySignedRoute('reset.password', now()->addDays(7), ['user' => $this->user->id]);
+
+        \Illuminate\Support\Facades\URL::forceScheme('http');
+
+        $url = URL::temporarySignedRoute('dr_sample.facility_edit', now()->addDays(3), ['user' => $user->id, 'sample' => $this->sample->id]);
+
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+
+        $new_signature = str_after($url, 'expires=');
+        $old_signature = str_after($change_url, 'expires=');
+
+        
+        $this->change_url = str_replace($old_signature, $new_signature, $change_url);
+
+
+
 
         return $this->view('mail.new_user');
     }

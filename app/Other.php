@@ -17,7 +17,7 @@ class Other
 	{
 		$user = User::find($id);
         $mail_array = [$user->email];
-        Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser($user));
+        Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser($user));
 	}
 
     public static function send_pns()
