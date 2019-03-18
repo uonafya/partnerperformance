@@ -438,7 +438,7 @@ class Lookup
 
 	public static function year_month_query($deduction=2)
 	{
-		if(session('financial')){
+		// if(session('financial')){
 			$cfy = date('Y');
 			if(date('m') > 9) $cfy++;
 
@@ -478,7 +478,7 @@ class Lookup
 					// return " financial_year='{$financial_year}' and month='{$month}'";
 				}
 			}
-		}
+		// }
 		session(['tx_financial_year' => $financial_year, 'tx_month' => $month]);
 		return " financial_year='{$financial_year}' and month='{$month}'";
 	}
