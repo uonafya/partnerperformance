@@ -38,7 +38,7 @@ class NewUser extends Mailable
 
         \Illuminate\Support\Facades\URL::forceScheme('http');
 
-        $url = URL::temporarySignedRoute('dr_sample.facility_edit', now()->addDays(3), ['user' => $user->id, 'sample' => $this->sample->id]);
+        $url = URL::temporarySignedRoute('dr_sample.facility_edit', now()->addDays(3), ['user' => $this->user->id, 'sample' => $this->sample->id]);
 
         \Illuminate\Support\Facades\URL::forceScheme('https');
 
