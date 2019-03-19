@@ -6,6 +6,7 @@ use Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\URL;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -62,5 +63,23 @@ class User extends Authenticatable implements JWTSubject
     public function partner()
     {
         return $this->belongsTo('App\Partner');
+    }
+
+    public function getResetPasswordLinkAttribute()
+    {
+        $change_url = URL::temporarySignedRoute('reset.password', now()->addDays(7), ['user' => $this->id]);
+
+        \Illuminate\Support\Facades\URL::forceScheme('http');
+
+        $url = URL::temporarySignedRoute('reset.password', now()->addDays(7), ['user' => $this->id]);
+
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+
+        $new_signature = str_after($url, 'expires=');
+        $old_signature = str_after($change_url, 'expires=');
+        
+        $change_url = str_replace($old_signature, $new_signature, $change_url);
+
+        return $change_url;
     }
 }
