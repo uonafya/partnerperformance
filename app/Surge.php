@@ -141,6 +141,8 @@ class Surge
         $sql = "CREATE TABLE `{$table_name}` (
                     id smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
                     column_name varchar(60) DEFAULT NULL,
+                    alias_name varchar(100) DEFAULT NULL,
+                    excel_name varchar(100) DEFAULT NULL,
                     gender_id tinyint(3) UNSIGNED DEFAULT 0,
                     age_id tinyint(3) UNSIGNED DEFAULT 0,
                     modality_id tinyint(3) UNSIGNED DEFAULT 0,
@@ -184,12 +186,14 @@ class Surge
         		if($modality->hts){
         			foreach ($hts as $h) {
         				$base = $modality->modality . '_' . $h . '_' . $age->age . '_';
-	        			self::create_surge_column($sql, $base, $modality, $age, $genders);
+        				$base2 = $modality->modality_name . ' ' . $h . ' ' . $age->age_name . ' ';
+	        			self::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
         			}
         		}
         		else{
         			$base = $modality->modality . '_' . $age->age . '_';
-        			self::create_surge_column($sql, $base, $modality, $age, $genders);
+        			$base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+        			self::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
         		}
         	}
         }
@@ -205,17 +209,22 @@ class Surge
         DB::statement($sql);
 	}
 
-	public static function create_surge_column(&$sql, $base, $modality, $age, $genders)
+	public static function create_surge_column(&$sql, $base, $base2, $modality, $age, $genders)
 	{
 		foreach ($genders as $gender) {
 			if($gender->id == 3 && !$age->no_gender) continue;
 			if($modality->{$gender->gender}){
 				$col = $base . $gender->gender;
+				$alias = $base2 . title_case($gender->gender);
+				$ex = str_replace(' ', '_', strtolower($alias));
+				$ex = str_replace('-', '_', strtolower($ex))
 				$sql .= "
 					`{$col}` int(10) UNSIGNED DEFAULT 0, ";
 
 				$s = SurgeColumn::create([
 					'column_name' => $col,
+					'alias_name' => $alias,
+					'excel_name' => $ex,
 					'age_id' => $age->id,
 					'gender_id' => $gender->id,
 					'modality_id' => $modality->id,
