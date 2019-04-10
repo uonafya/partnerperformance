@@ -101,6 +101,8 @@
 					</div>
 				</div>
 
+			@elseif(ends_with(url()->current(), 'surge'))
+
 			@endif
 		</div>	
 

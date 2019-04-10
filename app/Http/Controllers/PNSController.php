@@ -253,7 +253,7 @@ class PNSController extends Controller
 		$months = $request->input('months');
 		$financial_year = $request->input('financial_year', 2018);
 
-		$sql = "County, Subcounty,
+		$sql = "countyname as County, Subcounty,
 		facilitycode AS `MFL Code`, name AS `Facility`,
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
 		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name` ";
