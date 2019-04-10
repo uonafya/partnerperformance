@@ -143,7 +143,7 @@ class Surge
                     column_name varchar(30) DEFAULT NULL,
                     gender_id tinyint(3) UNSIGNED DEFAULT 0,
                     age_id tinyint(3) UNSIGNED DEFAULT 0,
-                    modality_id varchar(20) DEFAULT NULL,
+                    modality_id tinyint(3) UNSIGNED DEFAULT 0,
 
                     PRIMARY KEY (`id`),
                     KEY `column_name` (`column_name`),
