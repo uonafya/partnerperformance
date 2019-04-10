@@ -417,8 +417,6 @@ class Other
                 $dt->subDay();
             }
 
-            $dt->subDays(7);
-
             $data = [
                 'week_number' => $week++,
                 'start_date' => $dt->toDateString(),
