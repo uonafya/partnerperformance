@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Mail\NewUser;
 use App\Mail\CustomMail;
+use Carbon\Carbon;
 
 class Other
 {
@@ -374,6 +375,82 @@ class Other
 
         echo 'Completed entry for ' . $table_name . " \n";
 	}
+
+    public static function create_weeks_table()
+    {
+        $table_name = 'weeks';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    week_number tinyint(3) UNSIGNED DEFAULT 0,
+
+                    start_date date DEFAULT NULL,
+                    end_date date DEFAULT NULL,
+
+                    year smallint(4) UNSIGNED DEFAULT 0,
+                    month tinyint(3) UNSIGNED DEFAULT 0,
+                    financial_year smallint(4) UNSIGNED DEFAULT 0,
+                    quarter tinyint(3) UNSIGNED DEFAULT 0,
+
+                    PRIMARY KEY (`id`),
+                    # KEY `identifier`(`facility`, `year`, `month`),
+                    # KEY `identifier_other`(`facility`, `financial_year`, `quarter`),
+                    KEY `week_number` (`facility`),
+                    KEY `specific_time` (`year`, `month`),
+                    KEY `specific_period` (`financial_year`, `quarter`)
+                );
+        ";
+        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::connection('mysql_wr')->statement($sql);
+
+    }
+
+
+    public static function create_weeks($financial_year)
+    {
+        $year = $financial_year - 1;
+
+        $dt = Carbon::createFromDate($year, 9, 1);
+
+        while(true){
+            if($dt->dayOfWeek == 1) break;
+            $dt->addDay();
+        }
+
+        $week = 1;
+
+        $dt->subDays(7);
+
+        $data = [
+            'week_number' => $week++,
+            'start_date' => $dt->toDateString(),
+            'end_date' => $dt->addDays(6)->toDateString(),
+            'year' => $dt->year,
+            'month' => $dt->month,
+        ];
+
+        $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+        $dt->addDay();
+
+        $w = Week::create($data);
+
+        while(true) {
+            $data = [
+                'week_number' => $week++,
+                'start_date' => $dt->toDateString(),
+                'end_date' => $dt->addDays(6)->toDateString(),
+                'year' => $dt->year,
+                'month' => $dt->month,
+            ];
+
+            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+            $dt->addDay();
+
+            $w = new Week;
+            $w->fill($data);
+            if($w->financial_year != $financial_year) break;
+            $w->save();
+        }
+    }
 
 	public static function delete_data($id=55222){
 		$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
