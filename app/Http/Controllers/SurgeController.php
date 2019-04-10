@@ -95,6 +95,8 @@ class SurgeController extends Controller
 			$reader->toArray();
 		})->get();
 
+		dd($data);
+
 		$partner = session('session_partner');
 		
 		if(!$partner){
