@@ -20,6 +20,7 @@ class Surge
 		self::genders_table();
 		self::modalities_table();
 		self::surges_table();
+		self::surges_insert();
 	}
 
 	public static function modalities_table()
@@ -231,6 +232,33 @@ class Surge
 				]);
 			}
 		}
+	}
+
+	public static function surge_insert($year=null)
+	{
+		if(!$year) $year = date('Y');
+
+		$weeks = Week::where('financial_year', $year)->get();
+		$table_name = 'd_surge';
+
+		$i=0;
+		$data_array = [];
+		
+		$facilities = Facility::select('id')->get();
+		foreach ($facilities as $fac) {
+			foreach ($weeks as $week) {
+				$data_array[$i] = array('week_id' => $week->id, 'facility' => $fac->id);
+				$i++;
+
+				if ($i == 200) {
+					DB::table($table_name)->insert($data_array);
+					$data_array=null;
+			    	$i=0;
+				}				
+			}
+		}
+
+		if($data_array) DB::table($table_name)->insert($data_array);
 	}
 
 
