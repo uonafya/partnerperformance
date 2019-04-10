@@ -234,7 +234,7 @@ class Surge
 		}
 	}
 
-	public static function surge_insert($year=null)
+	public static function surges_insert($year=null)
 	{
 		if(!$year) $year = date('Y');
 
