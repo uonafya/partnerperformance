@@ -140,7 +140,7 @@ class Surge
         $table_name = 'surge_columns';
         $sql = "CREATE TABLE `{$table_name}` (
                     id smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    column_name varchar(30) DEFAULT NULL,
+                    column_name varchar(60) DEFAULT NULL,
                     gender_id tinyint(3) UNSIGNED DEFAULT 0,
                     age_id tinyint(3) UNSIGNED DEFAULT 0,
                     modality_id tinyint(3) UNSIGNED DEFAULT 0,
