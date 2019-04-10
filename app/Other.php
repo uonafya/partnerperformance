@@ -414,7 +414,7 @@ class Other
 
             while(true){
                 if($dt->dayOfWeek == 0) break;
-                $dt->addDay();
+                $dt->subDay();
             }
 
             $dt->subDays(7);
