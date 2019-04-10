@@ -131,7 +131,7 @@
 					<div class="col-md-6">
 						<select class="btn filters form-control" id="filter_week">
 							<option disabled='true'>Select Gender</option>
-							<option value='null' selected='true'>All Genderss</option>
+							<option value='null' selected='true'>All Genders</option>
 
 							@foreach($genders as $key => $gender)
 								<option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
