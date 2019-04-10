@@ -128,9 +128,14 @@ class SurgeController extends Controller
 				}
 			}
 
+			DB::enableQueryLog();
+			
 			DB::connection('mysql_wr')->table('d_surge')
 				->where(['facility' => $fac->id, 'week_id' => $week->id])
 				->update($update_data);
+
+	 		return DB::getQueryLog();
+
 		}
 
 		session(['toast_message' => "The updates have been made."]);
