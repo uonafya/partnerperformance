@@ -392,9 +392,9 @@ class Other
                     quarter tinyint(3) UNSIGNED DEFAULT 0,
 
                     PRIMARY KEY (`id`),
-                    # KEY `identifier`(`facility`, `year`, `month`),
-                    # KEY `identifier_other`(`facility`, `financial_year`, `quarter`),
-                    KEY `week_number` (`facility`),
+                    KEY `identifier`(`week_number`, `year`, `month`),
+                    KEY `identifier_other`(`week_number`, `financial_year`, `quarter`),
+                    KEY `week_number` (`week_number`),
                     KEY `specific_time` (`year`, `month`),
                     KEY `specific_period` (`financial_year`, `quarter`)
                 );
