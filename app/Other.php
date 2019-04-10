@@ -447,7 +447,8 @@ class Other
 
             $w = new Week;
             $w->fill($data);
-            if($w->financial_year != $financial_year) break;
+            // if($w->financial_year != $financial_year) break;
+            if($w->week_number == 53) break;
             $w->save();
         }
     }
