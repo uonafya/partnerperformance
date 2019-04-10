@@ -40,6 +40,7 @@ class SurgeController extends Controller
 		})
 		->orderBy('modality_id', 'asc')
 		->orderBy('gender_id', 'asc')
+		->orderBy('age_id', 'asc')
 		->get();
 
 		$sql = "County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";
@@ -49,7 +50,7 @@ class SurgeController extends Controller
 		}
 
 		$week = Week::find($week_id);
-		$filename = str_replace(' ', '_', strtolower($partner->name)) . 'surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
+		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
 		
 		$rows = DB::table('d_surge')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
