@@ -27,7 +27,7 @@ class Surge
         $table_name = 'surge_modalities';
         $sql = "CREATE TABLE `{$table_name}` (
                     id tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    modality varchar(20) DEFAULT NULL,
+                    modality varchar(30) DEFAULT NULL,
                     modality_name varchar(60) DEFAULT NULL,
 
                     male tinyint(1) UNSIGNED DEFAULT 1,
@@ -172,8 +172,7 @@ class Surge
         $sql = "CREATE TABLE `{$table_name}` (
                     id tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
                     facility int(10) UNSIGNED DEFAULT 0,
-                    week_id int(10) UNSIGNED DEFAULT 0,
-        ";
+                    week_id int(10) UNSIGNED DEFAULT 0, ";
 
         $modalities = SurgeModality::all();
         $ages = SurgeAge::all();
@@ -196,13 +195,12 @@ class Surge
         }
 
         $sql .= "
-
 	        		dateupdated date DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `facility` (`facility`),
                     KEY `week_id` (`week_id`),
                     KEY `specific` (`facility`, `week_id`)
-        ";
+        )";
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 	}
