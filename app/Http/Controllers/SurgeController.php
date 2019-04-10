@@ -53,6 +53,7 @@ class SurgeController extends Controller
 		
 		$rows = DB::table('d_surge')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->join('weeks', 'weed.id', '=', 'd_surge.week_id')
 			->selectRaw($sql)
 			->where('week_id', $week_id)
 			->where('partner', $partner->id)
