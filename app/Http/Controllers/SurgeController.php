@@ -44,7 +44,7 @@ class SurgeController extends Controller
 		->orderBy('id', 'asc')
 		->get();
 
-		$sql = "county_name as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";
+		$sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";
 
 		foreach ($columns as $column) {
 			$sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
