@@ -155,7 +155,7 @@ class GeneralController extends Controller
 
 	public function download_surge()
 	{
-		$data = Lookup::view_data();
+		$data = Lookup::view_data_surges();
 		$user = auth()->user();
 		$data['partner'] = session('session_partner');
 		$data['no_header'] = true;
