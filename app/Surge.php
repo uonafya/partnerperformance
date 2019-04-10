@@ -147,8 +147,10 @@ class Surge
 
                     PRIMARY KEY (`id`),
                     KEY `column_name` (`column_name`),
-                    KEY `gender` (`gender`),
-                    KEY `modality` (`modality`)
+                    KEY `gender_id` (`gender_id`),
+                    KEY `age_id` (`age_id`),
+                    KEY `gender_id` (`gender_id`),
+                    KEY `modality_id` (`modality_id`)
                 );
         ";
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
