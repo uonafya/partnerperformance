@@ -70,9 +70,7 @@ class Lookup
 				$value = '';
 				break;
 		}
-
 		return $value;
-
 	}
 
 	public static function get_category($row)

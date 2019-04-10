@@ -44,7 +44,7 @@ class SurgeController extends Controller
 		->orderBy('id', 'asc')
 		->get();
 
-		$sql = "County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";
+		$sql = "county_name as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";
 
 		foreach ($columns as $column) {
 			$sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
@@ -77,5 +77,63 @@ class SurgeController extends Controller
     	})->store('xlsx');
 
     	return response()->download($path);
+	}
+
+
+
+	public function upload_excel(Request $request)
+	{
+		ini_set('memory_limit', '-1');
+		if (!$request->hasFile('upload')){
+	        session(['toast_message' => 'Please select a file before clicking the submit button.']);
+	        session(['toast_error' => 1]);
+			return back();
+		}
+		$file = $request->upload->path();
+
+		$data = Excel::load($file, function($reader){
+			$reader->toArray();
+		})->get();
+
+		$partner = session('session_partner');
+		
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
+
+		$today = date('Y-m-d');
+
+		$surge_columns = SurgeColumn::all();
+
+		$columns = [];
+		$week = null;
+
+		foreach ($surge_columns as $key => $value) {
+			$columns[$value->excel_name] = $value->column_name;
+		}
+
+		foreach ($data as $row_key => $row){
+			if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
+			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
+			if(!$fac) continue;
+
+			if(!$week) $week = Week::where(['financial_year' => $row->financial_year, 'week_number' => $row->week_number])->first();
+
+			$update_data = ['dateupdated' => $today];
+
+			foreach ($row as $key => $value) {
+				if(isset($columns[$key])){
+					$update_data[$columns[$key]] = (int) $value;
+				}
+			}
+
+			DB::connection('mysql_wr')->table('d_surge')
+				->where(['facility' => $fac->id, 'week_id' => $week->id])
+				->update($update_data);
+		}
+
+		session(['toast_message' => "The updates have been made."]);
+		return back();
 	}
 }
