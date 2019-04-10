@@ -149,7 +149,6 @@ class Surge
                     KEY `column_name` (`column_name`),
                     KEY `gender_id` (`gender_id`),
                     KEY `age_id` (`age_id`),
-                    KEY `gender_id` (`gender_id`),
                     KEY `modality_id` (`modality_id`)
                 );
         ";
