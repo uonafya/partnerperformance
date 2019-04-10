@@ -156,7 +156,7 @@ class Surge
         DB::statement($sql);
 
 
-        $sql = "CREATE OR REPLACE VIEW `{$table_name}_view` (
+        $sql = "CREATE OR REPLACE VIEW `{$table_name}_view` AS (
         			SELECT c.*, a.age, a.age_name, a.no_gender, g.gender, m.modality, m.modality_name, m.hts 
 
         			FROM surge_columns c
