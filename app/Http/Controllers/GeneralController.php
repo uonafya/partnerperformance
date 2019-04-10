@@ -162,6 +162,13 @@ class GeneralController extends Controller
 		return view('forms.download_surge', $data);
 	}
 
+	public function upload_surge()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		return view('forms.upload_surge', ['no_header' => true, 'partner' => $partner]);
+	}
+
 	public function upload_nonmer()
 	{
 		$user = auth()->user();
