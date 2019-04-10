@@ -23,7 +23,7 @@
           Download Surge Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('pns/download') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('surge/download') }}" method="post" class="form-horizontal"> 
 					@csrf
 
           <p style="font-size: 16;">
@@ -35,14 +35,14 @@
               <select class="col-sm-7 select_tag" name="week">
                 <option></option>
                 @foreach($weeks as $week)
-                  <option value="{{ $week->id }}"> {{ $week->start_date . ' TO ' .  $week->end_date}} </option>
+                  <option value="{{ $week->id }}"> Week {{ $week->week_number }} - {{ $week->start_date . ' TO ' .  $week->end_date}} </option>
                 @endforeach
               </select>
           </div>
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Modality (You can select multiple modalities) <b>(Required)</b> </label>
-              <select class="col-sm-7 select_tag" name="modalities[]" required>
+              <select class="col-sm-7 select_tag" name="modalities[]" multiple="multiple" required>
                 <option></option>
                 @foreach($modalities as $modality)
                   <option value="{{ $modality->id }}"> {{ $modality->modality_name }} </option>
