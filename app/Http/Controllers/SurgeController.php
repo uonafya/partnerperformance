@@ -95,7 +95,7 @@ class SurgeController extends Controller
 			$reader->toArray();
 		})->get();
 
-		dd($data);
+		// dd($data);
 
 		$partner = session('session_partner');
 		
@@ -118,8 +118,8 @@ class SurgeController extends Controller
 		foreach ($data as $row_key => $row){
 			if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
 			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
-			// if(!$fac) continue;
-			if(!$fac) dd('Facility not found');
+			if(!$fac) continue;
+			// if(!$fac) dd('Facility not found');
 
 			if(!$week) $week = Week::where(['financial_year' => $row->financial_year, 'week_number' => $row->week_number])->first();
 
@@ -131,13 +131,13 @@ class SurgeController extends Controller
 				}
 			}
 
-			DB::enableQueryLog();
+			// DB::enableQueryLog();
 
 			DB::connection('mysql_wr')->table('d_surge')
 				->where(['facility' => $fac->id, 'week_id' => $week->id])
 				->update($update_data);
 
-	 		return DB::getQueryLog();
+	 		// return DB::getQueryLog();
 		}
 
 		session(['toast_message' => "The updates have been made."]);

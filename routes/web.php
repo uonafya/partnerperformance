@@ -170,7 +170,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 	Route::get('pns/upload', 'GeneralController@upload_pns');
 
 	Route::get('surge/download', 'GeneralController@download_surge');
-	Route::get('surge/upload', 'GeneralController@upload_pns');
+	Route::get('surge/upload', 'GeneralController@upload_surge');
 
 
 	Route::get('otz/upload', 'GeneralController@upload_nonmer');
