@@ -408,31 +408,32 @@ class Other
     public static function create_weeks($financial_year)
     {
         $year = $financial_year - 1;
-        // dd($financial_year);
-
         $dt = Carbon::createFromDate($year, 10, 1);
-
-        while(true){
-            if($dt->dayOfWeek == 1) break;
-            $dt->addDay();
-        }
-
         $week = 1;
 
-        $dt->subDays(7);
+        if($dt->dayOfWeek != 1){
 
-        $data = [
-            'week_number' => $week++,
-            'start_date' => $dt->toDateString(),
-            'end_date' => $dt->addDays(6)->toDateString(),
-            'year' => $dt->year,
-            'month' => $dt->month,
-        ];
+            while(true){
+                if($dt->dayOfWeek == 1) break;
+                $dt->addDay();
+            }
 
-        $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
-        $dt->addDay();
+            $dt->subDays(7);
 
-        $w = Week::create($data);
+            $data = [
+                'week_number' => $week++,
+                'start_date' => $dt->toDateString(),
+                'end_date' => $dt->addDays(6)->toDateString(),
+                'year' => $dt->year,
+                'month' => $dt->month,
+            ];
+
+            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+            $dt->addDay();
+
+            $w = Week::create($data);
+
+        }
 
         while(true) {
             $data = [
@@ -448,12 +449,6 @@ class Other
 
             $w = new Week;
             $w->fill($data);
-            // if($w->financial_year != $financial_year)
-            // {
-            //     $w->old_financial_year = $financial_year;
-            //     dd($w);
-            // }
-            // if($w->week_number == 53) break;
             if($w->financial_year != $financial_year) break;
             $w->save();
         }
