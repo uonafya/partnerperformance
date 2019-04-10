@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\BaseModel;
 
-class SurgeGender extends Model
+class SurgeGender extends BaseModel
 {
     //
 }

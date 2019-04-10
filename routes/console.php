@@ -53,6 +53,10 @@ Artisan::command('notify', function () {
 	\App\Other::send_pns();
 })->describe('Send emails to all partners.');
 
+Artisan::command('surges', function () {
+	\App\Surge::surges();
+})->describe('Surges.');
+
 
 
 Artisan::command('merge:all {year?}', function ($year=null) {

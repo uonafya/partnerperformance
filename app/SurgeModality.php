@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\BaseModel;
 
-class SurgeModality extends Model
+class SurgeModality extends BaseModel
 {
     //
 }
