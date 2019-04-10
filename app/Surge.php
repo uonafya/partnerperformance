@@ -217,7 +217,7 @@ class Surge
 				$col = $base . $gender->gender;
 				$alias = $base2 . title_case($gender->gender);
 				$ex = str_replace(' ', '_', strtolower($alias));
-				$ex = str_replace('-', '_', strtolower($ex))
+				$ex = str_replace('-', '_', strtolower($ex));
 				$sql .= "
 					`{$col}` int(10) UNSIGNED DEFAULT 0, ";
 
