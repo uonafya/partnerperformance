@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Lookup;
 use App\User;
+use App\Week;
 use DB;
 
 class GeneralController extends Controller
@@ -150,6 +151,15 @@ class GeneralController extends Controller
 		$user = auth()->user();
 		$partner = session('session_partner');
 		return view('forms.upload_pns', ['no_header' => true, 'partner' => $partner]);
+	}
+
+	public function download_surge()
+	{
+		$data = Lookup::view_data();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_surge', $data);
 	}
 
 	public function upload_nonmer()

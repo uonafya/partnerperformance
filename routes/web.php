@@ -158,6 +158,11 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::get('pns/download', 'GeneralController@download_pns');
 	Route::get('pns/upload', 'GeneralController@upload_pns');
+
+	Route::get('surge/download', 'GeneralController@download_surge');
+	Route::get('surge/upload', 'GeneralController@upload_pns');
+
+
 	Route::get('otz/upload', 'GeneralController@upload_nonmer');
 	Route::get('indicators/upload', 'GeneralController@upload_indicators');
 	Route::resource('user', 'UserController');
