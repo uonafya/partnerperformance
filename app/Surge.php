@@ -196,6 +196,7 @@ class Surge
         }
 
         $sql .= "
+
 	        		dateupdated date DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `facility` (`facility`),
@@ -213,7 +214,7 @@ class Surge
 			if($modality->{$gender->gender}){
 				$col = $base . $gender->gender;
 				$sql .= "
-					{$col} int(10) UNSIGNED DEFAULT 0, ";
+					`{$col}` int(10) UNSIGNED DEFAULT 0, ";
 
 				$s = SurgeColumn::create([
 					'column_name' => $col,
