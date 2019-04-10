@@ -41,6 +41,7 @@ class SurgeController extends Controller
 		->orderBy('modality_id', 'asc')
 		->orderBy('gender_id', 'asc')
 		->orderBy('age_id', 'asc')
+		->orderBy('id', 'asc')
 		->get();
 
 		$sql = "County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";

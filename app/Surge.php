@@ -180,14 +180,14 @@ class Surge
         $modalities = SurgeModality::all();
         $ages = SurgeAge::all();
         $genders = SurgeGender::all();
-        $hts = ['tested', 'pos'];
+        $hts = ['tested', 'positive'];
 
         foreach ($modalities as $modality) {
         	foreach ($ages as $age) {
         		if($modality->hts){
         			foreach ($hts as $h) {
         				$base = $modality->modality . '_' . $h . '_' . $age->age . '_';
-        				$base2 = $modality->modality_name . ' ' . $h . ' ' . $age->age_name . ' ';
+        				$base2 = $modality->modality_name . ' ' . title_case($h) . ' ' . $age->age_name . ' ';
 	        			self::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
         			}
         		}
