@@ -401,7 +401,6 @@ class Other
         ";
         DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::connection('mysql_wr')->statement($sql);
-
     }
 
 
@@ -411,10 +410,10 @@ class Other
         $dt = Carbon::createFromDate($year, 10, 1);
         $week = 1;
 
-        if($dt->dayOfWeek != 1){
+        if($dt->dayOfWeek != 0){
 
             while(true){
-                if($dt->dayOfWeek == 1) break;
+                if($dt->dayOfWeek == 0) break;
                 $dt->addDay();
             }
 
