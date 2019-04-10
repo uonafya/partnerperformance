@@ -408,6 +408,7 @@ class Other
     public static function create_weeks($financial_year)
     {
         $year = $financial_year - 1;
+        // dd($financial_year);
 
         $dt = Carbon::createFromDate($year, 9, 1);
 
@@ -447,8 +448,13 @@ class Other
 
             $w = new Week;
             $w->fill($data);
+            if($w->financial_year != $financial_year)
+            {
+                $w->old_financial_year = $financial_year;
+                dd($w);
+            }
             // if($w->financial_year != $financial_year) break;
-            if($w->week_number == 53) break;
+            // if($w->week_number == 53) break;
             $w->save();
         }
     }
