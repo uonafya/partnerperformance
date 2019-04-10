@@ -97,6 +97,12 @@ class GeneralController extends Controller
 		return view('base.pns', $data);
 	}
 
+	public function surge()
+	{
+		$data = Lookup::view_data_surges();
+		return view('base.surge', $data);
+	}
+
 	public function indicators()
 	{
 		$data = Lookup::view_data();

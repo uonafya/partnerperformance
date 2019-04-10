@@ -110,6 +110,7 @@
 							<option value='null' selected='true'>All Modalities</option>
 
 							@foreach($modalities as $key => $modality)
+								@continue($modality->hts == 0)
 								<option value="{{ $modality->id }}"> {{ $modality->modality_name }} </option>
 							@endforeach
 						</select>

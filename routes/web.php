@@ -146,6 +146,7 @@ Route::middleware(['clear_session'])->group(function(){
 	Route::get('otz', 'GeneralController@otz');
 	Route::get('pns', 'GeneralController@pns');
 	Route::get('indicators', 'GeneralController@indicators');
+	Route::get('surge', 'GeneralController@surge');
 
 	Route::get('guide', 'GeneralController@guide');
 });

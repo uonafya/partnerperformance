@@ -141,7 +141,7 @@ class SurgeController extends Controller
 	 		// return DB::getQueryLog();
 		}
 
-		session(['toast_message' => "The updates have been made."]);
+		session(['toast_message' => "The surge updates have been made."]);
 		return back();
 	}
 }
