@@ -173,7 +173,7 @@ class Surge
 
         $table_name = 'd_surge';
         $sql = "CREATE TABLE `{$table_name}` (
-                    id tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                     facility int(10) UNSIGNED DEFAULT 0,
                     week_id int(10) UNSIGNED DEFAULT 0, ";
 
