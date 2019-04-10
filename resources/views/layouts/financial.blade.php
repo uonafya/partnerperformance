@@ -103,6 +103,43 @@
 
 			@elseif(ends_with(url()->current(), 'surge'))
 
+				<div class="row">
+					<div class="col-md-12">
+						<select class="btn filters form-control" multiple="multiple" id="filter_modality">
+							<option disabled='true'>Select Modality</option>
+							<option value='null' selected='true'>All Modalities</option>
+
+							@foreach($modalities as $key => $modality)
+								<option value="{{ $modality->id }}"> {{ $modality->modality_name }} </option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<select class="btn filters form-control" id="filter_week">
+							<option disabled='true'>Select Week</option>
+							<option value='null' selected='true'>All Weeks</option>
+
+							@foreach($weeks as $key => $week)
+								<option value="{{ $week->id }}"> {{ $week->name }} </option>
+							@endforeach
+						</select>
+					</div>
+
+					<div class="col-md-6">
+						<select class="btn filters form-control" id="filter_week">
+							<option disabled='true'>Select Gender</option>
+							<option value='null' selected='true'>All Genderss</option>
+
+							@foreach($genders as $key => $gender)
+								<option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+
 			@endif
 		</div>	
 

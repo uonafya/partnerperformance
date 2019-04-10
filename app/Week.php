@@ -12,4 +12,9 @@ class Week extends BaseModel
         if($this->$value) return date($format, strtotime($this->$value));
         return '';
     }
+
+    public function getNameAttribute()
+    {
+    	return "Week {$this->week_number} - {$this->start_date} TO  {$this->end_date}";
+    }
 }

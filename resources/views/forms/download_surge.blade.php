@@ -35,7 +35,7 @@
               <select class="col-sm-7 select_tag" name="week">
                 <option></option>
                 @foreach($weeks as $week)
-                  <option value="{{ $week->id }}"> Week {{ $week->week_number }} - {{ $week->start_date . ' TO ' .  $week->end_date}} </option>
+                  <option value="{{ $week->id }}"> {{ $week->name }} </option>
                 @endforeach
               </select>
           </div>
