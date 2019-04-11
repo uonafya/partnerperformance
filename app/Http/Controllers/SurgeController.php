@@ -42,7 +42,7 @@ class SurgeController extends Controller
 			->whereRaw($date_query)
 			->get();
 
-		dd($rows);
+		// dd($rows);
 
 
 		$groupby = session('filter_groupby', 1);
