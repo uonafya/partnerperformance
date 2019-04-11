@@ -41,6 +41,20 @@
 	</div>
 </div>
 
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Yield By Modality <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="modality">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -52,9 +66,11 @@
 	{
 		$("#testing").html("<center><div class='loader'></div></center>");
 		$("#linkage").html("<center><div class='loader'></div></center>");
+		$("#modality").html("<center><div class='loader'></div></center>");
 
 		$("#testing").load("{{ url('surge/testing') }}");
 		$("#linkage").load("{{ url('surge/linkage') }}");
+		$("#modality").load("{{ url('surge/modality') }}");
 	}
 
 

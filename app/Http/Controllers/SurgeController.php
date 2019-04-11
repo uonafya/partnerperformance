@@ -150,7 +150,51 @@ class SurgeController extends Controller
 	{
 		$sql = '';
 
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['ytitle'] = "Yield by Modality (%)";
+
 		$modalities = SurgeModality::where('hts', 1)->get();
+
+		foreach ($modalities as $key => $modality) {
+			$tested_columns = SurgeColumnView::where('modality_id', $modality->id)
+				->where('column_name', 'like', '%tested%')
+				->when(true, $this->surge_columns_callback(false))
+				->get();
+
+			$positive_columns = SurgeColumnView::where('modality_id', $modality->id)
+				->where('column_name', 'like', '%positive%')
+				->when(true, $this->surge_columns_callback(false))
+				->get();
+
+			$sql .= $this->get_sum($tested_columns, $modality->modality . '_tested') . ', ' . $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
+
+			$data['outcomes'][$key]['name'] = $modality->modality_name;
+		}
+
+		$sql = substr($sql, 0, -2);
+
+		$date_query = Lookup::date_query();
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback())
+			->whereRaw($date_query)
+			->get();
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			foreach ($modalities as $mod_key => $modality) {
+				$t = $modality->modality . '_tested';
+				$p = $modality->modality . '_pos';
+				$data["outcomes"][$mod_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
+			}
+		}
+		return view('charts.line_graph', $data);
 	}
 
 

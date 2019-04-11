@@ -123,6 +123,7 @@ Route::prefix('pns')->name('pns.')->group(function(){
 Route::prefix('surge')->name('surge.')->group(function(){
 	Route::get('testing', 'SurgeController@testing')->name('testing');
 	Route::get('linkage', 'SurgeController@linkage')->name('linkage');
+	Route::get('modality', 'SurgeController@modality')->name('modality');
 
 	Route::post('download', 'SurgeController@download_excel')->name('download');
 	Route::post('upload', 'SurgeController@upload_excel')->name('upload');
