@@ -70,12 +70,12 @@
             },
             legend: {
                 layout: 'horizontal',
-                align: 'right',
-                x: -100,
+                align: 'left',
+                // x: -100,
                 verticalAlign: 'bottom',
-                y: -25,
+                // y: -25,
                 floating: false,
-                // width: 1000,
+                width: $(window).width() - 20,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {

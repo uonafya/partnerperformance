@@ -45,11 +45,12 @@
             },
             legend: {
                 layout: 'horizontal',
-                align: 'right',
+                align: 'left',
                 x: -35,
                 verticalAlign: 'bottom',
                 y: 5,
                 floating: false,
+                width: $(window).width() - 20,
                 // width: 1000,
                 backgroundColor: '#FFFFFF'
             },
