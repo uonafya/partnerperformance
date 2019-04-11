@@ -124,7 +124,7 @@
 							<option disabled='true'>Select Age Group</option>
 							<option value='null' selected='true'>All Ages</option>
 
-							@foreach($age as $key => $age)
+							@foreach($ages as $key => $age)
 								<option value="{{ $age->id }}"> {{ $age->age_name }} </option>
 							@endforeach
 						</select>
