@@ -615,7 +615,7 @@ class Lookup
 		}
 	}
 
-	public function surge_columns_query($modality, $gender, $age)
+	public static function surge_columns_query($modality, $gender, $age)
 	{
 		$query = " 1 ";
 		if(session('filter_gender') && $gender) $query .= " AND gender_id" . self::set_division_query(session('filter_gender'));
