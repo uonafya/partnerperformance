@@ -45,7 +45,7 @@
             borderWidth: 0*/
             
             layout: 'horizontal',
-            align: 'right',
+            align: 'left',
             // x: -100,
             verticalAlign: 'bottom',
             // y: -25,
