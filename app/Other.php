@@ -376,33 +376,6 @@ class Other
         echo 'Completed entry for ' . $table_name . " \n";
 	}
 
-    public static function create_weeks_table()
-    {
-        $table_name = 'weeks';
-        $sql = "CREATE TABLE `{$table_name}` (
-                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    week_number tinyint(3) UNSIGNED DEFAULT 0,
-
-                    start_date date DEFAULT NULL,
-                    end_date date DEFAULT NULL,
-
-                    year smallint(4) UNSIGNED DEFAULT 0,
-                    month tinyint(3) UNSIGNED DEFAULT 0,
-                    financial_year smallint(4) UNSIGNED DEFAULT 0,
-                    quarter tinyint(3) UNSIGNED DEFAULT 0,
-
-                    PRIMARY KEY (`id`),
-                    KEY `identifier`(`week_number`, `year`, `month`),
-                    KEY `identifier_other`(`week_number`, `financial_year`, `quarter`),
-                    KEY `week_number` (`week_number`),
-                    KEY `specific_time` (`year`, `month`),
-                    KEY `specific_period` (`financial_year`, `quarter`)
-                );
-        ";
-        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
-        DB::connection('mysql_wr')->statement($sql);
-    }
-
 
 	public static function delete_data($id=55222){
 		$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();

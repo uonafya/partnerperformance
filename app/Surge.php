@@ -176,7 +176,7 @@ class Surge
         $sql = "CREATE TABLE `{$table_name}` (
                     id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                     facility int(10) UNSIGNED DEFAULT 0,
-                    week_id int(10) UNSIGNED DEFAULT 0, ";
+                    week_id smallint(5) UNSIGNED DEFAULT 0, ";
 
         $modalities = SurgeModality::all();
         $ages = SurgeAge::all();
@@ -261,6 +261,33 @@ class Surge
 		if($data_array) DB::table($table_name)->insert($data_array);
 	}
 
+    public static function create_weeks_table()
+    {
+        $table_name = 'weeks';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    week_number tinyint(3) UNSIGNED DEFAULT 0,
+
+                    start_date date DEFAULT NULL,
+                    end_date date DEFAULT NULL,
+
+                    year smallint(4) UNSIGNED DEFAULT 0,
+                    month tinyint(3) UNSIGNED DEFAULT 0,
+                    financial_year smallint(4) UNSIGNED DEFAULT 0,
+                    quarter tinyint(3) UNSIGNED DEFAULT 0,
+
+                    PRIMARY KEY (`id`),
+                    KEY `identifier`(`week_number`, `year`, `month`),
+                    KEY `identifier_other`(`week_number`, `financial_year`, `quarter`),
+                    KEY `week_number` (`week_number`),
+                    KEY `specific_time` (`year`, `month`),
+                    KEY `specific_period` (`financial_year`, `quarter`)
+                );
+        ";
+        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::connection('mysql_wr')->statement($sql);
+    }
+
     public static function create_weeks($financial_year)
     {
         $year = $financial_year - 1;
@@ -306,6 +333,7 @@ class Surge
             if($w->financial_year != $financial_year) break;
             $w->save();
         }
+        DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 26;");
     }
 
 

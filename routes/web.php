@@ -122,10 +122,7 @@ Route::prefix('pns')->name('pns.')->group(function(){
 
 Route::prefix('surge')->name('surge.')->group(function(){
 	Route::get('testing', 'SurgeController@testing')->name('testing');
-	
-	Route::get('pns_contribution', 'PNSController@pns_contribution')->name('pns_contribution');
-	Route::get('summary_table', 'PNSController@summary_table')->name('summary_table');
-	Route::get('get_table/{item}', 'PNSController@get_table')->name('get_table');
+	Route::get('linkage', 'SurgeController@linkage')->name('linkage');
 
 	Route::post('download', 'SurgeController@download_excel')->name('download');
 	Route::post('upload', 'SurgeController@upload_excel')->name('upload');

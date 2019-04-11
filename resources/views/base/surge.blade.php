@@ -28,6 +28,19 @@
 </div>
 
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Linkage <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="linkage">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -38,8 +51,10 @@
 	function reload_page()
 	{
 		$("#testing").html("<center><div class='loader'></div></center>");
+		$("#linkage").html("<center><div class='loader'></div></center>");
 
 		$("#testing").load("{{ url('surge/testing') }}");
+		$("#linkage").load("{{ url('surge/linkage') }}");
 	}
 
 
