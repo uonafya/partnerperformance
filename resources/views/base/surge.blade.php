@@ -94,7 +94,10 @@
 		
 		// date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
 
-		date_object = { 'financial_year': "{{ date('Y') }}" };
+
+		dt = new Date();
+		y = dt.getFullYear();
+		date_object = { 'financial_year': y };
 		var posting = $.post('{{ $date_url }}', date_object);
 
 		posting.done(function( obj ) {
@@ -103,8 +106,7 @@
 				obj.month = "";
 			}
 			console.log(obj);
-			
-			$(".display_range").html("( "+obj.prev_year +" - "+obj.year +" )");			
+			$(".display_date").html(obj.display_date);		
 		});
 
 		$("#filter_agency").val(1).change();
