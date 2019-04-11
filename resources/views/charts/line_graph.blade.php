@@ -48,7 +48,7 @@
             verticalAlign: 'bottom',
             y: -25,
             floating: false,
-            width: 500,
+            width: 1000,
             backgroundColor: '#FFFFFF'
         },
         series: {!! json_encode($outcomes) !!}
