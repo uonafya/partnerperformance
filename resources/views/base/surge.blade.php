@@ -92,7 +92,9 @@
 
 	$().ready(function(){
 		
-		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
+		// date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
+
+		$("#filter_agency").val(1);
 
 	});
 
