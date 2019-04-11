@@ -109,8 +109,9 @@ class Surge
         	['age' => 'below_30', 'age_name' => '25-29', ],
         	['age' => 'below_35', 'age_name' => '30-34', ],
         	['age' => 'below_40', 'age_name' => '35-39', ],
-        	['age' => 'below_45', 'age_name' => '40-44', ],
-        	['age' => 'below_50', 'age_name' => '45-49', ],
+        	// ['age' => 'below_45', 'age_name' => '40-44', ],
+        	// ['age' => 'below_50', 'age_name' => '45-49', ],
+            ['age' => 'below_50', 'age_name' => '40-49', ],
         	['age' => 'above_50', 'age_name' => 'Above 50', ],
         	// ['age' => '', 'age_name' => '', ],
         ]);

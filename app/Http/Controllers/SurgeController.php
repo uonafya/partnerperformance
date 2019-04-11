@@ -33,7 +33,6 @@ class SurgeController extends Controller
 
 		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos');
 
-
 		$date_query = Lookup::date_query();
 
 		$rows = DB::table('d_surge')
@@ -82,17 +81,22 @@ class SurgeController extends Controller
 
 	public function linkage()
 	{
-		$new_tx_columns = SurgeColumnView::where('modality', 'tx_new')
-			->when(true, $this->surge_columns_callback(false))
-			->get();
-
 		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
 			->where('hts', 1)
 			->when(true, $this->surge_columns_callback(false))
 			->get();
 
-		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($new_tx_columns, 'tx_new');
+		$male_new = SurgeColumnView::where('modality', 'tx_new')
+			->when(true, $this->surge_columns_callback(false))
+			->where('gender_id', 1)
+			->get();
 
+		$female_new = SurgeColumnView::where('modality', 'tx_new')
+			->when(true, $this->surge_columns_callback(false))
+			->where('gender_id', 2)
+			->get();
+
+		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($male_new, 'male_new') . ', ' .  $this->get_sum($female_new, 'female_new');
 
 		$date_query = Lookup::date_query();
 
@@ -106,30 +110,47 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		// $data['ytitle'] = 'Linkage to Treatment (%)';
+		$data['yAxis'] = "New On Treatment";
+		$data['yAxis2'] = "Linkage to Treatment (%)";
 
-		$data['outcomes'][0]['name'] = "Linkage to Treatment (%)";
-		$data['outcomes'][0]['type'] = "spline";
+		$data['outcomes'][0]['name'] = "Male New on Treatment";
+		$data['outcomes'][1]['name'] = "Female New on Treatment";
+		$data['outcomes'][2]['name'] = "Linkage to Treatment";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "spline";
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
 
 		if($groupby < 10){
-			$data['outcomes'][0]['lineWidth'] = 0;
-			$data['outcomes'][0]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][0]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
 		}
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			// if($row->tests < $row->pos) $row->tests = $row->pos;
-			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->tx_new, $row->pos);
+			$data["outcomes"][0]["data"][$key] = (int) $row->male_new;
+			$data["outcomes"][1]["data"][$key] = (int) $row->female_new;
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage(($row->male_new + $row->female_new), $row->pos);
 		}
-		return view('charts.bar_graph', $data);
+		return view('charts.dual_axis', $data);
 	}
 
 
 
 	public function modality()
 	{
+		$sql = '';
 
+		$modalities = SurgeModality::where('hts', 1)->get();
 	}
 
 
