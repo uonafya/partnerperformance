@@ -93,19 +93,7 @@
 	$().ready(function(){
 		
 		// date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
-
-		var posting = $.post('{{ $date_url }}', { 'financial_year': {{ date('Y') }} });
-
-		posting.done(function( obj ) {
-
-			if(obj.month == "null" || obj.month == null){
-				obj.month = "";
-			}
-			console.log(obj);
-			
-			$(".display_range").html("( "+obj.prev_year +" - "+obj.year +" )");			
-		});
-
+		
 		$("#filter_agency").val(1).change();
 
 	});
