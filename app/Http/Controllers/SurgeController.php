@@ -145,8 +145,8 @@ class SurgeController extends Controller
 	}
 
 
-
-	public function modality()
+	// Yield by modality
+	public function modality_yield()
 	{
 		$sql = '';
 
@@ -205,6 +205,62 @@ class SurgeController extends Controller
 	}
 
 
+	// Yield by age
+	public function age_yield()
+	{
+		$sql = '';
+
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['ytitle'] = "Yield by Age (%)";
+		$data['suffix'] = '%';
+
+		$ages = SurgeAge::when(session('filter_gender'), function($query){
+						if(session('filter_gender') == 3) return $query->where('no_gender', 1);
+					})->get();
+
+		foreach ($ages as $key => $age) {
+			$tested_columns = SurgeColumnView::where('age_id', $age->id)
+				->where('column_name', 'like', '%tested%')
+				->when(true, $this->surge_columns_callback(true, true, false))
+				->get();
+
+			$positive_columns = SurgeColumnView::where('age_id', $age->id)
+				->where('column_name', 'like', '%positive%')
+				->when(true, $this->surge_columns_callback(true, true, false))
+				->get();
+
+			$sql .= $this->get_sum($tested_columns, $age->age . '_tested') . ', ' . $this->get_sum($positive_columns, $age->age . '_pos') . ', ';
+
+			$data['outcomes'][$key]['name'] = $age->age_name;
+		}
+
+		$sql = substr($sql, 0, -2);
+
+		$date_query = Lookup::date_query();
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback())
+			->whereRaw($date_query)
+			->get();
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			foreach ($ages as $age_key => $age) {
+				$t = $age->age . '_tested';
+				$p = $age->age . '_pos';
+				$data["outcomes"][$age_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
+			}
+		}
+		return view('charts.line_graph', $data);
+	}
+
+
 
 
 	public function get_sum($columns, $name)
@@ -231,12 +287,16 @@ class SurgeController extends Controller
 		$week_id = $request->input('week');
 		$modalities = $request->input('modalities');
 		$gender = $request->input('gender');
+		$ages = $request->input('ages');
 
 		$columns = SurgeColumn::when(true, function($query) use ($modalities){
 			if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
 			return $query->where('modality_id', $modalities);
 		})->when($gender, function($query) use ($gender){
 			return $query->where('gender_id', $gender);
+		})->when($ages, function($query) use ($ages){
+			if(is_array($ages)) return $query->whereIn('age_id', $ages);
+			return $query->where('age_id', $ages);
 		})
 		->orderBy('modality_id', 'asc')
 		->orderBy('gender_id', 'asc')

@@ -22,18 +22,12 @@
                 value: 0,
                 width: 1,
                 color: '#808080'
-            }],
-            labels: {
-                formatter: function() {
-                    return this.value + "{{ $suffix ?? '' }}";
-                },
-                style: {
-                    
-                }
-            },
+            }]
         },
         tooltip: {
-            valueSuffix: ""
+            valueSuffix: "{{ $suffix ?? '?' }}",
+            valuePrefix: "{{ $prefix ?? '' }}"
+            // valueDecimals: 2
         },
         legend: {
             /*layout: 'vertical',

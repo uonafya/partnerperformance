@@ -50,6 +50,7 @@
                 verticalAlign: 'bottom',
                 y: 5,
                 floating: false,
+                width: 1000,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {
