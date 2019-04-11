@@ -83,16 +83,16 @@ class SurgeController extends Controller
 	{
 		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
 			->where('hts', 1)
-			->when(true, $this->surge_columns_callback(false))
+			->when(true, $this->surge_columns_callback(false, false))
 			->get();
 
 		$male_new = SurgeColumnView::where('modality', 'tx_new')
-			->when(true, $this->surge_columns_callback(false))
+			->when(true, $this->surge_columns_callback(false, false))
 			->where('gender_id', 1)
 			->get();
 
 		$female_new = SurgeColumnView::where('modality', 'tx_new')
-			->when(true, $this->surge_columns_callback(false))
+			->when(true, $this->surge_columns_callback(false, false))
 			->where('gender_id', 2)
 			->get();
 
