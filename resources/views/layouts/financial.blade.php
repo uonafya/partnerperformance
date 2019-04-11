@@ -108,7 +108,7 @@
 					<div class="col-md-12">
 						<select class="btn filters form-control" multiple="multiple" id="filter_modality">
 							<option disabled='true'>Select Modality</option>
-							<option value='null' selected='true'>All Modalities</option>
+							<option value='null'>All Modalities</option>
 
 							@foreach($modalities as $key => $modality)
 								@continue($modality->hts == 0)
