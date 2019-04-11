@@ -97,7 +97,7 @@
 
 		dt = new Date();
 		y = dt.getFullYear();
-		date_object = { 'financial_year': y };
+		date_object = { 'financial_year': "{{ date('Y') }}" };
 		var posting = $.post('{{ $date_url }}', date_object);
 
 		posting.done(function( obj ) {
