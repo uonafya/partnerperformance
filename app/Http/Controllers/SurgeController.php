@@ -100,7 +100,7 @@ class SurgeController extends Controller
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
-			->when(true, $this->get_callback('tests'))
+			->when(true, $this->get_callback('pos'))
 			->whereRaw($date_query)
 			->get();
 
