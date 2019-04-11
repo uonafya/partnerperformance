@@ -81,6 +81,7 @@ class Lookup
 			if($groupby == 11) return 'FY ' . $row->financial_year;
 			if($groupby == 12) return self::resolve_month($row->month) . ', ' . $row->year;
 			if($groupby == 13) return "FY {$row->financial_year} Q {$row->quarter}";
+			if($groupby == 14) return "FY {$row->financial_year} W {$row->week_number}";
 		}
 		else{
 			return $row->name ?? '';

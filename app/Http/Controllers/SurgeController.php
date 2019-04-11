@@ -28,9 +28,64 @@ class SurgeController extends Controller
 		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
 			->when(true, $this->surge_columns_callback())
 			->get();
-		
+
+		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos');
 
 
+		$date_query = Lookup::date_query();
+
+		$rows = DB::table('m_surge')
+			->join('weeks', 'weeks.id', '=', 'm_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('tests'))
+			->whereRaw($date_query)
+			->get();
+
+
+		$data['div'] = str_random(15);
+
+		$data['outcomes'][0]['name'] = "Positive Tests";
+		$data['outcomes'][1]['name'] = "Negative Tests";
+		$data['outcomes'][2]['name'] = "Yield";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "column";
+		$data['outcomes'][2]['type'] = "spline";
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		if($groupby < 10){
+			$data['outcomes'][2]['lineWidth'] = 0;
+			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+		}
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$key] = (int) $row->pos;	
+			$data["outcomes"][1]["data"][$key] = (int) ($row->tests - $row->pos);	
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
+		}
+		return view('charts.dual_axis', $data);
+	}
+
+
+	public function get_sum($columns, $name)
+	{
+		$sql = "(";
+
+		foreach ($columns as $column) {
+			$sql .= "SUM({$column->column_name}) + ";
+		}
+		$sql = substr($sql, 0, -3).
+		$sql .= ") AS {$name} ";
+		return $sql;
 	}
 
 	public function download_excel(Request $request)
