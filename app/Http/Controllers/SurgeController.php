@@ -42,6 +42,8 @@ class SurgeController extends Controller
 			->whereRaw($date_query)
 			->get();
 
+		dd($rows);
+
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
