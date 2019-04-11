@@ -153,6 +153,7 @@ class SurgeController extends Controller
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
 		$data['ytitle'] = "Yield by Modality (%)";
+		$data['suffix'] = '%';
 
 		$modalities = SurgeModality::where('hts', 1)
 			->when(session('filter_gender'), function($query){
