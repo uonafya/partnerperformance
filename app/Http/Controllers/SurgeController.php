@@ -83,7 +83,7 @@ class SurgeController extends Controller
 		foreach ($columns as $column) {
 			$sql .= "SUM(`{$column->column_name}`) + ";
 		}
-		$sql = substr($sql, 0, -3).
+		$sql = substr($sql, 0, -3);
 		$sql .= ") AS {$name} ";
 		return $sql;
 	}
