@@ -25,7 +25,7 @@
             }],
             labels: {
                 formatter: function() {
-                    return this.value + "{{ $suffix ?? '?' }}";
+                    return this.value + "{{ $suffix ?? '%' }}";
                 },
                 style: {
                     
@@ -33,7 +33,7 @@
             },
         },
         tooltip: {
-            valueSuffix: "{{ $suffix ?? '?' }}",
+            valueSuffix: "{{ $suffix ?? '%' }}",
             valuePrefix: "{{ $prefix ?? '' }}"
             // valueDecimals: 2
         },
