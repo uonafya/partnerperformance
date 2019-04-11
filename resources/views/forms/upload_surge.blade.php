@@ -35,7 +35,7 @@
           </p>
 
           <div class="form-group">
-              <label class="col-sm-5 control-label">Upload PNS Data</label>
+              <label class="col-sm-5 control-label">Upload Surge Data</label>
               <div class="col-sm-7">
                   <input class="form-control" name="upload" id="upload" type="file" accept=".xlsx, .xls, .csv" />
               </div>
