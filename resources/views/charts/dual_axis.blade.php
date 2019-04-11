@@ -38,7 +38,6 @@
             }, { // Secondary yAxis
                 gridLineWidth: 0,
                 title: {
-                    {{--text: '<?= (isset($tat) ? @"Days": @"Tests"); ?>',--}}
                     text: "{{ $yAxis ?? 'Tests' }} ",
                     style: {
                         color: '#4572A7'
