@@ -46,9 +46,9 @@
             
             layout: 'horizontal',
             align: 'right',
-            x: -100,
+            // x: -100,
             verticalAlign: 'bottom',
-            y: -25,
+            // y: -25,
             floating: false,
             width: 1000,
             backgroundColor: '#FFFFFF'
