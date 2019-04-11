@@ -50,7 +50,7 @@
             verticalAlign: 'bottom',
             // y: -25,
             floating: false,
-            width: 1000,
+            width: $(window).width() - 10,
             backgroundColor: '#FFFFFF'
         },
         series: {!! json_encode($outcomes) !!}
