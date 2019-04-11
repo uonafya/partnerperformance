@@ -34,9 +34,9 @@ class SurgeController extends Controller
 
 		$date_query = Lookup::date_query();
 
-		$rows = DB::table('m_surge')
-			->join('weeks', 'weeks.id', '=', 'm_surge.week_id')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_surge.facility')
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('tests'))
 			->whereRaw($date_query)
