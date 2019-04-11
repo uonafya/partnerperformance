@@ -80,6 +80,7 @@
 
 						@foreach($divisions as $division)
 							@continue(str_contains(url()->current(), 'otz') && ($division->id > 11 || $division->id == 10))
+							@continue(!str_contains(url()->current(), 'surge') && ($division->id == 14))
 							<option value="{{ $division->id }}"> {{ $division->name }} </option>
 						@endforeach
 					</select>		
@@ -130,7 +131,7 @@
 					</div>
 
 					<div class="col-md-6">
-						<select class="btn filters form-control" id="filter_week">
+						<select class="btn filters form-control" id="filter_gender">
 							<option disabled='true'>Select Gender</option>
 							<option value='null' selected='true'>All Genders</option>
 

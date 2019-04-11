@@ -42,6 +42,7 @@
 
 			@foreach($divisions as $division)
 				@continue($division->id > 2 && $division->id < 6)
+				@continue(!str_contains(url()->current(), 'surge') && ($division->id == 14))
 				<option value="{{ $division->id }}"> {{ $division->name }} </option>
 			@endforeach
 		</select>		

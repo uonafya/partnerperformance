@@ -404,53 +404,6 @@ class Other
     }
 
 
-    public static function create_weeks($financial_year)
-    {
-        $year = $financial_year - 1;
-        $dt = Carbon::createFromDate($year, 10, 1);
-        $week = 1;
-
-        if($dt->dayOfWeek != 0){
-
-            while(true){
-                if($dt->dayOfWeek == 0) break;
-                $dt->subDay();
-            }
-
-            $data = [
-                'week_number' => $week++,
-                'start_date' => $dt->toDateString(),
-                'end_date' => $dt->addDays(6)->toDateString(),
-                'year' => $dt->year,
-                'month' => $dt->month,
-            ];
-
-            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
-            $dt->addDay();
-
-            $w = Week::create($data);
-
-        }
-
-        while(true) {
-            $data = [
-                'week_number' => $week++,
-                'start_date' => $dt->toDateString(),
-                'end_date' => $dt->addDays(6)->toDateString(),
-                'year' => $dt->year,
-                'month' => $dt->month,
-            ];
-
-            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
-            $dt->addDay();
-
-            $w = new Week;
-            $w->fill($data);
-            if($w->financial_year != $financial_year) break;
-            $w->save();
-        }
-    }
-
 	public static function delete_data($id=55222){
 		$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
 		foreach ($tables as $key => $table) {

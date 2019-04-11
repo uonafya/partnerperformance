@@ -73,7 +73,7 @@ class FilterController extends Controller
 		$var = $request->input('session_var');
 		$val = $request->input('value');
 
-		if($val == null || (!is_array($val) && !is_numeric($val)) || (is_array($val) && in_array('null', $val)) ) $val = null;
+		if($val == null || (!is_array($val) && in_array($val, ['null', ''])) || (is_array($val) && in_array('null', $val)) ) $val = null;
 		session([$var => $val]);
 
 		return [$var => $val];

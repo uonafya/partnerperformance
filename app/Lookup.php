@@ -588,6 +588,9 @@ class Lookup
 		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner" . self::set_division_query(session('filter_partner'));
 		if(session('filter_agency')) $query .= " AND funding_agency_id" . self::set_division_query(session('filter_agency'));
 
+		// Though week is a time period, considering the way it is filtered, filter_week will be part of the divisions query
+		if(session('filter_week')) $query .= " AND week_id" . self::set_division_query(session('filter_week'));
+
 		return $query;
 	}
 
