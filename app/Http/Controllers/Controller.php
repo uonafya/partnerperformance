@@ -144,8 +144,7 @@ class Controller extends BaseController
     {
         $columns_query = Lookup::surge_columns_query($modality, $gender, $age);
         return function($query) use($columns_query){
-            return $query->where('hts', 1)
-                ->whereRaw($columns_query)
+            return $query->whereRaw($columns_query)
                 ->orderBy('modality_id', 'asc')
                 ->orderBy('gender_id', 'asc')
                 ->orderBy('age_id', 'asc');

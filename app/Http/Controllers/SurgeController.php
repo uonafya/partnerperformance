@@ -22,10 +22,12 @@ class SurgeController extends Controller
 	public function testing()
 	{
 		$tested_columns = SurgeColumnView::where('column_name', 'like', '%tested%')
+			->where('hts', 1)
 			->when(true, $this->surge_columns_callback())
 			->get();
 
 		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
+			->where('hts', 1)
 			->when(true, $this->surge_columns_callback())
 			->get();
 
@@ -85,10 +87,11 @@ class SurgeController extends Controller
 			->get();
 
 		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
+			->where('hts', 1)
 			->when(true, $this->surge_columns_callback(false))
 			->get();
 
-		$sql = $this->get_sum($new_tx_columns, 'tx_new') . ', ' . $this->get_sum($positive_columns, 'pos');
+		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($new_tx_columns, 'tx_new');
 
 
 		$date_query = Lookup::date_query();
