@@ -102,10 +102,6 @@
 				obj.month = "";
 			}
 			console.log(obj);
-
-			if(typeof obj.display_date !== 'undefined' && criteria != 'date_range'){
-				$(".display_date").html(obj.display_date);
-			}
 			
 			$(".display_range").html("( "+obj.prev_year +" - "+obj.year +" )");			
 		});
