@@ -154,7 +154,13 @@ class SurgeController extends Controller
 		$data['div'] = str_random(15);
 		$data['ytitle'] = "Yield by Modality (%)";
 
-		$modalities = SurgeModality::where('hts', 1)->get();
+		$modalities = SurgeModality::where('hts', 1)
+			->when(session('filter_gender'), function($query){
+				if(session('filter_gender') == 1) return $query->where('male', 1);
+				if(session('filter_gender') == 2) return $query->where('female', 1);
+				if(session('filter_gender') == 3) return $query->where('unknown', 1);
+			})
+			->get();
 
 		foreach ($modalities as $key => $modality) {
 			$tested_columns = SurgeColumnView::where('modality_id', $modality->id)
