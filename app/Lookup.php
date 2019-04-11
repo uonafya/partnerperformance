@@ -614,6 +614,16 @@ class Lookup
 		}
 	}
 
+	public function surge_columns_query($modality, $gender, $age)
+	{
+		$query = " 1 ";
+		if(session('filter_gender') && $gender) $query .= " AND gender_id" . self::set_division_query(session('filter_gender'));
+		if(session('filter_modality') && $modality) $query .= " AND modality_id" . self::set_division_query(session('filter_modality'));
+		if(session('filter_age') && $age) $query .= " AND age_id" . self::set_division_query(session('filter_age'));
+
+		return $query;		
+	}
+
 	public static function groupby_query($def=true)
 	{
 		$groupby = session('filter_groupby', 1);

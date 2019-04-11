@@ -220,8 +220,7 @@ class Surge
 				$alias = $base2 . title_case($gender->gender);
 				$ex = str_replace(' ', '_', strtolower($alias));
 				$ex = str_replace('-', '_', strtolower($ex));
-				$sql .= "
-					`{$col}` int(10) UNSIGNED DEFAULT 0, ";
+				$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT NULL, ";
 
 				$s = SurgeColumn::create([
 					'column_name' => $col,

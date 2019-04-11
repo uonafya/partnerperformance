@@ -128,6 +128,18 @@ class Controller extends BaseController
 		}
     }
 
+    public function surge_columns_callback($modality=true, $gender=true, $age=true)
+    {
+        $columns_query = Lookup::surge_columns_query($modality, $gender, $age);
+        return function($query) use($columns_query){
+            return $query->where('hts', 1)
+                ->whereRaw($columns_query)
+                ->orderBy('modality_id', 'asc')
+                ->orderBy('gender_id', 'asc')
+                ->orderBy('age_id', 'asc');
+        };
+    }
+
 
 	
 }

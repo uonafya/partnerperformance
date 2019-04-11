@@ -33,6 +33,11 @@ class ClearSession
         session()->forget('filter_groupby');
         session()->forget('filter_pns_age');
 
+        session()->forget('filter_week');
+        session()->forget('filter_age');
+        session()->forget('filter_gender');
+        session()->forget('filter_modality');
+
         $m = date('m');
 
         if($m < 10){

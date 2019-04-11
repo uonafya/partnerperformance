@@ -19,6 +19,19 @@ use App\SurgeColumnView;
 class SurgeController extends Controller
 {
 
+	public function testing()
+	{
+		$tested_columns = SurgeColumnView::where('column_name', 'like', '%tested%')
+			->when(true, $this->surge_columns_callback())
+			->get();
+
+		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
+			->when(true, $this->surge_columns_callback())
+			->get();
+		
+
+
+	}
 
 	public function download_excel(Request $request)
 	{
