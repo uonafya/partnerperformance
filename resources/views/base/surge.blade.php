@@ -112,20 +112,20 @@
 
 		$("#filter_agency").val(1).change();
 
-		var dt = new Date();
-		var fy = dt.getFullYear();
+		// var dt = new Date();
+		// var fy = dt.getFullYear();
 
-		date_object = { 'financial_year': fy };
-		var posting = $.post('{{ $date_url }}', date_object);
+		// date_object = { 'financial_year': fy };
+		// var posting = $.post('{{ $date_url }}', date_object);
 
-		posting.done(function( obj ) {
+		// posting.done(function( obj ) {
 
-			if(obj.month == "null" || obj.month == null){
-				obj.month = "";
-			}
-			console.log(obj);
-			$(".display_date").html(obj.display_date);		
-		});
+		// 	if(obj.month == "null" || obj.month == null){
+		// 		obj.month = "";
+		// 	}
+		// 	console.log(obj);
+		// 	$(".display_date").html(obj.display_date);		
+		// });
 	});
 
 </script>
