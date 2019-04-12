@@ -308,7 +308,7 @@ class SurgeController extends Controller
 			foreach ($genders as $gender_key => $gender) {
 				$t = $gender->gender . '_tested';
 				$p = $gender->gender . '_pos';
-				$data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentgender($row->$p, $row->$t);
+				$data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percent($row->$p, $row->$t);
 			}
 		}
 		return view('charts.line_graph', $data);
