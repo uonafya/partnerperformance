@@ -106,7 +106,7 @@
 
 				<div class="row">
 					<div class="col-md-12">
-						<select class="btn filters form-control" multiple="multiple" id="filter_modality">
+						<select class="btn filters form-control" multiple="multiple" id="filter_modality" placeholder='Select Modality'>
 							<option disabled='true'>Select Modality</option>
 							<option value='null'>All Modalities</option>
 

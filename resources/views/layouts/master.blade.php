@@ -201,6 +201,8 @@
 			    var first, second;
 			    first = $(".date-picker[name=startDate]").val();
 			    second = $(".date-picker[name=endDate]").val();
+
+			    if(!first) return;
 		    
 			    from = format_date(first);
 			    /* from is an array
@@ -246,7 +248,9 @@
 		    
 
 		    @if(session('financial'))
-		    	$(".filters").select2();
+		    	$(".filters").select2({
+		    		placeholder: $(this).attr('placeholder')
+		    	});
 		    	set_select_facility("filter_facility", "{{ url('/facility/search') }}", 3, "Search for facility");
 		    @else
 			    $('#errorAlertDateRange').hide();
