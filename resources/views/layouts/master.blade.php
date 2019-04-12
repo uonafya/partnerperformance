@@ -248,9 +248,7 @@
 		    
 
 		    @if(session('financial'))
-		    	$(".filters").select2({
-		    		placeholder: $(this).attr('placeholder')
-		    	});
+		    	$(".filters").select2();
 		    	set_select_facility("filter_facility", "{{ url('/facility/search') }}", 3, "Search for facility");
 		    @else
 			    $('#errorAlertDateRange').hide();
