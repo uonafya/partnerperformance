@@ -110,7 +110,6 @@
 			console.log(obj);
 			$(".display_date").html(obj.display_date);		
 		});
-
 	});
 
 </script>
