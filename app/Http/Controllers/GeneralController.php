@@ -100,6 +100,8 @@ class GeneralController extends Controller
 	public function surge()
 	{
 		$data = Lookup::view_data_surges();
+		$financial_year = session('filter_financial_year');
+		$data['display_date'] = ' (October, ' . ($financial_year-1) . ' - September ' . $financial_year . ')';
 		return view('base.surge', $data);
 	}
 
