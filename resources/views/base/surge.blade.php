@@ -94,22 +94,22 @@
 		
 		// date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
 
-		// dt = new Date();
-		// y = dt.getFullYear();
-
-		// date_object = { 'financial_year': y };
-		// var posting = $.post('{{ $date_url }}', date_object);
-
-		// posting.done(function( obj ) {
-
-		// 	if(obj.month == "null" || obj.month == null){
-		// 		obj.month = "";
-		// 	}
-		// 	console.log(obj);
-		// 	$(".display_date").html(obj.display_date);		
-		// });
-
 		$("#filter_agency").val(1).change();
+
+		var dt = new Date();
+		var fy = dt.getFullYear();
+
+		date_object = { 'financial_year': fy };
+		var posting = $.post('{{ $date_url }}', date_object);
+
+		posting.done(function( obj ) {
+
+			if(obj.month == "null" || obj.month == null){
+				obj.month = "";
+			}
+			console.log(obj);
+			$(".display_date").html(obj.display_date);		
+		});
 
 	});
 
