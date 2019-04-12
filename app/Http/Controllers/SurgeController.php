@@ -261,6 +261,60 @@ class SurgeController extends Controller
 	}
 
 
+	// Yield by gender
+	public function gender_yield()
+	{
+		$sql = '';
+
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['ytitle'] = "Yield by Gender (%)";
+		$data['suffix'] = '%';
+
+		$genders = SurgeGender::where('id', '!=', 3)->get();
+
+		foreach ($genders as $key => $gender) {
+			$tested_columns = SurgeColumnView::where('gender_id', $gender->id)
+				->where('column_name', 'like', '%tested%')
+				->when(true, $this->surge_columns_callback(true, true, false))
+				->get();
+
+			$positive_columns = SurgeColumnView::where('gender_id', $gender->id)
+				->where('column_name', 'like', '%positive%')
+				->when(true, $this->surge_columns_callback(true, true, false))
+				->get();
+
+			$sql .= $this->get_sum($tested_columns, $gender->gender . '_tested') . ', ' . $this->get_sum($positive_columns, $gender->gender . '_pos') . ', ';
+
+			$data['outcomes'][$key]['name'] = $gender->gender;
+		}
+
+		$sql = substr($sql, 0, -2);
+
+		$date_query = Lookup::date_query();
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback())
+			->whereRaw($date_query)
+			->get();
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			foreach ($genders as $gender_key => $gender) {
+				$t = $gender->gender . '_tested';
+				$p = $gender->gender . '_pos';
+				$data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentgender($row->$p, $row->$t);
+			}
+		}
+		return view('charts.line_graph', $data);
+	}
+
+
 
 
 	public function get_sum($columns, $name)
