@@ -276,12 +276,12 @@ class SurgeController extends Controller
 		foreach ($genders as $key => $gender) {
 			$tested_columns = SurgeColumnView::where('gender_id', $gender->id)
 				->where('column_name', 'like', '%tested%')
-				->when(true, $this->surge_columns_callback(true, true, false))
+				->when(true, $this->surge_columns_callback(true, false, true))
 				->get();
 
 			$positive_columns = SurgeColumnView::where('gender_id', $gender->id)
 				->where('column_name', 'like', '%positive%')
-				->when(true, $this->surge_columns_callback(true, true, false))
+				->when(true, $this->surge_columns_callback(true, false, true))
 				->get();
 
 			$sql .= $this->get_sum($tested_columns, $gender->gender . '_tested') . ', ' . $this->get_sum($positive_columns, $gender->gender . '_pos') . ', ';
