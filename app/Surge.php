@@ -64,6 +64,7 @@ class Surge
 
         DB::table($table_name)->insert([
         	['modality' => 'pmtct_anc1', 'modality_name' => 'PMTCT ANC1 Only', 'male' => 0, 'female' => 1, 'unknown' => 0, ],
+            ['modality' => 'pmtct_post_anc', 'modality_name' => 'PMTCT POST ANC', 'male' => 0, 'female' => 1, 'unknown' => 0, ],
         	['modality' => 'vmmc', 'modality_name' => 'VMMC', 'male' => 1, 'female' => 0, 'unknown' => 0, ],
         	// ['modality' => '', 'modality_name' => '', 'male' => 1, 'female' => 0, 'unknown' => 0, ],
         ]);
