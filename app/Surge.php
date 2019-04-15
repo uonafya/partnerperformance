@@ -117,8 +117,8 @@ class Surge
         ]);*/
 
         DB::table($table_name)->insert([
-            ['age' => 'below_15', 'age_name' => '0-15', ],
-            ['age' => 'above_15', 'age_name' => 'Above 15', ],
+            ['age' => 'below_15', 'age_name' => '0-14', ],
+            ['age' => 'above_15', 'age_name' => '15 and Above', ],
         ]);
 
 	}
