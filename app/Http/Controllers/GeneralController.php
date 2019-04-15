@@ -161,6 +161,17 @@ class GeneralController extends Controller
 		return view('forms.upload_pns', ['no_header' => true, 'partner' => $partner]);
 	}
 
+	public function set_surge_facilities()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		$facilities = \App\Facility::where('partner', $partner->id)
+			->orderBy('is_surge', 'desc')
+			->orderBy('name', 'asc')
+			->get();
+		return view('forms.set_surge_facilities', ['no_header' => true, 'partner' => $partner, 'facilities' => $facilities]);		
+	}
+
 	public function download_surge()
 	{
 		$data = Lookup::view_data_surges();

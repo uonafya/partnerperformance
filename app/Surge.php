@@ -95,7 +95,7 @@ class Surge
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 
-        DB::table($table_name)->insert([
+        /*DB::table($table_name)->insert([
         	['age' => 'unknown', 'age_name' => 'Unknown', 'no_gender' => 1, ],
         	['age' => 'below_1', 'age_name' => 'Below 1', 'no_gender' => 1, ],
         	['age' => 'below_10', 'age_name' => '1-9', 'no_gender' => 1, ],
@@ -114,7 +114,13 @@ class Surge
             ['age' => 'below_50', 'age_name' => '40-49', ],
         	['age' => 'above_50', 'age_name' => 'Above 50', ],
         	// ['age' => '', 'age_name' => '', ],
+        ]);*/
+
+        DB::table($table_name)->insert([
+            ['age' => 'below_15', 'age_name' => '0-15', ],
+            ['age' => 'above_15', 'age_name' => 'Above 15', ],
         ]);
+
 	}
 
 	public static function genders_table()

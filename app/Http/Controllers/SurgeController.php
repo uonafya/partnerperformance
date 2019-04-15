@@ -329,6 +329,8 @@ class SurgeController extends Controller
 		return $sql;
 	}
 
+
+
 	public function download_excel(Request $request)
 	{
 		$partner = session('session_partner');
