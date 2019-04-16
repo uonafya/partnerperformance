@@ -127,6 +127,7 @@ Route::prefix('surge')->name('surge.')->group(function(){
 	Route::get('gender_yield', 'SurgeController@gender_yield')->name('gender_yield');
 	Route::get('age_yield', 'SurgeController@age_yield')->name('age_yield');
 
+	Route::post('set_surge_facilities', 'SurgeController@set_surge_facilities')->name('set_surge_facilities');
 	Route::post('download', 'SurgeController@download_excel')->name('download');
 	Route::post('upload', 'SurgeController@upload_excel')->name('upload');
 });
