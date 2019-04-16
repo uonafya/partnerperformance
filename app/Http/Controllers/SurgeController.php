@@ -330,6 +330,22 @@ class SurgeController extends Controller
 	}
 
 
+	
+	public function set_surge_facilities(Request $request)
+	{
+		$partner = session('session_partner');
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
+
+		$facilities = $request->input('facilities');
+		Facility::where('partner', $partner->id)->whereNotIn('id', $facilities)->update(['is_surge' => 0]);
+		Facility::where('partner', $partner->id)->whereIn('id', $facilities)->update(['is_surge' => 1]);
+		session(['toast_message' => 'The selected facilities have been set to surge facilities.']);
+		return back();
+	}
+
 
 	public function download_excel(Request $request)
 	{
@@ -368,6 +384,8 @@ class SurgeController extends Controller
 
 		$week = Week::find($week_id);
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
+
+		$facilities = Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
 		
 		$rows = DB::table('d_surge')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
@@ -375,6 +393,9 @@ class SurgeController extends Controller
 			->selectRaw($sql)
 			->where('week_id', $week_id)
 			->where('partner', $partner->id)
+			->when($facilities, function($query) use ($facilities){
+				return $query->whereIn('view_facilitys.id', $facilities);
+			})
 			->orderBy('name', 'asc')
 			->get();
 

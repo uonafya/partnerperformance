@@ -48,23 +48,23 @@
 				</div>
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="{{ url('/') }} ">Home</a></li>	
-						<li><a href="{{ url('testing') }} ">Testing</a></li>	
-						<li><a href="{{ url('pmtct') }} ">PMTCT</a></li>	
-						<li><a href="{{ url('art') }} ">ART</a></li>	
-						<li><a href="{{ url('vmmc') }} ">VMMC</a></li>	
-						<li><a href="{{ url('tb') }} ">TB</a></li>	
-						<li><a href="{{ url('keypop') }} ">KeyPOP</a></li>	
-						<li><a href="{{ url('indicators') }} ">Indicators</a></li>	
-						<li><a href="{{ url('otz') }} ">Non Mer</a></li>	
-						<li><a href="{{ url('pns') }} ">PNS</a></li>	
-						<li><a href="{{ url('surge') }} ">Surge</a></li>	
-						<li><a href="{{ url('regimen') }} ">MOH 729</a></li>	
+						<li><a href="{{ url('/') }}">Home</a></li>	
+						<li><a href="{{ url('testing') }}">Testing</a></li>	
+						<li><a href="{{ url('pmtct') }}">PMTCT</a></li>	
+						<li><a href="{{ url('art') }}">ART</a></li>	
+						<li><a href="{{ url('vmmc') }}">VMMC</a></li>	
+						<li><a href="{{ url('tb') }}">TB</a></li>	
+						<li><a href="{{ url('keypop') }}">KeyPOP</a></li>	
+						<li><a href="{{ url('indicators') }}">Indicators</a></li>	
+						<li><a href="{{ url('otz') }}">Non Mer</a></li>	
+						<li><a href="{{ url('pns') }}">PNS</a></li>	
+						<li><a href="{{ url('surge') }}">Surge</a></li>	
+						<li><a href="{{ url('regimen') }}">MOH 729</a></li>	
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ url('/guide') }} ">User Guide</a></li>
+						<li><a href="{{ url('/guide') }}">User Guide</a></li>
 						@guest
-							<li><a href="{{ url('/login') }} ">Login</a></li>
+							<li><a href="{{ url('/login') }}">Login</a></li>
 						@endguest	
 						@auth
 							<li class="dropdown">
@@ -72,8 +72,8 @@
 									PNS <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">									
-									<li><a href="{{ url('/pns/download') }} ">Download PNS Template</a></li>
-									<li><a href="{{ url('/pns/upload') }} ">PNS Upload</a></li>
+									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
+									<li><a href="{{ url('/pns/upload') }}">PNS Upload</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -81,8 +81,9 @@
 									Surge <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">									
-									<li><a href="{{ url('/surge/download') }} ">Download Surge Template</a></li>
-									<li><a href="{{ url('/surge/upload') }} ">Surge Upload</a></li>
+									<li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
+									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
+									<li><a href="{{ url('/surge/upload') }}">Surge Upload</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -90,25 +91,25 @@
 									Download Indicators Template <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('indicators/download/2017') }} ">2017</a></li>
-									<li><a href="{{ url('indicators/download/2018') }} ">2018</a></li>
-									<li><a href="{{ url('indicators/download/2019') }} ">2019</a></li>
+									<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
+									<li><a href="{{ url('indicators/download/2018') }}">2018</a></li>
+									<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
 								</ul>
 							</li>
-							<li><a href="{{ url('/indicators/upload') }} ">Upload Indicators</a></li>
+							<li><a href="{{ url('/indicators/upload') }}">Upload Indicators</a></li>
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Non-mer Template <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('otz/download/2017') }} ">2017</a></li>
-									<li><a href="{{ url('otz/download/2018') }} ">2018</a></li>
-									<li><a href="{{ url('otz/download/2019') }} ">2019</a></li>
+									<li><a href="{{ url('otz/download/2017') }}">2017</a></li>
+									<li><a href="{{ url('otz/download/2018') }}">2018</a></li>
+									<li><a href="{{ url('otz/download/2019') }}">2019</a></li>
 								</ul>
 							</li>
-							<li><a href="{{ url('/otz/upload') }} ">Upload Non-Mer</a></li>
+							<li><a href="{{ url('/otz/upload') }}">Upload Non-Mer</a></li>
 							@if(auth()->user()->user_type_id == 1)
-								<li><a href="{{ url('/user/create') }} ">Create User</a></li>
+								<li><a href="{{ url('/user/create') }}">Create User</a></li>
 							@endif
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">Logout</a></li>
