@@ -47,18 +47,16 @@
 
           <div class="form-group">
             <label class="col-sm-3 control-label">Surge Facilities (Select Multiple)</label>
-            <div class="col-sm-9">
-              <select class="select_tag" name="facilities[]" multiple="multiple" required>
-                <option></option>
-                @foreach($facilities as $facility)
-                  <option value="{{ $facility->id }}"
-                      @if($facility->is_surge)
-                        selected='true'
-                      @endif
-                    > {{ $facility->facilitycode . ' - ' . $facility->name }} </option>
-                @endforeach
-              </select>
-            </div>
+            <select class="col-sm-9 select_tag" name="facilities[]" multiple="multiple" required>
+              <option></option>
+              @foreach($facilities as $facility)
+                <option value="{{ $facility->id }}"
+                    @if($facility->is_surge)
+                      selected='true'
+                    @endif
+                  > {{ $facility->facilitycode . ' - ' . $facility->name }} </option>
+              @endforeach
+            </select>
           </div>
 
 
