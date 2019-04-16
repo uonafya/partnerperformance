@@ -47,7 +47,7 @@
 
           <div class="form-group">
             <label class="col-sm-3 control-label">Surge Facilities (Select Multiple)</label>
-            <select class="col-sm-9 select_tag" name="facilities[]" multiple="multiple" required>
+            <select class="col-sm-7 select_tag" name="facilities[]" multiple="multiple" required>
               <option></option>
               @foreach($facilities as $facility)
                 <option value="{{ $facility->id }}"
