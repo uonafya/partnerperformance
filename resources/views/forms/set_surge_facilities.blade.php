@@ -29,18 +29,20 @@
           
           <div class="form-group">
             <label class="col-sm-4 control-label">Surge Facilities</label>
-            @foreach($facilities as $facility)
-              <div>
-                <label>
-                  <input type="checkbox" name="facilities[]" value="{{ $facility->id }}" 
-                    @if($facility->is_surge)
-                      checked='true'
-                    @endif
-                  />
-                  {{ $facility->facilitycode . ' ' . $facility->name }}
-                </label>
-              </div>
-            @endforeach            
+            <div class="col-sm-8">
+              @foreach($facilities as $facility)
+                <div>
+                  <label>
+                    <input type="checkbox" name="facilities[]" value="{{ $facility->id }}" 
+                      @if($facility->is_surge)
+                        checked='true'
+                      @endif
+                    />
+                    {{ $facility->facilitycode . ' ' . $facility->name }}
+                  </label>
+                </div>
+              @endforeach    
+            </div>        
           </div>
 
 
