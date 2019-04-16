@@ -173,6 +173,8 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::get('surge/download', 'GeneralController@download_surge');
 	Route::get('surge/upload', 'GeneralController@upload_surge');
+	
+	Route::get('surge/set_surge_facilities', 'GeneralController@set_surge_facilities');
 
 
 	Route::get('otz/upload', 'GeneralController@upload_nonmer');
