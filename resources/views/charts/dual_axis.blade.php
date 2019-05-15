@@ -72,12 +72,12 @@
                 layout: 'horizontal',
                 align: 'left',
                 // x: -100,
-                x: -35,
+                x: -50,
                 verticalAlign: 'bottom',
                 // y: -25,
                 y: 5,
                 floating: false,
-                width: $(window).width() - 20,
+                // width: $(window).width() - 20,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {
