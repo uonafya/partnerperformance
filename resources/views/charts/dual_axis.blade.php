@@ -72,7 +72,7 @@
                 layout: 'horizontal',
                 align: 'left',
                 // x: -100,
-                x: -50,
+                x: -100,
                 verticalAlign: 'bottom',
                 // y: -25,
                 y: 5,
