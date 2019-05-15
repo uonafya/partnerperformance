@@ -46,9 +46,9 @@
             
             layout: 'horizontal',
             align: 'left',
-            // x: -100,
+            x: 5,
             verticalAlign: 'bottom',
-            // y: -25,
+            y: 5,
             floating: false,
             width: $(window).width() - 20,
             backgroundColor: '#FFFFFF'
