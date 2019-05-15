@@ -75,7 +75,7 @@
                 verticalAlign: 'bottom',
                 // y: -25,
                 floating: false,
-                width: $(window).width() - 20,
+                width: $(window).width() - 30,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {
