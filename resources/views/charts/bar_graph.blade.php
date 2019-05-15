@@ -50,7 +50,7 @@
                 verticalAlign: 'bottom',
                 y: 5,
                 floating: false,
-                width: $(window).width() - 30,
+                width: $(window).width() - 20,
                 // width: 1000,
                 backgroundColor: '#FFFFFF'
             },
