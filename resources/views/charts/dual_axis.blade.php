@@ -71,7 +71,7 @@
             legend: {
                 layout: 'horizontal',
                 align: 'left',
-                x: 10,
+                x: 5,
                 verticalAlign: 'bottom',
                 y: 5,
                 floating: false,
