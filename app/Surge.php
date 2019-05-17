@@ -220,7 +220,7 @@ class Surge
                     foreach ($targets as $key => $value) {
                         $base = $key . '_' . $modality->modality;
                         $base2 = $value . ' ' . $modality->modality_name;
-                        self::create_surge_target_column($sql, $base, $base2, $modality;
+                        self::create_surge_target_column($sql, $base, $base2, $modality);
                     }
                     break;
                 }
