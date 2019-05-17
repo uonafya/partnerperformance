@@ -266,7 +266,7 @@ class Surge
 		}
 	}
 
-    public static function create_surge_target_column(&$sql, $base, $base2)
+    public static function create_surge_target_column(&$sql, $base, $base2, $modality)
     {
         $sql .= " `{$base}` smallint(5) UNSIGNED DEFAULT 0, ";
 
