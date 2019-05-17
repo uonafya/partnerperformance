@@ -58,6 +58,7 @@ class Surge
         	['modality' => 'pediatric', 'modality_name' => 'Pediatric' ],
         	['modality' => 'sti_clinic', 'modality_name' => 'STI Clinic' ],
         	['modality' => 'vct', 'modality_name' => 'VCT' ],
+            ['modality' => 'community_vct', 'modality_name' => 'Community VCT' ],
         	['modality' => 'tb_clinic', 'modality_name' => 'TB Clinic' ],
         	// ['modality' => '', 'modality_name' => '' ],
         ]);
@@ -70,13 +71,17 @@ class Surge
         ]);
 
         DB::table($table_name)->insert([
-        	['modality' => 'contacts_identified', 'modality_name' => 'Contacts Identified', 'hts' => 0, ],
+        	['modality' => 'clients_screened', 'modality_name' => 'Index Clients Screened', 'hts' => 0, ],
+            ['modality' => 'contacts_identified', 'modality_name' => 'Contacts Identified', 'hts' => 0, ],
         	['modality' => 'pos_contacts', 'modality_name' => 'Known HIV Positive Contacts', 'hts' => 0, ],
         	['modality' => 'eligible_contacts', 'modality_name' => 'Eligible Contacts', 'hts' => 0, ],
         	['modality' => 'contacts_tested', 'modality_name' => 'Contacts Tested', 'hts' => 0, ],
         	['modality' => 'new_pos', 'modality_name' => 'Newly Identified Positives', 'hts' => 0, ],
 
         	['modality' => 'tx_new', 'modality_name' => 'New On Treatment', 'hts' => 0, ],
+            ['modality' => 'tx_sv_d', 'modality_name' => 'New On Treatment Second Visit Due', 'hts' => 0, ],
+            ['modality' => 'tx_sv_n', 'modality_name' => 'New On Treatment Second Visit Number', 'hts' => 0, ],
+            ['modality' => 'tx_btc_n', 'modality_name' => 'LTFU Restored to Treatment', 'hts' => 0, ],
         ]);
 	}
 
@@ -96,7 +101,7 @@ class Surge
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 
-        /*DB::table($table_name)->insert([
+        DB::table($table_name)->insert([
         	['age' => 'unknown', 'age_name' => 'Unknown', 'no_gender' => 1, ],
         	['age' => 'below_1', 'age_name' => 'Below 1', 'no_gender' => 1, ],
         	['age' => 'below_10', 'age_name' => '1-9', 'no_gender' => 1, ],
@@ -115,12 +120,12 @@ class Surge
             ['age' => 'below_50', 'age_name' => '40-49', ],
         	['age' => 'above_50', 'age_name' => 'Above 50', ],
         	// ['age' => '', 'age_name' => '', ],
-        ]);*/
+        ]);
 
-        DB::table($table_name)->insert([
+        /*DB::table($table_name)->insert([
             ['age' => 'below_15', 'age_name' => '0-14', ],
             ['age' => 'above_15', 'age_name' => '15 and Above', ],
-        ]);
+        ]);*/
 
 	}
 
