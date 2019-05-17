@@ -37,6 +37,7 @@ class Surge
                     unknown tinyint(1) UNSIGNED DEFAULT 1,
 
                     hts tinyint(1) UNSIGNED DEFAULT 1,
+                    target tinyint(1) UNSIGNED DEFAULT 0,
 
                     PRIMARY KEY (`id`),
                     KEY `modality` (`modality`),
@@ -82,7 +83,15 @@ class Surge
         	['modality' => 'tx_new', 'modality_name' => 'New On Treatment', 'hts' => 0, ],
             ['modality' => 'tx_sv_d', 'modality_name' => 'New On Treatment Second Visit Due', 'hts' => 0, ],
             ['modality' => 'tx_sv_n', 'modality_name' => 'New On Treatment Second Visit Number', 'hts' => 0, ],
-            ['modality' => 'tx_btc_n', 'modality_name' => 'LTFU Restored to Treatment', 'hts' => 0, ],
+            ['modality' => 'tx_btc_t', 'modality_name' => 'LTFU Restored to Treatment Target', 'hts' => 0, ],
+            ['modality' => 'tx_btc_n', 'modality_name' => 'LTFU Restored to Treatment Number', 'hts' => 0, ],
+        ]);
+
+        DB::table($table_name)->insert([
+            ['modality' => 'target', 'modality_name' => 'Target', 'hts' => 0, 'target' => 1 ],
+            // ['modality' => 'testing_target', 'modality_name' => 'Testing Target', 'hts' => 0, 'target' => 1 ],
+            // ['modality' => 'pos_target', 'modality_name' => 'Pos Target', 'hts' => 0, 'target' => 1 ],
+            // ['modality' => 'tx_new_target', 'modality_name' => 'TX New Target', 'hts' => 0, 'target' => 1 ],
         ]);
 	}
 
@@ -175,12 +184,12 @@ class Surge
 
 
         $sql = "CREATE OR REPLACE VIEW `{$table_name}_view` AS (
-        			SELECT c.*, a.age, a.age_name, a.no_gender, g.gender, m.modality, m.modality_name, m.hts 
+        			SELECT c.*, a.age, a.age_name, a.no_gender, g.gender, m.modality, m.modality_name, m.hts, m.target 
 
         			FROM surge_columns c
-        			JOIN surge_ages a on a.id=c.age_id
-        			JOIN surge_genders g on g.id=c.gender_id
-        			JOIN surge_modalities m on m.id=c.modality_id
+        			LEFT JOIN surge_ages a on a.id=c.age_id
+        			LEFT JOIN surge_genders g on g.id=c.gender_id
+        			LEFT JOIN surge_modalities m on m.id=c.modality_id
                 );
         ";
         DB::statement($sql);
@@ -206,6 +215,15 @@ class Surge
 	        			self::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
         			}
         		}
+                else if($modality->target){
+                    $targets = ['testing' => 'Testing', 'pos' => 'Pos', 'tx_new' => 'TX New'];
+                    foreach ($targets as $key => $value) {
+                        $base = $key . '_' . $modality->modality;
+                        $base2 = $value . ' ' . $modality->modality_name;
+                        self::create_surge_target_column($sql, $base, $base2);
+                    }
+                    break;
+                }
         		else{
         			$base = $modality->modality . '_' . $age->age . '_';
         			$base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
@@ -214,7 +232,7 @@ class Surge
         	}
         }
 
-        $sql .= "
+        $sql .= "        
 	        		dateupdated date DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `facility` (`facility`),
@@ -247,6 +265,22 @@ class Surge
 			}
 		}
 	}
+
+    public static function create_surge_target_column(&$sql, $base, $base2)
+    {
+        $sql .= " `{$base}` smallint(5) UNSIGNED DEFAULT 0, ";
+
+        $s = SurgeColumn::create([
+            'column_name' => $base,
+            'alias_name' => $base2,
+            'excel_name' => $base,
+            'age_id' => 0,
+            'gender_id' => 0,
+            'modality_id' => $modality->id,
+        ]);
+    }
+
+
 
 	public static function surges_insert($year=null)
 	{
