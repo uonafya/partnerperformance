@@ -83,7 +83,7 @@ class Surge
         	['modality' => 'tx_new', 'modality_name' => 'New On Treatment', 'hts' => 0, ],
             ['modality' => 'tx_sv_d', 'modality_name' => 'New On Treatment Second Visit Due', 'hts' => 0, ],
             ['modality' => 'tx_sv_n', 'modality_name' => 'New On Treatment Second Visit Number', 'hts' => 0, ],
-            ['modality' => 'tx_btc_t', 'modality_name' => 'LTFU Restored to Treatment Target', 'hts' => 0, ],
+            // ['modality' => 'tx_btc_t', 'modality_name' => 'LTFU Restored to Treatment Target', 'hts' => 0, ],
             ['modality' => 'tx_btc_n', 'modality_name' => 'LTFU Restored to Treatment Number', 'hts' => 0, ],
         ]);
 

@@ -281,6 +281,7 @@ class Lookup
 			if($groupby == 11) $match = $collection->where('financial_year', $row->financial_year)->first();
 			if($groupby == 12) $match = $collection->where('year', $row->year)->where('month', $row->month)->first();
 			if($groupby == 13) $match = $collection->where('financial_year', $row->financial_year)->where('quarter', $row->quarter)->first();
+			if($groupby == 14) $match = $collection->where('financial_year', $row->financial_year)->where('week_number', $row->week_number)->first();
 		}
 		else{
 			$match = $collection->where('div_id', $row->div_id)->first();
