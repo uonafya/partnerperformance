@@ -77,6 +77,7 @@ class Surge
         	['modality' => 'eligible_contacts', 'modality_name' => 'Eligible Contacts', 'hts' => 0, ],
         	['modality' => 'contacts_tested', 'modality_name' => 'Contacts Tested', 'hts' => 0, ],
         	['modality' => 'new_pos', 'modality_name' => 'Newly Identified Positives', 'hts' => 0, ],
+            ['modality' => 'linked_to_haart', 'modality_name' => 'Linked To HAART', 'hts' => 0, ],
 
         	['modality' => 'tx_new', 'modality_name' => 'New On Treatment', 'hts' => 0, ],
             ['modality' => 'tx_sv_d', 'modality_name' => 'New On Treatment Second Visit Due', 'hts' => 0, ],
@@ -249,7 +250,10 @@ class Surge
 
 	public static function surges_insert($year=null)
 	{
-		if(!$year) $year = date('Y');
+		if(!$year){
+            $year = date('Y');
+            if(date('m') > 9) $year++;
+        }
 
 		$weeks = Week::where('financial_year', $year)->get();
 		$table_name = 'd_surge';
