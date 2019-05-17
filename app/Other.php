@@ -21,12 +21,18 @@ class Other
         Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser($user));
 	}
 
+
+    public static function send_test()
+    {
+        Mail::to(['jbatuka@usaid.gov', 'bonyango@usaid.gov', 'pyegon@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail(null));
+    }
+    
     public static function send_pns()
     {
         $users = User::where('user_type_id', 2)->get();
 
         foreach ($users as $user) {
-            Mail::to($user->email)->cc(['jbatuka@usaid.gov', 'vojiambo@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail($user));
+            Mail::to($user->email)->cc(['jbatuka@usaid.gov', 'bonyango@usaid.gov', 'pyegon@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail($user));
         }
     }
 
