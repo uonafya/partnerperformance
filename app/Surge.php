@@ -49,8 +49,9 @@ class Surge
 
         DB::table($table_name)->insert([
         	['modality' => 'emergency_ward', 'modality_name' => 'Emergency Ward' ],
-        	['modality' => 'facility_index', 'modality_name' => 'Facility Index' ],
-        	['modality' => 'community_index', 'modality_name' => 'Community Index' ],
+        	// ['modality' => 'facility_index', 'modality_name' => 'Facility Index' ],
+        	// ['modality' => 'community_index', 'modality_name' => 'Community Index' ],
+            ['modality' => 'index', 'modality_name' => 'Facility and Community Index' ],
         	['modality' => 'inpatient', 'modality_name' => 'Inpatient' ],
         	['modality' => 'malnutrution', 'modality_name' => 'Malnutrition' ],
         	['modality' => 'community_mobile', 'modality_name' => 'Community Mobile' ],
@@ -83,7 +84,7 @@ class Surge
         	['modality' => 'tx_new', 'modality_name' => 'New On Treatment', 'hts' => 0, ],
             ['modality' => 'tx_sv_d', 'modality_name' => 'New On Treatment Second Visit Due', 'hts' => 0, ],
             ['modality' => 'tx_sv_n', 'modality_name' => 'New On Treatment Second Visit Number', 'hts' => 0, ],
-            // ['modality' => 'tx_btc_t', 'modality_name' => 'LTFU Restored to Treatment Target', 'hts' => 0, ],
+            ['modality' => 'tx_btc_t', 'modality_name' => 'LTFU Restored to Treatment Target', 'hts' => 0, ],
             ['modality' => 'tx_btc_n', 'modality_name' => 'LTFU Restored to Treatment Number', 'hts' => 0, ],
         ]);
 
