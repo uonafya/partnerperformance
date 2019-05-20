@@ -172,8 +172,11 @@
 
 	<script src='https://code.highcharts.com/highcharts.js' type='text/javascript'></script>
 	<script src='https://code.highcharts.com/highcharts-more.js' type='text/javascript'></script>
-	<script src='https://code.highcharts.com/modules/exporting.js' type='text/javascript'></script>
-	<script src='https://code.highcharts.com/modules/export-data.js' type='text/javascript'></script>
+	@if(ends_with(url()->current(), 'surge') && !auth()->user())
+	@else
+		<script src='https://code.highcharts.com/modules/exporting.js' type='text/javascript'></script>
+		<script src='https://code.highcharts.com/modules/export-data.js' type='text/javascript'></script>
+	@endif
 	<script src='https://code.highcharts.com/maps/modules/map.js' type='text/javascript'></script>
 	<script src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.js' type='text/javascript'></script>
 	<script src='//cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.js' type='text/javascript'></script>
