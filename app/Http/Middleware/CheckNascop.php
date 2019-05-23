@@ -20,7 +20,7 @@ class CheckNascop
             $base = 'https://kemrinairobi.nascop.org:7443/api/';
             $client = new Client(['base_uri' => $base]); 
             $response = $client->request('get', 'hello_nascop', ['http_errors' => false, 'timeout' => 1]);
-            if($response->getStatusCode() == 200) abort(500, 'NASCOP is back online. Please clear your cache then try again.');
+            if($response->getStatusCode() == 200) abort(500, 'NASCOP is back online.<br />Please clear your cache then try again.');
         }
         
         return $next($request);
