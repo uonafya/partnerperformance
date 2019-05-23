@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Exception;
 use GuzzleHttp\Client;
+use Exception;
 
 class CheckNascop
 {
