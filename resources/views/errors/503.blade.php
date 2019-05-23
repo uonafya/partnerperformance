@@ -34,6 +34,7 @@
             .title {
                 font-size: 72px;
                 margin-bottom: 40px;
+                font-weight: bold;
             }
         </style>
     </head>
