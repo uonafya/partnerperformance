@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Be right back.</title>
+        <title>Error.</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -34,6 +34,7 @@
             .title {
                 font-size: 72px;
                 margin-bottom: 40px;
+                font-weight: bold;
             }
         </style>
     </head>
