@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
 
         'clear_session' => \App\Http\Middleware\ClearSession::class,
         'check_live' => \App\Http\Middleware\CheckLive::class,
+        'check_nascop' => \App\Http\Middleware\CheckNascop::class,
 
         'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'jwt.refresh' => RefreshToken::class

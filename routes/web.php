@@ -134,7 +134,7 @@ Route::prefix('surge')->name('surge.')->group(function(){
 
 
 
-Route::middleware(['clear_session'])->group(function(){
+Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
 	Route::get('/config', 'GeneralController@config');
 	Route::get('home', 'GeneralController@home');
