@@ -207,7 +207,7 @@ class SurgeController extends Controller
 				$data["outcomes"][$mod_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
 			}
 		}
-		return view('charts.bar_graph', $data);
+		return view('charts.line_graph', $data);
 	}
 
 
@@ -261,7 +261,7 @@ class SurgeController extends Controller
 				$data["outcomes"][$age_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
 			}
 		}
-		return view('charts.bar_graph', $data);
+		return view('charts.line_graph', $data);
 	}
 
 
@@ -313,7 +313,7 @@ class SurgeController extends Controller
 				$data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
 			}
 		}
-		return view('charts.bar_graph', $data);
+		return view('charts.line_graph', $data);
 	}
 
 	// PNS for surge
@@ -353,7 +353,7 @@ class SurgeController extends Controller
 				$data["outcomes"][$pns_key]["data"][$key] = $row->$pns;
 			}
 		}
-		return view('charts.bar_graph', $data);
+		return view('charts.line_graph', $data);
 	}
 
 
