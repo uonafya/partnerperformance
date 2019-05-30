@@ -74,7 +74,7 @@ class Controller extends BaseController
 
     public function financial_callback($divisions_query, $date_query)
     {
-    	return function($query) use($divisions_query){
+    	return function($query) use($divisions_query, $date_query){
     		return $query->addSelect('financial_year')
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
@@ -85,7 +85,7 @@ class Controller extends BaseController
 
     public function year_month_callback($divisions_query, $date_query)
     {
-    	return function($query) use($divisions_query){
+    	return function($query) use($divisions_query, $date_query){
     		return $query->addSelect('year', 'month')
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
@@ -97,7 +97,7 @@ class Controller extends BaseController
 
     public function year_quarter_callback($divisions_query, $date_query)
     {
-    	return function($query) use($divisions_query){
+    	return function($query) use($divisions_query, $date_query){
     		return $query->addSelect('financial_year', 'quarter')
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
@@ -109,7 +109,7 @@ class Controller extends BaseController
 
     public function week_callback($divisions_query, $date_query)
     {
-        return function($query) use($divisions_query){
+        return function($query) use($divisions_query, $date_query){
             return $query->addSelect('financial_year', 'week_number')
                 ->whereRaw($divisions_query)
                 ->whereRaw($date_query)
@@ -124,7 +124,7 @@ class Controller extends BaseController
     	$raw = DB::raw($var['select_query']);
 
     	if($order_by){
-	    	return function($query) use($divisions_query, $var, $raw, $order_by, $having_null){
+	    	return function($query) use($divisions_query, $date_query, $var, $raw, $order_by, $having_null){
                 if($having_null){
                     return $query->addSelect($raw)
                         ->whereRaw($divisions_query)
@@ -141,9 +141,10 @@ class Controller extends BaseController
 	    	};
     	}
     	else{
-	    	return function($query) use($divisions_query, $var, $raw){
+	    	return function($query) use($divisions_query, $date_query, $var, $raw){
 	    		return $query->addSelect($raw)
 					->whereRaw($divisions_query)
+                    ->whereRaw($date_query)
 	    			->groupBy($var['group_query']);
 	    	};
     	}
