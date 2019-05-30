@@ -27,7 +27,7 @@ class OtzController extends Controller
 		$viremia = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('viremia_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -35,7 +35,7 @@ class OtzController extends Controller
 		$dsd = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('dsd_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -43,7 +43,7 @@ class OtzController extends Controller
 		$otz = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('otz_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -51,7 +51,7 @@ class OtzController extends Controller
 		$men = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('men_clinic_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -157,13 +157,10 @@ class OtzController extends Controller
 
 	public function beneficiaries()
 	{
-		$date_query = Lookup::date_query(true);
-
 		$viremia = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(viremia_beneficiaries) AS beneficiaries, SUM(viremia_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -171,7 +168,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(dsd_beneficiaries) AS beneficiaries, SUM(dsd_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -179,7 +175,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(otz_beneficiaries) AS beneficiaries, SUM(otz_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -187,7 +182,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(men_clinic_beneficiaries) AS beneficiaries, SUM(men_clinic_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -220,8 +214,7 @@ class OtzController extends Controller
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(otz_beneficiaries) AS otz_beneficiaries, SUM(otz_target) AS otz_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
-			->when(true, $this->get_callback())
-			->whereRaw($date_query)
+			->when(true, $this->get_callback_no_dates())
 			->where('financial_year', '>', 2016)
 			->get();	
 
@@ -265,7 +258,7 @@ class OtzController extends Controller
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(otz_beneficiaries) AS otz_beneficiaries, SUM(otz_target) AS otz_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->whereRaw($date_query)
 			->get();
 

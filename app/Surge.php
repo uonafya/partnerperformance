@@ -73,6 +73,7 @@ class Surge
         ]);
 
         DB::table($table_name)->insert([
+            // PNS Columns
         	['modality' => 'clients_screened', 'modality_name' => 'Index Clients Screened', 'hts' => 0, ],
             ['modality' => 'contacts_identified', 'modality_name' => 'Contacts Identified', 'hts' => 0, ],
         	['modality' => 'pos_contacts', 'modality_name' => 'Known HIV Positive Contacts', 'hts' => 0, ],

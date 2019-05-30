@@ -23,85 +23,119 @@ class Controller extends BaseController
     }
 
     // Add Divisions Query Here
+    // Also Add Date Query Here
 
-    public function get_callback($order_by=null)
+    public function get_callback($order_by=null, $having_null=null)
     {
     	$groupby = session('filter_groupby', 1);
     	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::date_query();
     	if($groupby > 9){
-    		if($groupby == 10) return $this->year_callback($divisions_query);
-    		if($groupby == 11) return $this->financial_callback($divisions_query);
-    		if($groupby == 12) return $this->year_month_callback($divisions_query);
-    		if($groupby == 13) return $this->year_quarter_callback($divisions_query);
-            if($groupby == 14) return $this->week_callback($divisions_query);
+    		if($groupby == 10) return $this->year_callback($divisions_query, $date_query);
+    		if($groupby == 11) return $this->financial_callback($divisions_query, $date_query);
+    		if($groupby == 12) return $this->year_month_callback($divisions_query, $date_query);
+    		if($groupby == 13) return $this->year_quarter_callback($divisions_query, $date_query);
+            if($groupby == 14) return $this->week_callback($divisions_query, $date_query);
     	}
     	else{
     		$var = Lookup::groupby_query();
-    		return $this->divisions_callback($divisions_query, $var, $order_by);
+    		return $this->divisions_callback($divisions_query, $date_query, $var, $order_by, $having_null);
     	}
     }
 
-    public function year_callback($divisions_query)
+    public function get_callback_no_dates($order_by=null, $having_null=null)
+    {
+        $groupby = session('filter_groupby', 1);
+        $divisions_query = Lookup::divisions_query();
+        $date_query = "1";
+        if($groupby > 9){
+            if($groupby == 10) return $this->year_callback($divisions_query, $date_query);
+            if($groupby == 11) return $this->financial_callback($divisions_query, $date_query);
+            if($groupby == 12) return $this->year_month_callback($divisions_query, $date_query);
+            if($groupby == 13) return $this->year_quarter_callback($divisions_query, $date_query);
+            if($groupby == 14) return $this->week_callback($divisions_query, $date_query);
+        }
+        else{
+            $var = Lookup::groupby_query();
+            return $this->divisions_callback($divisions_query, $date_query, $var, $order_by, $having_null);
+        }
+    }
+
+    public function year_callback($divisions_query, $date_query)
     {
     	return function($query) use($divisions_query){
     		return $query->addSelect('year')
 				->whereRaw($divisions_query)
+                ->whereRaw($date_query)
     			->groupBy('year')
     			->orderBy('year', 'asc');
     	};
     }
 
-    public function financial_callback($divisions_query)
+    public function financial_callback($divisions_query, $date_query)
     {
     	return function($query) use($divisions_query){
     		return $query->addSelect('financial_year')
 				->whereRaw($divisions_query)
+                ->whereRaw($date_query)
     			->groupBy('financial_year')
     			->orderBy('financial_year', 'asc');
     	};
     }
 
-    public function year_month_callback($divisions_query)
+    public function year_month_callback($divisions_query, $date_query)
     {
     	return function($query) use($divisions_query){
     		return $query->addSelect('year', 'month')
 				->whereRaw($divisions_query)
+                ->whereRaw($date_query)
     			->groupBy('year', 'month')
     			->orderBy('year', 'asc')
     			->orderBy('month', 'asc');
     	};
     }
 
-    public function year_quarter_callback($divisions_query)
+    public function year_quarter_callback($divisions_query, $date_query)
     {
     	return function($query) use($divisions_query){
     		return $query->addSelect('financial_year', 'quarter')
 				->whereRaw($divisions_query)
+                ->whereRaw($date_query)
     			->groupBy('financial_year', 'quarter')
     			->orderBy('financial_year', 'asc')
     			->orderBy('quarter', 'asc');
     	};
     }
 
-    public function week_callback($divisions_query)
+    public function week_callback($divisions_query, $date_query)
     {
         return function($query) use($divisions_query){
             return $query->addSelect('financial_year', 'week_number')
                 ->whereRaw($divisions_query)
+                ->whereRaw($date_query)
                 ->groupBy('financial_year', 'week_number')
                 ->orderBy('financial_year', 'asc')
                 ->orderBy('week_number', 'asc');
         };
     }
 
-    public function divisions_callback($divisions_query, $var, $order_by=null)
+    public function divisions_callback($divisions_query, $date_query, $var, $order_by=null, $having_null=null)
     {
     	$raw = DB::raw($var['select_query']);
 
     	if($order_by){
-	    	return function($query) use($divisions_query, $var, $raw, $order_by){
+	    	return function($query) use($divisions_query, $var, $raw, $order_by, $having_null){
+                if($having_null){
+                    return $query->addSelect($raw)
+                        ->whereRaw($divisions_query)
+                        ->whereRaw($date_query)
+                        ->groupBy($var['group_query'])
+                        ->having($having_null, '>', 0)
+                        ->orderBy($order_by, 'desc');                    
+                }
 	    		return $query->addSelect($raw)
 					->whereRaw($divisions_query)
+                    ->whereRaw($date_query)
 	    			->groupBy($var['group_query'])
 	    			->orderBy($order_by, 'desc');
 	    	};

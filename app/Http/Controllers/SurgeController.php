@@ -18,6 +18,7 @@ use App\SurgeColumnView;
 
 class SurgeController extends Controller
 {
+	// pns cascade
 
 	public function testing()
 	{
@@ -31,16 +32,13 @@ class SurgeController extends Controller
 			->when(true, $this->surge_columns_callback())
 			->get();
 
-		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos');
-
-		$date_query = Lookup::date_query();
+		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
 
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		// dd($rows);
@@ -50,31 +48,44 @@ class SurgeController extends Controller
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
-		$data['outcomes'][2]['name'] = "Yield";
+		$data['outcomes'][2]['name'] = "Targeted Tests";
+		$data['outcomes'][3]['name'] = "Yield";
+		$data['outcomes'][4]['name'] = "Targeted Yield";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "spline";
+		$data['outcomes'][3]['type'] = "spline";
+		$data['outcomes'][4]['type'] = "spline";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
+		$data['outcomes'][4]['tooltip'] = array("valueSuffix" => ' %');
 
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
+		$data['outcomes'][2]['yAxis'] = 1;
 
 		if($groupby < 10){
-			$data['outcomes'][2]['lineWidth'] = 0;
-			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			$splines = [2, 3, 4];
+			foreach ($splines as $key => $spline) {
+				$data['outcomes'][$spline]['lineWidth'] = 0;
+				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
+				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			}
 		}
 
+		$i = 0;
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			if($row->tests < $row->pos) $row->tests = $row->pos;
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;	
 			$data["outcomes"][1]["data"][$key] = (int) ($row->tests - $row->pos);	
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
+			$data["outcomes"][2]["data"][$key] = (int) $row->testing_target;
+			$data["outcomes"][3]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
+			$data["outcomes"][4]["data"][$key] = Lookup::get_percentage($row->pos_target, $row->testing_target);
 		}
 		return view('charts.dual_axis', $data);
 	}
@@ -98,14 +109,11 @@ class SurgeController extends Controller
 
 		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($male_new, 'male_new') . ', ' .  $this->get_sum($female_new, 'female_new');
 
-		$date_query = Lookup::date_query();
-
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('pos'))
-			->whereRaw($date_query)
 			->get();
 
 		$groupby = session('filter_groupby', 1);
@@ -181,14 +189,11 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$date_query = Lookup::date_query();
-
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->get();
 
 
@@ -201,7 +206,7 @@ class SurgeController extends Controller
 				$data["outcomes"][$mod_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
 			}
 		}
-		return view('charts.line_graph', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 
@@ -237,14 +242,11 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$date_query = Lookup::date_query();
-
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->get();
 
 
@@ -257,7 +259,7 @@ class SurgeController extends Controller
 				$data["outcomes"][$age_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
 			}
 		}
-		return view('charts.line_graph', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 
@@ -291,14 +293,11 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$date_query = Lookup::date_query();
-
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->get();
 
 
@@ -311,7 +310,47 @@ class SurgeController extends Controller
 				$data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
 			}
 		}
-		return view('charts.line_graph', $data);
+		return view('charts.bar_graph', $data);
+	}
+
+	// PNS for surge
+	public function pns()
+	{
+		$sql = '';
+
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['ytitle'] = "Yield by Gender (%)";
+		$data['suffix'] = '%';
+		$data['stacking_false'] = false;
+
+		$pns_array = ['clients_screened', 'contacts_identified', 'pos_contacts', 'eligible_contacts', 'contacts_tested', 'new_pos', 'linked_to_haart'];
+
+		$pns_modalities = SurgeModality::whereIn('modality', $pns_array)->orderBy('id', 'asc')->get();
+
+		foreach ($pns_modalities as $key => $pns) {
+			$sql .= $this->get_pns_sum($pns->modality);
+			$data['outcomes'][$key]['name'] = $pns->modality_name;
+		}
+
+		$sql = substr($sql, 0, -2);
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback())
+			->get();
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			foreach ($pns_array as $pns_key => $pns) {
+				$data["outcomes"][$pns_key]["data"][$key] = $row->$pns;
+			}
+		}
+		return view('charts.bar_graph', $data);
 	}
 
 
@@ -327,6 +366,16 @@ class SurgeController extends Controller
 		$sql = substr($sql, 0, -3);
 		$sql .= ") AS {$name} ";
 		return $sql;
+	}
+
+	public function get_pns_sum($pns_name)
+	{
+		$pns_columns = SurgeColumn::where('column_name', 'LIKE', "{$pns_name}%")
+			->where('column_name', 'like', '%tested%')
+			->when(true, $this->surge_columns_callback(false, true, true))
+			->get();
+
+		return $this->get_sum($pns_columns, $pns_name);
 	}
 
 

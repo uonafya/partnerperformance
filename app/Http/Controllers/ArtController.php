@@ -85,7 +85,6 @@ class ArtController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw("COUNT(facility) as total")
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$start_art_new = DB::table('d_hiv_and_tb_treatment')
@@ -93,7 +92,6 @@ class ArtController extends Controller
 			->selectRaw("COUNT(facility) as total")
 			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$start_art_old = DB::table('d_care_and_treatment')
@@ -101,7 +99,6 @@ class ArtController extends Controller
 			->selectRaw("COUNT(facility) as total")
 			->whereRaw("`total_starting_on_art` > 0")
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$current_art_new = DB::table('d_hiv_and_tb_treatment')
@@ -109,7 +106,6 @@ class ArtController extends Controller
 			->selectRaw("COUNT(facility) as total")
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$current_art_old = DB::table('d_care_and_treatment')
@@ -117,7 +113,6 @@ class ArtController extends Controller
 			->selectRaw("COUNT(facility) as total")
 			->whereRaw("`total_currently_on_art` > 0")
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$data['div'] = str_random(15);
@@ -173,7 +168,7 @@ class ArtController extends Controller
 		$date_query = Lookup::date_query();
 		$groupby = session('filter_groupby', 1);
 
-		if($groupby != 12) $date_query = Lookup::year_month_query();
+		// if($groupby != 12) $date_query = Lookup::year_month_query();
 
 		$sql = "
 			SUM(current_below1) AS below1,
@@ -185,14 +180,12 @@ class ArtController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
-			->whereRaw($date_query)
 			->get();
 
 		$rows3 = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
 			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->get();
 
 		$date_query = Lookup::date_query(true);
@@ -268,14 +261,12 @@ class ArtController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
-			->whereRaw($date_query)
 			->get();
 
 		$rows3 = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(positive_total) AS total ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->get();
 
 		$date_query = Lookup::date_query(true);
@@ -350,7 +341,6 @@ class ArtController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
-			->whereRaw($date_query)
 			->get();
 
 		$data['div'] = str_random(15);
@@ -389,7 +379,6 @@ class ArtController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
-			->whereRaw($date_query)
 			->get();
 
 		return view('tables.art_totals', $data);
@@ -416,7 +405,6 @@ class ArtController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
-			->whereRaw($date_query)
 			->get();
 		$data['period_name'] = Lookup::year_month_name();
 
@@ -530,7 +518,7 @@ class ArtController extends Controller
 		$data['rows'] = DB::table('apidb.vl_site_suppression_datim')
 			->join('hcm.view_facilitys', 'view_facilitys.id', '=', 'vl_site_suppression_datim.facility')
 			->selectRaw($sql)
-			->when(true, $this->get_callback('total'))
+			->when(true, $this->get_callback_no_dates('total'))
 			->get();
 
 		return view('tables.current_suppression', $data);

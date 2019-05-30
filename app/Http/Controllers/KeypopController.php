@@ -11,14 +11,12 @@ class KeypopController extends Controller
 	
 	public function testing()
 	{
-		$date_query = Lookup::date_query();
     	$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('m_keypop')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_keypop.facility')
 			->selectRaw("SUM(tested) AS tests, SUM(positive) as pos")
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		$data['div'] = str_random(15);
@@ -62,7 +60,6 @@ class KeypopController extends Controller
 
 	public function current_tx()
 	{		
-		$date_query = Lookup::date_query();
 		$groupby = session('filter_groupby', 1);
 
 		if($groupby != 12) $date_query = Lookup::year_month_query();
@@ -72,7 +69,6 @@ class KeypopController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_keypop.facility')
 			->selectRaw("SUM(current_tx) AS total")
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$data['div'] = str_random(15);
@@ -90,14 +86,12 @@ class KeypopController extends Controller
 
 	public function summary()
 	{
-		$date_query = Lookup::date_query();
 		$data = Lookup::table_data();
 
 		$data['rows'] = DB::table('m_keypop')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_keypop.facility')
 			->selectRaw("SUM(tested) AS tests, SUM(positive) AS pos, SUM(new_tx) AS new_tx")
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		return view('tables.keypop_summary', $data);

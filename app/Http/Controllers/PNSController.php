@@ -14,7 +14,6 @@ class PNSController extends Controller
 
 	public function summary_chart()
 	{
-		$date_query = Lookup::date_query();
 		$ages = $this->get_ages();
 		$sql = '';
 
@@ -40,7 +39,6 @@ class PNSController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('screened'))
-			->whereRaw($date_query)
 			->having('screened', '>', 0)
 			->get();
 
@@ -61,7 +59,6 @@ class PNSController extends Controller
 
 	public function pns_contribution()
 	{
-		$date_query = Lookup::date_query();
     	$groupby = session('filter_groupby', 1);		
 
 		$data['ages_array'] = $this->ages_array;
@@ -70,14 +67,12 @@ class PNSController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
 			->selectRaw($this->get_table_query('new_pos'))
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$rows2 = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(positive_total) AS `pos` ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->get();
 
 		$data['div'] = str_random(15);
@@ -126,7 +121,6 @@ class PNSController extends Controller
 
 	public function get_table($item)
 	{		
-		$date_query = Lookup::date_query();
 		$data = Lookup::table_data();
 		$data['ages_array'] = $this->ages_array;
 
@@ -134,7 +128,6 @@ class PNSController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
 			->selectRaw($this->get_table_query($item))
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		return view('tables.pns', $data);
@@ -142,7 +135,6 @@ class PNSController extends Controller
 
 	public function summary_table()
 	{
-		$date_query = Lookup::date_query();
 		$ages = $this->get_ages();
 		$sql = '';
 
@@ -167,7 +159,6 @@ class PNSController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('contacts_identified'))
-			->whereRaw($date_query)
 			->having('contacts_identified', '>', 0)
 			->get();
 

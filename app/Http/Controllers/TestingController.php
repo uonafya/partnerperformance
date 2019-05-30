@@ -11,13 +11,10 @@ class TestingController extends Controller
 
 	public function testing_outcomes()
 	{
-		$date_query = Lookup::date_query();
-
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		$sql2 = "
@@ -167,13 +164,10 @@ class TestingController extends Controller
 
 	public function positivity()
 	{
-		$date_query = Lookup::date_query();
-
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		$sql2 = "
@@ -314,14 +308,12 @@ class TestingController extends Controller
 	
 	public function discordancy()
 	{
-		$date_query = Lookup::date_query();
     	$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(tested_couples) AS tests, SUM(discordant_couples) as pos")
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		$data['div'] = str_random(15);
@@ -361,7 +353,6 @@ class TestingController extends Controller
 
 	public function testing_summary()
 	{
-		$date_query = Lookup::date_query();
 		$data = Lookup::table_data();
 
 		$sql = "
@@ -376,7 +367,6 @@ class TestingController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		return view('tables.testing_summary', $data);
@@ -384,21 +374,18 @@ class TestingController extends Controller
 
 	public function summary()
 	{
-		$date_query = Lookup::date_query();
 		$data = Lookup::table_data();
 
 		$data['rows'] = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		$data['linked'] = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw("SUM(new_total) AS newtx")
 			->when(true, $this->get_callback('newtx'))
-			->whereRaw($date_query)
 			->get();
 
 		$sql2 = "
@@ -406,7 +393,6 @@ class TestingController extends Controller
 			SUM(`tested_total_(sum_hv01-01_to_hv01-10)_hv01-10`) AS tests
 		";
 
-		$date_query = Lookup::date_query(true);
 		$data['targets'] = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql2)
