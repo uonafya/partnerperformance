@@ -369,7 +369,6 @@ class IndicatorController extends Controller
 		$data['rows'] = DB::table('p_early_indicators_view')
 			->selectRaw("SUM(tested) AS tests, SUM(positive) AS pos, SUM(new_art) AS new_art, SUM(net_new_tx) AS net_new_tx")
 			->when(true, $this->get_callback('tests'))
-			->whereRaw($date_query)
 			->get();
 
 		$groupby = session('filter_groupby', 1);
