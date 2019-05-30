@@ -185,6 +185,7 @@ class SurgeController extends Controller
 			$sql .= $this->get_sum($tested_columns, $modality->modality . '_tested') . ', ' . $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
 
 			$data['outcomes'][$key]['name'] = $modality->modality_name;
+			$data['outcomes'][$key]['type'] = "column";
 		}
 
 		$sql = substr($sql, 0, -2);
@@ -238,6 +239,7 @@ class SurgeController extends Controller
 			$sql .= $this->get_sum($tested_columns, $age->age . '_tested') . ', ' . $this->get_sum($positive_columns, $age->age . '_pos') . ', ';
 
 			$data['outcomes'][$key]['name'] = $age->age_name;
+			$data['outcomes'][$key]['type'] = "column";
 		}
 
 		$sql = substr($sql, 0, -2);
@@ -289,6 +291,7 @@ class SurgeController extends Controller
 			$sql .= $this->get_sum($tested_columns, $gender->gender . '_tested') . ', ' . $this->get_sum($positive_columns, $gender->gender . '_pos') . ', ';
 
 			$data['outcomes'][$key]['name'] = $gender->gender;
+			$data['outcomes'][$key]['type'] = "column";
 		}
 
 		$sql = substr($sql, 0, -2);
@@ -331,6 +334,7 @@ class SurgeController extends Controller
 		foreach ($pns_modalities as $key => $pns) {
 			$sql .= $this->get_pns_sum($pns->modality) . ', ';
 			$data['outcomes'][$key]['name'] = $pns->modality_name;
+			$data['outcomes'][$key]['type'] = "column";
 		}
 
 		$sql = substr($sql, 0, -2);
