@@ -329,7 +329,7 @@ class SurgeController extends Controller
 		$pns_modalities = SurgeModality::whereIn('modality', $pns_array)->orderBy('id', 'asc')->get();
 
 		foreach ($pns_modalities as $key => $pns) {
-			$sql .= $this->get_pns_sum($pns->modality);
+			$sql .= $this->get_pns_sum($pns->modality) . ', ';
 			$data['outcomes'][$key]['name'] = $pns->modality_name;
 		}
 
@@ -341,7 +341,6 @@ class SurgeController extends Controller
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
 			->get();
-
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
