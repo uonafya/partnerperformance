@@ -371,7 +371,6 @@ class SurgeController extends Controller
 	public function get_pns_sum($pns_name)
 	{
 		$pns_columns = SurgeColumn::where('column_name', 'LIKE', "{$pns_name}%")
-			->where('column_name', 'like', '%tested%')
 			->when(true, $this->surge_columns_callback(false, true, true))
 			->get();
 
