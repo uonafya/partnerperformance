@@ -160,7 +160,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['ytitle'] = "Yield by Modality (%)";
+		$data['yAxis'] = "Yield by Modality (%)";
 		$data['suffix'] = '%';
 
 		$modalities = SurgeModality::where('hts', 1)
@@ -218,7 +218,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['ytitle'] = "Yield by Age (%)";
+		$data['yAxis'] = "Yield by Age (%)";
 		$data['suffix'] = '%';
 
 		$ages = SurgeAge::when(session('filter_gender'), function($query){
@@ -272,7 +272,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['ytitle'] = "Yield by Gender (%)";
+		$data['yAxis'] = "Yield by Gender (%)";
 		$data['suffix'] = '%';
 
 		$genders = SurgeGender::where('id', '!=', 3)->get();
@@ -323,7 +323,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['ytitle'] = "Yield by Gender (%)";
+		$data['yAxis'] = "Yield by Gender (%)";
 		$data['suffix'] = '%';
 		$data['stacking_false'] = false;
 

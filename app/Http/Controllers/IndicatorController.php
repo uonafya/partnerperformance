@@ -158,7 +158,7 @@ class IndicatorController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['ytitle'] = 'Percentage';
+		$data['yAxis'] = 'Percentage';
 
 		$data['paragraph'] = '<p>P.R. - Partner Reported </p>';
 

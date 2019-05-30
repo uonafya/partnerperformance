@@ -11,12 +11,19 @@
         chart: {
             zoomType: 'xy'
         },
+        @isset($stacking)
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                }
+            },
+        @endisset
         xAxis: {
             categories: {!! json_encode($categories) !!}
         },
         yAxis: {
             title: {
-                text: "{{ $ytitle ?? '' }} "
+                text: "{{ $yAxis ?? '' }} "
             },
             plotLines: [{
                 value: 0,

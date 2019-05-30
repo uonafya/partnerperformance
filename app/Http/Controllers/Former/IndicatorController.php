@@ -250,7 +250,7 @@ class IndicatorController extends Controller
 
 		$target = Lookup::get_percentage($target_obj->pos, $target_obj->tests);
 
-		$data['ytitle'] = 'Percentage';
+		$data['yAxis'] = 'Percentage';
 
 		$data['outcomes'][0]['name'] = "Partner Reported Positivity";
 		$data['outcomes'][1]['name'] = "DHIS Positivity";
