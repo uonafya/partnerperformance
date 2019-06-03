@@ -436,7 +436,7 @@ class SurgeController extends Controller
 			$sql .= $this->get_pns_sum($tx_sv->modality) . ', ';
 			$data['outcomes'][$key]['type'] = "column";
 		}
-		$data['outcomes'][$key]['type'] = "spline";
+		$data['outcomes'][2]['type'] = "spline";
 
 		$data['outcomes'][0]['name'] = "TX New Second Visit Due but didn't show";
 		$data['outcomes'][1]['name'] = "TX New Second Visit Number";
