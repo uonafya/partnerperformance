@@ -386,7 +386,7 @@ class SurgeController extends Controller
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "PNS Totals";
 		$data['suffix'] = '';
-		$data['stacking_false'] = false;
+		// $data['stacking_false'] = false;
 
 		$pns_array = ['clients_screened', 'contacts_identified', 'pos_contacts', 'eligible_contacts', 'contacts_tested', 'new_pos', 'linked_to_haart'];
 
@@ -426,7 +426,7 @@ class SurgeController extends Controller
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "TX New Patients";
 		$data['suffix'] = '';
-		// $data['stacking_false'] = false;
+		$data['stacking'] = true;
 
 		$tx_sv_array = ['tx_sv_d', 'tx_sv_n'];
 
