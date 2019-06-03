@@ -216,7 +216,7 @@ class SurgeController extends Controller
 
 
 	// Yield by age
-	public function age_yield()
+	/*public function age_yield()
 	{
 		$sql = '';
 
@@ -263,6 +263,62 @@ class SurgeController extends Controller
 				$t = $age->age . '_tested';
 				$p = $age->age . '_pos';
 				$data["outcomes"][$age_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
+			}
+		}
+		return view('charts.line_graph', $data);
+	}*/
+
+
+	// Yield by age
+	public function age_yield()
+	{
+		$sql = '';
+
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['yAxis'] = "HTS Pos";
+		$data['suffix'] = '';
+		$data['extra_tooltip'] = true;
+
+		$ages = SurgeAge::when(session('filter_gender'), function($query){
+						if(session('filter_gender') == 3) return $query->where('no_gender', 1);
+					})->get();
+
+		foreach ($ages as $key => $age) {
+			$tested_columns = SurgeColumnView::where('age_id', $age->id)
+				->where('column_name', 'like', '%tested%')
+				->when(true, $this->surge_columns_callback(true, true, false))
+				->get();
+
+			$positive_columns = SurgeColumnView::where('age_id', $age->id)
+				->where('column_name', 'like', '%positive%')
+				->when(true, $this->surge_columns_callback(true, true, false))
+				->get();
+
+			$sql .= $this->get_sum($tested_columns, $age->age . '_tested') . ', ' . $this->get_sum($positive_columns, $age->age . '_pos') . ', ';
+
+			$data['outcomes'][$key]['name'] = $age->age_name;
+			$data['outcomes'][$key]['type'] = "column";
+		}
+
+		$sql = substr($sql, 0, -2);
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback())
+			->get();
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			foreach ($ages as $age_key => $age) {
+				$t = $age->age . '_tested';
+				$p = $age->age . '_pos';
+				$data["outcomes"][$age_key]["data"][$key]['y'] = $row->$p;
+				$data["outcomes"][$age_key]["data"][$key]['z'] = ', yield of ' .  Lookup::get_percentage($row->$p, $row->$t) . '%';
 			}
 		}
 		return view('charts.line_graph', $data);
