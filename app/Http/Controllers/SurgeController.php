@@ -162,6 +162,9 @@ class SurgeController extends Controller
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Yield by Modality (%)";
 		$data['suffix'] = '%';
+		$data['stacking'] = true;
+		$data['extra_tooltip'] = true;
+
 
 		$modalities = SurgeModality::where('hts', 1)
 			->when(session('filter_gender'), function($query){
@@ -204,7 +207,8 @@ class SurgeController extends Controller
 			foreach ($modalities as $mod_key => $modality) {
 				$t = $modality->modality . '_tested';
 				$p = $modality->modality . '_pos';
-				$data["outcomes"][$mod_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
+				$data["outcomes"][$mod_key]["data"][$key]['y'] = Lookup::get_percentage($row->$p, $row->$t);
+				$data["outcomes"][$mod_key]["data"][$key]['z'] = ' of ' . number_format($row->$t) . ' Tests';
 			}
 		}
 		return view('charts.line_graph', $data);

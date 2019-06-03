@@ -41,7 +41,20 @@
         },
         tooltip: {
             valueSuffix: "{{ $suffix ?? '%' }}",
-            valuePrefix: "{{ $prefix ?? '' }}"
+            valuePrefix: "{{ $prefix ?? '' }}",
+            shared: true,
+            useHTML: true,
+            yDecimals: 0,
+            valueDecimale: 0,
+            headerFormat: '<table class="tip"><caption>{point.key}</caption>'+'<tbody>',
+            pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y} ' + 
+            @if(isset($extra_tooltip))
+                '{point.z}'
+            @else
+                ' '
+            @endif
+             + '</td></tr>',
+            footerFormat: '<tr><th>Total:</th>'+'<td style="text-align:right"><b>{point.total}</b></td></tr>'+'</tbody></table>'
             // valueDecimals: 2
         },
         legend: {

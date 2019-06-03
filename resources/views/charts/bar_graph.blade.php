@@ -31,6 +31,8 @@
             },
 
             tooltip: {
+                valueSuffix: "{{ $suffix ?? '' }}",
+                valuePrefix: "{{ $prefix ?? '' }}",
                 borderRadius: 2,
                 borderWidth: 1,
                 borderColor: '#999',
