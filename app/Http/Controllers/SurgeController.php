@@ -384,8 +384,8 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['yAxis'] = "Yield by Gender (%)";
-		$data['suffix'] = '%';
+		$data['yAxis'] = "PNS Totals";
+		$data['suffix'] = '';
 		$data['stacking_false'] = false;
 
 		$pns_array = ['clients_screened', 'contacts_identified', 'pos_contacts', 'eligible_contacts', 'contacts_tested', 'new_pos', 'linked_to_haart'];
@@ -413,6 +413,48 @@ class SurgeController extends Controller
 			foreach ($pns_array as $pns_key => $pns) {
 				$data["outcomes"][$pns_key]["data"][$key] = (int) $row->$pns;
 			}
+		}
+		return view('charts.line_graph', $data);
+	}
+
+	// TX SV for surge
+	public function tx_sv()
+	{
+		$sql = '';
+
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['yAxis'] = "TX New Patients";
+		$data['suffix'] = '';
+		// $data['stacking_false'] = false;
+
+		$tx_sv_array = ['tx_sv_d', 'tx_sv_n'];
+
+		$tx_sv_modalities = SurgeModality::whereIn('modality', $tx_sv_array)->orderBy('id', 'asc')->get();
+
+		foreach ($tx_sv_modalities as $key => $tx_sv) {
+			$sql .= $this->get_pns_sum($tx_sv->modality) . ', ';
+			$data['outcomes'][$key]['type'] = "column";
+		}
+
+		$data['outcomes'][0]['name'] = "TX New Second Visit Number";
+		$data['outcomes'][1]['name'] = "TX New Second Visit Due but didn't show";
+
+		$sql = substr($sql, 0, -2);
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback())
+			->get();
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->$tx_sv_n;
+			$data["outcomes"][1]["data"][$key] = (int) ($row->$tx_sv_d - $row->$tx_sv_n);
+			if($data["outcomes"][1]["data"][$key] < 0) $data["outcomes"][1]["data"][$key] = 0;
 		}
 		return view('charts.line_graph', $data);
 	}
