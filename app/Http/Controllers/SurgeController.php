@@ -425,6 +425,7 @@ class SurgeController extends Controller
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "TX New Patients";
+		$data['yAxis2'] = "Retention";
 		$data['suffix'] = '';
 		$data['stacking'] = true;
 
