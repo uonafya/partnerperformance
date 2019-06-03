@@ -411,7 +411,7 @@ class SurgeController extends Controller
 			$data['categories'][$key] = Lookup::get_category($row);
 
 			foreach ($pns_array as $pns_key => $pns) {
-				$data["outcomes"][$pns_key]["data"][$key] = $row->$pns;
+				$data["outcomes"][$pns_key]["data"][$key] = (int) $row->$pns;
 			}
 		}
 		return view('charts.line_graph', $data);
