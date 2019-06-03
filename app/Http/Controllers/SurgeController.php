@@ -436,9 +436,18 @@ class SurgeController extends Controller
 			$sql .= $this->get_pns_sum($tx_sv->modality) . ', ';
 			$data['outcomes'][$key]['type'] = "column";
 		}
+		$data['outcomes'][$key]['type'] = "spline";
 
 		$data['outcomes'][0]['name'] = "TX New Second Visit Due but didn't show";
 		$data['outcomes'][1]['name'] = "TX New Second Visit Number";
+		$data['outcomes'][2]['name'] = "Retention";
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 
 		$sql = substr($sql, 0, -2);
 
@@ -455,8 +464,9 @@ class SurgeController extends Controller
 			$data["outcomes"][0]["data"][$key] = (int) ($row->tx_sv_d - $row->tx_sv_n);
 			$data["outcomes"][1]["data"][$key] = (int) $row->tx_sv_n;
 			if($data["outcomes"][0]["data"][$key] < 0) $data["outcomes"][0]["data"][$key] = 0;
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->tx_sv_n, ($data["outcomes"][0]["data"][$key] + $data["outcomes"][1]["data"][$key]));
 		}
-		return view('charts.line_graph', $data);
+		return view('charts.dual_axis', $data);
 	}
 
 
