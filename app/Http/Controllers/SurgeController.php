@@ -426,8 +426,6 @@ class SurgeController extends Controller
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "TX New Patients";
 		$data['yAxis2'] = "Retention";
-		$data['suffix'] = '';
-		$data['stacking'] = true;
 
 		$tx_sv_array = ['tx_sv_d', 'tx_sv_n'];
 
@@ -466,6 +464,57 @@ class SurgeController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->tx_sv_n;
 			if($data["outcomes"][0]["data"][$key] < 0) $data["outcomes"][0]["data"][$key] = 0;
 			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->tx_sv_n, ($data["outcomes"][0]["data"][$key] + $data["outcomes"][1]["data"][$key]));
+		}
+		return view('charts.dual_axis', $data);
+	}
+
+	// TX BTC for surge
+	public function tx_btc()
+	{
+		$sql = '';
+
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['yAxis'] = "TX New Patients";
+		$data['yAxis2'] = "Target Achievement";
+
+		$tx_sv_array = ['tx_btc_t', 'tx_btc_n'];
+
+		$tx_sv_modalities = SurgeModality::whereIn('modality', $tx_sv_array)->orderBy('id', 'asc')->get();
+
+		foreach ($tx_sv_modalities as $key => $tx_sv) {
+			$sql .= $this->get_pns_sum($tx_sv->modality) . ', ';
+			$data['outcomes'][$key]['type'] = "column";
+		}
+		$data['outcomes'][2]['type'] = "spline";
+
+		$data['outcomes'][0]['name'] = "LTFU Restored to Treatment Unmet Target";
+		$data['outcomes'][1]['name'] = "LTFU Restored to Treatment Number";
+		$data['outcomes'][2]['name'] = "Target Achievement";
+
+		$data['outcomes'][0]['yAxis'] = 1;
+		$data['outcomes'][1]['yAxis'] = 1;
+
+		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		$sql = substr($sql, 0, -2);
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback())
+			->get();
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) ($row->tx_btc_t - $row->tx_btc_n);
+			$data["outcomes"][1]["data"][$key] = (int) $row->tx_btc_n;
+			if($data["outcomes"][0]["data"][$key] < 0) $data["outcomes"][0]["data"][$key] = 0;
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->tx_btc_n, ($data["outcomes"][0]["data"][$key] + $data["outcomes"][1]["data"][$key]));
 		}
 		return view('charts.dual_axis', $data);
 	}

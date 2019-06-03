@@ -128,6 +128,7 @@ Route::prefix('surge')->name('surge.')->group(function(){
 	Route::get('age_yield', 'SurgeController@age_yield')->name('age_yield');
 	Route::get('pns', 'SurgeController@pns')->name('pns');
 	Route::get('tx_sv', 'SurgeController@tx_sv')->name('tx_sv');
+	Route::get('tx_btc', 'SurgeController@tx_btc')->name('tx_btc');
 
 	Route::post('set_surge_facilities', 'SurgeController@set_surge_facilities')->name('set_surge_facilities');
 	Route::post('download', 'SurgeController@download_excel')->name('download');
