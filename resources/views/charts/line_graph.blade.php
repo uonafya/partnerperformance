@@ -73,6 +73,25 @@
             width: $(window).width() - 20,
             backgroundColor: '#FFFFFF'
         },
+        colors: [
+            '#F2784B',
+            '#1BA39C',
+            '#913D88',
+            '#4d79ff',
+            '#80ff00',
+            '#ff8000',
+            '#00ffff',
+            '#ff4000',
+            '#000000',
+            '#003300',
+            '#00ff00',
+            '#00ffff',
+            '#cc0000',
+            '#cc0099',
+            '#ffff00',
+            '#663300',
+            '#ff6600',
+        ],   
         series: {!! json_encode($outcomes) !!}
             
     });
