@@ -318,7 +318,7 @@ class SurgeController extends Controller
 			foreach ($ages as $age_key => $age) {
 				$t = $age->age . '_tested';
 				$p = $age->age . '_pos';
-				$data["outcomes"][$age_key]["data"][$key]['y'] = $row->$p;
+				$data["outcomes"][$age_key]["data"][$key]['y'] = (int) $row->$p;
 				$data["outcomes"][$age_key]["data"][$key]['z'] = ', yield of ' .  Lookup::get_percentage($row->$p, $row->$t) . '%';
 			}
 		}
