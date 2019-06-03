@@ -278,6 +278,7 @@ class SurgeController extends Controller
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "HTS Pos";
 		$data['suffix'] = '';
+		$data['stacking'] = true;
 		$data['extra_tooltip'] = true;
 
 		$ages = SurgeAge::when(session('filter_gender'), function($query){
