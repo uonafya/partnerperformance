@@ -452,8 +452,8 @@ class SurgeController extends Controller
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			$data["outcomes"][0]["data"][$key] = (int) $row->$tx_sv_n;
-			$data["outcomes"][1]["data"][$key] = (int) ($row->$tx_sv_d - $row->$tx_sv_n);
+			$data["outcomes"][0]["data"][$key] = (int) $row->tx_sv_n;
+			$data["outcomes"][1]["data"][$key] = (int) ($row->tx_sv_d - $row->tx_sv_n);
 			if($data["outcomes"][1]["data"][$key] < 0) $data["outcomes"][1]["data"][$key] = 0;
 		}
 		return view('charts.line_graph', $data);
