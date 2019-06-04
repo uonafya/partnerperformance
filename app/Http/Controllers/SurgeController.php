@@ -448,14 +448,7 @@ class SurgeController extends Controller
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 
-		if($groupby < 10){
-			$splines = [2];
-			foreach ($splines as $key => $spline) {
-				$data['outcomes'][$spline]['lineWidth'] = 0;
-				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
-				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-			}
-		}
+		Lookup::splines($data, [2]);
 
 		$sql = substr($sql, 0, -2);
 
@@ -508,14 +501,7 @@ class SurgeController extends Controller
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 
-		if($groupby < 10){
-			$splines = [2];
-			foreach ($splines as $key => $spline) {
-				$data['outcomes'][$spline]['lineWidth'] = 0;
-				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
-				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-			}
-		}
+		Lookup::splines($data, [2]);
 
 		$sql = substr($sql, 0, -2);
 

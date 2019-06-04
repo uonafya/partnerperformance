@@ -27,50 +27,10 @@ use App\Mail\Duplicate;
 class Lookup
 {
 
-	public static function resolve_month($month)
+	public static function resolve_month($m)
 	{
-		switch ($month) {
-			case 1:
-				$value = 'Jan';
-				break;
-			case 2:
-				$value = 'Feb';
-				break;
-			case 3:
-				$value = 'Mar';
-				break;
-			case 4:
-				$value = 'Apr';
-				break;
-			case 5:
-				$value = 'May';
-				break;
-			case 6:
-				$value = 'Jun';
-				break;
-			case 7:
-				$value = 'Jul';
-				break;
-			case 8:
-				$value = 'Aug';
-				break;
-			case 9:
-				$value = 'Sep';
-				break;
-			case 10:
-				$value = 'Oct';
-				break;
-			case 11:
-				$value = 'Nov';
-				break;
-			case 12:
-				$value = 'Dec';
-				break;
-			default:
-				$value = '';
-				break;
-		}
-		return $value;
+		$months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		return $months[$m] ?? '';
 	}
 
 	public static function get_category($row)
@@ -739,6 +699,18 @@ class Lookup
 				break;
 		}
 		return ['select_query' => $select_query, 'group_query' => $group_query];
+	}
+
+	public static function splines(&$data, $splines)
+	{
+		$groupby = session('filter_groupby', 1);
+		if($groupby < 10){
+			foreach ($splines as $key => $spline) {
+				$data['outcomes'][$spline]['lineWidth'] = 0;
+				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
+				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			}
+		}
 	}
 
     public static function send_report(){
