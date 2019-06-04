@@ -4,7 +4,8 @@
 	
     $(function () {
         @isset($dd)
-            console.log({!! $dd !!} );
+            var dump_data = {!! $dd !!};
+            console.log(dump_data);
         @endisset
 
         $('#{{$div}}').highcharts({
