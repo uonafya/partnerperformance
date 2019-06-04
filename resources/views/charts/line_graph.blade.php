@@ -56,7 +56,11 @@
                 @endif
 
              + '</td></tr>',
-            footerFormat: '<tr><th>Total:</th>'+'<td style="text-align:right"><b>{point.total}</b></td></tr>'+'</tbody></table>'
+            footerFormat: '<tr><th>Total:</th>'+'<td style="text-align:right"><b>{point.total}</b>' 
+                @if(isset($extra_tooltip) || isset($point_percentage))
+                    + '</td><td>'
+                @endif
+            +'</td></tr>'+'</tbody></table>'
             // valueDecimals: 2
         },
         legend: {
