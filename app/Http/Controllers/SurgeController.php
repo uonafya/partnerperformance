@@ -270,7 +270,8 @@ class SurgeController extends Controller
 		$data['yAxis'] = "HTS Pos";
 		$data['suffix'] = '';
 		$data['stacking'] = true;
-		$data['extra_tooltip'] = true;
+		// $data['extra_tooltip'] = true;
+		$data['point_percentage'] = true;
 
 		$ages = SurgeAge::when(session('filter_gender'), function($query){
 						if(session('filter_gender') == 3) return $query->where('no_gender', 1);
