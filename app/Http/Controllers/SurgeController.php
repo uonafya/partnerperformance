@@ -32,7 +32,7 @@ class SurgeController extends Controller
 			->when(true, $this->surge_columns_callback())
 			->get();
 
-		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target, COUNT(DISTINCT facility) as facility_count ';
+		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
 
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
@@ -45,7 +45,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['extra_tooltip'] = true;
+		// $data['extra_tooltip'] = true;
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
