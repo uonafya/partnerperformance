@@ -48,28 +48,28 @@ class SurgeController extends Controller
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
-		$data['outcomes'][2]['name'] = "Targeted Tests";
-		$data['outcomes'][3]['name'] = "Yield";
-		$data['outcomes'][4]['name'] = "Targeted Yield";
+		// $data['outcomes'][2]['name'] = "Targeted Tests";
+		$data['outcomes'][2]['name'] = "Yield";
+		// $data['outcomes'][4]['name'] = "Targeted Yield";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "spline";
-		$data['outcomes'][3]['type'] = "spline";
-		$data['outcomes'][4]['type'] = "spline";
+		// $data['outcomes'][3]['type'] = "spline";
+		// $data['outcomes'][4]['type'] = "spline";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
-		$data['outcomes'][3]['tooltip'] = array("valueSuffix" => ' %');
-		$data['outcomes'][4]['tooltip'] = array("valueSuffix" => ' %');
+		// $data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' ');
+		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+		// $data['outcomes'][4]['tooltip'] = array("valueSuffix" => ' %');
 
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
-		$data['outcomes'][2]['yAxis'] = 1;
+		// $data['outcomes'][2]['yAxis'] = 1;
 
 		if($groupby < 10){
-			$splines = [2, 3, 4];
+			$splines = [2];
 			foreach ($splines as $key => $spline) {
 				$data['outcomes'][$spline]['lineWidth'] = 0;
 				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
@@ -83,9 +83,9 @@ class SurgeController extends Controller
 			if($row->tests < $row->pos) $row->tests = $row->pos;
 			$data["outcomes"][0]["data"][$key] = (int) $row->pos;	
 			$data["outcomes"][1]["data"][$key] = (int) ($row->tests - $row->pos);	
-			$data["outcomes"][2]["data"][$key] = (int) $row->testing_target;
-			$data["outcomes"][3]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
-			$data["outcomes"][4]["data"][$key] = Lookup::get_percentage($row->pos_target, $row->testing_target);
+			// $data["outcomes"][2]["data"][$key] = (int) $row->testing_target;
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
+			// $data["outcomes"][4]["data"][$key] = Lookup::get_percentage($row->pos_target, $row->testing_target);
 		}
 		return view('charts.dual_axis', $data);
 	}
@@ -107,7 +107,7 @@ class SurgeController extends Controller
 			->where('gender_id', 2)
 			->get();
 
-		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($male_new, 'male_new') . ', ' .  $this->get_sum($female_new, 'female_new');
+		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($male_new, 'male_new') . ', ' .  $this->get_sum($female_new, 'female_new') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
 
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
@@ -437,7 +437,7 @@ class SurgeController extends Controller
 		}
 		$data['outcomes'][2]['type'] = "spline";
 
-		$data['outcomes'][0]['name'] = "TX New Second Visit Due but didn't show";
+		$data['outcomes'][0]['name'] = "TX New Second Visit Due but didn't show up";
 		$data['outcomes'][1]['name'] = "TX New Second Visit Number";
 		$data['outcomes'][2]['name'] = "Retention";
 
@@ -447,6 +447,15 @@ class SurgeController extends Controller
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		if($groupby < 10){
+			$splines = [2];
+			foreach ($splines as $key => $spline) {
+				$data['outcomes'][$spline]['lineWidth'] = 0;
+				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
+				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			}
+		}
 
 		$sql = substr($sql, 0, -2);
 
@@ -475,7 +484,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['yAxis'] = "TX New Patients";
+		$data['yAxis'] = "TX BTC";
 		$data['yAxis2'] = "Target Achievement";
 
 		$tx_sv_array = ['tx_btc_t', 'tx_btc_n'];
@@ -498,6 +507,15 @@ class SurgeController extends Controller
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
+
+		if($groupby < 10){
+			$splines = [2];
+			foreach ($splines as $key => $spline) {
+				$data['outcomes'][$spline]['lineWidth'] = 0;
+				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
+				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			}
+		}
 
 		$sql = substr($sql, 0, -2);
 
