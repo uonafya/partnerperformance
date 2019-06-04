@@ -47,13 +47,12 @@
             yDecimals: 0,
             valueDecimale: 0,
             headerFormat: '<table class="tip"><caption>{point.key}</caption>'+'<tbody>',
-            pointFormat: 
             pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}' 
                 @if(isset($extra_tooltip))
                     + '</td><td>{point.z}'
                 @endif
                 @if(isset($point_percentage))
-                    + '</td><td>{point.percentage}%'
+                    + '</td><td>{point.percentage}'
                 @endif
 
              + '</td></tr>',
