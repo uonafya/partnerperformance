@@ -75,6 +75,8 @@ class SurgeController extends Controller
 			$var = Lookup::groupby_query();
 			$raw = DB::raw($var['select_query']) . ', COUNT(id) AS facility_count';
 			$facilities = DB::table('view_facilitys')->select($raw)->groupBy($var['group_query'])->where('is_surge', 1)->get();
+
+			$data['dd'] = $facilities->toJson();
 		}
 
 		$i = 0;

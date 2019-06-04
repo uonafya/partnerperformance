@@ -3,6 +3,10 @@
 <script type="text/javascript">
 	
     $(function () {
+        @isset($dd)
+            console.log({!! $dd !!} );
+        @endisset
+
         $('#{{$div}}').highcharts({
             plotOptions: {
                 column: {
