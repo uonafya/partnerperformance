@@ -45,7 +45,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		// $data['extra_tooltip'] = true;
+		$data['extra_tooltip'] = true;
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
@@ -71,6 +71,12 @@ class SurgeController extends Controller
 
 		Lookup::splines($data, [2]);
 
+		if($groupby < 10){
+			$var = Lookup::groupby_query();
+			$raw = DB::raw($var['select_query']) . ', COUNT(id) AS facility_count';
+			$facilities = DB::table('view_facilitys')->select($raw)->groupBy($var['group_query'])->where('is_surge', 1)->get();
+		}
+
 		$i = 0;
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -82,7 +88,7 @@ class SurgeController extends Controller
 			// $data["outcomes"][4]["data"][$key]['y'] = Lookup::get_percentage($row->pos_target, $row->testing_target);
 
 			$data["outcomes"][0]["data"][$key]['z'] = $data["outcomes"][1]["data"][$key]['z'] = $data["outcomes"][2]["data"][$key]['z'] = '';
-			// if($groupby < 10) $data["outcomes"][2]["data"][$key]['z'] = ' Facility Count ' . $row->facility_count;
+			if($groupby < 10) $data["outcomes"][2]["data"][$key]['z'] = ' Facility Count ' . Lookup::get_val($row, $facilities, 'facility_count');
 		}
 		return view('charts.dual_axis', $data);
 	}

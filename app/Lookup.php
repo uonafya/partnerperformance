@@ -488,43 +488,13 @@ class Lookup
 	}
 
 	public static function max_per_quarter($quarter){
-		switch ($quarter) {
-			case 1:
-				$m = 12;
-				break;
-			case 2:
-				$m = 3;
-				break;
-			case 3:
-				$m = 6;
-				break;
-			case 4:
-				$m = 9;
-				break;			
-			default:
-				break;
-		}
-		return $m;
+		$quarters = [null, 12, 3, 6, 9];
+		return $quarters[$quarter] ?? null;
 	}
 
 	public static function min_per_quarter($quarter){
-		switch ($quarter) {
-			case 1:
-				$m = 10;
-				break;
-			case 2:
-				$m = 1;
-				break;
-			case 3:
-				$m = 4;
-				break;
-			case 4:
-				$m = 7;
-				break;			
-			default:
-				break;
-		}
-		return $m;
+		$quarters = [null, 10, 1, 4, 7];
+		return $quarters[$quarter] ?? null;
 	}
 
 	/*public static function divisions_query()
