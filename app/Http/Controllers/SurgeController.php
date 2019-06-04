@@ -39,6 +39,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('tests', 'tests'))
+			->where('is_surge', 1)
 			->get();
 
 		// dd($rows);
@@ -92,7 +93,7 @@ class SurgeController extends Controller
 			$data["outcomes"][0]["data"][$key]['z'] = $data["outcomes"][1]["data"][$key]['z'] = $data["outcomes"][2]["data"][$key]['z'] = '';
 			if($groupby < 10) $data["outcomes"][2]["data"][$key]['z'] = '  Facility Count ' . Lookup::get_val($row, $facilities, 'facility_count');
 		}
-		$data['dd'] = json_encode($data);
+		// $data['dd'] = json_encode($data);
 		return view('charts.dual_axis', $data);
 	}
 
@@ -114,6 +115,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('pos'))
+			->where('is_surge', 1)
 			->get();
 
 		$groupby = session('filter_groupby', 1);
@@ -202,6 +204,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
+			->where('is_surge', 1)
 			->get();
 
 
@@ -316,6 +319,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
+			->where('is_surge', 1)
 			->get();
 
 
@@ -369,6 +373,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
+			->where('is_surge', 1)
 			->get();
 
 
@@ -412,6 +417,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
+			->where('is_surge', 1)
 			->get();
 
 		foreach ($rows as $key => $row){
@@ -463,6 +469,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
+			->where('is_surge', 1)
 			->get();
 
 		foreach ($rows as $key => $row){
@@ -515,6 +522,7 @@ class SurgeController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
+			->where('is_surge', 1)
 			->get();
 
 		foreach ($rows as $key => $row){
