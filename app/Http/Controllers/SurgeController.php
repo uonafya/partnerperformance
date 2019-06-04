@@ -165,17 +165,18 @@ class SurgeController extends Controller
 			->get();
 
 		foreach ($modalities as $key => $modality) {
-			$tested_columns = SurgeColumnView::where('modality_id', $modality->id)
-				->where('column_name', 'like', '%tested%')
-				->when(true, $this->surge_columns_callback(false))
-				->get();
+			// $tested_columns = SurgeColumnView::where('modality_id', $modality->id)
+			// 	->where('column_name', 'like', '%tested%')
+			// 	->when(true, $this->surge_columns_callback(false))
+			// 	->get();
 
 			$positive_columns = SurgeColumnView::where('modality_id', $modality->id)
 				->where('column_name', 'like', '%positive%')
 				->when(true, $this->surge_columns_callback(false))
 				->get();
 
-			$sql .= $this->get_sum($tested_columns, $modality->modality . '_tested') . ', ' . $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
+			// $sql .= $this->get_sum($tested_columns, $modality->modality . '_tested') . ', ' . $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
+			$sql .= $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
 
 			$data['outcomes'][$key]['name'] = $modality->modality_name;
 			$data['outcomes'][$key]['type'] = "column";
@@ -199,7 +200,7 @@ class SurgeController extends Controller
 				$p = $modality->modality . '_pos';
 				// $data["outcomes"][$mod_key]["data"][$key]['y'] = Lookup::get_percentage($row->$p, $row->$t);
 				$data["outcomes"][$mod_key]["data"][$key]['y'] = (int) $row->$p;
-				$data["outcomes"][$mod_key]["data"][$key]['z'] = ' of ' . number_format($row->$t) . ' Tests';
+				// $data["outcomes"][$mod_key]["data"][$key]['z'] = ' of ' . number_format($row->$t) . ' Tests';
 			}
 		}
 		return view('charts.line_graph', $data);
@@ -278,17 +279,18 @@ class SurgeController extends Controller
 					})->get();
 
 		foreach ($ages as $key => $age) {
-			$tested_columns = SurgeColumnView::where('age_id', $age->id)
-				->where('column_name', 'like', '%tested%')
-				->when(true, $this->surge_columns_callback(true, true, false))
-				->get();
+			// $tested_columns = SurgeColumnView::where('age_id', $age->id)
+			// 	->where('column_name', 'like', '%tested%')
+			// 	->when(true, $this->surge_columns_callback(true, true, false))
+			// 	->get();
 
 			$positive_columns = SurgeColumnView::where('age_id', $age->id)
 				->where('column_name', 'like', '%positive%')
 				->when(true, $this->surge_columns_callback(true, true, false))
 				->get();
 
-			$sql .= $this->get_sum($tested_columns, $age->age . '_tested') . ', ' . $this->get_sum($positive_columns, $age->age . '_pos') . ', ';
+			// $sql .= $this->get_sum($tested_columns, $age->age . '_tested') . ', ' . $this->get_sum($positive_columns, $age->age . '_pos') . ', ';
+			$sql .= $this->get_sum($positive_columns, $age->age . '_pos') . ', ';
 
 			$data['outcomes'][$key]['name'] = $age->age_name;
 			$data['outcomes'][$key]['type'] = "column";
@@ -311,7 +313,7 @@ class SurgeController extends Controller
 				$t = $age->age . '_tested';
 				$p = $age->age . '_pos';
 				$data["outcomes"][$age_key]["data"][$key]['y'] = (int) $row->$p;
-				$data["outcomes"][$age_key]["data"][$key]['z'] = ', yield of ' .  Lookup::get_percentage($row->$p, $row->$t) . '%';
+				// $data["outcomes"][$age_key]["data"][$key]['z'] = ', yield of ' .  Lookup::get_percentage($row->$p, $row->$t) . '%';
 			}
 		}
 		return view('charts.line_graph', $data);
