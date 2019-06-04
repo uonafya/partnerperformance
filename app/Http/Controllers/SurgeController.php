@@ -68,14 +68,7 @@ class SurgeController extends Controller
 		$data['outcomes'][1]['yAxis'] = 1;
 		// $data['outcomes'][2]['yAxis'] = 1;
 
-		if($groupby < 10){
-			$splines = [2];
-			foreach ($splines as $key => $spline) {
-				$data['outcomes'][$spline]['lineWidth'] = 0;
-				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
-				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-			}
-		}
+		Lookup::splines($data, [2]);
 
 		$i = 0;
 		foreach ($rows as $key => $row) {
@@ -94,20 +87,14 @@ class SurgeController extends Controller
 	{
 		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
 			->where('hts', 1)
-			->when(true, $this->surge_columns_callback(false, false))
+			->when(true, $this->surge_columns_callback(false, true, true))
 			->get();
 
-		$male_new = SurgeColumnView::where('modality', 'tx_new')
-			->when(true, $this->surge_columns_callback(false, false))
-			->where('gender_id', 1)
+		$tx_new = SurgeColumnView::where('modality', 'tx_new')
+			->when(true, $this->surge_columns_callback(false, true, true))
 			->get();
 
-		$female_new = SurgeColumnView::where('modality', 'tx_new')
-			->when(true, $this->surge_columns_callback(false, false))
-			->where('gender_id', 2)
-			->get();
-
-		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($male_new, 'male_new') . ', ' .  $this->get_sum($female_new, 'female_new') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
+		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($tx_new, 'tx_new') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
 
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
@@ -121,13 +108,16 @@ class SurgeController extends Controller
 		$data['yAxis'] = "New On Treatment";
 		$data['yAxis2'] = "Linkage to Treatment (%)";
 
-		$data['outcomes'][0]['name'] = "Male New on Treatment";
-		$data['outcomes'][1]['name'] = "Female New on Treatment";
+		$data['outcomes'][0]['name'] = "Positives Not Linked To Treatment";
+		$data['outcomes'][1]['name'] = "New on Treatment";
 		$data['outcomes'][2]['name'] = "Linkage to Treatment";
 
 		$data['outcomes'][0]['type'] = "column";
 		$data['outcomes'][1]['type'] = "column";
 		$data['outcomes'][2]['type'] = "spline";
+
+		$data['outcomes'][0]['color'] = "#ff0000";
+		$data['outcomes'][1]['color'] = "#00cc00";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
@@ -136,18 +126,15 @@ class SurgeController extends Controller
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;
 
-		if($groupby < 10){
-			$data['outcomes'][2]['lineWidth'] = 0;
-			$data['outcomes'][2]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][2]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [2]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			// if($row->tests < $row->pos) $row->tests = $row->pos;
-			$data["outcomes"][0]["data"][$key] = (int) $row->male_new;
-			$data["outcomes"][1]["data"][$key] = (int) $row->female_new;
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage(($row->male_new + $row->female_new), $row->pos);
+			$data["outcomes"][0]["data"][$key] = (int) ($row->pos - $row->tx_new);
+			if($data["outcomes"][0]["data"][$key] < 0) $data["outcomes"][0]["data"][$key] = 0;
+			$data["outcomes"][1]["data"][$key] = (int) $row->tx_new;
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage(($row->tx_new), $row->pos);
 		}
 		return view('charts.dual_axis', $data);
 	}
@@ -422,7 +409,6 @@ class SurgeController extends Controller
 	{
 		$sql = '';
 
-		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "TX New Patients";
 		$data['yAxis2'] = "Retention";
@@ -475,7 +461,6 @@ class SurgeController extends Controller
 	{
 		$sql = '';
 
-		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "TX BTC";
 		$data['yAxis2'] = "Target Achievement";
