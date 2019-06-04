@@ -52,7 +52,7 @@
                     + '</td><td>{point.z}'
                 @endif
                 @if(isset($point_percentage))
-                    + '</td><td>{point.percentage}'
+                    + '</td><td><br /><b>{point.percentage:.1f}%</b>'
                 @endif
 
              + '</td></tr>',

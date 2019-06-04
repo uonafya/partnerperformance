@@ -148,8 +148,9 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['yAxis'] = "Yield by Modality (%)";
-		$data['suffix'] = '%';
+		// $data['yAxis'] = "Yield by Modality (%)";
+		$data['yAxis'] = "HTS Pos";
+		$data['suffix'] = '';
 		$data['stacking'] = true;
 		// $data['extra_tooltip'] = true;
 		$data['point_percentage'] = true;
