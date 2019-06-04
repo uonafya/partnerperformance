@@ -32,19 +32,20 @@ class SurgeController extends Controller
 			->when(true, $this->surge_columns_callback())
 			->get();
 
-		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
+		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target, COUNT(DISTINCT facility) as facility_count ';
 
 		$rows = DB::table('d_surge')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->selectRaw($sql)
-			->when(true, $this->get_callback('tests'))
+			->when(true, $this->get_callback('tests', 'tests'))
 			->get();
 
 		// dd($rows);
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
+		$data['extra_tooltip'] = true;
 
 		$data['outcomes'][0]['name'] = "Positive Tests";
 		$data['outcomes'][1]['name'] = "Negative Tests";
@@ -74,11 +75,14 @@ class SurgeController extends Controller
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			if($row->tests < $row->pos) $row->tests = $row->pos;
-			$data["outcomes"][0]["data"][$key] = (int) $row->pos;	
-			$data["outcomes"][1]["data"][$key] = (int) ($row->tests - $row->pos);	
-			// $data["outcomes"][2]["data"][$key] = (int) $row->testing_target;
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
-			// $data["outcomes"][4]["data"][$key] = Lookup::get_percentage($row->pos_target, $row->testing_target);
+			$data["outcomes"][0]["data"][$key]['y'] = (int) $row->pos;	
+			$data["outcomes"][1]["data"][$key]['y'] = (int) ($row->tests - $row->pos);	
+			// $data["outcomes"][2]["data"][$key]['y'] = (int) $row->testing_target;
+			$data["outcomes"][2]["data"][$key]['y'] = Lookup::get_percentage($row->pos, $row->tests);
+			// $data["outcomes"][4]["data"][$key]['y'] = Lookup::get_percentage($row->pos_target, $row->testing_target);
+
+			$data["outcomes"][0]["data"][$key]['z'] = $data["outcomes"][1]["data"][$key]['z'] = $data["outcomes"][2]["data"][$key]['z'] = '';
+			if($groupby < 10) $data["outcomes"][2]["data"][$key]['z'] = ' Facility Count ' . $row->facility_count;
 		}
 		return view('charts.dual_axis', $data);
 	}
