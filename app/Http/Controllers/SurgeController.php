@@ -90,7 +90,7 @@ class SurgeController extends Controller
 			// $data["outcomes"][4]["data"][$key]['y'] = Lookup::get_percentage($row->pos_target, $row->testing_target);
 
 			$data["outcomes"][0]["data"][$key]['z'] = $data["outcomes"][1]["data"][$key]['z'] = $data["outcomes"][2]["data"][$key]['z'] = '';
-			if($groupby < 10) $data["outcomes"][2]["data"][$key]['z'] = ' Facility Count ' . Lookup::get_val($row, $facilities, 'facility_count');
+			if($groupby < 10) $data["outcomes"][2]["data"][$key]['z'] = '  Facility Count ' . Lookup::get_val($row, $facilities, 'facility_count');
 		}
 		return view('charts.dual_axis', $data);
 	}
