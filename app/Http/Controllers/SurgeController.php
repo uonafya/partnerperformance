@@ -118,6 +118,7 @@ class SurgeController extends Controller
 
 		$data['outcomes'][0]['color'] = "#ff0000";
 		$data['outcomes'][1]['color'] = "#00cc00";
+		$data['outcomes'][2]['color'] = "#cc0099";
 
 		$data['outcomes'][0]['tooltip'] = array("valueSuffix" => ' ');
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' ');
@@ -150,7 +151,8 @@ class SurgeController extends Controller
 		$data['yAxis'] = "Yield by Modality (%)";
 		$data['suffix'] = '%';
 		$data['stacking'] = true;
-		$data['extra_tooltip'] = true;
+		// $data['extra_tooltip'] = true;
+		$data['point_percentage'] = true;
 
 
 		$modalities = SurgeModality::where('hts', 1)
@@ -194,7 +196,8 @@ class SurgeController extends Controller
 			foreach ($modalities as $mod_key => $modality) {
 				$t = $modality->modality . '_tested';
 				$p = $modality->modality . '_pos';
-				$data["outcomes"][$mod_key]["data"][$key]['y'] = Lookup::get_percentage($row->$p, $row->$t);
+				// $data["outcomes"][$mod_key]["data"][$key]['y'] = Lookup::get_percentage($row->$p, $row->$t);
+				$data["outcomes"][$mod_key]["data"][$key]['y'] = (int) $row->$p;
 				$data["outcomes"][$mod_key]["data"][$key]['z'] = ' of ' . number_format($row->$t) . ' Tests';
 			}
 		}
