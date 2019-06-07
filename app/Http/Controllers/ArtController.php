@@ -186,6 +186,8 @@ class ArtController extends Controller
 			->groupby($q['group_query'])
 			->get();
 
+		dd($rows);
+
 		$rows3 = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
 			->selectRaw($q['select_query'] . ", " . "(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
