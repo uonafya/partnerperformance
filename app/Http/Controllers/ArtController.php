@@ -186,6 +186,9 @@ class ArtController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupby($q['group_query'])
+			->when(($groupby < 10), function($query){
+				return $query->orderBy('above15');
+			})
 			->get();
 
 		// return DB::getQueryLog();
@@ -413,6 +416,9 @@ class ArtController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
+			->when(($groupby < 10), function($query){
+				return $query->orderBy('reported_total');
+			})
 			->get();
 		$data['period_name'] = Lookup::year_month_name();
 
