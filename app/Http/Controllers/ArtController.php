@@ -165,10 +165,12 @@ class ArtController extends Controller
 
 	public function current_age_breakdown()
 	{
+		$q = Lookup::groupby_query();
 		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
 		$groupby = session('filter_groupby', 1);
 
-		// if($groupby != 12) $date_query = Lookup::year_month_query();
+		if($groupby != 12) $date_query = Lookup::year_month_query();
 
 		$sql = "
 			SUM(current_below1) AS below1,
@@ -178,14 +180,18 @@ class ArtController extends Controller
 
 		$rows = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->selectRaw($sql)
-			->when(true, $this->get_callback('above15'))
+			->selectRaw($q['select_query'] . ", " . $sql)
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupby($q['group_query'])
 			->get();
 
 		$rows3 = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
-			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
-			->when(true, $this->get_callback())
+			->selectRaw($q['select_query'] . ", " . "(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupby($q['group_query'])
 			->get();
 
 		$date_query = Lookup::date_query(true);
@@ -195,7 +201,6 @@ class ArtController extends Controller
 			->when(true, $this->target_callback())
 			->get();
 
-		$groupby = session('filter_groupby', 1);
 		// $divisor = Lookup::get_target_divisor();
 		$divisor = 1;
 
@@ -223,11 +228,7 @@ class ArtController extends Controller
 		$data['outcomes'][2]['stack'] = 'current_art';
 		$data['outcomes'][3]['stack'] = 'moh_729';
 
-		if($groupby < 10){
-			$data['outcomes'][4]['lineWidth'] = 0;
-			$data['outcomes'][4]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][4]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [4]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -303,11 +304,7 @@ class ArtController extends Controller
 		$data['outcomes'][2]['stack'] = 'new_art';
 		$data['outcomes'][3]['stack'] = 'positives';
 
-		if($groupby < 10){
-			$data['outcomes'][4]['lineWidth'] = 0;
-			$data['outcomes'][4]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][4]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [4]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -393,7 +390,10 @@ class ArtController extends Controller
 
 		if($groupby != 12) $date_query = Lookup::year_month_query();
 
-		$sql = "
+		$divisions_query = Lookup::divisions_query();
+		$q = Lookup::groupby_query();
+
+		$sql = $q['select_query'] . ", " . "
 			SUM(current_below1) AS below1,
 			(SUM(current_below10) + SUM(current_below15_m) + SUM(current_below15_f)) AS below15,
 			(SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS above15,
@@ -404,10 +404,11 @@ class ArtController extends Controller
 		$data['rows'] = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($sql)
-			->when(true, $this->get_callback('above15'))
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupBy($q['group_query'])
 			->get();
 		$data['period_name'] = Lookup::year_month_name();
-
 
 		return view('tables.art_totals', $data);
 	}

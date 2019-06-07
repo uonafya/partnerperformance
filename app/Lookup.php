@@ -482,6 +482,15 @@ class Lookup
 		return " financial_year='{$financial_year}' and month='{$month}'";
 	}
 
+
+	public static function get_tx_week($weeks=1)
+	{
+		$days = date('w') + (7 * $weeks);
+		$start_date = date('Y-m-d', strtotime("-{$days} days"));
+		$week = \App\Week::where('start_date', $start_date);
+		return $week_id;
+	}
+
 	public static function year_month_name()
 	{
 		return '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';
