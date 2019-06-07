@@ -178,6 +178,8 @@ class ArtController extends Controller
 			(SUM(current_below20_m) + SUM(current_below20_f) + SUM(current_below25_m) + SUM(current_below25_f) + SUM(current_above25_m) + SUM(current_above25_f)) AS above15
 		";	
 
+		DB::enableQueryLog();
+
 		$rows = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
 			->selectRaw($q['select_query'] . ", " . $sql)
@@ -186,7 +188,9 @@ class ArtController extends Controller
 			->groupby($q['group_query'])
 			->get();
 
-		dd($rows);
+		return DB::getQueryLog();
+
+		// dd($rows);
 
 		$rows3 = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
