@@ -495,7 +495,7 @@ class Lookup
 		}
 		else{
 			$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
-			return ($week - $param);
+			return ($week->id - $param);
 		}
 		return $week->id;
 	}
