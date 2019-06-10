@@ -494,8 +494,17 @@ class Lookup
 			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->first();
 		}
 		else{
-			$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
-			return ($week->id - $param);
+			$current_financial_year = date('Y');
+			if(date('m') > 9) $current_financial_year++;
+
+			$days = date('w') + (7 * $param);
+			if($year == $current_financial_year){				
+				$start_date = date('Y-m-d', strtotime("-{$days} days"));
+				$week = \App\Week::where('start_date', $start_date)->first();	
+			}
+			else{
+				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
+			}
 		}
 		return $week->id;
 	}
