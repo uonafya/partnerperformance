@@ -483,12 +483,21 @@ class Lookup
 	}
 
 
-	public static function get_tx_week($weeks=1)
+	public static function get_tx_week($param=1)
 	{
-		$days = date('w') + (7 * $weeks);
-		$start_date = date('Y-m-d', strtotime("-{$days} days"));
-		$week = \App\Week::where('start_date', $start_date);
-		return $week_id;
+		$year = session('filter_financial_year');
+		if(session('filter_week')) return session('filter_week');
+		else if(session('filter_month')){
+			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->first();
+		}
+		else if(session('filter_quarter')){
+			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->first();
+		}
+		else{
+			$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
+			return ($week - $param);
+		}
+		return $week->id;
 	}
 
 	public static function year_month_name()
