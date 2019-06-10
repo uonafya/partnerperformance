@@ -584,8 +584,7 @@ class SurgeController extends Controller
 
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
-		$data['yAxis'] = "New On Treatment";
-		$data['yAxis2'] = "Linkage to Treatment (%)";
+		$data['yAxis'] = "Number of Clients";
 
 		$data['outcomes'][0]['name'] = "Positives";
 		$data['outcomes'][1]['name'] = "Positives Target";
