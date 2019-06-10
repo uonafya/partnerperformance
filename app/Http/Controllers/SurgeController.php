@@ -569,8 +569,7 @@ class SurgeController extends Controller
 			->where('hts', 1)
 			->get();
 
-		$tx_new = SurgeColumnView::where('modality', 'tx_new')
-			->get();
+		$tx_new = SurgeColumnView::where('modality', 'tx_new')->get();
 
 		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($tx_new, 'tx_new') . ', SUM(pos_target) AS pos_target, SUM(tx_new_target) AS tx_new_target ';
 
