@@ -563,6 +563,58 @@ class SurgeController extends Controller
 	}
 
 
+	public function targets()
+	{		
+		$positive_columns = SurgeColumnView::where('column_name', 'like', '%positive%')
+			->where('hts', 1)
+			->get();
+
+		$tx_new = SurgeColumnView::where('modality', 'tx_new')
+			->get();
+
+		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($tx_new, 'tx_new') . ', SUM(pos_target) AS pos_target, SUM(tx_new_target) AS tx_new_target ';
+
+		$rows = DB::table('d_surge')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->selectRaw($sql)
+			->when(true, $this->get_callback('pos'))
+			->where('is_surge', 1)
+			->get();
+
+		$groupby = session('filter_groupby', 1);
+		$data['div'] = str_random(15);
+		$data['yAxis'] = "New On Treatment";
+		$data['yAxis2'] = "Linkage to Treatment (%)";
+
+		$data['outcomes'][0]['name'] = "Positives";
+		$data['outcomes'][1]['name'] = "Positives Target";
+		$data['outcomes'][2]['name'] = "New on Treatment";
+		$data['outcomes'][3]['name'] = "New on Treatment Target";
+
+		$data['outcomes'][0]['type'] = "column";
+		$data['outcomes'][1]['type'] = "spline";
+		$data['outcomes'][2]['type'] = "column";
+		$data['outcomes'][3]['type'] = "spline";
+
+		$data['outcomes'][0]['stack'] = 'positives';
+		$data['outcomes'][1]['stack'] = 'positives';
+		$data['outcomes'][2]['stack'] = 'new_tx';
+		$data['outcomes'][3]['stack'] = 'new_tx';
+
+		Lookup::splines($data, [1, 3]);
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
+			$data["outcomes"][1]["data"][$key] = (int) $row->pos_target;
+			$data["outcomes"][2]["data"][$key] = (int) $row->tx_new;
+			$data["outcomes"][3]["data"][$key] = (int) $row->tx_new_target;
+		}
+		return view('charts.bar_graph', $data);
+	}
+
+
 
 
 	public function get_sum($columns, $name)

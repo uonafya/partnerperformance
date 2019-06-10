@@ -122,6 +122,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Target Achievement <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="targets">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -139,6 +152,7 @@
 		$("#pns").html("<center><div class='loader'></div></center>");
 		$("#tx_sv").html("<center><div class='loader'></div></center>");
 		$("#tx_btc").html("<center><div class='loader'></div></center>");
+		$("#targets").html("<center><div class='loader'></div></center>");
 
 		$("#testing").load("{{ url('surge/testing') }}");
 		$("#linkage").load("{{ url('surge/linkage') }}");
@@ -148,6 +162,7 @@
 		$("#pns").load("{{ url('surge/pns') }}");
 		$("#tx_sv").load("{{ url('surge/tx_sv') }}");
 		$("#tx_btc").load("{{ url('surge/tx_btc') }}");
+		$("#targets").load("{{ url('surge/targets') }}");
 	}
 
 
