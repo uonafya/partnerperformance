@@ -579,6 +579,7 @@ class Lookup
 		if(session('filter_gender') && $gender) $query .= " AND gender_id" . self::set_division_query(session('filter_gender'));
 		if(session('filter_modality') && $modality) $query .= " AND modality_id" . self::set_division_query(session('filter_modality'));
 		if(session('filter_age') && $age) $query .= " AND age_id" . self::set_division_query(session('filter_age'));
+		if(session('filter_age_category_id') && $age) $query .= " AND age_category_id" . self::set_division_query(session('filter_age_category_id'));
 
 		return $query;		
 	}

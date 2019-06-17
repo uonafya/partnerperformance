@@ -132,7 +132,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<select class="btn filters form-control" id="filter_week">
 							<option disabled='true'>Select Week</option>
 							<option value='null' selected='true'>All Weeks</option>
@@ -143,7 +143,7 @@
 						</select>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<select class="btn filters form-control" id="filter_gender">
 							<option disabled='true'>Select Gender</option>
 							<option value='null' selected='true'>All Genders</option>
@@ -151,6 +151,16 @@
 							@foreach($genders as $key => $gender)
 								<option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
 							@endforeach
+						</select>
+					</div>
+
+					<div class="col-md-4">
+						<select class="btn filters form-control" id="filter_age_category_id">
+							<option disabled='true'>Select Age Category</option>
+							<option value='null' selected='true'>All Age Categories</option>
+							<option value="1"> Unknown </option>
+							<option value="2"> Below 15 </option>
+							<option value="3"> Above 15 </option>
 						</select>
 					</div>
 				</div>

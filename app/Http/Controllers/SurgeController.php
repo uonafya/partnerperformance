@@ -18,8 +18,6 @@ use App\SurgeColumnView;
 
 class SurgeController extends Controller
 {
-	// pns cascade
-
 	public function testing()
 	{
 		$tested_columns = SurgeColumnView::where('column_name', 'like', '%tested%')
@@ -599,6 +597,11 @@ class SurgeController extends Controller
 		$data['outcomes'][1]['stack'] = 'positives';
 		$data['outcomes'][2]['stack'] = 'new_tx';
 		$data['outcomes'][3]['stack'] = 'new_tx';
+
+		$data['outcomes'][0]['color'] = "#ff0000";
+		$data['outcomes'][1]['color'] = "#ff0000";
+		$data['outcomes'][2]['color'] = "#00cc00";
+		$data['outcomes'][3]['color'] = "#00cc00";
 
 		Lookup::splines($data, [1, 3]);
 

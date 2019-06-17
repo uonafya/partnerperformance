@@ -104,8 +104,9 @@ class Surge
                     id tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
                     age varchar(20) DEFAULT NULL,
                     age_name varchar(20) DEFAULT NULL,
+                    age_category varchar(20) DEFAULT NULL,
+                    age_category_id tinyint(1) UNSIGNED DEFAULT 2,                    
                     no_gender tinyint(1) UNSIGNED DEFAULT 0,
-
                     PRIMARY KEY (`id`),
                     KEY `age` (`age`)
                 );
@@ -114,23 +115,23 @@ class Surge
         DB::statement($sql);
 
         DB::table($table_name)->insert([
-        	['age' => 'unknown', 'age_name' => 'Unknown', 'no_gender' => 1, ],
-        	['age' => 'below_1', 'age_name' => 'Below 1', 'no_gender' => 1, ],
-        	['age' => 'below_10', 'age_name' => '1-9', 'no_gender' => 1, ],
+        	['age' => 'unknown', 'age_name' => 'Unknown', 'no_gender' => 1, 'age_category' => 'Unknown', 'age_category_id' => 1, ],
+        	['age' => 'below_1', 'age_name' => 'Below 1', 'no_gender' => 1, 'age_category' => 'Below 15', 'age_category_id' => 2, ],
+        	['age' => 'below_10', 'age_name' => '1-9', 'no_gender' => 1, 'age_category' => 'Below 15', 'age_category_id' => 2, ],
         	// ['age' => '', 'age_name' => '', 'no_gender' => 1, ],
         ]);
 
         DB::table($table_name)->insert([
-        	['age' => 'below_15', 'age_name' => '10-14', ],
-        	['age' => 'below_20', 'age_name' => '15-19', ],
-        	['age' => 'below_25', 'age_name' => '20-24', ],
-        	['age' => 'below_30', 'age_name' => '25-29', ],
-        	['age' => 'below_35', 'age_name' => '30-34', ],
-        	['age' => 'below_40', 'age_name' => '35-39', ],
-        	// ['age' => 'below_45', 'age_name' => '40-44', ],
-        	// ['age' => 'below_50', 'age_name' => '45-49', ],
-            ['age' => 'below_50', 'age_name' => '40-49', ],
-        	['age' => 'above_50', 'age_name' => 'Above 50', ],
+        	['age' => 'below_15', 'age_name' => '10-14', 'age_category' => 'Below 15', 'age_category_id' => 2, ],
+        	['age' => 'below_20', 'age_name' => '15-19', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	['age' => 'below_25', 'age_name' => '20-24', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	['age' => 'below_30', 'age_name' => '25-29', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	['age' => 'below_35', 'age_name' => '30-34', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	['age' => 'below_40', 'age_name' => '35-39', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	// ['age' => 'below_45', 'age_name' => '40-44', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	// ['age' => 'below_50', 'age_name' => '45-49', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+            ['age' => 'below_50', 'age_name' => '40-49', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	['age' => 'above_50', 'age_name' => 'Above 50', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
         	// ['age' => '', 'age_name' => '', ],
         ]);
 
@@ -186,7 +187,7 @@ class Surge
 
 
         $sql = "CREATE OR REPLACE VIEW `{$table_name}_view` AS (
-        			SELECT c.*, a.age, a.age_name, a.no_gender, g.gender, m.modality, m.modality_name, m.hts, m.target 
+        			SELECT c.*, a.age, a.age_name, a.age_category, a.age_category_id, a.no_gender, g.gender, m.modality, m.modality_name, m.hts, m.target 
 
         			FROM surge_columns c
         			LEFT JOIN surge_ages a on a.id=c.age_id
