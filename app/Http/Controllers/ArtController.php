@@ -110,7 +110,7 @@ class ArtController extends Controller
 
 		$current_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`total_currently_on_art` > 0")
 			->when(true, $this->get_callback('total'))
 			->get();
