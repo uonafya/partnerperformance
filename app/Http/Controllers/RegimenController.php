@@ -15,21 +15,21 @@ class RegimenController extends Controller
 
 		$current_art_other = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`d_regimen_totals`.`art` > 0")
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$current_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$current_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`total_currently_on_art` > 0")
 			->when(true, $this->get_callback('total'))
 			->get();
