@@ -141,6 +141,8 @@ class ArtController extends Controller
 		$old_column_cu = "`total_currently_on_art`";
 		$new_column_cu = "`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`";
 
+		$divisions_query = str_replace('view_facilitys.id', 'ff.id', $divisions_query);	
+
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 
@@ -149,7 +151,7 @@ class ArtController extends Controller
 			$data["outcomes"][2]["data"][$key] = (int) Lookup::get_val($row, $current_art_old, 'total');
 			$data["outcomes"][3]["data"][$key] = (int) Lookup::get_val($row, $current_art_new, 'total');
 
-			$params = Lookup::duplicate_parameters($row);			
+			$params = Lookup::duplicate_parameters($row);		
 
 			$duplicate_new = DB::select(
 				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
