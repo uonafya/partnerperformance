@@ -141,7 +141,17 @@ class ArtController extends Controller
 		$old_column_cu = "`total_currently_on_art`";
 		$new_column_cu = "`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`";
 
+		$key = 0;
+
 		foreach ($rows as $key => $row) {
+
+			$a = (int) Lookup::get_val($row, $start_art_old, 'total');
+			$b = (int) Lookup::get_val($row, $start_art_new, 'total');
+			$c = (int) Lookup::get_val($row, $current_art_old, 'total');
+			$d = (int) Lookup::get_val($row, $current_art_new, 'total');
+
+			if(!$a && !$b && !$c && !$d) continue;
+
 			$data['categories'][$key] = Lookup::get_category($row);
 
 			$data["outcomes"][0]["data"][$key] = (int) Lookup::get_val($row, $start_art_old, 'total');
@@ -161,6 +171,8 @@ class ArtController extends Controller
 
 			$data["outcomes"][4]["data"][$key] = (int) ($duplicate_new[0]->total ?? 0);
 			$data["outcomes"][5]["data"][$key] = (int) ($duplicate_cu[0]->total ?? 0);
+
+			$key++;
 		}
 		return view('charts.bar_graph', $data);
 	}

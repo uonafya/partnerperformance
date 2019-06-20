@@ -62,7 +62,7 @@ class RegimenController extends Controller
 
 			$params = Lookup::duplicate_parameters($row);	
 
-			$params[0] = str_replace('view_facilitys.id', 'ff.id', $params[0]);			
+			$params[0] = str_replace('view_facilitys.id', 'f.id', $params[0]);				
 
 			$duplicate_reporting = DB::select(
 				DB::raw("CALL `proc_get_double_reporting`('{$old_table}', '{$new_table}', '{$old_column}', '{$new_column}', \"{$divisions_query}\", \"{$date_query}\", '{$params[0]}', '{$params[1]}', '{$params[2]}', '{$params[3]}');"));
