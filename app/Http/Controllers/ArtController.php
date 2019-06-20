@@ -83,27 +83,27 @@ class ArtController extends Controller
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$start_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$start_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`total_starting_on_art` > 0")
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$current_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->selectRaw("COUNT(facility) as total")
+			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
 			->when(true, $this->get_callback('total'))
 			->get();
