@@ -143,7 +143,7 @@ class ArtController extends Controller
 
 		$key = 0;
 
-		foreach ($rows as $key => $row) {
+		foreach ($rows as $row) {
 
 			$a = (int) Lookup::get_val($row, $start_art_old, 'total');
 			$b = (int) Lookup::get_val($row, $start_art_new, 'total');
