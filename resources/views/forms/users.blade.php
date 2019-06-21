@@ -23,6 +23,7 @@
                                     <option selected='true'>Select Partner</option>
 
                                     @foreach($partners as $partner)
+                                        @continue($partner->funding_agency_id != 1)
                                         <option value="{{ $partner->id }}"
                                             @if(isset($user) && $user->partner_id == $partner->id)
                                                 selected
