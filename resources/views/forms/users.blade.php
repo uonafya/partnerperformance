@@ -40,7 +40,8 @@
                                 <select class="btn filters form-control" id="filter_partner" name="user_type_id">
                                     <option selected='true'>Select User Type</option>
                                     <option value="1"> Admin </option>
-                                    <option value="2"> Partner </option>
+                                    <option value="2"> USAID </option>
+                                    <option value="3"> Partner </option>
                                 </select>   
                             </div>    
                         </div> 
