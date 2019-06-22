@@ -400,7 +400,7 @@ class Surge
         $partners = \App\Partner::where(['funding_agency_id' => 1])->get();
         $columns = SurgeColumn::all();
 
-        $paths = [];
+        $paths = $data = [];
 
         $sql = "countyname as County, Subcounty, wardname AS `Ward`, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, start_date, end_date ";
 
