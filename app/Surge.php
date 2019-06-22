@@ -1,9 +1,12 @@
 <?php
 
 namespace App;
-use Excel;
+
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
+use Excel;
 
 use App\SurgeAge;
 use App\SurgeColumn;
@@ -388,6 +391,58 @@ class Surge
             $w->save();
         }
         DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 26;");
+    }
+
+
+    public static function surge_export()
+    {
+        ini_set('memory_limit', -1);
+        $partners = \App\Partner::where(['funding_agency_id' => 1])->get();
+        $columns = SurgeColumn::all();
+
+        $paths = [];
+
+        $sql = "countyname as County, Subcounty, wardname AS `Ward`, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, start_date, end_date ";
+
+        foreach ($columns as $column) {
+            $sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
+        }
+
+        foreach ($partners as $partner) {
+            $filename = str_replace(' ', '_', strtolower($partner->name)) . '_surge_data';
+
+            $facilities = Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
+        
+            $rows = DB::table('d_surge')
+                ->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+                ->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+                ->selectRaw($sql)
+                ->where('week_id', '>', 32)
+                ->where('partner', $partner->id)
+                ->when($facilities, function($query) use ($facilities){
+                    return $query->whereIn('view_facilitys.id', $facilities);
+                })
+                // ->orderBy('name', 'asc')
+                ->get();
+
+            foreach ($rows as $row) {
+                $row_array = get_object_vars($row);
+                $data[] = $row_array;
+            }
+            $path = storage_path('exports/' . $filename . '.csv');
+            if(file_exists($path)) unlink($path);
+
+            Excel::create($filename, function($excel) use($data){
+                $excel->sheet('sheet1', function($sheet) use($data){
+                    $sheet->fromArray($data);
+                });
+
+            })->store('csv');
+
+            $paths[] = $path;
+        }
+
+        Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
     }
 
 
