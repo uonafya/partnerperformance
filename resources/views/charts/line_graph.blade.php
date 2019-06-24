@@ -19,7 +19,7 @@
             },
         @endisset
         xAxis: {
-            categories: {!! json_encode($categories) !!}
+            categories: {!! json_encode($categories ?? []) !!}
         },
         yAxis: {
             title: {

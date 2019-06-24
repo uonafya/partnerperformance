@@ -158,9 +158,14 @@
 						<select class="btn filters form-control" id="filter_age_category_id">
 							<option disabled='true'>Select Age Category</option>
 							<option value='null' selected='true'>All Age Categories</option>
-							<option value="1"> Unknown </option>
+
+							@foreach($age_categories as $key => $age_category)
+								<option value="{{ $age_category->id }}"> {{ $age_category->age_category }} </option>
+							@endforeach
+
+							<!-- <option value="1"> Unknown </option>
 							<option value="2"> Below 15 </option>
-							<option value="3"> Above 15 </option>
+							<option value="3"> Above 15 </option> -->
 						</select>
 					</div>
 				</div>

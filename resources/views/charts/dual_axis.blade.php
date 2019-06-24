@@ -21,7 +21,7 @@
                 text: ''
             },
             xAxis: [{
-                categories: {!! json_encode($categories) !!}
+                categories: {!! json_encode($categories ?? []) !!}
             }],
             yAxis: [{ // Primary yAxis
                 labels: {
