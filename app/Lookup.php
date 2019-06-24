@@ -168,7 +168,7 @@ class Lookup
 		$weeks = Week::all();
 		$modalities = SurgeModality::all();
 		$genders = SurgeGender::all();
-		$ages = SurgeAge::all();
+        $ages = SurgeAge::surge()->get();
 
 		return [
 			'divisions' => $divisions,
