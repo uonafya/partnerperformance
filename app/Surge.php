@@ -1,9 +1,12 @@
 <?php
 
 namespace App;
-use Excel;
+
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
+use Excel;
 
 use App\SurgeAge;
 use App\SurgeColumn;
@@ -97,6 +100,26 @@ class Surge
         ]);
 	}
 
+    public static function age_categories_table()
+    {
+        $table_name = 'age_categories';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    age_category varchar(20) DEFAULT NULL,
+                    PRIMARY KEY (`id`)
+                );
+        ";
+        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::statement($sql);   
+
+        DB::table($table_name)->insert([
+            ['id' => 1, 'age_category' => 'Unknown' ],
+            ['id' => 2, 'age_category' => 'Below 15', ],
+            ['id' => 3, 'age_category' => 'Above 15', ],
+            // ['age' => '', 'age_name' => '', 'no_gender' => 1, ],
+        ]);     
+    }
+
 	public static function ages_table()
 	{		
         $table_name = 'surge_ages';
@@ -104,35 +127,63 @@ class Surge
                     id tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
                     age varchar(20) DEFAULT NULL,
                     age_name varchar(20) DEFAULT NULL,
-                    age_category varchar(20) DEFAULT NULL,
                     age_category_id tinyint(1) UNSIGNED DEFAULT 2,                    
                     no_gender tinyint(1) UNSIGNED DEFAULT 0,
+                    for_surge tinyint(1) UNSIGNED DEFAULT 1,
+                    for_vmmc tinyint(1) UNSIGNED DEFAULT 1,
+                    for_tx_curr tinyint(1) UNSIGNED DEFAULT 1,
                     PRIMARY KEY (`id`),
-                    KEY `age` (`age`)
+                    KEY `age` (`age`),
+                    KEY `age_category_id` (`age_category_id`)
+
                 );
         ";
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 
         DB::table($table_name)->insert([
-        	['age' => 'unknown', 'age_name' => 'Unknown', 'no_gender' => 1, 'age_category' => 'Unknown', 'age_category_id' => 1, ],
-        	['age' => 'below_1', 'age_name' => 'Below 1', 'no_gender' => 1, 'age_category' => 'Below 15', 'age_category_id' => 2, ],
-        	['age' => 'below_10', 'age_name' => '1-9', 'no_gender' => 1, 'age_category' => 'Below 15', 'age_category_id' => 2, ],
-        	// ['age' => '', 'age_name' => '', 'no_gender' => 1, ],
+            ['age' => 'unknown', 'age_name' => 'Unknown', 'no_gender' => 1, 'age_category_id' => 1, ],
         ]);
 
+        // Only VMMC doesn't have
         DB::table($table_name)->insert([
-        	['age' => 'below_15', 'age_name' => '10-14', 'age_category' => 'Below 15', 'age_category_id' => 2, ],
-        	['age' => 'below_20', 'age_name' => '15-19', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-        	['age' => 'below_25', 'age_name' => '20-24', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-        	['age' => 'below_30', 'age_name' => '25-29', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-        	['age' => 'below_35', 'age_name' => '30-34', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-        	['age' => 'below_40', 'age_name' => '35-39', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-        	// ['age' => 'below_45', 'age_name' => '40-44', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-        	// ['age' => 'below_50', 'age_name' => '45-49', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-            ['age' => 'below_50', 'age_name' => '40-49', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
-        	['age' => 'above_50', 'age_name' => 'Above 50', 'age_category' => 'Above 15', 'age_category_id' => 3, ],
+        	['age' => 'below_1', 'age_name' => 'Below 1', 'no_gender' => 1, 'age_category_id' => 2, 'for_vmmc' => 0, ],
+        ]);
+
+        // Only for Surge
+        DB::table($table_name)->insert([
+            ['age' => 'below_10', 'age_name' => '1-9', 'no_gender' => 1, 'age_category_id' => 2, 'for_vmmc' => 0, 'for_tx_curr' => 0, ],
+        ]);
+
+        // All Have
+        DB::table($table_name)->insert([
+        	['age' => 'below_15', 'age_name' => '10-14', 'age_category_id' => 2, ],
+        	['age' => 'below_20', 'age_name' => '15-19', 'age_category_id' => 3, ],
+        	['age' => 'below_25', 'age_name' => '20-24', 'age_category_id' => 3, ],
+        	['age' => 'below_30', 'age_name' => '25-29', 'age_category_id' => 3, ],
+        	['age' => 'below_35', 'age_name' => '30-34', 'age_category_id' => 3, ],
+        	['age' => 'below_40', 'age_name' => '35-39', 'age_category_id' => 3, ],
+        	// ['age' => 'below_45', 'age_name' => '40-44', 'age_category_id' => 3, ],
+        	// ['age' => 'below_50', 'age_name' => '45-49', 'age_category_id' => 3, ],
+            ['age' => 'below_50', 'age_name' => '40-49', 'age_category_id' => 3, ],
+        	['age' => 'above_50', 'age_name' => 'Above 50', 'age_category_id' => 3, ],
         	// ['age' => '', 'age_name' => '', ],
+        ]);
+
+        // Only VMMC
+        DB::table($table_name)->insert([
+            ['age' => 'below_60_d', 'age_name' => '0-60 Days', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_4', 'age_name' => '2 Months - 4 Years', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
+        ]);
+
+        // Only TX Curr
+        DB::table($table_name)->insert([
+            ['age' => 'below_4', 'age_name' => '1-4', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, 'for_vmmc' => 0, ],
+        ]);
+
+        // Only Surge Doesn't have
+        DB::table($table_name)->insert([
+            ['age' => 'below_10', 'age_name' => '5-9', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, ],
         ]);
 
         /*DB::table($table_name)->insert([
@@ -187,10 +238,11 @@ class Surge
 
 
         $sql = "CREATE OR REPLACE VIEW `{$table_name}_view` AS (
-        			SELECT c.*, a.age, a.age_name, a.age_category, a.age_category_id, a.no_gender, g.gender, m.modality, m.modality_name, m.hts, m.target 
+        			SELECT c.*, a.age, a.age_name, ac.age_category, a.age_category_id, a.no_gender, g.gender, m.modality, m.modality_name, m.hts, m.target 
 
         			FROM surge_columns c
         			LEFT JOIN surge_ages a on a.id=c.age_id
+                    LEFT JOIN age_categories ac on ac.id=a.age_category_id
         			LEFT JOIN surge_genders g on g.id=c.gender_id
         			LEFT JOIN surge_modalities m on m.id=c.modality_id
                 );
@@ -205,7 +257,7 @@ class Surge
                     week_id smallint(5) UNSIGNED DEFAULT 0, ";
 
         $modalities = SurgeModality::all();
-        $ages = SurgeAge::all();
+        $ages = SurgeAge::surge()->get();
         $genders = SurgeGender::all();
         $hts = ['tested', 'positive'];
 
@@ -342,6 +394,10 @@ class Surge
         DB::connection('mysql_wr')->statement($sql);
     }
 
+    // Week starts on Sunday
+    // Week belongs to the month where the Saturday is
+    // ISO 8601 states that the week begins on Monday
+    // It also states that the week belongs to the month/year that the Thursday is in
     public static function create_weeks($financial_year)
     {
         $year = $financial_year - 1;
@@ -387,7 +443,94 @@ class Surge
             if($w->financial_year != $financial_year) break;
             $w->save();
         }
-        DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 26;");
+        DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 31 and financial_year = 2019;");
+    }
+
+
+    // ISO Version
+    /*public static function create_iso_weeks($financial_year)
+    {
+        $year = $financial_year - 1;
+        $dt = Carbon::createFromDate($year, 10, 1);
+        $week = 0;
+
+        if($dt->dayOfWeek != 1){
+            // if($dt->dayOfWeek == 0) $dt->addDay();
+            if($dt->dayOfWeek < 5) $dt->subDays($dt->dayOfWeek)->addDay();
+            else if($dt->dayOfWeek == 5) $dt->addDays(3);
+            else if($dt->dayOfWeek == 6) $dt->addDays(2);
+        }
+
+        while(true) {
+            $data = [
+                'week_number' => $week++,
+                'start_date' => $dt->toDateString(),
+                'end_date' => $dt->addDays(6)->toDateString(),
+                'year' => $dt->year,
+                'month' => $dt->month,
+            ];
+            $my_copy = $dt->copy()->subDays(3);
+            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+            $dt->addDay();
+
+            $w = new Week;
+            $w->fill($data);
+            if($w->financial_year != $financial_year) break;
+            $w->save();
+        }
+        DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 31 and financial_year = 2019;");
+    }*/
+
+
+    public static function surge_export()
+    {
+        ini_set('memory_limit', -1);
+        $partners = \App\Partner::where(['funding_agency_id' => 1, 'flag' => 1])->get();
+        $columns = SurgeColumn::all();
+
+        $paths = $data = [];
+
+        $sql = "countyname as County, Subcounty, wardname AS `Ward`, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, start_date, end_date ";
+
+        foreach ($columns as $column) {
+            $sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
+        }
+
+        foreach ($partners as $partner) {
+            $filename = str_replace(' ', '_', strtolower($partner->name)) . '_surge_data';
+
+            $facilities = Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
+        
+            $rows = DB::table('d_surge')
+                ->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+                ->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+                ->selectRaw($sql)
+                ->where('week_id', '>', 32)
+                ->where('partner', $partner->id)
+                ->when($facilities, function($query) use ($facilities){
+                    return $query->whereIn('view_facilitys.id', $facilities);
+                })
+                // ->orderBy('name', 'asc')
+                ->get();
+
+            foreach ($rows as $row) {
+                $row_array = get_object_vars($row);
+                $data[] = $row_array;
+            }
+            $path = storage_path('exports/' . $filename . '.csv');
+            if(file_exists($path)) unlink($path);
+
+            Excel::create($filename, function($excel) use($data){
+                $excel->sheet('sheet1', function($sheet) use($data){
+                    $sheet->fromArray($data);
+                });
+
+            })->store('csv');
+
+            $paths[] = $path;
+        }
+
+        Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
     }
 
 
