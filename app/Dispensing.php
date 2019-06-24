@@ -77,5 +77,6 @@ class Dispensing
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 	}
+    
 
 }
