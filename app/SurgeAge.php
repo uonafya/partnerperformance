@@ -7,9 +7,18 @@ use App\BaseModel;
 class SurgeAge extends BaseModel
 {
 
-
     public function scopeSurge($query)
     {
         return $query->where(['for_surge' => 1])->orderBy('age_category_id', 'asc')->orderBy('id', 'asc');
+    }
+	
+    public function scopeVmmc($query)
+    {
+        return $query->where(['for_vmmc' => 1])->orderBy('age_category_id', 'asc')->orderBy('id', 'asc');
+    }
+	
+    public function scopeTxCurr($query)
+    {
+        return $query->where(['for_tx_curr' => 1])->orderBy('age_category_id', 'asc')->orderBy('id', 'asc');
     }
 }
