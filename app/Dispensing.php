@@ -5,6 +5,12 @@ namespace App;
 use DB;
 use Carbon\Carbon;
 
+use App\SurgeAge;
+use App\SurgeColumn;
+use App\SurgeGender;
+use App\SurgeModality;
+use App\Modality;
+
 // Multi Month Dispensing
 // Uses Age Categories
 
@@ -114,7 +120,13 @@ class Dispensing
 
         DB::table($table_name)->update(['table_name' => 'd_surge']);
 
-        
+        $old_m = SurgeModality::all();
+        $new_m = Modality::all();
+
+        foreach ($new_m as $key => $m) {
+            $m->id = $old_m[$key]->id;
+            $m->save();
+        }
     }
 
 
