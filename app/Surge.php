@@ -34,6 +34,7 @@ class Surge
                     id tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
                     modality varchar(30) DEFAULT NULL,
                     modality_name varchar(60) DEFAULT NULL,
+                    tbl_name varchar(60) DEFAULT NULL,
 
                     male tinyint(1) UNSIGNED DEFAULT 1,
                     female tinyint(1) UNSIGNED DEFAULT 1,
@@ -97,6 +98,18 @@ class Surge
             // ['modality' => 'testing_target', 'modality_name' => 'Testing Target', 'hts' => 0, 'target' => 1 ],
             // ['modality' => 'pos_target', 'modality_name' => 'Pos Target', 'hts' => 0, 'target' => 1 ],
             // ['modality' => 'tx_new_target', 'modality_name' => 'TX New Target', 'hts' => 0, 'target' => 1 ],
+        ]);
+
+        DB::table($table_name)->update(['tbl_name' => 'd_surge']);
+
+        DB::table($table_name)->insert([
+            ['modality' => 'mmd', 'modality_name' => 'Multi Month Dispensing', 'hts' => 0, 'tbl_name' => 'd_mmd', ],
+            ['modality' => 'prep', 'modality_name' => 'Pre-Exposure Prophylaxis', 'hts' => 0, 'tbl_name' => 'd_prep', ],
+            ['modality' => 'tx_curr', 'modality_name' => 'Currently On Treatment', 'hts' => 0, 'tbl_name' => 'd_tx_curr', ],
+        ]);
+
+        DB::table($table_name)->insert([
+            ['modality' => 'vmmc_circ', 'modality_name' => 'VMMC CIRC', 'hts' => 0, 'tbl_name' => 'd_vmmc_circ', 'female' => 0, 'unknown' => 0, ],
         ]);
 	}
 
@@ -172,8 +185,8 @@ class Surge
 
         // Only VMMC
         DB::table($table_name)->insert([
-            ['age' => 'below_60_d', 'age_name' => '0-60 Days', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
-            ['age' => 'below_4', 'age_name' => '2 Months - 4 Years', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_60_d', 'age_name' => '0-60 Days', 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_4', 'age_name' => '2 Months - 4 Years', 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
         ]);
 
         // Only TX Curr
@@ -183,7 +196,7 @@ class Surge
 
         // Only Surge Doesn't have
         DB::table($table_name)->insert([
-            ['age' => 'below_10', 'age_name' => '5-9', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, ],
+            ['age' => 'below_10', 'age_name' => '5-9', 'age_category_id' => 2, 'for_surge' => 0, ],
         ]);
 
 	}
@@ -233,7 +246,7 @@ class Surge
 
 
         $sql = "CREATE OR REPLACE VIEW `{$table_name}_view` AS (
-        			SELECT c.*, a.age, a.age_name, ac.age_category, a.age_category_id, a.no_gender, g.gender, m.modality, m.modality_name, m.hts, m.target 
+        			SELECT c.*, a.age, a.age_name, ac.age_category, a.age_category_id, a.no_gender, g.gender, m.modality, m.modality_name, m.tbl_name, m.hts, m.target 
 
         			FROM surge_columns c
         			LEFT JOIN surge_ages a on a.id=c.age_id
