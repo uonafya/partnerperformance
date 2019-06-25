@@ -138,7 +138,6 @@ class Dispensing
                     period_id smallint(4) UNSIGNED DEFAULT 0,
                     facility int(10) UNSIGNED DEFAULT 0,
 
-                    -- column_id smallint(5) UNSIGNED DEFAULT 0,
                     age_category_id tinyint(3) UNSIGNED DEFAULT 0,
                     gender_id tinyint(3) UNSIGNED DEFAULT 0,
 
