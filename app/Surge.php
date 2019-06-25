@@ -310,22 +310,22 @@ class Surge
 	{
 		foreach ($genders as $gender) {
 			if($gender->id == 3 && !$age->no_gender) continue;
-			if($modality->{$gender->gender}){
-				$col = $base . $gender->gender;
-				$alias = $base2 . title_case($gender->gender);
-				$ex = str_replace(' ', '_', strtolower($alias));
-				$ex = str_replace('-', '_', strtolower($ex));
-				$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0, ";
+            if(!$modality->{$gender->gender}) continue;
+            
+			$col = $base . $gender->gender;
+			$alias = $base2 . title_case($gender->gender);
+			$ex = str_replace(' ', '_', strtolower($alias));
+			$ex = str_replace('-', '_', strtolower($ex));
+			$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0, ";
 
-				$s = SurgeColumn::create([
-					'column_name' => $col,
-					'alias_name' => $alias,
-					'excel_name' => $ex,
-					'age_id' => $age->id,
-					'gender_id' => $gender->id,
-					'modality_id' => $modality->id,
-				]);
-			}
+			$s = SurgeColumn::create([
+				'column_name' => $col,
+				'alias_name' => $alias,
+				'excel_name' => $ex,
+				'age_id' => $age->id,
+				'gender_id' => $gender->id,
+				'modality_id' => $modality->id,
+			]);
 		}
 	}
 
