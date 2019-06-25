@@ -233,8 +233,8 @@ class Dispensing
 
         foreach ($ages as $key => $age) {
             foreach ($genders as $key => $gender) {
-                $base = $modality->modality . '_' . $age->age_cat . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
+                $base = $modality->modality . '_' . $age->age . '_';
+                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
                 Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
             }
         }
@@ -250,8 +250,8 @@ class Dispensing
 
         foreach ($ages as $key => $age) {
             foreach ($genders as $key => $gender) {
-                $base = $modality->modality . '_' . $age->age_cat . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
+                $base = $modality->modality . '_' . $age->age . '_';
+                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
                 Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
             }
         }
@@ -267,8 +267,8 @@ class Dispensing
 
         foreach ($ages as $key => $age) {
             foreach ($genders as $key => $gender) {
-                $base = $modality->modality . '_' . $age->age_cat . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
+                $base = $modality->modality . '_' . $age->age . '_';
+                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
                 Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
             }
         }
