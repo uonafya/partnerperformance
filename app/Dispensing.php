@@ -27,7 +27,7 @@ class Dispensing
 		$tables = DB::select("show tables");
 		foreach ($tables as $key => $row) {
 			if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
-            $columns = collect(DB::select("show columns from " . $row->Tables_in_hcm));
+            $columns = collect(DB::select("show columns from `" . $row->Tables_in_hcm . '`'));
             echo "Table is {$row->Tables_in_hcm} \n";
             $p = $columns->where('Field', 'period_id')->first();
             if(!$p){
@@ -144,8 +144,6 @@ class Dispensing
         DB::statement($sql);
 	}
 
-
-
     public static function dispensing_columns()
     {
         $modality = SurgeModality::where(['tbl_name' => 'd_dispensing'])->first();
@@ -163,6 +161,36 @@ class Dispensing
         }
     }
 
+
+    public static function dispensing_table()
+    {       
+        $table_name = 'd_dispensing';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+
+                    period_id smallint(4) UNSIGNED DEFAULT 0,
+                    facility int(10) UNSIGNED DEFAULT 0,
+
+                    column_id smallint(5) UNSIGNED DEFAULT 0,
+
+                    dispensed_one smallint(5) UNSIGNED DEFAULT 0,
+                    dispensed_two smallint(5) UNSIGNED DEFAULT 0,
+                    dispensed_three smallint(5) UNSIGNED DEFAULT 0,
+                    dispensed_four smallint(5) UNSIGNED DEFAULT 0,
+                    dispensed_five smallint(5) UNSIGNED DEFAULT 0,
+                    dispensed_six smallint(5) UNSIGNED DEFAULT 0,
+
+                    dateupdated date DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    KEY `column_id` (`column_id`),
+                    KEY `facility` (`facility`),
+                    KEY `period_id` (`period_id`),
+                    KEY `identifier`(`facility`, `period_id`)
+                );
+        ";
+        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::statement($sql);
+    }
 
 
 
@@ -201,7 +229,7 @@ class Dispensing
         echo 'Completed entry for ' . $table_name . " \n";
     }
 
-    public static function insert_week_rows($year=null, $table_name='d_tx_curr')
+    public static function insert_week_rows($year=null, $table_name='d_prep')
     {
         if(!$year){
             $year = date('Y');
