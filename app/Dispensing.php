@@ -232,11 +232,9 @@ class Dispensing
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
-            foreach ($genders as $key => $gender) {
-                $base = $modality->modality . '_' . $age->age . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
-            }
+            $base = $modality->modality . '_' . $age->age . '_';
+            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
         }
     }
 
@@ -249,11 +247,9 @@ class Dispensing
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
-            foreach ($genders as $key => $gender) {
-                $base = $modality->modality . '_' . $age->age . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
-            }
+            $base = $modality->modality . '_' . $age->age . '_';
+            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
         }
     }
 
@@ -266,11 +262,9 @@ class Dispensing
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
-            foreach ($genders as $key => $gender) {
-                $base = $modality->modality . '_' . $age->age . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
-            }
+            $base = $modality->modality . '_' . $age->age . '_';
+            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
         }
     }
 
