@@ -17,12 +17,12 @@ class SurgeAge extends BaseModel
         return $query->where(['for_vmmc' => 1])->orderBy('age_category_id', 'asc')->orderBy('id', 'asc');
     }
 	
-    public function scopeTxCurr($query)
+    public function scopeTx($query)
     {
         return $query->where(['for_tx_curr' => 1])->orderBy('age_category_id', 'asc')->orderBy('id', 'asc');
     }
     
-    public function scopePrepNew($query)
+    public function scopePrep($query)
     {
         return $query->where('age_category_id', '!=', 2)->orderBy('age_category_id', 'asc')->orderBy('id', 'asc');
     }

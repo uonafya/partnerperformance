@@ -221,7 +221,7 @@ class Dispensing
         $modality = SurgeModality::where(['modality' => 'tx_curr'])->first();
         $sql = '';
 
-        $ages = SurgeAge::tx_curr()->get();
+        $ages = SurgeAge::tx()->get();
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
@@ -238,7 +238,7 @@ class Dispensing
         $modality = SurgeModality::where(['modality' => 'prep_new'])->first();
         $sql = '';
 
-        $ages = SurgeAge::prep_new()->get();
+        $ages = SurgeAge::prep()->get();
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
