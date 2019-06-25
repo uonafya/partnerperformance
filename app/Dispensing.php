@@ -33,7 +33,7 @@ class Dispensing
             if(!$p){
                 $w = $columns->where('Field', 'week_id')->first();
                 if($w) continue;
-                DB::statement("ALTER TABLE {$row->Tables_in_hcm} ADD COLUMN `period_id` TINYINT UNSIGNED DEFAULT 0 after id;");
+                DB::statement("ALTER TABLE {$row->Tables_in_hcm} ADD COLUMN `period_id` smallint(4) UNSIGNED DEFAULT 0 after id;");
                 self::add_periods($row->Tables_in_hcm);
 
                 /*$c = $columns->where('Field', 'quarter')->first();

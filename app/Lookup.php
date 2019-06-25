@@ -700,6 +700,7 @@ class Lookup
 	public static function splines(&$data, $splines)
 	{
 		$groupby = session('filter_groupby', 1);
+		if(!is_array($splines)) $splines = [$splines];
 		if($groupby < 10){
 			foreach ($splines as $key => $spline) {
 				$data['outcomes'][$spline]['lineWidth'] = 0;

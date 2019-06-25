@@ -85,11 +85,7 @@ class IndicatorController extends Controller
 		$data['outcomes'][4]['stack'] = 'dhis';
 		$data['outcomes'][5]['stack'] = 'dhis';
 
-		if($groupby < 10){
-			$data['outcomes'][6]['lineWidth'] = 0;
-			$data['outcomes'][6]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][6]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [6]);
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -260,11 +256,7 @@ class IndicatorController extends Controller
 		$data['outcomes'][3]['stack'] = 'moh_729';
 		$data['outcomes'][4]['stack'] = 'partner_reported';
 
-		if($groupby < 10){
-			$data['outcomes'][5]['lineWidth'] = 0;
-			$data['outcomes'][5]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][5]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [5]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -338,11 +330,7 @@ class IndicatorController extends Controller
 		$data['outcomes'][2]['stack'] = 'new_art';
 		$data['outcomes'][3]['stack'] = 'partner_reported';
 
-		if($groupby < 10){
-			$data['outcomes'][4]['lineWidth'] = 0;
-			$data['outcomes'][4]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][4]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [4]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
