@@ -127,6 +127,17 @@ class Dispensing
             $m->id = $old_m[$key]->id;
             $m->save();
         }
+
+        DB::table($table_name)->insert([
+            ['modality' => 'mmd', 'modality_name' => 'Multi Month Dispensing', 'hts' => 0, 'table_name' => 'd_mmd', ],
+            ['modality' => 'prep', 'modality_name' => 'Pre-Exposure Prophylaxis', 'hts' => 0, 'table_name' => 'd_prep', ],
+            ['modality' => 'tx_curr', 'modality_name' => 'Currently On Treatment', 'hts' => 0, 'table_name' => 'd_tx_curr', ],
+        ]);
+
+        DB::table($table_name)->insert([
+            ['modality' => 'vmmc_circ', 'modality_name' => 'VMMC CIRC', 'hts' => 0, 'table_name' => 'd_vmmc_circ', 'female' => 0, 'unknown' => 0, ],
+        ]);
+
     }
 
 

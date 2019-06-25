@@ -140,6 +140,7 @@ class GeneralController extends Controller
     }
 
 
+
 	public function targets()
 	{
 		$user = auth()->user();
