@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use \App\Synch;
+use \App\Period;
 
 class Merger
 {
@@ -49,18 +50,20 @@ class Merger
         $limit=500;
         $today = date('Y-m-d');
 
-        for ($month=1; $month < 13; $month++) { 
-            if($year == date('Y') && $month > date('m')) break;
+        $periods = Period::where(['year' => $year])->get();
+
+        foreach ($periods as $period) { 
+            if($period->year == date('Y') && $period->month > date('m')) break;
             $offset=0;
 
             while (true) {
                 $rows = DB::table($new_table)
-                        ->where(['year' => $year, 'month' => $month])
+                        ->where(['period_id' => $period->id])
                         ->limit($limit)->offset($offset)->get();
 
                 if($old_table != null){
                     $old_rows = DB::table($old_table)
-                            ->where(['year' => $year, 'month' => $month])
+                            ->where(['period_id' => $period->id])
                             ->limit($limit)->offset($offset)->get();
                 }
 
@@ -77,7 +80,7 @@ class Merger
 			        $data['dateupdated'] = $today;
 
 			        DB::connection('mysql_wr')->table($merged_table)
-			        			->where(['facility' => $row->facility, 'year' => $year, 'month' => $month])
+			        			->where(['facility' => $row->facility, 'period_id' => $period->id])
 			        			->update($data);
                 }
                 $offset+=$limit;
@@ -449,19 +452,18 @@ class Merger
     {        
         if(!$year) $year = date('Y');
         $facilities = \App\Facility::select('id')->get();
-        // $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision', 'm_keypop'];
-        $tables = ['m_keypop'];
+        $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision', 'm_keypop', 'd_regimen_totals'];
+
+        $periods = Period::where(['year' => $year])->get();
 
         foreach ($tables as $table) {
 
             $i=0;
             $data_array = [];
 
-            for ($month=1; $month < 13; $month++) { 
-                foreach ($facilities as $k => $val) {
-                    $data = array('year' => $year, 'month' => $month, 'facility' => $val->id);
-                    $data = array_merge($data, Synch::get_financial_year_quarter($year, $month) );
-                    $data_array[$i] = $data;
+            foreach ($periods as $period) { 
+                foreach ($facilities as $k => $fac) {
+                    $data_array[$i] = ['period_id' => $period->id, 'facility' => $fac->id];
                     $i++;
 
                     if ($i == 200) {

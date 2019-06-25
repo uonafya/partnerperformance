@@ -87,12 +87,14 @@ class ArtController extends Controller
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
 			->selectRaw("COUNT(DISTINCT facility) as total")
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$start_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
 			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026` > 0")
 			->when(true, $this->get_callback('total'))
@@ -100,6 +102,7 @@ class ArtController extends Controller
 
 		$start_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_care_and_treatment.period_id')
 			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`total_starting_on_art` > 0")
 			->when(true, $this->get_callback('total'))
@@ -107,6 +110,7 @@ class ArtController extends Controller
 
 		$current_art_new = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
 			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038` > 0")
 			->when(true, $this->get_callback('total'))
@@ -114,6 +118,7 @@ class ArtController extends Controller
 
 		$current_art_old = DB::table('d_care_and_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_care_and_treatment.period_id')
 			->selectRaw("COUNT(DISTINCT facility) as total")
 			->whereRaw("`total_currently_on_art` > 0")
 			->when(true, $this->get_callback('total'))
@@ -200,6 +205,7 @@ class ArtController extends Controller
 
 		$rows = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($q['select_query'] . ", " . $sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -215,6 +221,7 @@ class ArtController extends Controller
 
 		$rows3 = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
+			->join('periods', 'periods.id', '=', 'd_regimen_totals.period_id')
 			->selectRaw($q['select_query'] . ", " . "(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
@@ -287,12 +294,14 @@ class ArtController extends Controller
 
 		$rows = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
 			->get();
 
 		$rows3 = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_art.m_testing')
 			->selectRaw("SUM(positive_total) AS total ")
 			->when(true, $this->get_callback())
 			->get();
@@ -363,6 +372,7 @@ class ArtController extends Controller
 
 		$rows = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
 			->get();
@@ -401,6 +411,7 @@ class ArtController extends Controller
 
 		$data['rows'] = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
 			->get();
@@ -430,6 +441,7 @@ class ArtController extends Controller
 
 		$data['rows'] = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)

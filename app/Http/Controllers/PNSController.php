@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Excel;
 use App\Lookup;
+use App\Period;
 use App\Facility;
 use App\ViewFacility;
 
@@ -37,6 +38,7 @@ class PNSController extends Controller
 
 		$rows = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->join('periods', 'periods.id', '=', 'd_pns.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('screened'))
 			->having('screened', '>', 0)
@@ -65,12 +67,14 @@ class PNSController extends Controller
 
 		$rows = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->join('periods', 'periods.id', '=', 'd_pns.period_id')
 			->selectRaw($this->get_table_query('new_pos'))
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$rows2 = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(positive_total) AS `pos` ")
 			->when(true, $this->get_callback())
 			->get();
@@ -122,6 +126,7 @@ class PNSController extends Controller
 
 		$data['rows'] = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->join('periods', 'periods.id', '=', 'd_pns.period_id')
 			->selectRaw($this->get_table_query($item))
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -153,6 +158,7 @@ class PNSController extends Controller
 
 		$data['rows'] = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->join('periods', 'periods.id', '=', 'd_pns.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('contacts_identified'))
 			->having('contacts_identified', '>', 0)
@@ -255,6 +261,7 @@ class PNSController extends Controller
 		
 		$rows = DB::table('d_pns')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
+			->join('periods', 'periods.id', '=', 'd_pns.period_id')
 			->selectRaw($sql)
 			->when($months, function($query) use ($months){
 				return $query->whereIn('month', $months);
@@ -347,8 +354,11 @@ class PNSController extends Controller
 				$fac->save();
 			}
 
+			$period = Period::where(['financial_year' => $row->financial_year, 'month' => $row->month])->first();
+			if(!$period) continue;
+
 			DB::connection('mysql_wr')->table('d_pns')
-				->where(['facility' => $fac->id, 'year' => $row->calendar_year, 'month' => $row->month])
+				->where(['facility' => $fac->id, 'period_id' => $period->id, ])
 				->update($update_data);
 
 		}

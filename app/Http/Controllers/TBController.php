@@ -15,6 +15,7 @@ class TBController extends Controller
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
 			->selectRaw("SUM(`tb_cases_known_positive(kps)_hv03-077`) as pos, SUM(`tb_known_status_hv03-079`) AS total ")
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -58,6 +59,7 @@ class TBController extends Controller
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
 			->selectRaw("SUM(`tb_new_hiv_positive_hv03-080`) as pos, SUM(`tb_cases_tested_hiv_hv03-078`) AS total ")
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -108,6 +110,7 @@ class TBController extends Controller
 
 		$data['rows'] = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -128,6 +131,7 @@ class TBController extends Controller
 
 		$data['rows'] = DB::table('d_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('total'))
 			->get();

@@ -15,6 +15,7 @@ class KeypopController extends Controller
 
 		$rows = DB::table('m_keypop')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_keypop.facility')
+			->join('periods', 'periods.id', '=', 'm_keypop.period_id')
 			->selectRaw("SUM(tested) AS tests, SUM(positive) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -63,6 +64,7 @@ class KeypopController extends Controller
 
 		$rows = DB::table('m_keypop')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_keypop.facility')
+			->join('periods', 'periods.id', '=', 'm_keypop.period_id')
 			->selectRaw("SUM(current_tx) AS total")
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -86,6 +88,7 @@ class KeypopController extends Controller
 
 		$data['rows'] = DB::table('m_keypop')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_keypop.facility')
+			->join('periods', 'periods.id', '=', 'm_keypop.period_id')
 			->selectRaw("SUM(tested) AS tests, SUM(positive) AS pos, SUM(new_tx) AS new_tx")
 			->when(true, $this->get_callback('tests'))
 			->get();

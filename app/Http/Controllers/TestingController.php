@@ -13,6 +13,7 @@ class TestingController extends Controller
 	{
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -69,6 +70,7 @@ class TestingController extends Controller
 
 		$row = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_testing_and_prevention_services.period_id')
 			->selectRaw("
 			SUM(`tested_1-9_hv01-01`) as below_10_test,
     		(SUM(`tested_10-14_(m)_hv01-02`) + SUM(`tested_15-19_(m)_hv01-04`) + SUM(`tested_20-24(m)_hv01-06`) + SUM(`tested_25pos_(m)_hv01-08`)) AS male_test,
@@ -114,6 +116,7 @@ class TestingController extends Controller
 
 		$row = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_testing_and_prevention_services.period_id')
 			->selectRaw( "
     		SUM(`tested_1-9_hv01-01`) as below_10,
 			(SUM(`tested_10-14_(m)_hv01-02`) + SUM(`tested_10-14(f)_hv01-03`)) as below_15,
@@ -163,6 +166,7 @@ class TestingController extends Controller
 	{
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -218,6 +222,7 @@ class TestingController extends Controller
 
 		$row = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(positive_below10) as below_10,
 					(SUM(positive_below15_m) + SUM(positive_below20_m) + SUM(positive_below25_m) + SUM(positive_above25_m)) AS male_pos,
 					(SUM(positive_below15_f) + SUM(positive_below20_f) + SUM(positive_below25_f) + SUM(positive_above25_f)) AS female_pos
@@ -259,6 +264,7 @@ class TestingController extends Controller
 
 		$row = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(positive_below10) as below_10,
 				(SUM(positive_below15_m) + SUM(positive_below15_f)) as below_15,
 				(SUM(positive_below20_m) + SUM(positive_below20_f)) as below_20,
@@ -309,6 +315,7 @@ class TestingController extends Controller
 
 		$rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(tested_couples) AS tests, SUM(discordant_couples) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -358,6 +365,7 @@ class TestingController extends Controller
 
 		$data['rows'] = DB::table('d_hiv_testing_and_prevention_services')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->join('periods', 'periods.id', '=', 'd_hiv_testing_and_prevention_services.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -371,12 +379,14 @@ class TestingController extends Controller
 
 		$data['rows'] = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
 
 		$data['linked'] = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw("SUM(new_total) AS newtx")
 			->when(true, $this->get_callback('newtx'))
 			->get();

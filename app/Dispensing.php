@@ -28,11 +28,11 @@ class Dispensing
 		foreach ($tables as $key => $row) {
 			if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
             $columns = collect(DB::select("show columns from `" . $row->Tables_in_hcm . '`'));
-            echo "Table is {$row->Tables_in_hcm} \n";
             $p = $columns->where('Field', 'period_id')->first();
             if(!$p){
                 $w = $columns->where('Field', 'week_id')->first();
                 if($w) continue;
+                echo "Table is {$row->Tables_in_hcm} \n";
                 DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` ADD COLUMN `period_id` smallint(4) UNSIGNED DEFAULT 0 after id;");
                 self::add_periods($row->Tables_in_hcm);
 
@@ -53,11 +53,11 @@ class Dispensing
         foreach ($tables as $key => $row) {
             if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
             $columns = collect(DB::select("show columns from " . $row->Tables_in_hcm));
-            echo "Table is {$row->Tables_in_hcm} \n";
             $p = $columns->where('Field', 'period_id')->first();
             $c = $columns->where('Field', 'quarter')->first();
             $w = $columns->where('Field', 'week_id')->first();
             if($p && $c && !$w){
+                echo "Table is {$row->Tables_in_hcm} \n";
                 DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` DROP COLUMN `year`;");
                 DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` DROP COLUMN `month`;");
                 DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` DROP COLUMN `financial_year`;");
