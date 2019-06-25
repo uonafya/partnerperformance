@@ -134,7 +134,7 @@ class Dispensing
 	{		
         $table_name = 'd_dispensing';
         $sql = "CREATE TABLE `{$table_name}` (
-                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 
                     period_id smallint(4) UNSIGNED DEFAULT 0,
                     facility int(10) UNSIGNED DEFAULT 0,
@@ -191,7 +191,7 @@ class Dispensing
     {       
         $table_name = 'd_tx_curr';
         $sql = "CREATE TABLE `{$table_name}` (
-                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 
                     period_id smallint(5) UNSIGNED DEFAULT 0,
                     facility int(10) UNSIGNED DEFAULT 0,
