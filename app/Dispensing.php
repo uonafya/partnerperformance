@@ -122,7 +122,6 @@ class Dispensing
 
     public static function create_columns()
     {
-        self::dispensing_columns();
         self::tx_curr_columns();
         self::prep_columns();
         self::vmmc_columns();
@@ -139,7 +138,9 @@ class Dispensing
                     period_id smallint(4) UNSIGNED DEFAULT 0,
                     facility int(10) UNSIGNED DEFAULT 0,
 
-                    column_id smallint(5) UNSIGNED DEFAULT 0,
+                    -- column_id smallint(5) UNSIGNED DEFAULT 0,
+                    age_category_id tinyint(3) UNSIGNED DEFAULT 0,
+                    gender_id tinyint(3) UNSIGNED DEFAULT 0,
 
     				dispensed_one smallint(5) UNSIGNED DEFAULT 0,
     				dispensed_two smallint(5) UNSIGNED DEFAULT 0,
@@ -213,20 +214,6 @@ class Dispensing
     }
 
 
-    public static function dispensing_columns()
-    {
-        $modality = SurgeModality::where(['modality' => 'mmd'])->first();
-        $sql = '';
-
-        $ages = AgeCategory::all();
-        $genders = SurgeGender::all();
-
-        foreach ($ages as $key => $age) {
-            $base = $modality->modality . '_' . $age->age_cat . '_';
-            $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
-            Surge::create_surge_column($sql, $base, $base2, $modality, $genders);
-        }
-    }
 
     public static function tx_curr_columns()
     {
@@ -240,7 +227,7 @@ class Dispensing
             foreach ($genders as $key => $gender) {
                 $base = $modality->modality . '_' . $age->age_cat . '_';
                 $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality);
+                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
             }
         }
     }
@@ -257,7 +244,7 @@ class Dispensing
             foreach ($genders as $key => $gender) {
                 $base = $modality->modality . '_' . $age->age_cat . '_';
                 $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality);
+                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
             }
         }
     }
@@ -274,7 +261,7 @@ class Dispensing
             foreach ($genders as $key => $gender) {
                 $base = $modality->modality . '_' . $age->age_cat . '_';
                 $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality);
+                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
             }
         }
     }
@@ -283,7 +270,43 @@ class Dispensing
 
 
 
-    public static function insert_period_rows($year=null,$table_name = 'd_dispensing')
+    public static function insert_dispensing_rows($year=null,$table_name = 'd_dispensing')
+    {
+        if(!$year) $year = date('Y');
+
+        $periods = Period::where(['year' => $year])->get();
+        $genders = SurgeGender::all();
+        $age_categories = AgeCategory::all();
+        $facilities = Facility::select('id')->get();
+
+        $i=0;
+        $data_array = [];
+
+        foreach ($periods as $period) {
+            foreach ($facilities as $k => $facility) {
+                foreach ($age_categories as $age_category) {
+                    foreach ($genders as $gender) {
+                        $data = ['period_id' => $period->id, 'facility' => $facility->id, 'age_category_id' => $age_category->id, 'gender_id' => $gender->id, ];
+                        $data_array[$i] = $data;
+                        $i++;
+
+                        if ($i == 200) {
+                            DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+                            $data_array=null;
+                            $i=0;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+
+        echo 'Completed entry for ' . $table_name . " \n";
+    }
+
+    public static function insert_tx_curr_rows($year=null,$table_name = 'd_tx_curr')
     {
         if(!$year) $year = date('Y');
 
