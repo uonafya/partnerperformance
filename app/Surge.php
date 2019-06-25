@@ -103,7 +103,7 @@ class Surge
         DB::table($table_name)->update(['tbl_name' => 'd_surge']);
 
         DB::table($table_name)->insert([
-            ['modality' => 'mmd', 'modality_name' => 'Multi Month Dispensing', 'hts' => 0, 'tbl_name' => 'd_mmd', ],
+            ['modality' => 'mmd', 'modality_name' => 'Multi Month Dispensing', 'hts' => 0, 'tbl_name' => 'd_dispensing', ],
             ['modality' => 'prep', 'modality_name' => 'Pre-Exposure Prophylaxis', 'hts' => 0, 'tbl_name' => 'd_prep', ],
             ['modality' => 'tx_curr', 'modality_name' => 'Currently On Treatment', 'hts' => 0, 'tbl_name' => 'd_tx_curr', ],
         ]);

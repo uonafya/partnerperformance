@@ -23,6 +23,8 @@ class Dispensing
 		$tables = DB::select("show tables");
 		foreach ($tables as $key => $row) {
 			if(!starts_with($row->Tables_in_hcm, 'd_')) continue;
+            $columns = DB::select("show columns from " . $row->Tables_in_hcm);
+            dd($columns);
 		}
 	}
 
@@ -46,22 +48,6 @@ class Dispensing
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 	}
-
-
-    public static function additional_modalities()
-    {       
-        $table_name = 'surge_modalities';
-
-        DB::table($table_name)->insert([
-            ['modality' => 'mmd', 'modality_name' => 'Multi Month Dispensing', 'hts' => 0, 'tbl_name' => 'd_mmd', ],
-            ['modality' => 'prep', 'modality_name' => 'Pre-Exposure Prophylaxis', 'hts' => 0, 'tbl_name' => 'd_prep', ],
-            ['modality' => 'tx_curr', 'modality_name' => 'Currently On Treatment', 'hts' => 0, 'tbl_name' => 'd_tx_curr', ],
-        ]);
-
-        DB::table($table_name)->insert([
-            ['modality' => 'vmmc_circ', 'modality_name' => 'VMMC CIRC', 'hts' => 0, 'tbl_name' => 'd_vmmc_circ', 'female' => 0, 'unknown' => 0, ],
-        ]);
-    }
 
 
 
@@ -104,9 +90,11 @@ class Dispensing
         DB::statement($sql);
 	}
 
+
+
     public static function dispensing_columns()
     {
-        $modality = SurgeModality::where(['tbl_name' => 'd_mmd'])->first();
+        $modality = SurgeModality::where(['tbl_name' => 'd_dispensing'])->first();
         $sql = '';
 
         $ages = AgeCategory::all();
@@ -121,14 +109,36 @@ class Dispensing
         }
     }
 
-    public static function insert_dispensing($year=null)
+    public static function insert_dispensing($year=null,$table_name = 'd_dispensing')
     {
         if(!$year) $year = date('Y');
-        $table_name = 'd_mmd';
+
         $modality = SurgeModality::where(['tbl_name' => $table_name])->first();
+        $columns  = SurgeColumn::where(['modality_id' => $modality->id])->get();
         $facilities = Facility::select('id')->get();
 
+        $i=0;
+        $data_array = [];
 
+        for ($month=1; $month < 13; $month++) { 
+            foreach ($facilities as $k => $facility) {
+                foreach ($columns as $column) {
+                    $data = ['year' => $year, 'month' => $month, 'facility' => $facility->id, 'column_id' => $column->id];
+                    $data = array_merge($data, \App\Synch::get_financial_year_quarter($year, $month) );
+                    $data_array[$i] = $data;
+                    $i++;
+
+                    if ($i == 200) {
+                        DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+                        $data_array=null;
+                        $i=0;
+                    }
+                }
+            }
+        }
+        if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+
+        echo 'Completed entry for ' . $table_name . " \n";
     }
 
 
