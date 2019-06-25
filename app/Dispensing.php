@@ -23,7 +23,7 @@ class Dispensing
 		$tables = DB::select("show tables");
 		foreach ($tables as $key => $row) {
 			if(!starts_with($row->Tables_in_hcm, 'd_')) continue;
-            $columns = DB::select("show columns from " . $row->Tables_in_hcm);
+            $columns = collect(DB::select("show columns from " . $row->Tables_in_hcm));
             echo "Table is {$row->Tables_in_hcm} \n";
             dd($columns->where('type', 'int(10)'));
 		}
