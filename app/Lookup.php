@@ -266,7 +266,8 @@ class Lookup
 		return "<a href='javascript:void(0)' class='alert-link'><center><strong>{$name}</strong></center></a>";
 	}
 
-	public static function date_query($for_target=false)
+	// Prepension allows us to prepend 'periods.' so it doesn't clash
+	public static function date_query($for_target=false, $prepension = '')
 	{
 		$financial_year = session('filter_financial_year');
 		$quarter = session('filter_quarter');
@@ -282,7 +283,7 @@ class Lookup
 
 		$query = " financial_year='{$financial_year}'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
-		if($month) $query .= " AND month='{$month}'";
+		if($month) $query .= " AND {$prepension}month='{$month}'";
 
 		return $query;
 
@@ -700,6 +701,7 @@ class Lookup
 	public static function splines(&$data, $splines)
 	{
 		$groupby = session('filter_groupby', 1);
+		if(!is_array($splines)) $splines = [$splines];
 		if($groupby < 10){
 			foreach ($splines as $key => $spline) {
 				$data['outcomes'][$spline]['lineWidth'] = 0;

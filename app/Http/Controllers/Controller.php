@@ -25,15 +25,15 @@ class Controller extends BaseController
     // Add Divisions Query Here
     // Also Add Date Query Here
 
-    public function get_callback($order_by=null, $having_null=null)
+    public function get_callback($order_by=null, $having_null=null, $prepension='')
     {
     	$groupby = session('filter_groupby', 1);
     	$divisions_query = Lookup::divisions_query();
-        $date_query = Lookup::date_query();
+        $date_query = Lookup::date_query(false, $prepension);
     	if($groupby > 9){
-    		if($groupby == 10) return $this->year_callback($divisions_query, $date_query);
+    		if($groupby == 10) return $this->year_callback($divisions_query, $date_query, $prepension);
     		if($groupby == 11) return $this->financial_callback($divisions_query, $date_query);
-    		if($groupby == 12) return $this->year_month_callback($divisions_query, $date_query);
+    		if($groupby == 12) return $this->year_month_callback($divisions_query, $date_query, $prepension);
     		if($groupby == 13) return $this->year_quarter_callback($divisions_query, $date_query);
             if($groupby == 14) return $this->week_callback($divisions_query, $date_query);
     	}
@@ -61,14 +61,14 @@ class Controller extends BaseController
         }
     }
 
-    public function year_callback($divisions_query, $date_query)
+    public function year_callback($divisions_query, $date_query, $prepension)
     {
-    	return function($query) use($divisions_query){
-    		return $query->addSelect('year')
+    	return function($query) use($divisions_query, $prepension){
+    		return $query->addSelect("{$prepension}.year")
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
-    			->groupBy('year')
-    			->orderBy('year', 'asc');
+    			->groupBy("{$prepension}.year")
+    			->orderBy("{$prepension}.year", 'asc');
     	};
     }
 
@@ -83,15 +83,15 @@ class Controller extends BaseController
     	};
     }
 
-    public function year_month_callback($divisions_query, $date_query)
+    public function year_month_callback($divisions_query, $date_query, $prepension)
     {
-    	return function($query) use($divisions_query, $date_query){
-    		return $query->addSelect('year', 'month')
+    	return function($query) use($divisions_query, $date_query, $prepension){
+    		return $query->addSelect("{$prepension}.year", "{$prepension}.month")
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
-    			->groupBy('year', 'month')
-    			->orderBy('year', 'asc')
-    			->orderBy('month', 'asc');
+    			->groupBy("{$prepension}.year", "{$prepension}.month")
+    			->orderBy("{$prepension}.year", 'asc')
+    			->orderBy("{$prepension}.month", 'asc');
     	};
     }
 

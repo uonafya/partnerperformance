@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Excel;
 use App\Lookup;
+use App\Period;
 
 class IndicatorController extends Controller
 {
@@ -85,11 +86,7 @@ class IndicatorController extends Controller
 		$data['outcomes'][4]['stack'] = 'dhis';
 		$data['outcomes'][5]['stack'] = 'dhis';
 
-		if($groupby < 10){
-			$data['outcomes'][6]['lineWidth'] = 0;
-			$data['outcomes'][6]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][6]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [6]);
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -260,11 +257,7 @@ class IndicatorController extends Controller
 		$data['outcomes'][3]['stack'] = 'moh_729';
 		$data['outcomes'][4]['stack'] = 'partner_reported';
 
-		if($groupby < 10){
-			$data['outcomes'][5]['lineWidth'] = 0;
-			$data['outcomes'][5]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][5]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [5]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -338,11 +331,7 @@ class IndicatorController extends Controller
 		$data['outcomes'][2]['stack'] = 'new_art';
 		$data['outcomes'][3]['stack'] = 'partner_reported';
 
-		if($groupby < 10){
-			$data['outcomes'][4]['lineWidth'] = 0;
-			$data['outcomes'][4]['marker'] = ['enabled' => true, 'radius' => 4];
-			$data['outcomes'][4]['states'] = ['hover' => ['lineWidthPlus' => 0]];
-		}
+		Lookup::splines($data, [4]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -418,6 +407,7 @@ class IndicatorController extends Controller
 		
 		$rows = DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
+			->join('periods', 'periods.id', '=', 'p_early_indicators.period_id')
 			->selectRaw($this->raw)
 			->when($financial_year, function($query) use ($financial_year){
 				return $query->where('financial_year', $financial_year);
@@ -534,11 +524,12 @@ class IndicatorController extends Controller
 			$county = DB::table('countys')->where('countymflcode', $value->county_mfl)->first();
 
 			if(!$county) continue;
+			$period = Period::where(['financial_year' => $value->financial_year, 'month' => $value->month])->first();
+			if(!$period) continue;
 
 			DB::connection('mysql_wr')->table('p_early_indicators')
 				->where([
-					'county' => $county->id, 'partner' => auth()->user()->partner_id, 
-					'financial_year' => $value->financial_year, 'month' => $value->month
+					'county' => $county->id, 'partner' => auth()->user()->partner_id, 'period_id' => $period->id,					
 				])
 				->update($update_data);
 		}
