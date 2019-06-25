@@ -162,9 +162,9 @@ class Dispensing
     }
 
 
-    public static function dispensing_table()
+    public static function tx_curr_table()
     {       
-        $table_name = 'd_dispensing';
+        $table_name = 'd_tx_curr';
         $sql = "CREATE TABLE `{$table_name}` (
                     id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 
@@ -173,12 +173,7 @@ class Dispensing
 
                     column_id smallint(5) UNSIGNED DEFAULT 0,
 
-                    dispensed_one smallint(5) UNSIGNED DEFAULT 0,
-                    dispensed_two smallint(5) UNSIGNED DEFAULT 0,
-                    dispensed_three smallint(5) UNSIGNED DEFAULT 0,
-                    dispensed_four smallint(5) UNSIGNED DEFAULT 0,
-                    dispensed_five smallint(5) UNSIGNED DEFAULT 0,
-                    dispensed_six smallint(5) UNSIGNED DEFAULT 0,
+                    value smallint(5) UNSIGNED DEFAULT 0,
 
                     dateupdated date DEFAULT NULL,
                     PRIMARY KEY (`id`),
