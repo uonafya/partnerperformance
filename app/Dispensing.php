@@ -26,7 +26,7 @@ class Dispensing
 	{
 		$tables = DB::select("show tables");
 		foreach ($tables as $key => $row) {
-			if(!starts_with($row->Tables_in_hcm, ['d_', '_m'])) continue;
+			if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
             $columns = collect(DB::select("show columns from " . $row->Tables_in_hcm));
             echo "Table is {$row->Tables_in_hcm} \n";
             $p = $columns->where('Field', 'period_id')->first();
@@ -51,7 +51,7 @@ class Dispensing
     {
         $tables = DB::select("show tables");
         foreach ($tables as $key => $row) {
-            if(!starts_with($row->Tables_in_hcm, ['d_', '_m'])) continue;
+            if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
             $columns = collect(DB::select("show columns from " . $row->Tables_in_hcm));
             echo "Table is {$row->Tables_in_hcm} \n";
             $p = $columns->where('Field', 'period_id')->first();
