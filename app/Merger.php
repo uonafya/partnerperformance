@@ -299,133 +299,134 @@ class Merger
 
     public static function create_merged_tables()
     {
-        // $art = "
-        //     current_below1 int(10) DEFAULT NULL,
-        //     current_below10 int(10) DEFAULT NULL,
-        //     current_below15_m int(10) DEFAULT NULL,
-        //     current_below15_f int(10) DEFAULT NULL,
-        //     current_below20_m int(10) DEFAULT NULL,
-        //     current_below20_f int(10) DEFAULT NULL,
-        //     current_below25_m int(10) DEFAULT NULL,
-        //     current_below25_f int(10) DEFAULT NULL,
-        //     current_above25_m int(10) DEFAULT NULL,
-        //     current_above25_f int(10) DEFAULT NULL,
-        //     current_total int(10) DEFAULT NULL,
+        /*
+        $art = "
+            current_below1 int(10) DEFAULT NULL,
+            current_below10 int(10) DEFAULT NULL,
+            current_below15_m int(10) DEFAULT NULL,
+            current_below15_f int(10) DEFAULT NULL,
+            current_below20_m int(10) DEFAULT NULL,
+            current_below20_f int(10) DEFAULT NULL,
+            current_below25_m int(10) DEFAULT NULL,
+            current_below25_f int(10) DEFAULT NULL,
+            current_above25_m int(10) DEFAULT NULL,
+            current_above25_f int(10) DEFAULT NULL,
+            current_total int(10) DEFAULT NULL,
 
-        //     new_below1 int(10) DEFAULT NULL,
-        //     new_below10 int(10) DEFAULT NULL,
-        //     new_below15_m int(10) DEFAULT NULL,
-        //     new_below15_f int(10) DEFAULT NULL,
-        //     new_below20_m int(10) DEFAULT NULL,
-        //     new_below20_f int(10) DEFAULT NULL,
-        //     new_below25_m int(10) DEFAULT NULL,
-        //     new_below25_f int(10) DEFAULT NULL,
-        //     new_above25_m int(10) DEFAULT NULL,
-        //     new_above25_f int(10) DEFAULT NULL,
-        //     new_total int(10) DEFAULT NULL,
+            new_below1 int(10) DEFAULT NULL,
+            new_below10 int(10) DEFAULT NULL,
+            new_below15_m int(10) DEFAULT NULL,
+            new_below15_f int(10) DEFAULT NULL,
+            new_below20_m int(10) DEFAULT NULL,
+            new_below20_f int(10) DEFAULT NULL,
+            new_below25_m int(10) DEFAULT NULL,
+            new_below25_f int(10) DEFAULT NULL,
+            new_above25_m int(10) DEFAULT NULL,
+            new_above25_f int(10) DEFAULT NULL,
+            new_total int(10) DEFAULT NULL,
 
-        //     enrolled_below1 int(10) DEFAULT NULL,
-        //     enrolled_below10 int(10) DEFAULT NULL,
-        //     enrolled_below15_m int(10) DEFAULT NULL,
-        //     enrolled_below15_f int(10) DEFAULT NULL,
-        //     enrolled_below20_m int(10) DEFAULT NULL,
-        //     enrolled_below20_f int(10) DEFAULT NULL,
-        //     enrolled_below25_m int(10) DEFAULT NULL,
-        //     enrolled_below25_f int(10) DEFAULT NULL,
-        //     enrolled_above25_m int(10) DEFAULT NULL,
-        //     enrolled_above25_f int(10) DEFAULT NULL,
-        //     enrolled_total int(10) DEFAULT NULL,
-        // ";
+            enrolled_below1 int(10) DEFAULT NULL,
+            enrolled_below10 int(10) DEFAULT NULL,
+            enrolled_below15_m int(10) DEFAULT NULL,
+            enrolled_below15_f int(10) DEFAULT NULL,
+            enrolled_below20_m int(10) DEFAULT NULL,
+            enrolled_below20_f int(10) DEFAULT NULL,
+            enrolled_below25_m int(10) DEFAULT NULL,
+            enrolled_below25_f int(10) DEFAULT NULL,
+            enrolled_above25_m int(10) DEFAULT NULL,
+            enrolled_above25_f int(10) DEFAULT NULL,
+            enrolled_total int(10) DEFAULT NULL,
+        ";
 
-        // self::table_base('m_art', $art);
+        self::table_base('m_art', $art);
 
-        // $testing = "
-        //     testing_total int(10) DEFAULT NULL,
-        //     first_test_hiv int(10) DEFAULT NULL,
-        //     repeat_test_hiv int(10) DEFAULT NULL,
-        //     facility_test_hiv int(10) DEFAULT NULL,
-        //     outreach_test_hiv int(10) DEFAULT NULL,
+        $testing = "
+            testing_total int(10) DEFAULT NULL,
+            first_test_hiv int(10) DEFAULT NULL,
+            repeat_test_hiv int(10) DEFAULT NULL,
+            facility_test_hiv int(10) DEFAULT NULL,
+            outreach_test_hiv int(10) DEFAULT NULL,
 
-                // tested_couples int(10) DEFAULT NULL,
-                // discordant_couples int(10) DEFAULT NULL,
+                tested_couples int(10) DEFAULT NULL,
+                discordant_couples int(10) DEFAULT NULL,
 
-        //     positive_below10 int(10) DEFAULT NULL,
-        //     positive_below15_m int(10) DEFAULT NULL,
-        //     positive_below15_f int(10) DEFAULT NULL,
-        //     positive_below20_m int(10) DEFAULT NULL,
-        //     positive_below20_f int(10) DEFAULT NULL,
-        //     positive_below25_m int(10) DEFAULT NULL,
-        //     positive_below25_f int(10) DEFAULT NULL,
-        //     positive_above25_m int(10) DEFAULT NULL,
-        //     positive_above25_f int(10) DEFAULT NULL,
-        //     positive_total int(10) DEFAULT NULL,
-        // ";
+            positive_below10 int(10) DEFAULT NULL,
+            positive_below15_m int(10) DEFAULT NULL,
+            positive_below15_f int(10) DEFAULT NULL,
+            positive_below20_m int(10) DEFAULT NULL,
+            positive_below20_f int(10) DEFAULT NULL,
+            positive_below25_m int(10) DEFAULT NULL,
+            positive_below25_f int(10) DEFAULT NULL,
+            positive_above25_m int(10) DEFAULT NULL,
+            positive_above25_f int(10) DEFAULT NULL,
+            positive_total int(10) DEFAULT NULL,
+        ";
 
-        // self::table_base('m_testing', $testing);
+        self::table_base('m_testing', $testing);
 
-        // $pmtct = "
-        //     tested_pmtct int(10) DEFAULT NULL,
+        $pmtct = "
+            tested_pmtct int(10) DEFAULT NULL,
 
-        //     known_pos_anc int(10) DEFAULT NULL,
+            known_pos_anc int(10) DEFAULT NULL,
 
-        //     initial_test_anc int(10) DEFAULT NULL,
-        //     initial_test_lnd int(10) DEFAULT NULL,
-        //     initial_test_pnc int(10) DEFAULT NULL,
+            initial_test_anc int(10) DEFAULT NULL,
+            initial_test_lnd int(10) DEFAULT NULL,
+            initial_test_pnc int(10) DEFAULT NULL,
 
-        //     positives_anc int(10) DEFAULT NULL,
-        //     positives_lnd int(10) DEFAULT NULL,
-        //     positives_pnc int(10) DEFAULT NULL,
-        //     positives_pnc6m int(10) DEFAULT NULL,
+            positives_anc int(10) DEFAULT NULL,
+            positives_lnd int(10) DEFAULT NULL,
+            positives_pnc int(10) DEFAULT NULL,
+            positives_pnc6m int(10) DEFAULT NULL,
 
-        //     total_positive_pmtct int(10) DEFAULT NULL,
-        //     total_new_positive_pmtct int(10) DEFAULT NULL,
+            total_positive_pmtct int(10) DEFAULT NULL,
+            total_new_positive_pmtct int(10) DEFAULT NULL,
 
-        //     haart_total int(10) DEFAULT NULL,
+            haart_total int(10) DEFAULT NULL,
 
-        //     on_haart_anc int(10) DEFAULT NULL,
-        //     start_art_anc int(10) DEFAULT NULL,
-        //     start_art_lnd int(10) DEFAULT NULL,
-        //     start_art_pnc int(10) DEFAULT NULL,
-        //     start_art_pnc_6m int(10) DEFAULT NULL,
+            on_haart_anc int(10) DEFAULT NULL,
+            start_art_anc int(10) DEFAULT NULL,
+            start_art_lnd int(10) DEFAULT NULL,
+            start_art_pnc int(10) DEFAULT NULL,
+            start_art_pnc_6m int(10) DEFAULT NULL,
 
-        //     known_status_before_male int(10) DEFAULT NULL,
+            known_status_before_male int(10) DEFAULT NULL,
 
-        //     initial_male_test_anc int(10) DEFAULT NULL,
-        //     initial_male_test_lnd int(10) DEFAULT NULL,
-        //     initial_male_test_pnc int(10) DEFAULT NULL,
+            initial_male_test_anc int(10) DEFAULT NULL,
+            initial_male_test_lnd int(10) DEFAULT NULL,
+            initial_male_test_pnc int(10) DEFAULT NULL,
 
-        //     known_status_male int(10) DEFAULT NULL,
+            known_status_male int(10) DEFAULT NULL,
 
-        //     initial_pcr_2m int(10) DEFAULT NULL,
-        //     initial_pcr_12m int(10) DEFAULT NULL,
-        //     confirmed_pos int(10) DEFAULT NULL,
-        // ";
+            initial_pcr_2m int(10) DEFAULT NULL,
+            initial_pcr_12m int(10) DEFAULT NULL,
+            confirmed_pos int(10) DEFAULT NULL,
+        ";
 
-        // self::table_base('m_pmtct', $pmtct);
+        self::table_base('m_pmtct', $pmtct);
 
-        // $circumcision = "
-        //     circumcised_below1 int(10) DEFAULT NULL,
-        //     circumcised_below10 int(10) DEFAULT NULL,
-        //     circumcised_below15 int(10) DEFAULT NULL,
-        //     circumcised_below20 int(10) DEFAULT NULL,
-        //     circumcised_below25 int(10) DEFAULT NULL,
-        //     circumcised_above25 int(10) DEFAULT NULL,
-        //     circumcised_total int(10) DEFAULT NULL,
+        $circumcision = "
+            circumcised_below1 int(10) DEFAULT NULL,
+            circumcised_below10 int(10) DEFAULT NULL,
+            circumcised_below15 int(10) DEFAULT NULL,
+            circumcised_below20 int(10) DEFAULT NULL,
+            circumcised_below25 int(10) DEFAULT NULL,
+            circumcised_above25 int(10) DEFAULT NULL,
+            circumcised_total int(10) DEFAULT NULL,
 
-        //     circumcised_pos int(10) DEFAULT NULL,
-        //     circumcised_neg int(10) DEFAULT NULL,
-        //     circumcised_nk int(10) DEFAULT NULL,
+            circumcised_pos int(10) DEFAULT NULL,
+            circumcised_neg int(10) DEFAULT NULL,
+            circumcised_nk int(10) DEFAULT NULL,
 
-        //     circumcised_surgical int(10) DEFAULT NULL,
-        //     circumcised_devices int(10) DEFAULT NULL,
+            circumcised_surgical int(10) DEFAULT NULL,
+            circumcised_devices int(10) DEFAULT NULL,
 
-        //     ae_during_moderate int(10) DEFAULT NULL,
-        //     ae_during_severe int(10) DEFAULT NULL,
-        //     ae_post_moderate int(10) DEFAULT NULL,
-        //     ae_post_severe int(10) DEFAULT NULL,
-        // ";
+            ae_during_moderate int(10) DEFAULT NULL,
+            ae_during_severe int(10) DEFAULT NULL,
+            ae_post_moderate int(10) DEFAULT NULL,
+            ae_post_severe int(10) DEFAULT NULL,
+        ";
 
-        // self::table_base('m_circumcision', $circumcision);
+        self::table_base('m_circumcision', $circumcision);
 
         $keypop = "
             tested int(10) DEFAULT NULL,
@@ -441,6 +442,7 @@ class Merger
         ";
 
         self::table_base('m_keypop', $keypop);
+        */
     }
 
     public static function insert_rows($year=null)

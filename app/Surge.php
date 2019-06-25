@@ -345,7 +345,7 @@ class Surge
 
 
 
-	public static function surges_insert($year=null)
+	public static function surges_insert($year=null, $table_name='d_surge')
 	{
 		if(!$year){
             $year = date('Y');
@@ -353,7 +353,6 @@ class Surge
         }
 
 		$weeks = Week::where('financial_year', $year)->get();
-		$table_name = 'd_surge';
 
 		$i=0;
 		$data_array = [];

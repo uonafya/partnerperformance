@@ -16,6 +16,7 @@ class ArtController extends Controller
 
 		$newtx = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw(" SUM(`new_total`) AS `new_art`, COUNT(DISTINCT view_facilitys.id) as reported ")
 			->where('new_total', '>', 0)
 			->whereRaw($date_query)
@@ -27,6 +28,7 @@ class ArtController extends Controller
 
 		$cutx = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw(" SUM(`current_total`) AS `current_art`, COUNT(DISTINCT view_facilitys.id) as reported ")
 			->where('current_total', '>', 0)
 			->whereRaw($date_query)
@@ -38,6 +40,7 @@ class ArtController extends Controller
 
 		$cutx_old = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw(" SUM(`current_total`) AS `current_art`, COUNT(DISTINCT view_facilitys.id) as reported ")
 			->where('current_total', '>', 0)
 			->whereRaw($date_query)
@@ -47,6 +50,7 @@ class ArtController extends Controller
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`, 
 							SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`")
 			->whereRaw($date_query)
