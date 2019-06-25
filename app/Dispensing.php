@@ -25,7 +25,7 @@ class Dispensing
 			if(!starts_with($row->Tables_in_hcm, 'd_')) continue;
             $columns = DB::select("show columns from " . $row->Tables_in_hcm);
             echo "Table is {$row->Tables_in_hcm} \n";
-            dd($columns);
+            dd($columns->where('type', 'int(10)'));
 		}
 	}
 
