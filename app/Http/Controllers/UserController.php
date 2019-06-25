@@ -104,14 +104,10 @@ class UserController extends Controller
         return redirect('/pns/download');
     }
 
-
-    public function change_password(Request $request, User $user)
+    public function change_password()
     {
-        if(Auth::user()) Auth::logout();
-        Auth::login($user);
-        $partner = $user->partner;
-        session(['session_partner' => $partner]);
-
-        return view('forms.password_update', ['user' => $user]);
+        $user = auth()->user();
+        session(['session_partner' => $user->partner]);        
+        return view('forms.password_update', ['no_header' => true, 'user' => $user]);
     }
 }

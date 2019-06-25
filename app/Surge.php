@@ -186,11 +186,6 @@ class Surge
             ['age' => 'below_10', 'age_name' => '5-9', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, ],
         ]);
 
-        /*DB::table($table_name)->insert([
-            ['age' => 'below_15', 'age_name' => '0-14', ],
-            ['age' => 'above_15', 'age_name' => '15 and Above', ],
-        ]);*/
-
 	}
 
 	public static function genders_table()

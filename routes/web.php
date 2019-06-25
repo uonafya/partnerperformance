@@ -184,6 +184,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::get('otz/upload', 'GeneralController@upload_nonmer');
 	Route::get('indicators/upload', 'GeneralController@upload_indicators');
+	Route::get('user/change_password', 'UserController@change_password');
 	Route::resource('user', 'UserController');
 });
 

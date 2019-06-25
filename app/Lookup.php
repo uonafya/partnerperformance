@@ -11,6 +11,7 @@ use \App\Ward;
 use \App\Facility;
 
 use \App\Week;
+use App\AgeCategory;
 use App\SurgeAge;
 use App\SurgeGender;
 use App\SurgeModality;
@@ -165,11 +166,6 @@ class Lookup
 		$subcounties = Subcounty::select('id', 'name')->orderBy('name', 'asc')->get();
 		$wards = Ward::select('id', 'name')->orderBy('name', 'asc')->get();
 
-		$weeks = Week::all();
-		$modalities = SurgeModality::all();
-		$genders = SurgeGender::all();
-        $ages = SurgeAge::surge()->get();
-
 		return [
 			'divisions' => $divisions,
 			'agencies' => $agencies,
@@ -178,10 +174,12 @@ class Lookup
 			'subcounties' => $subcounties,
 			'wards' => $wards,
 
-			'weeks' => $weeks,
-			'modalities' => $modalities,
-			'genders' => $genders,
-			'ages' => $ages,
+			'weeks' => Week::all(),
+			'modalities' => SurgeModality::all(),
+			'genders' => SurgeGender::all(),
+			'ages' => SurgeAge::surge()->get(),
+
+			'age_categories' => AgeCategory::all(),
 
 			'date_url' => url('filter/date'),
 		];
