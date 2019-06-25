@@ -33,7 +33,7 @@ class Dispensing
             if(!$p){
                 $w = $columns->where('Field', 'week_id')->first();
                 if($w) continue;
-                DB::statement("ALTER TABLE {$row->Tables_in_hcm} ADD COLUMN `period_id` smallint(4) UNSIGNED DEFAULT 0 after id;");
+                DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` ADD COLUMN `period_id` smallint(4) UNSIGNED DEFAULT 0 after id;");
                 self::add_periods($row->Tables_in_hcm);
 
                 /*$c = $columns->where('Field', 'quarter')->first();
@@ -58,10 +58,10 @@ class Dispensing
             $c = $columns->where('Field', 'quarter')->first();
             $w = $columns->where('Field', 'week_id')->first();
             if($p && $c && !$w){
-                DB::statement("ALTER TABLE {$row->Tables_in_hcm} DROP COLUMN `year`;");
-                DB::statement("ALTER TABLE {$row->Tables_in_hcm} DROP COLUMN `month`;");
-                DB::statement("ALTER TABLE {$row->Tables_in_hcm} DROP COLUMN `financial_year`;");
-                DB::statement("ALTER TABLE {$row->Tables_in_hcm} DROP COLUMN `quarter`;");                
+                DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` DROP COLUMN `year`;");
+                DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` DROP COLUMN `month`;");
+                DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` DROP COLUMN `financial_year`;");
+                DB::statement("ALTER TABLE `{$row->Tables_in_hcm}` DROP COLUMN `quarter`;");                
             }
         }
     }
