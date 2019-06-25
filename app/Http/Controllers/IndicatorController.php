@@ -20,12 +20,14 @@ class IndicatorController extends Controller
 
 		$testing_rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
 
 		$pmtct_rows = DB::table('m_pmtct')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
+			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
 			->selectRaw("SUM(tested_pmtct) AS tests, SUM(total_new_positive_pmtct) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -122,12 +124,14 @@ class IndicatorController extends Controller
 
 		$testing_rows = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
 
 		$pmtct_rows = DB::table('m_pmtct')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
+			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
 			->selectRaw("SUM(tested_pmtct) AS tests, SUM(total_new_positive_pmtct) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -205,12 +209,14 @@ class IndicatorController extends Controller
 
 		$rows = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
 			->get();
 
 		$rows3 = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
+			->join('periods', 'periods.id', '=', 'd_regimen_totals.period_id')
 			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
 			->when(true, $this->get_callback())
 			->get();
@@ -289,6 +295,7 @@ class IndicatorController extends Controller
 
 		$rows = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
 			->get();
