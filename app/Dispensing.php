@@ -379,6 +379,7 @@ class Dispensing
                     }
                 }
             }
+            echo 'Completed entry for ' . $modality->modality . " \n";
         }
 
         if($data_array) DB::table($table_name)->insert($data_array);
