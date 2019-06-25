@@ -13,6 +13,7 @@ use App\Week;
 use App\AgeCategory;
 use App\SurgeAge;
 use App\SurgeColumn;
+use App\SurgeColumnView;
 use App\SurgeGender;
 use App\SurgeModality;
 
@@ -26,7 +27,7 @@ class Dispensing
 	{
 		$tables = DB::select("show tables");
 		foreach ($tables as $key => $row) {
-			if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
+			if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
             $columns = collect(DB::select("show columns from `" . $row->Tables_in_hcm . '`'));
             $p = $columns->where('Field', 'period_id')->first();
             if(!$p){
@@ -51,7 +52,7 @@ class Dispensing
     {
         $tables = DB::select("show tables");
         foreach ($tables as $key => $row) {
-            if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
+            if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
             $columns = collect(DB::select("show columns from `{$row->Tables_in_hcm}`"));
             $p = $columns->where('Field', 'period_id')->first();
             $c = $columns->where('Field', 'quarter')->first();
@@ -249,7 +250,7 @@ class Dispensing
         echo 'Completed entry for ' . $table_name . " \n";
     }
 
-    public static function insert_week_rows($year=null, $table_name='d_prep')
+    public static function insert_week_rows($year=null, $table_name='d_weeklies')
     {
         if(!$year){
             $year = date('Y');
