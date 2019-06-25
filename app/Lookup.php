@@ -175,7 +175,7 @@ class Lookup
 			'wards' => $wards,
 
 			'weeks' => Week::all(),
-			'modalities' => SurgeModality::all(),
+			'modalities' => SurgeModality::surge()->get(),
 			'genders' => SurgeGender::all(),
 			'ages' => SurgeAge::surge()->get(),
 
