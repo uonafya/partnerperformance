@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use App\Synch;
+use App\Period;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -189,11 +190,12 @@ class Other
 		$i=0;
 		$data_array = [];
 
-		for ($month=1; $month < 13; $month++) { 
-			$fq = Synch::get_financial_year_quarter($year, $month);
+        $periods = Period::where(['year' => $year])->get();
+
+		foreach ($periods as $period) { 
 			foreach ($partners as $partner) {
 				foreach ($counties as $county) {
-					$data = ['year' => $year, 'month' => $month, 'partner' => $partner->id, 'county' => $county->id];
+					$data = ['period_id' => $period->id, 'partner' => $partner->id, 'county' => $county->id];
 					$data = array_merge($data, $fq);
 
 					$data_array[$i] = $data;
@@ -352,34 +354,6 @@ class Other
         ";
         DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::connection('mysql_wr')->statement($sql);
-	}
-
-	public static function pns_insert($year=null)
-	{
-		if(!$year) $year = date('Y');
-		$table_name = 'd_pns';
-		$facilities = Facility::select('id')->get();
-
-		$i=0;
-		$data_array = [];
-
-		for ($month=1; $month < 13; $month++) { 
-			foreach ($facilities as $k => $val) {
-				$data = array('year' => $year, 'month' => $month, 'facility' => $val->id);
-				$data = array_merge($data, Synch::get_financial_year_quarter($year, $month) );
-				$data_array[$i] = $data;
-				$i++;
-
-				if ($i == 200) {
-					DB::connection('mysql_wr')->table($table_name)->insert($data_array);
-					$data_array=null;
-			    	$i=0;
-				}
-			}
-		}
-		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
-
-        echo 'Completed entry for ' . $table_name . " \n";
 	}
 
 

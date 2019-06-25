@@ -452,7 +452,7 @@ class Merger
     {        
         if(!$year) $year = date('Y');
         $facilities = \App\Facility::select('id')->get();
-        $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision', 'm_keypop', 'd_regimen_totals'];
+        $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision', 'm_keypop', 'd_regimen_totals', 'd_pns'];
 
         $periods = Period::where(['year' => $year])->get();
 

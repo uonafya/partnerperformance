@@ -38,9 +38,9 @@ Artisan::command('truncate:tables', function () {
 })->describe('Truncate tables.');
 
 Artisan::command('insert:rows {year?}', function ($year=null) {
-	\App\Merger::insert_rows($year);
 	\App\Synch::insert_rows($year);
-	\App\Synch::insert_for_regimen($year);
+	\App\Merger::insert_rows($year);
+	\App\Other::partner_indicators_insert($year);
 })->describe('Insert rows for data tables.');
 
 Artisan::command('populate {year?}', function ($year=null) {

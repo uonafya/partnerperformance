@@ -52,7 +52,7 @@ class Dispensing
         $tables = DB::select("show tables");
         foreach ($tables as $key => $row) {
             if(!starts_with($row->Tables_in_hcm, ['d_', '_m']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
-            $columns = collect(DB::select("show columns from " . $row->Tables_in_hcm));
+            $columns = collect(DB::select("show columns from `{$row->Tables_in_hcm}`"));
             $p = $columns->where('Field', 'period_id')->first();
             $c = $columns->where('Field', 'quarter')->first();
             $w = $columns->where('Field', 'week_id')->first();
@@ -168,7 +168,7 @@ class Dispensing
         $sql = "CREATE TABLE `{$table_name}` (
                     id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 
-                    period_id smallint(4) UNSIGNED DEFAULT 0,
+                    period_id smallint(5) UNSIGNED DEFAULT 0,
                     facility int(10) UNSIGNED DEFAULT 0,
 
                     column_id smallint(5) UNSIGNED DEFAULT 0,
@@ -181,6 +181,31 @@ class Dispensing
                     KEY `facility` (`facility`),
                     KEY `period_id` (`period_id`),
                     KEY `identifier`(`facility`, `period_id`)
+                );
+        ";
+        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::statement($sql);
+    }
+
+    public static function weeklies_table()
+    {       
+        $table_name = 'd_weeklies';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+
+                    week_id smallint(5) UNSIGNED DEFAULT 0,
+                    facility int(10) UNSIGNED DEFAULT 0,
+
+                    column_id smallint(5) UNSIGNED DEFAULT 0,
+
+                    value smallint(5) UNSIGNED DEFAULT 0,
+
+                    dateupdated date DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    KEY `column_id` (`column_id`),
+                    KEY `facility` (`facility`),
+                    KEY `week_id` (`week_id`),
+                    KEY `identifier`(`facility`, `week_id`)
                 );
         ";
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
