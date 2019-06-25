@@ -127,6 +127,13 @@ class Dispensing
         self::vmmc_columns();
     }
 
+    public static function insert_rows()
+    {
+        self::insert_dispensing_rows();
+        self::insert_tx_curr_rows();
+        self::insert_weekly_rows();
+    }
+
 
 
 	public static function dispensing_table()
