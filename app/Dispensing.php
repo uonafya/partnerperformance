@@ -150,10 +150,12 @@ class Dispensing
 
 	        		dateupdated date DEFAULT NULL,
 					PRIMARY KEY (`id`),
-                    KEY `column_id` (`column_id`),
+                    KEY `age_category_id` (`age_category_id`),
+                    KEY `gender_id` (`gender_id`),
                     KEY `facility` (`facility`),
                     KEY `period_id` (`period_id`),
-					KEY `identifier`(`facility`, `period_id`)
+					KEY `identifier`(`facility`, `period_id`, `age_category_id`),
+                    KEY `identifier_two`(`facility`, `period_id`, `gender_id`)
                 );
         ";
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
