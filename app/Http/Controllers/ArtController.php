@@ -50,7 +50,6 @@ class ArtController extends Controller
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
-			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `current`, 
 							SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `new_art`")
 			->whereRaw($date_query)
@@ -301,7 +300,7 @@ class ArtController extends Controller
 
 		$rows3 = DB::table('m_testing')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
-			->join('periods', 'periods.id', '=', 'm_art.m_testing')
+			->join('periods', 'periods.id', '=', 'm_testing.period_id')
 			->selectRaw("SUM(positive_total) AS total ")
 			->when(true, $this->get_callback())
 			->get();

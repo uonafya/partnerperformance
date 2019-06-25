@@ -13,6 +13,7 @@ use App\Week;
 use App\AgeCategory;
 use App\SurgeAge;
 use App\SurgeColumn;
+use App\SurgeColumnView;
 use App\SurgeGender;
 use App\SurgeModality;
 
@@ -249,7 +250,7 @@ class Dispensing
         echo 'Completed entry for ' . $table_name . " \n";
     }
 
-    public static function insert_week_rows($year=null, $table_name='d_prep')
+    public static function insert_week_rows($year=null, $table_name='d_weeklies')
     {
         if(!$year){
             $year = date('Y');
