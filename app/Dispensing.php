@@ -113,6 +113,21 @@ class Dispensing
         DB::connection('mysql_wr')->table('periods')->insert($data_array);
     }
 
+    public static function create_tables()
+    {
+        self::dispensing_table();
+        self::tx_curr_table();
+        self::weeklies_table();
+    }
+
+    public static function create_columns()
+    {
+        self::dispensing_columns();
+        self::tx_curr_columns();
+        self::prep_columns();
+        self::vmmc_columns();
+    }
+
 
 
 	public static function dispensing_table()
