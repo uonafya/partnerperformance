@@ -504,6 +504,8 @@ class Synch
 
 		        $body = json_decode($response->getBody());
 
+		        dd($body);
+
 		        $other_fac = DB::table('tbl_facility')
 		        	->where('mflcode', $facility->facilitycode)
 		        	->orWhere('dhiscode', $facility->DHIScode)->first();
