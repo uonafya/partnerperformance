@@ -290,7 +290,7 @@ class SurgeController extends Controller
 
 		$ages = SurgeAge::when(session('filter_gender'), function($query){
 						if(session('filter_gender') == 3) return $query->where('no_gender', 1);
-					})->get();
+					})->surge()->get();
 
 		foreach ($ages as $key => $age) {
 			// $tested_columns = SurgeColumnView::where('age_id', $age->id)
