@@ -168,6 +168,10 @@ class SurgeController extends Controller
 		// $data['extra_tooltip'] = true;
 		$data['point_percentage'] = true;
 
+		$data2['div'] = str_random(15);
+		$data2['yAxis'] = "Yield by Modality (%)";
+		$data2['suffix'] = '%';
+
 
 		$modalities = SurgeModality::where('hts', 1)
 			->when(session('filter_gender'), function($query){
@@ -178,21 +182,23 @@ class SurgeController extends Controller
 			->get();
 
 		foreach ($modalities as $key => $modality) {
-			// $tested_columns = SurgeColumnView::where('modality_id', $modality->id)
-			// 	->where('column_name', 'like', '%tested%')
-			// 	->when(true, $this->surge_columns_callback(false))
-			// 	->get();
+			$tested_columns = SurgeColumnView::where('modality_id', $modality->id)
+				->where('column_name', 'like', '%tested%')
+				->when(true, $this->surge_columns_callback(false))
+				->get();
 
 			$positive_columns = SurgeColumnView::where('modality_id', $modality->id)
 				->where('column_name', 'like', '%positive%')
 				->when(true, $this->surge_columns_callback(false))
 				->get();
 
-			// $sql .= $this->get_sum($tested_columns, $modality->modality . '_tested') . ', ' . $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
-			$sql .= $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
+			$sql .= $this->get_sum($tested_columns, $modality->modality . '_tested') . ', ' . $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
+			// $sql .= $this->get_sum($positive_columns, $modality->modality . '_pos') . ', ';
 
 			$data['outcomes'][$key]['name'] = $modality->modality_name;
 			$data['outcomes'][$key]['type'] = "column";
+
+			$data2['outcomes'][$key]['name'] = $modality->modality_name;
 		}
 
 		$sql = substr($sql, 0, -2);
@@ -208,19 +214,20 @@ class SurgeController extends Controller
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
+			$data2['categories'][$key] = Lookup::get_category($row);
 
 			foreach ($modalities as $mod_key => $modality) {
 				$t = $modality->modality . '_tested';
 				$p = $modality->modality . '_pos';
-				// $data["outcomes"][$mod_key]["data"][$key]['y'] = Lookup::get_percentage($row->$p, $row->$t);
+				$data2["outcomes"][$mod_key]["data"][$key]['y'] = Lookup::get_percentage($row->$p, $row->$t);
 				$data["outcomes"][$mod_key]["data"][$key]['y'] = (int) $row->$p;
 				// $data["outcomes"][$mod_key]["data"][$key]['z'] = ' of ' . number_format($row->$t) . ' Tests';
 			}
 		}
-		$view_data = view('charts.line_graph', $data)->render();
+		$view_data = view('charts.line_graph', $data)->render() . '<br /><br /><br /> ' . view('charts.line_graph', $data2)->render();
 		return $view_data;
 
-		return view('charts.line_graph', $data);
+		// return view('charts.line_graph', $data);
 	}
 
 
