@@ -113,18 +113,40 @@ class Dispensing
         DB::connection('mysql_wr')->table('periods')->insert($data_array);
     }
 
+    public static function create_tables()
+    {
+        self::dispensing_table();
+        self::tx_curr_table();
+        self::weeklies_table();
+    }
+
+    public static function create_columns()
+    {
+        self::tx_curr_columns();
+        self::prep_columns();
+        self::vmmc_columns();
+    }
+
+    public static function insert_rows()
+    {
+        self::insert_dispensing_rows();
+        self::insert_tx_curr_rows();
+        self::insert_weekly_rows();
+    }
+
 
 
 	public static function dispensing_table()
 	{		
         $table_name = 'd_dispensing';
         $sql = "CREATE TABLE `{$table_name}` (
-                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 
                     period_id smallint(4) UNSIGNED DEFAULT 0,
                     facility int(10) UNSIGNED DEFAULT 0,
 
-                    column_id smallint(5) UNSIGNED DEFAULT 0,
+                    age_category_id tinyint(3) UNSIGNED DEFAULT 0,
+                    gender_id tinyint(3) UNSIGNED DEFAULT 0,
 
     				dispensed_one smallint(5) UNSIGNED DEFAULT 0,
     				dispensed_two smallint(5) UNSIGNED DEFAULT 0,
@@ -135,59 +157,20 @@ class Dispensing
 
 	        		dateupdated date DEFAULT NULL,
 					PRIMARY KEY (`id`),
-                    KEY `column_id` (`column_id`),
+                    KEY `age_category_id` (`age_category_id`),
+                    KEY `gender_id` (`gender_id`),
                     KEY `facility` (`facility`),
                     KEY `period_id` (`period_id`),
-					KEY `identifier`(`facility`, `period_id`)
+					KEY `identifier`(`facility`, `period_id`, `age_category_id`),
+                    KEY `identifier_two`(`facility`, `period_id`, `gender_id`)
                 );
         ";
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 	}
 
-    public static function dispensing_columns()
-    {
-        $modality = SurgeModality::where(['tbl_name' => 'd_dispensing'])->first();
-        $sql = '';
-
-        $ages = AgeCategory::all();
-        $genders = SurgeGender::all();
-
-        foreach ($ages as $key => $age) {
-            foreach ($genders as $key => $gender) {
-                $base = $modality->modality . '_' . $age->age_cat . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_category . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality);
-            }
-        }
-    }
-
-
-    public static function tx_curr_table()
-    {       
-        $table_name = 'd_tx_curr';
-        $sql = "CREATE TABLE `{$table_name}` (
-                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-
-                    period_id smallint(5) UNSIGNED DEFAULT 0,
-                    facility int(10) UNSIGNED DEFAULT 0,
-
-                    column_id smallint(5) UNSIGNED DEFAULT 0,
-
-                    value smallint(5) UNSIGNED DEFAULT 0,
-
-                    dateupdated date DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    KEY `column_id` (`column_id`),
-                    KEY `facility` (`facility`),
-                    KEY `period_id` (`period_id`),
-                    KEY `identifier`(`facility`, `period_id`)
-                );
-        ";
-        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
-        DB::statement($sql);
-    }
-
+    // VMMC
+    // PREP New On Treatment
     public static function weeklies_table()
     {       
         $table_name = 'd_weeklies';
@@ -213,10 +196,119 @@ class Dispensing
         DB::statement($sql);
     }
 
+    public static function tx_curr_table()
+    {       
+        $table_name = 'd_tx_curr';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+
+                    period_id smallint(5) UNSIGNED DEFAULT 0,
+                    facility int(10) UNSIGNED DEFAULT 0,
+
+                    column_id smallint(5) UNSIGNED DEFAULT 0,
+
+                    value smallint(5) UNSIGNED DEFAULT 0,
+
+                    dateupdated date DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    KEY `column_id` (`column_id`),
+                    KEY `facility` (`facility`),
+                    KEY `period_id` (`period_id`),
+                    KEY `identifier`(`facility`, `period_id`)
+                );
+        ";
+        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::statement($sql);
+    }
 
 
 
-    public static function insert_period_rows($year=null,$table_name = 'd_dispensing')
+    public static function tx_curr_columns()
+    {
+        $modality = SurgeModality::where(['modality' => 'tx_curr'])->first();
+        $sql = '';
+
+        $ages = SurgeAge::tx()->get();
+        $genders = SurgeGender::all();
+
+        foreach ($ages as $key => $age) {
+            $base = $modality->modality . '_' . $age->age . '_';
+            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+        }
+    }
+
+    public static function prep_columns()
+    {
+        $modality = SurgeModality::where(['modality' => 'prep_new'])->first();
+        $sql = '';
+
+        $ages = SurgeAge::prep()->get();
+        $genders = SurgeGender::all();
+
+        foreach ($ages as $key => $age) {
+            $base = $modality->modality . '_' . $age->age . '_';
+            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+        }
+    }
+
+    public static function vmmc_columns()
+    {
+        $modality = SurgeModality::where(['modality' => 'vmmc_circ'])->first();
+        $sql = '';
+
+        $ages = SurgeAge::vmmc()->get();
+        $genders = SurgeGender::all();
+
+        foreach ($ages as $key => $age) {
+            $base = $modality->modality . '_' . $age->age . '_';
+            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+        }
+    }
+
+
+
+
+
+    public static function insert_dispensing_rows($year=null,$table_name = 'd_dispensing')
+    {
+        if(!$year) $year = date('Y');
+
+        $periods = Period::where(['year' => $year])->get();
+        $genders = SurgeGender::all();
+        $age_categories = AgeCategory::all();
+        $facilities = Facility::select('id')->get();
+
+        $i=0;
+        $data_array = [];
+
+        foreach ($periods as $period) {
+            foreach ($facilities as $k => $facility) {
+                foreach ($age_categories as $age_category) {
+                    foreach ($genders as $gender) {
+                        $data = ['period_id' => $period->id, 'facility' => $facility->id, 'age_category_id' => $age_category->id, 'gender_id' => $gender->id, ];
+                        $data_array[$i] = $data;
+                        $i++;
+
+                        if ($i == 200) {
+                            DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+                            $data_array=null;
+                            $i=0;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+
+        echo 'Completed entry for ' . $table_name . " \n";
+    }
+
+    public static function insert_tx_curr_rows($year=null,$table_name = 'd_tx_curr')
     {
         if(!$year) $year = date('Y');
 
@@ -250,7 +342,7 @@ class Dispensing
         echo 'Completed entry for ' . $table_name . " \n";
     }
 
-    public static function insert_week_rows($year=null, $table_name='d_weeklies')
+    public static function insert_weekly_rows($year=null, $table_name='d_weeklies')
     {
         if(!$year){
             $year = date('Y');
@@ -259,26 +351,29 @@ class Dispensing
 
         $weeks = Week::where('financial_year', $year)->get();
 
-        $modality = SurgeModality::where(['tbl_name' => $table_name])->first();
-        $columns  = SurgeColumn::where(['modality_id' => $modality->id])->get();
+        $modalities = SurgeModality::where(['tbl_name' => $table_name])->get();
 
         $i=0;
         $data_array = [];
         
         $facilities = Facility::select('id')->get();
-        foreach ($facilities as $fac) {
-            foreach ($columns as $column) {
-                foreach ($weeks as $week) {
-                    $data_array[$i] = ['week_id' => $week->id, 'facility' => $fac->id, 'column_id' => $column->id];
-                    $i++;
+        foreach ($modalities as $modality) {
+            $columns  = SurgeColumn::where(['modality_id' => $modality->id])->get();
+            foreach ($facilities as $fac) {
+                foreach ($columns as $column) {
+                    foreach ($weeks as $week) {
+                        $data_array[$i] = ['week_id' => $week->id, 'facility' => $fac->id, 'column_id' => $column->id];
+                        $i++;
 
-                    if ($i == 200) {
-                        DB::table($table_name)->insert($data_array);
-                        $data_array=null;
-                        $i=0;
-                    }               
+                        if ($i == 200) {
+                            DB::table($table_name)->insert($data_array);
+                            $data_array=null;
+                            $i=0;
+                        }               
+                    }
                 }
             }
+            echo 'Completed entry for ' . $modality->modality . " \n";
         }
 
         if($data_array) DB::table($table_name)->insert($data_array);

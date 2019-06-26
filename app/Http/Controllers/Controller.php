@@ -22,6 +22,14 @@ class Controller extends BaseController
     	return (int) $object->$attr;
     }
 
+    public function get_joins_callback($table_name)
+    {
+        return function($query) use($table_name){
+            return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
+                ->join('periods', 'periods.id', '=', "{$table_name}.period_id");
+        };        
+    }
+
     // Add Divisions Query Here
     // Also Add Date Query Here
 

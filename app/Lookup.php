@@ -711,6 +711,13 @@ class Lookup
 		}
 	}
 
+	public static function columns(&$data, $start, $finish, $type='column')
+	{
+		for ($i=$start; $i <= $finish; $i++) { 
+			$data['outcomes'][$i]['type'] = $type;
+		}
+	}
+
     public static function send_report(){
     	$mail_array = ['joelkith@gmail.com', 'tngugi@gmail.com', 'baksajoshua09@gmail.com'];
     	Mail::to($mail_array)->send(new Duplicate());
