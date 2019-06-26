@@ -217,8 +217,12 @@ class SurgeController extends Controller
 				// $data["outcomes"][$mod_key]["data"][$key]['z'] = ' of ' . number_format($row->$t) . ' Tests';
 			}
 		}
+		$view_data = view('charts.line_graph', $data)->render();
+		return $view_data;
+
 		return view('charts.line_graph', $data);
 	}
+
 
 
 	// Yield by age
