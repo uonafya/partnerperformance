@@ -141,6 +141,7 @@ class Surge
                     age varchar(20) DEFAULT NULL,
                     age_name varchar(20) DEFAULT NULL,
                     age_category_id tinyint(1) UNSIGNED DEFAULT 2,                    
+                    max_age tinyint(3) UNSIGNED DEFAULT 0,                    
                     no_gender tinyint(1) UNSIGNED DEFAULT 0,
                     for_surge tinyint(1) UNSIGNED DEFAULT 1,
                     for_vmmc tinyint(1) UNSIGNED DEFAULT 1,
@@ -155,48 +156,48 @@ class Surge
         DB::statement($sql);
 
         DB::table($table_name)->insert([
-            ['age' => 'unknown', 'age_name' => 'Unknown', 'no_gender' => 1, 'age_category_id' => 1, ],
+            ['age' => 'unknown', 'age_name' => 'Unknown', 'age_category_id' => 1, 'no_gender' => 1, ],
         ]);
 
         // Only VMMC doesn't have
         DB::table($table_name)->insert([
-        	['age' => 'below_1', 'age_name' => 'Below 1', 'no_gender' => 1, 'age_category_id' => 2, 'for_vmmc' => 0, ],
+        	['age' => 'below_1', 'age_name' => 'Below 1', 'age_category_id' => 2, 'max_age' => 1, 'no_gender' => 1, 'for_vmmc' => 0, ],
         ]);
 
         // Only for Surge
         DB::table($table_name)->insert([
-            ['age' => 'below_10', 'age_name' => '1-9', 'no_gender' => 1, 'age_category_id' => 2, 'for_vmmc' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_10', 'age_name' => '1-9', 'age_category_id' => 2, 'max_age' => 9, 'no_gender' => 1, 'for_vmmc' => 0, 'for_tx_curr' => 0, ],
         ]);
 
         // All Have
         DB::table($table_name)->insert([
-        	['age' => 'below_15', 'age_name' => '10-14', 'age_category_id' => 2, ],
-        	['age' => 'below_20', 'age_name' => '15-19', 'age_category_id' => 3, ],
-        	['age' => 'below_25', 'age_name' => '20-24', 'age_category_id' => 3, ],
-        	['age' => 'below_30', 'age_name' => '25-29', 'age_category_id' => 3, ],
-        	['age' => 'below_35', 'age_name' => '30-34', 'age_category_id' => 3, ],
-        	['age' => 'below_40', 'age_name' => '35-39', 'age_category_id' => 3, ],
-        	// ['age' => 'below_45', 'age_name' => '40-44', 'age_category_id' => 3, ],
-        	// ['age' => 'below_50', 'age_name' => '45-49', 'age_category_id' => 3, ],
-            ['age' => 'below_50', 'age_name' => '40-49', 'age_category_id' => 3, ],
-        	['age' => 'above_50', 'age_name' => 'Above 50', 'age_category_id' => 3, ],
+        	['age' => 'below_15', 'age_name' => '10-14', 'age_category_id' => 2, 'max_age' => 14, ],
+        	['age' => 'below_20', 'age_name' => '15-19', 'age_category_id' => 3, 'max_age' => 19, ],
+        	['age' => 'below_25', 'age_name' => '20-24', 'age_category_id' => 3, 'max_age' => 24, ],
+        	['age' => 'below_30', 'age_name' => '25-29', 'age_category_id' => 3, 'max_age' => 29, ],
+        	['age' => 'below_35', 'age_name' => '30-34', 'age_category_id' => 3, 'max_age' => 34, ],
+        	['age' => 'below_40', 'age_name' => '35-39', 'age_category_id' => 3, 'max_age' => 39, ],
+        	// ['age' => 'below_45', 'age_name' => '40-44', 'age_category_id' => 3, 'max_age' => 44, ],
+        	// ['age' => 'below_50', 'age_name' => '45-49', 'age_category_id' => 3, 'max_age' => 49, ],
+            ['age' => 'below_50', 'age_name' => '40-49', 'age_category_id' => 3, 'max_age' => 49, ],
+        	['age' => 'above_50', 'age_name' => 'Above 50', 'age_category_id' => 3, 'max_age' => 100, ],
         	// ['age' => '', 'age_name' => '', ],
         ]);
 
         // Only VMMC
         DB::table($table_name)->insert([
-            ['age' => 'below_60_d', 'age_name' => '0-60 Days', 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
-            ['age' => 'below_4', 'age_name' => '2 Months - 4 Years', 'age_category_id' => 2, 'for_surge' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_60_d', 'age_name' => '0-60 Days', 'age_category_id' => 2, 'max_age' => 1, 'for_surge' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_4', 'age_name' => '2 Months - 4 Years', 'age_category_id' => 2, 'max_age' => 4, 'for_surge' => 0, 'for_tx_curr' => 0, ],
         ]);
 
         // Only TX Curr
         DB::table($table_name)->insert([
-            ['age' => 'below_4', 'age_name' => '1-4', 'no_gender' => 1, 'age_category_id' => 2, 'for_surge' => 0, 'for_vmmc' => 0, ],
+            ['age' => 'below_4', 'age_name' => '1-4', 'no_gender' => 1, 'age_category_id' => 2, 'max_age' => 4, 'for_surge' => 0, 'for_vmmc' => 0, ],
         ]);
 
         // Only Surge Doesn't have
         DB::table($table_name)->insert([
-            ['age' => 'below_10', 'age_name' => '5-9', 'age_category_id' => 2, 'for_surge' => 0, ],
+            ['age' => 'below_10', 'age_name' => '5-9', 'age_category_id' => 2, 'max_age' => 9, 'for_surge' => 0, ],
         ]);
 
 	}

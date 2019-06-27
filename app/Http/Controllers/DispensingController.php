@@ -7,18 +7,35 @@ use DB;
 use Excel;
 use App\Lookup;
 use App\Facility;
+use App\SurgeGender;
+use App\AgeCategory;
+use App\Period;
 
 class DispensingController extends Controller
 {
 
 	private $my_table = 'd_dispensing';
 
-	// Yield by modality
-	public function modality_yield()
+	public function dispensing()
 	{
 		$age_category_id = session('filter_age_category_id');
 		$gender_id = session('filter_gender');
 
+		$data['div'] = str_random(15);
+
+		$t = ['Dispensed One', 'Dispensed Two', 'Dispensed Three', 'Dispensed Four', 'Dispensed Five', 'Dispensed Six', ];
+		$props = [];
+
+		$sql = '';
+		foreach ($t as $key => $value) {
+			$data['outcomes'][$key]['type'] = "column";
+			$data['outcomes'][$key]['name'] = $value;
+			$str = strtolower(str_replace(' ', '_', $value));
+			$props[] = $str;
+			$sql .= "SUM({$str}) AS {$str}, ";
+		}
+
+		$sql = substr($sql, 0, -2);
 
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
@@ -32,21 +49,134 @@ class DispensingController extends Controller
 			})
 			->get();
 
-		$data['div'] = str_random(15);
-
-		$sets = [
-			[
-				'name' => 'Dispensed One',
-			]
-		];
-
-		$data['outcomes'][0]['name'] = "Positive";
-
-
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
+
+			foreach ($props as $prop_key => $prop) {
+				$data["outcomes"][$prop_key]["data"][$key] = (int) $row->$prop;
+			}
 		}
 		return view('charts.line_graph', $data);
 	}
 
+
+	public function download_excel(Request $request)
+	{
+		$partner = session('session_partner');
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
+		$data = [];
+
+		$month = $request->input('month', date('m')-1);
+		$calendar_year = $request->input('calendar_year', date('Y'));
+
+		$t = ['Dispensed One', 'Dispensed Two', 'Dispensed Three', 'Dispensed Four', 'Dispensed Five', 'Dispensed Six', ];
+
+		$sql = "countyname as County, Subcounty,
+		facilitycode AS `MFL Code`, name AS `Facility`,
+		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
+		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, gender AS `Gender`, age_category AS `Age Category`";
+
+		foreach ($t as $key => $value) {
+			$str = strtolower(str_replace(' ', '_', $value));
+			$sql .= ", {$str} AS `{$value}`";
+		}
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
+			->join('age_categories', "{$this->my_table}.age_category_id", '=', 'age_categories.id')
+			->join('surge_genders', "{$this->my_table}.gender_id", '=', 'surge_genders.id')
+			->selectRaw($sql)
+			->where(['partner' => $partner->id, 'year' => $calendar_year, 'month' => $month])
+			->orderBy('view_facilitys.name', 'asc')
+			->orderBy('age_category_id', 'asc')
+			->orderBy('gender_id', 'asc')
+			->get();
+
+		$filename = str_replace(' ', '_', $partner->name) . '_' . $calendar_year . '_' . Lookup::resolve_month($month) . '_dispensing';
+
+
+		foreach ($rows as $row) {
+			$row_array = get_object_vars($row);
+			$data[] = $row_array;
+		}
+
+    	$path = storage_path('exports/' . $filename . '.xlsx');
+    	if(file_exists($path)) unlink($path);
+
+    	Excel::create($filename, function($excel) use($data){
+    		$excel->sheet('sheet1', function($sheet) use($data){
+    			$sheet->fromArray($data);
+    		});
+
+    	})->store('xlsx');
+
+    	return response()->download($path);
+	}
+
+	public function upload_excel(Request $request)
+	{
+		ini_set('memory_limit', '-1');
+		if (!$request->hasFile('upload')){
+	        session(['toast_error' => 1, 'toast_message' => 'Please select a file before clicking the submit button.']);
+			return back();
+		}
+		$file = $request->upload->path();
+
+		$data = Excel::load($file, function($reader){
+			$reader->toArray();
+		})->get();
+
+		$partner = session('session_partner');
+		
+		if(!$partner){
+			$partner = auth()->user()->partner;
+			session(['session_partner' => $partner]);
+		}
+
+		// dd($data);
+
+		$genders = SurgeGender::all();
+		$age_categories = AgeCategory::all();
+		$periods = Period::where('year', '>', 2018)->get();
+
+		$t = ['Dispensed One', 'Dispensed Two', 'Dispensed Three', 'Dispensed Four', 'Dispensed Five', 'Dispensed Six', ];
+		$props = [];
+
+		foreach ($t as $key => $value) {
+			$str = strtolower(str_replace(' ', '_', $value));
+			$props[] = $str;
+		}
+
+		$today = date('Y-m-d');
+
+		foreach ($data as $row_key => $row){
+			$hasdata = false;
+			$update_data['dateupdated'] = $today; 
+
+			foreach ($props as $key => $prop) {
+				$update_data[$prop] = (int) $row->$prop;
+				if($update_data[$prop] > 0) $hasdata = true;
+			}
+
+			if(!$hasdata) continue;
+
+			$g = $genders->where('gender', $row->gender)->first();
+			$a = $genders->where('age_category', $row->age_category)->first();
+			$p = $periods->where('financial_year', $row->financial_year)->where('month', $row->month)->first();
+
+			if(!$a || !$g || !$p) continue;
+
+			if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
+			$fac = Facility::where('facilitycode', $row->mfl_code)->first();
+
+			if(!$fac) continue;
+
+			DB::table($this->my_table)->where(['facility' => $fac->id, 'period_id' => $p->id, 'age_category_id' => $a->id, 'gender_id' => $g->id])->update($update_data);
+		}
+		session(['toast_message' => 'The updates have been made.']);
+		return back();
+	}
 }
