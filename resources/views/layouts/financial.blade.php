@@ -102,21 +102,25 @@
 					</div>
 				</div>
 
-			@elseif(ends_with(url()->current(), 'surge'))
+			@elseif(ends_with(url()->current(), ['surge', 'tx_curr',  'prep']))
 
-				<div class="row">
-					<div class="col-md-12">
-						<select class="btn filters form-control" multiple="multiple" id="filter_modality" placeholder='Select Modality'>
-							<option disabled='true'>Select Modality</option>
-							<option value='null' selected='true'>All Modalities</option>
+				@if(ends_with(url()->current(), ['surge']))
 
-							@foreach($modalities as $key => $modality)
-								@continue($modality->hts == 0)
-								<option value="{{ $modality->id }}"> {{ $modality->modality_name }} </option>
-							@endforeach
-						</select>
+					<div class="row">
+						<div class="col-md-12">
+							<select class="btn filters form-control" multiple="multiple" id="filter_modality" placeholder='Select Modality'>
+								<option disabled='true'>Select Modality</option>
+								<option value='null' selected='true'>All Modalities</option>
+
+								@foreach($modalities as $key => $modality)
+									@continue($modality->hts == 0)
+									<option value="{{ $modality->id }}"> {{ $modality->modality_name }} </option>
+								@endforeach
+							</select>
+						</div>
 					</div>
-				</div>
+
+				@endif
 
 				<div class="row">
 					<div class="col-md-12">
@@ -162,10 +166,32 @@
 							@foreach($age_categories as $key => $age_category)
 								<option value="{{ $age_category->id }}"> {{ $age_category->age_category }} </option>
 							@endforeach
+						</select>
+					</div>
+				</div>
 
-							<!-- <option value="1"> Unknown </option>
-							<option value="2"> Below 15 </option>
-							<option value="3"> Above 15 </option> -->
+
+			@elseif(ends_with(url()->current(), ['dispensing']))
+
+					<div class="col-md-6">
+						<select class="btn filters form-control" id="filter_gender">
+							<option disabled='true'>Select Gender</option>
+							<option value='null' selected='true'>All Genders</option>
+
+							@foreach($genders as $key => $gender)
+								<option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
+							@endforeach
+						</select>
+					</div>
+
+					<div class="col-md-6">
+						<select class="btn filters form-control" id="filter_age_category_id">
+							<option disabled='true'>Select Age Category</option>
+							<option value='null' selected='true'>All Age Categories</option>
+
+							@foreach($age_categories as $key => $age_category)
+								<option value="{{ $age_category->id }}"> {{ $age_category->age_category }} </option>
+							@endforeach
 						</select>
 					</div>
 				</div>

@@ -743,8 +743,7 @@ class SurgeController extends Controller
 	{
 		ini_set('memory_limit', '-1');
 		if (!$request->hasFile('upload')){
-	        session(['toast_message' => 'Please select a file before clicking the submit button.']);
-	        session(['toast_error' => 1]);
+	        session(['toast_error' => 1, 'toast_message' => 'Please select a file before clicking the submit button.']);
 			return back();
 		}
 		$file = $request->upload->path();

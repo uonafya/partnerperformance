@@ -5,7 +5,7 @@
   
     $("#{{$div}}").highcharts({
         title: {
-            text: "",
+            text: "{{ $chart_title ?? '' }}",
             x: -20
         },
         chart: {
@@ -23,7 +23,7 @@
         },
         yAxis: {
             title: {
-                text: "{{ $yAxis ?? '' }} "
+                text: "{{ $yAxis ?? '' }}"
             },
             plotLines: [{
                 value: 0,
