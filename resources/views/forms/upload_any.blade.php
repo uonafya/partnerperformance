@@ -27,7 +27,7 @@
 					@csrf
 
           @if($modality)
-            <input class="form-control" name="modality" type="hidden" value="{{ $modality }} " />
+            <input name="modality" type="hidden" value="{{ $modality }} " />
           @endif
 
 
