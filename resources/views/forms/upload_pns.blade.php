@@ -23,7 +23,7 @@
           Upload PNS Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('pns/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
+				<form action="{{ url($path . '/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
 					@csrf
 
 
@@ -35,7 +35,7 @@
           </p>
 
           <div class="form-group">
-              <label class="col-sm-5 control-label">Upload PNS Data</label>
+              <label class="col-sm-5 control-label">Upload {{ strtoupper(str_replace('_', ' ' $path)) }} Data</label>
               <div class="col-sm-7">
                   <input class="form-control" name="upload" id="upload" type="file" accept=".xlsx, .xls, .csv" />
               </div>

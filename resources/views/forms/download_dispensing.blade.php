@@ -55,6 +55,26 @@
               </select>
           </div>
 
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Gender (Optional)</label>
+              <select class="col-sm-7 select_tag" name="gender_id">
+                <option></option>
+                @foreach($genders as $gender)
+                  <option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
+                @endforeach
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Age Category (Optional)</label>
+              <select class="col-sm-7 select_tag" name="age_category_id">
+                <option></option>
+                  @foreach($age_categories as $key => $age_category)
+                    <option value="{{ $age_category->id }}"> {{ $age_category->age_category }} </option>
+                  @endforeach
+              </select>
+          </div>
+
 
           <div class="col-sm-6 col-sm-offset-6">
               <button class="btn btn-success" type="submit" >Submit</button>

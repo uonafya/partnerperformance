@@ -79,7 +79,7 @@ Route::prefix('keypop')->name('keypop.')->group(function(){
 	Route::get('summary', 'KeypopController@summary')->name('summary');
 });
 
-Route::prefix('otz')->name('otz.')->group(function(){
+Route::prefix('non_mer')->name('non_mer.')->group(function(){
 	Route::get('facilities_count', 'OtzController@facilities_count')->name('facilities_count');
 	Route::get('clinics', 'OtzController@clinics')->name('clinics');
 	Route::get('achievement', 'OtzController@achievement')->name('achievement');
@@ -161,7 +161,7 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('tb', 'GeneralController@tb');
 	Route::get('keypop', 'GeneralController@keypop');
 	Route::get('regimen', 'GeneralController@regimen');
-	Route::get('otz', 'GeneralController@otz');
+	Route::get('non_mer', 'GeneralController@non_mer');
 	Route::get('pns', 'GeneralController@pns');
 	Route::get('indicators', 'GeneralController@indicators');
 	Route::get('surge', 'GeneralController@surge');
@@ -215,8 +215,10 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		Route::post('upload', 'DispensingController@upload_excel')->name('upload');
 	});
 
+	Route::get('upload/{path}', 'GeneralController@upload_any');
 
-	Route::get('otz/upload', 'GeneralController@upload_nonmer');
+
+	Route::get('non_mer/upload', 'GeneralController@upload_nonmer');
 	Route::get('indicators/upload', 'GeneralController@upload_indicators');
 	Route::get('user/change_password', 'UserController@change_password');
 	Route::resource('user', 'UserController');
