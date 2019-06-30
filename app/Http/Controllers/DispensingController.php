@@ -71,13 +71,14 @@ class DispensingController extends Controller
 
 		$month = $request->input('month', date('m')-1);
 		$financial_year = $request->input('financial_year', date('Y'));
+		$age_category_id = $request->input('age_category_id');
+		$gender_id = $request->input('gender_id');
 
 		$t = ['Dispensed One', 'Dispensed Two', 'Dispensed Three', 'Dispensed Four', 'Dispensed Five', 'Dispensed Six', ];
 
 		$sql = "countyname as County, Subcounty,
-		facilitycode AS `MFL Code`, name AS `Facility`,
-		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
-		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, gender AS `Gender`, age_category AS `Age Category`";
+		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`,
+		facilitycode AS `MFL Code`, name AS `Facility`, gender AS `Gender`, age_category AS `Age Category`";
 
 		foreach ($t as $key => $value) {
 			$str = strtolower(str_replace(' ', '_', $value));
@@ -90,6 +91,12 @@ class DispensingController extends Controller
 			->join('surge_genders', "{$this->my_table}.gender_id", '=', 'surge_genders.id')
 			->selectRaw($sql)
 			->where(['partner' => $partner->id, 'financial_year' => $financial_year, 'month' => $month])
+			->when($age_category_id, function($query) use ($age_category_id){
+				return $query->where('age_category_id', $age_category_id);
+			})
+			->when($gender_id, function($query) use ($gender_id){
+				return $query->where('gender_id', $gender_id);
+			})
 			->orderBy('view_facilitys.name', 'asc')
 			->orderBy('age_category_id', 'asc')
 			->orderBy('gender_id', 'asc')

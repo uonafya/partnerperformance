@@ -67,10 +67,10 @@ class GeneralController extends Controller
 		return view('base.keypop', $data);
 	}
 
-	public function otz()
+	public function non_mer()
 	{
 		$data = Lookup::view_data();
-		return view('base.otz', $data);
+		return view('base.non_mer', $data);
 	}
 
 	public function pns()
@@ -213,6 +213,13 @@ class GeneralController extends Controller
 		$user = auth()->user();
 		$partner = session('session_partner');
 		return view('forms.upload_surge', ['no_header' => true, 'partner' => $partner]);
+	}
+
+	public function upload_any($path)
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		return view('forms.upload_pns', ['no_header' => true, 'partner' => $partner, 'path' => $path]);	
 	}
 
 	public function upload_nonmer()

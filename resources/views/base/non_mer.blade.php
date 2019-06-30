@@ -139,14 +139,14 @@
 		$("#mens_impact").html("<center><div class='loader'></div></center>");
 
 
-		$("#facilities_count").load("{{ url('otz/facilities_count') }}");
-		$("#clinics").load("{{ url('otz/clinics') }}");
-		$("#achievement").load("{{ url('otz/achievement') }}");
-		$("#breakdown").load("{{ url('otz/breakdown') }}");
-		$("#clinic_setup").load("{{ url('otz/clinic_setup') }}");
-		$("#otz_breakdown").load("{{ url('otz/otz_breakdown') }}");
-		$("#dsd_impact").load("{{ url('otz/dsd_impact') }}");
-		$("#mens_impact").load("{{ url('otz/mens_impact') }}");
+		$("#facilities_count").load("{{ url('non_mer/facilities_count') }}");
+		$("#clinics").load("{{ url('non_mer/clinics') }}");
+		$("#achievement").load("{{ url('non_mer/achievement') }}");
+		$("#breakdown").load("{{ url('non_mer/breakdown') }}");
+		$("#clinic_setup").load("{{ url('non_mer/clinic_setup') }}");
+		$("#otz_breakdown").load("{{ url('non_mer/otz_breakdown') }}");
+		$("#dsd_impact").load("{{ url('non_mer/dsd_impact') }}");
+		$("#mens_impact").load("{{ url('non_mer/mens_impact') }}");
 	}
 
 
