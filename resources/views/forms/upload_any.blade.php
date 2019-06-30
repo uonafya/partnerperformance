@@ -26,6 +26,10 @@
 				<form action="{{ url($path . '/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
 					@csrf
 
+          @if($modality)
+            <input class="form-control" name="modality" type="hidden" value="{{ $modality }} " />
+          @endif
+
 
           <p style="font-size: 16;">
             If you are getting a <br />

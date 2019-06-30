@@ -194,11 +194,11 @@ class GeneralController extends Controller
 		return view('forms.download_dispensing', $data);
 	}
 
-	public function upload_any($path)
+	public function upload_any($path, $modality=null)
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
-		return view('forms.upload_any', ['no_header' => true, 'partner' => $partner, 'path' => $path]);	
+		return view('forms.upload_any', ['no_header' => true, 'partner' => $partner, 'path' => $path, 'modality' => $modality]);	
 	}
 
 	public function upload_facilities()
