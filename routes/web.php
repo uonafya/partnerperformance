@@ -189,7 +189,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::prefix('pns')->name('pns')->group(function(){
 		Route::get('download', 'GeneralController@download_pns');
-		Route::get('upload', 'GeneralController@upload_pns');
+		// Route::get('upload', 'GeneralController@upload_pns');
 
 		Route::post('download', 'PNSController@download_excel')->name('download');
 		Route::post('upload', 'PNSController@upload_excel')->name('upload');
@@ -197,7 +197,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::prefix('surge')->name('surge')->group(function(){
 		Route::get('download', 'GeneralController@download_surge');
-		Route::get('upload', 'GeneralController@upload_surge');
+		// Route::get('upload', 'GeneralController@upload_surge');
 	
 		Route::get('set_surge_facilities', 'GeneralController@set_surge_facilities');
 
@@ -217,9 +217,8 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::get('upload/{path}', 'GeneralController@upload_any');
 
-
-	Route::get('non_mer/upload', 'GeneralController@upload_nonmer');
-	Route::get('indicators/upload', 'GeneralController@upload_indicators');
+	// Route::get('non_mer/upload', 'GeneralController@upload_nonmer');
+	// Route::get('indicators/upload', 'GeneralController@upload_indicators');
 	Route::get('user/change_password', 'UserController@change_password');
 	Route::resource('user', 'UserController');
 });

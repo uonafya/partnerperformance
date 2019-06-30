@@ -165,13 +165,6 @@ class GeneralController extends Controller
 		return view('forms.download_pns', ['no_header' => true, 'partner' => $partner]);
 	}
 
-	public function upload_pns()
-	{
-		$user = auth()->user();
-		$partner = session('session_partner');
-		return view('forms.upload_pns', ['no_header' => true, 'partner' => $partner]);
-	}
-
 	public function set_surge_facilities()
 	{
 		$user = auth()->user();
@@ -192,13 +185,6 @@ class GeneralController extends Controller
 		return view('forms.download_surge', $data);
 	}
 
-	public function upload_surge()
-	{
-		$user = auth()->user();
-		$partner = session('session_partner');
-		return view('forms.upload_surge', ['no_header' => true, 'partner' => $partner]);
-	}
-
 	public function download_dispensing()
 	{
 		$data = Lookup::view_data_surges();
@@ -208,32 +194,11 @@ class GeneralController extends Controller
 		return view('forms.download_dispensing', $data);
 	}
 
-	public function upload_dispensing()
-	{
-		$user = auth()->user();
-		$partner = session('session_partner');
-		return view('forms.upload_surge', ['no_header' => true, 'partner' => $partner]);
-	}
-
 	public function upload_any($path)
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
-		return view('forms.upload_pns', ['no_header' => true, 'partner' => $partner, 'path' => $path]);	
-	}
-
-	public function upload_nonmer()
-	{
-		$user = auth()->user();
-		$partner = session('session_partner');
-		return view('forms.upload_nonmer', ['no_header' => true, 'partner' => $partner]);
-	}
-
-	public function upload_indicators()
-	{
-		$user = auth()->user();
-		$partner = session('session_partner');
-		return view('forms.upload_indicators', ['no_header' => true, 'partner' => $partner]);
+		return view('forms.upload_any', ['no_header' => true, 'partner' => $partner, 'path' => $path]);	
 	}
 
 	public function upload_facilities()
