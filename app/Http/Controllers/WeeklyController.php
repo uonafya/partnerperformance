@@ -31,8 +31,8 @@ class WeeklyController extends Controller
 		$m_name = $request->input('modality');
 
 		$sql = "countyname as County, Subcounty,
-		facilitycode AS `MFL Code`, name AS `Facility`,
 		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`, 
+		facilitycode AS `MFL Code`, name AS `Facility`,
 		alias_name AS `Column Name`, value AS `Value`";
 
 		$rows = DB::table($this->my_table)

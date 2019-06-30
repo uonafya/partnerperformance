@@ -31,10 +31,10 @@ class TxCurrentController extends Controller
 		$month = $request->input('month', date('m')-1);
 		$financial_year = $request->input('financial_year', date('Y'));
 
-		$sql = "countyname as County, Subcounty,
-		facilitycode AS `MFL Code`, name AS `Facility`,
+		$sql = "countyname as County, Subcounty,		
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
-		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, alias_name AS `Column Name`, value AS `Value`";
+		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, facilitycode AS `MFL Code`, 
+		name AS `Facility`, alias_name AS `Column Name`, value AS `Value`";
 
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
