@@ -208,7 +208,7 @@ class GeneralController extends Controller
 		return view('forms.download_dispensing', $data);
 	}
 
-	public function upload_surge()
+	public function upload_dispensing()
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
