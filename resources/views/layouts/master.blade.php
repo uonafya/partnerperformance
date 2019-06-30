@@ -73,7 +73,7 @@
 								</a>
 								<ul class="dropdown-menu">									
 									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
-									<li><a href="{{ url('/pns/upload') }}">PNS Upload</a></li>
+									<li><a href="{{ url('/upload/pns') }}">PNS Upload</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -83,7 +83,7 @@
 								<ul class="dropdown-menu">									
 									<li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
-									<li><a href="{{ url('/surge/upload') }}">Surge Upload</a></li>
+									<li><a href="{{ url('/upload/surge') }}">Surge Upload</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -96,18 +96,18 @@
 									<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
 								</ul>
 							</li>
-							<li><a href="{{ url('/indicators/upload') }}">Upload Indicators</a></li>
+							<li><a href="{{ url('/upload/indicators') }}">Upload Indicators</a></li>
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Non-mer Template <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('otz/download/2017') }}">2017</a></li>
-									<li><a href="{{ url('otz/download/2018') }}">2018</a></li>
-									<li><a href="{{ url('otz/download/2019') }}">2019</a></li>
+									<li><a href="{{ url('non_mer/download/2017') }}">2017</a></li>
+									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
+									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
 								</ul>
 							</li>
-							<li><a href="{{ url('/otz/upload') }}">Upload Non-Mer</a></li>
+							<li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer</a></li>
 							@if(auth()->user()->user_type_id == 1)
 								<li><a href="{{ url('/user/create') }}">Create User</a></li>
 							@endif
