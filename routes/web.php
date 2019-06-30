@@ -115,9 +115,6 @@ Route::prefix('pns')->name('pns.')->group(function(){
 	Route::get('pns_contribution', 'PNSController@pns_contribution')->name('pns_contribution');
 	Route::get('summary_table', 'PNSController@summary_table')->name('summary_table');
 	Route::get('get_table/{item}', 'PNSController@get_table')->name('get_table');
-
-	Route::post('download', 'PNSController@download_excel')->name('download');
-	Route::post('upload', 'PNSController@upload_excel')->name('upload');
 });
 
 Route::prefix('surge')->name('surge.')->group(function(){
@@ -130,12 +127,27 @@ Route::prefix('surge')->name('surge.')->group(function(){
 	Route::get('tx_sv', 'SurgeController@tx_sv')->name('tx_sv');
 	Route::get('tx_btc', 'SurgeController@tx_btc')->name('tx_btc');
 	Route::get('targets', 'SurgeController@targets')->name('targets');
-
-	Route::post('set_surge_facilities', 'SurgeController@set_surge_facilities')->name('set_surge_facilities');
-	Route::post('download', 'SurgeController@download_excel')->name('download');
-	Route::post('upload', 'SurgeController@upload_excel')->name('upload');
 });
 
+
+Route::prefix('dispensing')->name('dispensing.')->group(function(){
+	Route::get('summary', 'DispensingController@summary')->name('summary');
+});
+
+
+Route::prefix('tx_curr')->name('tx_curr.')->group(function(){
+	Route::get('summary', 'TxCurrentController@summary')->name('summary');
+
+	Route::post('download', 'TxCurrentController@download_excel')->name('download');
+	Route::post('upload', 'TxCurrentController@upload_excel')->name('upload');
+});
+
+Route::prefix('weekly')->name('weekly.')->group(function(){
+	Route::get('summary', 'WeeklyController@summary')->name('summary');
+
+	Route::post('download', 'WeeklyController@download_excel')->name('download');
+	Route::post('upload', 'WeeklyController@upload_excel')->name('upload');
+});
 
 
 Route::middleware(['clear_session', 'check_nascop'])->group(function(){
@@ -168,18 +180,40 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		Route::post('set_target', 'OtzController@set_target')->name('set_target');
 
 		Route::get('target', 'GeneralController@targets');
+	});	
+
+	Route::prefix('facilities')->name('facilities')->group(function(){
+		Route::get('upload', 'GeneralController@upload_facilities');
+		Route::post('upload', 'PNSController@upload_facilities');
 	});
-	
-	Route::get('facilities/upload', 'GeneralController@upload_facilities');
-	Route::post('facilities/upload', 'PNSController@upload_facilities');
 
-	Route::get('pns/download', 'GeneralController@download_pns');
-	Route::get('pns/upload', 'GeneralController@upload_pns');
+	Route::prefix('pns')->name('pns')->group(function(){
+		Route::get('download', 'GeneralController@download_pns');
+		Route::get('upload', 'GeneralController@upload_pns');
 
-	Route::get('surge/download', 'GeneralController@download_surge');
-	Route::get('surge/upload', 'GeneralController@upload_surge');
+		Route::post('download', 'PNSController@download_excel')->name('download');
+		Route::post('upload', 'PNSController@upload_excel')->name('upload');
+	});
+
+	Route::prefix('surge')->name('surge')->group(function(){
+		Route::get('download', 'GeneralController@download_surge');
+		Route::get('upload', 'GeneralController@upload_surge');
 	
-	Route::get('surge/set_surge_facilities', 'GeneralController@set_surge_facilities');
+		Route::get('set_surge_facilities', 'GeneralController@set_surge_facilities');
+
+
+		Route::post('set_surge_facilities', 'SurgeController@set_surge_facilities')->name('set_surge_facilities');
+		Route::post('download', 'SurgeController@download_excel')->name('download');
+		Route::post('upload', 'SurgeController@upload_excel')->name('upload');
+	});
+
+	Route::prefix('dispensing')->name('dispensing')->group(function(){
+		Route::get('download', 'GeneralController@download_dispensing');
+		Route::get('upload', 'GeneralController@upload_dispensing');
+
+		Route::post('download', 'DispensingController@download_excel')->name('download');
+		Route::post('upload', 'DispensingController@upload_excel')->name('upload');
+	});
 
 
 	Route::get('otz/upload', 'GeneralController@upload_nonmer');

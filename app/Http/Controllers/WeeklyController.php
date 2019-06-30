@@ -32,7 +32,7 @@ class WeeklyController extends Controller
 
 		$sql = "countyname as County, Subcounty,
 		facilitycode AS `MFL Code`, name AS `Facility`,
-		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`,
+		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`, 
 		alias_name AS `Column Name`, value AS `Value`";
 
 		$rows = DB::table($this->my_table)
@@ -44,7 +44,7 @@ class WeeklyController extends Controller
 			->orderBy('column_id', 'asc')
 			->get();
 
-		$filename = str_replace(' ', '_', $partner->name) . '_FY_' . $financial_year . '_' . Lookup::resolve_month($month) . '_' . $m_name;
+		$filename = str_replace(' ', '_', $partner->name) . '_' . $m_name . '_for_' . $week->start_date . '_to_' . $week->end_date;
 
 		foreach ($rows as $row) {
 			$row_array = get_object_vars($row);

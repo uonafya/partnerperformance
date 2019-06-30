@@ -29,7 +29,7 @@ class TxCurrentController extends Controller
 		$data = [];
 
 		$month = $request->input('month', date('m')-1);
-		$calendar_year = $request->input('calendar_year', date('Y'));
+		$financial_year = $request->input('financial_year', date('Y'));
 
 		$sql = "countyname as County, Subcounty,
 		facilitycode AS `MFL Code`, name AS `Facility`,
@@ -40,12 +40,12 @@ class TxCurrentController extends Controller
 			->when(true, $this->get_joins_callback($this->my_table))
 			->join('surge_columns_view', "{$this->my_table}.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($sql)
-			->where(['partner' => $partner->id, 'year' => $calendar_year, 'month' => $month, 'modality' => 'tx_curr'])
+			->where(['partner' => $partner->id, 'financial_year' => $financial_year, 'month' => $month, 'modality' => 'tx_curr'])
 			->orderBy('view_facilitys.name', 'asc')
 			->orderBy('column_id', 'asc')
 			->get();
 
-		$filename = str_replace(' ', '_', $partner->name) . '_' . $calendar_year . '_' . Lookup::resolve_month($month) . '_tx_curr';
+		$filename = str_replace(' ', '_', $partner->name) . '_FY_' . $financial_year . '_' . Lookup::resolve_month($month) . '_tx_curr';
 
 		foreach ($rows as $row) {
 			$row_array = get_object_vars($row);

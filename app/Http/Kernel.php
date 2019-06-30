@@ -37,6 +37,12 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
+
+        'edits' => [
+            \Illuminate\Auth\Middleware\Authenticate::class,
+            \App\Http\Middleware\ClearSession::class,
+            \App\Http\Middleware\CheckLive::class,
+        ],
     ];
 
     /**

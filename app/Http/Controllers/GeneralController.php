@@ -106,6 +106,15 @@ class GeneralController extends Controller
 		return view('base.surge', $data);
 	}
 
+	public function dispensing()
+	{
+		$data = Lookup::view_data_surges();
+		$financial_year = session('filter_financial_year');
+		session(['filter_agency' => 1]);
+		$data['display_date'] = ' (April, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		return view('base.dispensing', $data);		
+	}
+
 	public function indicators()
 	{
 		$data = Lookup::view_data();
@@ -181,6 +190,22 @@ class GeneralController extends Controller
 		$data['partner'] = session('session_partner');
 		$data['no_header'] = true;
 		return view('forms.download_surge', $data);
+	}
+
+	public function upload_surge()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		return view('forms.upload_surge', ['no_header' => true, 'partner' => $partner]);
+	}
+
+	public function download_dispensing()
+	{
+		$data = Lookup::view_data_surges();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_dispensing', $data);
 	}
 
 	public function upload_surge()

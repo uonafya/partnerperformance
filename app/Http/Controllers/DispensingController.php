@@ -16,7 +16,7 @@ class DispensingController extends Controller
 
 	private $my_table = 'd_dispensing';
 
-	public function dispensing()
+	public function summary()
 	{
 		$age_category_id = session('filter_age_category_id');
 		$gender_id = session('filter_gender');
@@ -70,7 +70,7 @@ class DispensingController extends Controller
 		$data = [];
 
 		$month = $request->input('month', date('m')-1);
-		$calendar_year = $request->input('calendar_year', date('Y'));
+		$financial_year = $request->input('financial_year', date('Y'));
 
 		$t = ['Dispensed One', 'Dispensed Two', 'Dispensed Three', 'Dispensed Four', 'Dispensed Five', 'Dispensed Six', ];
 
@@ -89,13 +89,13 @@ class DispensingController extends Controller
 			->join('age_categories', "{$this->my_table}.age_category_id", '=', 'age_categories.id')
 			->join('surge_genders', "{$this->my_table}.gender_id", '=', 'surge_genders.id')
 			->selectRaw($sql)
-			->where(['partner' => $partner->id, 'year' => $calendar_year, 'month' => $month])
+			->where(['partner' => $partner->id, 'financial_year' => $financial_year, 'month' => $month])
 			->orderBy('view_facilitys.name', 'asc')
 			->orderBy('age_category_id', 'asc')
 			->orderBy('gender_id', 'asc')
 			->get();
 
-		$filename = str_replace(' ', '_', $partner->name) . '_' . $calendar_year . '_' . Lookup::resolve_month($month) . '_dispensing';
+		$filename = str_replace(' ', '_', $partner->name) . '_FY_' . $financial_year . '_' . Lookup::resolve_month($month) . '_dispensing';
 
 
 		foreach ($rows as $row) {

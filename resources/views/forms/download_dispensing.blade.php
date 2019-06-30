@@ -20,43 +20,38 @@
 		    <div class="panel-heading">
 			    {{ $partner->name ?? '' }} 
           <br />
-          Download Surge Excel
+          Download Dispensing Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('surge/download') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('dispensing/download') }}" method="post" class="form-horizontal"> 
 					@csrf
 
           <p style="font-size: 16;">
-            After downloading, do not delete the first 6 columns. They are necessary for the system when you upload the excel. You can delete any of the other columns if you do not wish to upload its data. You can also delete any row other that the first row that is used as column headers.
+            After downloading, do not delete any column. They are necessary for the system when you upload the excel. You can delete any row other that the first row that is used as column headers.
           </p>
 
           <div class="form-group">
-              <label class="col-sm-3 control-label">Week</label>
-              <select class="col-sm-7 select_tag" name="week">
-                <option></option>
-                @foreach($weeks as $week)
-                  <option value="{{ $week->id }}"> {{ $week->name }} </option>
-                @endforeach
+              <label class="col-sm-3 control-label">Financial Year</label>
+              <select class="col-sm-7 select_tag" name="financial_year">
+                <option value="2019">2019</option>
               </select>
           </div>
 
           <div class="form-group">
-              <label class="col-sm-3 control-label">Modality (You can select multiple modalities) <b>(Required)</b> </label>
-              <select class="col-sm-7 select_tag" name="modalities[]" multiple="multiple" required>
-                <option></option>
-                @foreach($modalities as $modality)
-                  <option value="{{ $modality->id }}"> {{ $modality->modality_name }} </option>
-                @endforeach
-              </select>
-          </div>
-
-          <div class="form-group">
-              <label class="col-sm-3 control-label">Gender</label>
-              <select class="col-sm-7 select_tag" name="gender">
-                <option></option>
-                @foreach($genders as $gender)
-                  <option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
-                @endforeach
+              <label class="col-sm-3 control-label">Months (You can select multiple months)</label>
+              <select class="col-sm-7 select_tag" required multiple="multiple" name="months[]">
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">May</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Aug</option>
+                <option value="9">Sep</option>
               </select>
           </div>
 
