@@ -70,10 +70,6 @@
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Indicators Template <b class="caret"></b>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c81ba5a635874e4c2fe43eac086cc1bab60c0111
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
@@ -90,33 +86,7 @@
 									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
 									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
 								</ul>
-<<<<<<< HEAD
-							</li>							
-							<li class="dropdown">
-								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-									Download Other Templates <b class="caret"></b>
-=======
->>>>>>> 6aee2b82374818de07b78fc0e4fcbacebb2211e2
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
-									<li><a href="{{ url('indicators/download/2018') }}">2018</a></li>
-									<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
-								</ul>
-							</li>							
-							<li class="dropdown">
-								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-									Download Non-mer Template <b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="{{ url('non_mer/download/2017') }}">2017</a></li>
-									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
-									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
-								</ul>
-							</li>							
-=======
-							</li>					
->>>>>>> c81ba5a635874e4c2fe43eac086cc1bab60c0111
+							</li>	
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Other Templates <b class="caret"></b>
