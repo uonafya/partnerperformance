@@ -33,6 +33,7 @@
           <div class="form-group">
               <label class="col-sm-3 control-label">Financial Year</label>
               <select class="col-sm-7 select_tag" name="financial_year">
+                <option></option>
                 <option value="2018" selected>2018</option>
                 <option value="2019">2019</option>
               </select>
@@ -41,6 +42,7 @@
           <div class="form-group">
               <label class="col-sm-3 control-label">Months (You can select multiple months)</label>
               <select class="col-sm-7 select_tag" required multiple="multiple" name="months[]">
+                <option></option>
                 <option value="10">Oct</option>
                 <option value="11">Nov</option>
                 <option value="12">Dec</option>
