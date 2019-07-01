@@ -31,6 +31,8 @@ class TxCurrentController extends Controller
 
 		$month = $request->input('month', date('m')-1);
 		$financial_year = $request->input('financial_year', date('Y'));
+		$age_category_id = $request->input('age_category_id');
+		$gender_id = $request->input('gender_id');
 
 		$sql = "countyname as County, Subcounty,		
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
@@ -42,6 +44,12 @@ class TxCurrentController extends Controller
 			->join('surge_columns_view', "{$this->my_table}.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($sql)
 			->where(['partner' => $partner->id, 'financial_year' => $financial_year, 'month' => $month, 'modality' => 'tx_curr'])
+			->when($age_category_id, function($query) use ($age_category_id){
+				return $query->where('age_category_id', $age_category_id);
+			})
+			->when($gender_id, function($query) use ($gender_id){
+				return $query->where('gender_id', $gender_id);
+			})
 			->orderBy('view_facilitys.name', 'asc')
 			->orderBy('column_id', 'asc')
 			->get();
