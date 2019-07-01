@@ -23,7 +23,7 @@
           Download TX Curr Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('dispensing/download') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('tx_curr/download') }}" method="post" class="form-horizontal"> 
 					@csrf
 
           <p style="font-size: 16;">
