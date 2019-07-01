@@ -23,7 +23,7 @@
           Download {{ strtoupper(str_replace('_', ' ', $modality)) }} Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('surge/download') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('weekly/download') }}" method="post" class="form-horizontal"> 
 					@csrf
 
 
