@@ -100,7 +100,7 @@
 
         // $(".select_tag").select2();
 
-        $(".form-horizontal select_tag").select2({
+        $(".form-horizontal select").select2({
             placeholder: "Select One",
             allowClear: true
         }); 
