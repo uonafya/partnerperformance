@@ -69,25 +69,6 @@
 						@auth
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-									PNS <b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu">									
-									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
-									<li><a href="{{ url('/upload/pns') }}">PNS Upload</a></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-									Surge <b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu">									
-									<li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
-									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
-									<li><a href="{{ url('/upload/surge') }}">Surge Upload</a></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Indicators Template <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
@@ -95,8 +76,7 @@
 									<li><a href="{{ url('indicators/download/2018') }}">2018</a></li>
 									<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
 								</ul>
-							</li>
-							<li><a href="{{ url('/upload/indicators') }}">Upload Indicators</a></li>
+							</li>							
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Non-mer Template <b class="caret"></b>
@@ -106,8 +86,30 @@
 									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
 									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
 								</ul>
+							</li>							
+							<li class="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									Download Other Templates <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
+									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
+								</ul>
 							</li>
-							<li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer</a></li>
+
+							<li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
+							
+							<li class="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									Upload Templates <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer</a></li>
+									<li><a href="{{ url('/upload/indicators') }}">Upload Indicators</a></li>
+									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
+									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
+								</ul>
+							</li>
 							@if(auth()->user()->user_type_id == 1)
 								<li><a href="{{ url('/user/create') }}">Create User</a></li>
 							@endif

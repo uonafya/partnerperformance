@@ -207,10 +207,16 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::prefix('dispensing')->name('dispensing')->group(function(){
 		Route::get('download', 'GeneralController@download_dispensing');
-		Route::get('upload', 'GeneralController@upload_dispensing');
 
 		Route::post('download', 'DispensingController@download_excel')->name('download');
 		Route::post('upload', 'DispensingController@upload_excel')->name('upload');
+	});
+
+	Route::prefix('tx_curr')->name('tx_curr')->group(function(){
+		Route::get('download', 'GeneralController@download_tx_curr');
+
+		Route::post('download', 'TxCurrentController@download_excel')->name('download');
+		Route::post('upload', 'TxCurrentController@upload_excel')->name('upload');
 	});
 
 	// Upload any Data
