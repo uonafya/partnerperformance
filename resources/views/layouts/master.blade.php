@@ -66,39 +66,36 @@
 						@guest
 							<li><a href="{{ url('/login') }}">Login</a></li>
 						@endguest	
-						@auth						
+						@auth
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-									Download Templates <b class="caret"></b>
+									Download Indicators Template <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
+									<li><a href="{{ url('indicators/download/2018') }}">2018</a></li>
+									<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
+								</ul>
+							</li>							
+							<li class="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									Download Non-mer Template <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('non_mer/download/2017') }}">2017</a></li>
+									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
+									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
+								</ul>
+							</li>							
+							<li class="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									Download Other Templates <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
 									<li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
 									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
-
-
-								<li class="dropdown">
-									<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-										Download Indicators Template <b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
-										<li><a href="{{ url('indicators/download/2018') }}">2018</a></li>
-										<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
-									</ul>
-								</li>							
-								<li class="dropdown">
-									<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-										Download Non-mer Template <b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li><a href="{{ url('non_mer/download/2017') }}">2017</a></li>
-										<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
-										<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
-									</ul>
-								</li>	
-
 								</ul>
 							</li>
 
