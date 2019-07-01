@@ -20,7 +20,8 @@ class TxCurrentController extends Controller
 
 
 	public function download_excel(Request $request)
-	{
+	{		
+		ini_set('memory_limit', '-1');
 		$partner = session('session_partner');
 		if(!$partner){
 			$partner = auth()->user()->partner;
