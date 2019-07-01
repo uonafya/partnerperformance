@@ -115,6 +115,17 @@ class GeneralController extends Controller
 		return view('base.dispensing', $data);		
 	}
 
+	public function tx_curr()
+	{
+		$data = Lookup::view_data_surges();
+		$data['ages'] = \App\SurgeAge::tx()->get();
+		$financial_year = session('filter_financial_year');
+		session(['filter_agency' => 1]);
+		$data['display_date'] = ' (April, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		return view('base.tx_curr', $data);		
+	}
+
+
 	public function indicators()
 	{
 		$data = Lookup::view_data();
@@ -192,6 +203,15 @@ class GeneralController extends Controller
 		$data['partner'] = session('session_partner');
 		$data['no_header'] = true;
 		return view('forms.download_dispensing', $data);
+	}
+
+	public function download_tx_curr()
+	{
+		$data = Lookup::view_data_surges();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_tx_curr', $data);
 	}
 
 	public function upload_any($path, $modality=null)
