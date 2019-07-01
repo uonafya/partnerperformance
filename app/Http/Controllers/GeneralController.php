@@ -214,6 +214,17 @@ class GeneralController extends Controller
 		return view('forms.download_tx_curr', $data);
 	}
 
+	public function download_weeklies($modality)
+	{
+		if(!in_array($modality, ['prep_new', 'vmmc_circ'])) abort(404);
+		$data = Lookup::view_data_surges();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		$data['modality'] = $modality;
+		return view('forms.download_weeklies', $data);
+	}
+
 	public function upload_any($path, $modality=null)
 	{
 		$user = auth()->user();

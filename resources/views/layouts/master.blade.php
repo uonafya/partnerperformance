@@ -70,6 +70,29 @@
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Indicators Template <b class="caret"></b>
+<<<<<<< HEAD
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
+									<li><a href="{{ url('indicators/download/2018') }}">2018</a></li>
+									<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
+								</ul>
+							</li>							
+							<li class="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									Download Non-mer Template <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('non_mer/download/2017') }}">2017</a></li>
+									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
+									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
+								</ul>
+							</li>							
+							<li class="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									Download Other Templates <b class="caret"></b>
+=======
+>>>>>>> 6aee2b82374818de07b78fc0e4fcbacebb2211e2
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
@@ -92,6 +115,8 @@
 									Download Other Templates <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
+									<li><a href="{{ url('/weekly/download/vmmc_circ') }}">Download VMMC Circ Template</a></li>
+									<li><a href="{{ url('/weekly/download/prep_new') }}">Download PREP New Template</a></li>
 									<li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
 									<li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
@@ -106,10 +131,10 @@
 									Upload Templates <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer</a></li>
-									<li><a href="{{ url('/upload/indicators') }}">Upload Indicators</a></li>
-									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
+									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
+									<li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>
+									<li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer Indicators</a></li>
 								</ul>
 							</li>
 							@if(auth()->user()->user_type_id == 1)
