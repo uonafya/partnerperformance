@@ -12,6 +12,11 @@ class SurgeAge extends BaseModel
         return $this->hasMany('App\SurgeColumn', 'age_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo('App\AgeCategory', 'age_category_id');
+    }
+
 
     public function scopeSurge($query)
     {
