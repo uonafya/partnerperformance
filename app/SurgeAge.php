@@ -7,6 +7,12 @@ use App\BaseModel;
 class SurgeAge extends BaseModel
 {
 
+    public function surge_column()
+    {
+        return $this->hasMany('App\SurgeColumn', 'age_id');
+    }
+
+
     public function scopeSurge($query)
     {
         // return $query->where(['for_surge' => 1])->orderBy('age_category_id', 'asc')->orderBy('id', 'asc');

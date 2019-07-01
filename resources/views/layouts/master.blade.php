@@ -108,6 +108,11 @@
 									Upload Templates <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
+									{{--<li><a href="{{ url('/upload/weekly/vmmc_circ') }}">Upload VMMC Circ</a></li>
+									<li><a href="{{ url('/upload/weekly/prep_new') }}">Upload PREP New</a></li>
+									<li><a href="{{ url('/upload/tx_curr') }}">Upload TX Current</a></li>
+									<li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>--}}
+
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
 									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
 									<li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>
