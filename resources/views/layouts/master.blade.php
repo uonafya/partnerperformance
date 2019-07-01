@@ -86,7 +86,7 @@
 									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
 									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
 								</ul>
-							</li>							
+							</li>					
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 									Download Other Templates <b class="caret"></b>
