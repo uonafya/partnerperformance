@@ -92,6 +92,8 @@
 									Download Other Templates <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
+									<li><a href="{{ url('/weekly/download/vmmc_circ') }}">Download VMMC Circ Template</a></li>
+									<li><a href="{{ url('/weekly/download/prep_new') }}">Download PREP New Template</a></li>
 									<li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
 									<li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
@@ -106,10 +108,10 @@
 									Upload Templates <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer</a></li>
-									<li><a href="{{ url('/upload/indicators') }}">Upload Indicators</a></li>
-									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
+									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
+									<li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>
+									<li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer Indicators</a></li>
 								</ul>
 							</li>
 							@if(auth()->user()->user_type_id == 1)

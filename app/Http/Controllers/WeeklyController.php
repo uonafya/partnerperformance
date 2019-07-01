@@ -29,6 +29,8 @@ class WeeklyController extends Controller
 
 		$week_id = $request->input('week');
 		$m_name = $request->input('modality');
+		$age_category_id = $request->input('age_category_id');
+		$gender_id = $request->input('gender_id');
 
 		$sql = "countyname as County, Subcounty,
 		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`, 
@@ -40,6 +42,12 @@ class WeeklyController extends Controller
 			->join('surge_columns_view', "{$this->my_table}.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($sql)
 			->where(['partner' => $partner->id, 'week_id' => $week_id, 'modality' => $m_name])
+			->when($age_category_id, function($query) use ($age_category_id){
+				return $query->where('age_category_id', $age_category_id);
+			})
+			->when($gender_id, function($query) use ($gender_id){
+				return $query->where('gender_id', $gender_id);
+			})
 			->orderBy('view_facilitys.name', 'asc')
 			->orderBy('column_id', 'asc')
 			->get();

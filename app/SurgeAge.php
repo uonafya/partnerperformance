@@ -13,7 +13,7 @@ class SurgeAge extends BaseModel
         return $query->where(['for_surge' => 1])->orderBy('max_age', 'asc');
     }
 	
-    public function scopeVmmc($query)
+    public function scopeVmmcCirc($query)
     {
         return $query->where(['for_vmmc' => 1])->orderBy('max_age', 'asc');
     }
@@ -23,7 +23,7 @@ class SurgeAge extends BaseModel
         return $query->where(['for_tx_curr' => 1])->orderBy('max_age', 'asc');
     }
     
-    public function scopePrep($query)
+    public function scopePrepNew($query)
     {
         return $query->where('age_category_id', '!=', 2)->orderBy('max_age', 'asc');
     }

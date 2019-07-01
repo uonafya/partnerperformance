@@ -243,7 +243,7 @@ class Dispensing
         $modality = SurgeModality::where(['modality' => 'prep_new'])->first();
         $sql = '';
 
-        $ages = SurgeAge::prep()->get();
+        $ages = SurgeAge::prep_new()->get();
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
@@ -258,7 +258,7 @@ class Dispensing
         $modality = SurgeModality::where(['modality' => 'vmmc_circ'])->first();
         $sql = '';
 
-        $ages = SurgeAge::vmmc()->get();
+        $ages = SurgeAge::vmmc_circ()->get();
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
