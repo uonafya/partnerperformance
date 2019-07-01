@@ -32,6 +32,8 @@ class WeeklyController extends Controller
 		$age_category_id = $request->input('age_category_id');
 		$gender_id = $request->input('gender_id');
 
+		$week = Week::findOrFail($week_id);
+
 		$sql = "countyname as County, Subcounty,
 		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`, 
 		facilitycode AS `MFL Code`, name AS `Facility`,
