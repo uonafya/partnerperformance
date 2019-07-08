@@ -5,6 +5,8 @@
 			@include('partials.columns')
 			<th>ART</th>
 			<th>PMTCT</th>		
+			<th>PREP</th>		
+			<th>PEP</th>		
 		</tr>
 	</thead>
 	<tbody>
@@ -14,6 +16,8 @@
 				@include('partials.rows', ['row' => $row])
 				<td> {{ number_format($row->art + $row->pmtct) }} </td>
 				<td> {{ number_format($row->pmtct) }} </td>
+				<td> {{ number_format($row->prep) }} </td>
+				<td> {{ number_format($row->pep) }} </td>
 			</tr>
 		@endforeach
 	</tbody>	

@@ -85,7 +85,7 @@ class RegimenController extends Controller
 		$data['rows'] = DB::table('d_regimen_totals')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
 			->join('periods', 'periods.id', '=', 'd_regimen_totals.period_id')
-			->selectRaw("SUM(art) as art, SUM(pmtct) as pmtct")
+			->selectRaw("SUM(art) as art, SUM(pmtct) as pmtct, SUM(prep) as prep, SUM(pep) as pep ")
 			->when(true, $this->get_callback_no_dates('art'))
 			->whereRaw($date_query)
 			->get();
