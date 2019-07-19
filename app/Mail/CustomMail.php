@@ -30,7 +30,7 @@ class CustomMail extends Mailable
      */
     public function build()
     {
-        $this->subject('Surge Reporting on Partner Performance');
-        return $this->view('mail.surge');
+        $this->subject('New Reports on Partner Performance');
+        return $this->view('mail.weeklies');
     }
 }

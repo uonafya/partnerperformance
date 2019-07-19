@@ -102,7 +102,7 @@
 					</div>
 				</div>
 
-			@elseif(ends_with(url()->current(), ['surge', 'tx_curr',  'prep']))
+			@elseif(ends_with(url()->current(), ['surge', 'vmmc',  'prep']))
 
 				@if(ends_with(url()->current(), ['surge']))
 
@@ -124,6 +124,19 @@
 
 				<div class="row">
 					<div class="col-md-12">
+						<select class="btn filters form-control" multiple="multiple" id="filter_week">
+							<option disabled='true'>Select Week</option>
+							<option value='null' selected='true'>All Weeks</option>
+
+							@foreach($weeks as $key => $week)
+								<option value="{{ $week->id }}"> {{ $week->name }} </option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
 						<select class="btn filters form-control" multiple="multiple" id="filter_age">
 							<option disabled='true'>Select Age Group</option>
 							<option value='null' selected='true'>All Ages</option>
@@ -136,18 +149,8 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-4">
-						<select class="btn filters form-control" id="filter_week">
-							<option disabled='true'>Select Week</option>
-							<option value='null' selected='true'>All Weeks</option>
 
-							@foreach($weeks as $key => $week)
-								<option value="{{ $week->id }}"> {{ $week->name }} </option>
-							@endforeach
-						</select>
-					</div>
-
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<select class="btn filters form-control" id="filter_gender">
 							<option disabled='true'>Select Gender</option>
 							<option value='null' selected='true'>All Genders</option>
@@ -158,7 +161,7 @@
 						</select>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<select class="btn filters form-control" id="filter_age_category_id">
 							<option disabled='true'>Select Age Category</option>
 							<option value='null' selected='true'>All Age Categories</option>

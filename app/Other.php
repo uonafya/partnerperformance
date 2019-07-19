@@ -25,7 +25,7 @@ class Other
 
     public static function send_test()
     {
-        Mail::to(['jbatuka@usaid.gov', 'bonyango@usaid.gov', 'pyegon@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail(null));
+        Mail::to(['joelkith@gmail.com'])->send(new CustomMail(null));
     }
     
     public static function send_pns()
@@ -33,7 +33,7 @@ class Other
         $users = User::where('user_type_id', 2)->get();
 
         foreach ($users as $user) {
-            Mail::to($user->email)->cc(['jbatuka@usaid.gov', 'bonyango@usaid.gov', 'pyegon@usaid.gov', 'joelkith@gmail.com'])->send(new CustomMail($user));
+            Mail::to($user->email)->cc(['joelkith@gmail.com'])->send(new CustomMail($user));
         }
     }
 

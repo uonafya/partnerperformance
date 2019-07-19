@@ -137,16 +137,10 @@ Route::prefix('dispensing')->name('dispensing.')->group(function(){
 
 Route::prefix('tx_curr')->name('tx_curr.')->group(function(){
 	Route::get('summary', 'TxCurrentController@summary')->name('summary');
-
-	Route::post('download', 'TxCurrentController@download_excel')->name('download');
-	Route::post('upload', 'TxCurrentController@upload_excel')->name('upload');
 });
 
 Route::prefix('weekly')->name('weekly.')->group(function(){
 	Route::get('summary', 'WeeklyController@summary')->name('summary');
-
-	Route::post('download', 'WeeklyController@download_excel')->name('download');
-	Route::post('upload', 'WeeklyController@upload_excel')->name('upload');
 });
 
 
@@ -173,6 +167,10 @@ Route::middleware(['signed'])->group(function(){
 	Route::get('reset/password/{user}', 'GeneralController@change_password')->name('reset.password');
 });
 
+
+/*
+	Start of routes that require authentication
+*/
 Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::prefix('target')->name('target')->group(function(){
