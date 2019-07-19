@@ -30,7 +30,7 @@ class Other
     
     public static function send_pns()
     {
-        $users = User::where('user_type_id', 2)->get();
+        $users = User::where('user_type_id', 3)->get();
 
         foreach ($users as $user) {
             Mail::to($user->email)->cc(['joelkith@gmail.com'])->send(new CustomMail($user));
