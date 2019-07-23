@@ -175,16 +175,17 @@
 
 
 			@elseif(ends_with(url()->current(), ['dispensing']))
+					<div class="row">
+						<div class="col-md-6">
+							<select class="btn filters form-control" id="filter_gender">
+								<option disabled='true'>Select Gender</option>
+								<option value='null' selected='true'>All Genders</option>
 
-					<div class="col-md-6">
-						<select class="btn filters form-control" id="filter_gender">
-							<option disabled='true'>Select Gender</option>
-							<option value='null' selected='true'>All Genders</option>
-
-							@foreach($genders as $key => $gender)
-								<option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
-							@endforeach
-						</select>
+								@foreach($genders as $key => $gender)
+									<option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
+								@endforeach
+							</select>
+						</div>
 					</div>
 
 					<div class="col-md-6">
