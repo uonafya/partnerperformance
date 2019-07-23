@@ -159,6 +159,8 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('pns', 'GeneralController@pns');
 	Route::get('indicators', 'GeneralController@indicators');
 	Route::get('surge', 'GeneralController@surge');
+	
+	Route::get('dispensing', 'GeneralController@dispensing');
 
 	Route::get('guide', 'GeneralController@guide');
 });
