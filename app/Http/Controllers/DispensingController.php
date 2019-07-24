@@ -22,6 +22,9 @@ class DispensingController extends Controller
 		$gender_id = session('filter_gender');
 
 		$data['div'] = str_random(15);
+		$data['suffix'] = '';
+		$data['yAxis'] = 'Number of Clients';
+
 
 		$t = ['Dispensed One', 'Dispensed Two', 'Dispensed Three', 'Dispensed Four', 'Dispensed Five', 'Dispensed Six', ];
 		$props = [];
