@@ -50,9 +50,7 @@ class TxCurrentController extends Controller
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Number of Clients';
 
-		$data['outcomes'][0]['name'] = "Male";
-		$data['outcomes'][1]['name'] = "Female";
-		$data['outcomes'][2]['name'] = "Unknown";
+		Lookup::bars($data, ['Male', 'Female', 'Unknown']);
 
 		$data['categories'] = [];
 
@@ -71,7 +69,7 @@ class TxCurrentController extends Controller
 
 			$data["outcomes"][$item]["data"][$key] = (int) $row->value;
 		}
-		dd($data);
+
 		return view('charts.line_graph', $data);
 	}
 

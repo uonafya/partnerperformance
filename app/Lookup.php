@@ -707,6 +707,14 @@ class Lookup
 		}
 	}
 
+	public static function bars(&$data, $categories=[], $type='column')
+	{
+		foreach ($categories as $key => $value) {
+			$data['outcomes'][$key]['name'] = $value;
+			$data['outcomes'][$key]['type'] = $type;
+		}
+	}
+
 	public static function columns(&$data, $start, $finish, $type='column')
 	{
 		for ($i=$start; $i <= $finish; $i++) { 
