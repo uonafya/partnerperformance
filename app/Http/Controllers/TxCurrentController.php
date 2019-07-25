@@ -55,10 +55,14 @@ class TxCurrentController extends Controller
 		$data['outcomes'][2]['name'] = "Unknown";
 
 		$data['categories'] = [];
+		$data['keys'] = [];
+
 
 		foreach ($rows as $row) {
 			$needle = Lookup::get_category($row);
 			$key = array_search($needle, $data['categories']);
+
+			$data['keys'][] = $key;
 
 			if(is_numeric($key)) $data['categories'][] = $needle;
 			$key = array_search($needle, $data['categories']);
