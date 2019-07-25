@@ -33,7 +33,8 @@ class Controller extends BaseController
     public function get_joins_callback_weeks($table_name)
     {
         return function($query) use($table_name){
-            return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
+            return $query->table($this->my_table)
+                ->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
                 ->join('weeks', 'weeks.id', '=', "{$table_name}.week_id");
         };        
     }

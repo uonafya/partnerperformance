@@ -31,8 +31,7 @@ class TxCurrentController extends Controller
 		else if($groupby > 9) return null;
 
 		$rows = DB::table($this->my_table)
-			->join('view_facilitys', 'view_facilitys.id', '=', "{$this->my_table}.facility")
-			->join('periods', 'periods.id', '=', "{$this->my_table}.period_id")
+			->when(true, $this->get_joins_callback($this->my_table))
 			->join('surge_columns_view', 'surge_columns_view.id', '=', "{$this->my_table}.column_id")
 			->selectRaw($q['select_query'] . ", gender, SUM(value) AS value ")
 			->whereRaw($date_query)
@@ -84,8 +83,7 @@ class TxCurrentController extends Controller
 		else if($groupby > 9) return null;
 
 		$rows = DB::table($this->my_table)
-			->join('view_facilitys', 'view_facilitys.id', '=', "{$this->my_table}.facility")
-			->join('periods', 'periods.id', '=', "{$this->my_table}.period_id")
+			->when(true, $this->get_joins_callback($this->my_table))
 			->join('surge_columns_view', 'surge_columns_view.id', '=', "{$this->my_table}.column_id")
 			->selectRaw($q['select_query'] . ", age_name, SUM(value) AS value ")
 			->whereRaw($date_query)

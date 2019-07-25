@@ -150,7 +150,7 @@
 
 				<div class="row">
 
-					@if(ends_with(url()->current(), ['vmmc']))
+					@if(!ends_with(url()->current(), ['vmmc']))
 						<div class="col-md-6">
 							<select class="btn filters form-control" id="filter_gender">
 								<option disabled='true'>Select Gender</option>
@@ -177,19 +177,20 @@
 
 
 			@elseif(ends_with(url()->current(), ['dispensing', 'tx_curr']))
+				@if(!ends_with(url()->current(), ['vmmc']))
+					<div class="row">
+						<div class="col-md-12">
+							<select class="btn filters form-control" multiple="multiple" id="filter_age">
+								<option disabled='true'>Select Age Group</option>
+								<option value='null' selected='true'>All Ages</option>
 
-				<div class="row">
-					<div class="col-md-12">
-						<select class="btn filters form-control" multiple="multiple" id="filter_age">
-							<option disabled='true'>Select Age Group</option>
-							<option value='null' selected='true'>All Ages</option>
-
-							@foreach($ages as $key => $age)
-								<option value="{{ $age->id }}"> {{ $age->age_name }} </option>
-							@endforeach
-						</select>
+								@foreach($ages as $key => $age)
+									<option value="{{ $age->id }}"> {{ $age->age_name }} </option>
+								@endforeach
+							</select>
+						</div>
 					</div>
-				</div>
+				@endif
 
 				<div class="row">
 					<div class="col-md-6">

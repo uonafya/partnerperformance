@@ -111,7 +111,7 @@ class GeneralController extends Controller
 		$data = Lookup::view_data_surges();
 		$financial_year = session('filter_financial_year');
 		session(['filter_agency' => 1]);
-		$data['display_date'] = ' (April, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		$data['display_date'] = ' (July, ' . ($financial_year) . ' - September ' . $financial_year . ')';
 		return view('base.dispensing', $data);		
 	}
 
@@ -121,9 +121,10 @@ class GeneralController extends Controller
 		$data['ages'] = \App\SurgeAge::tx()->get();
 		$financial_year = session('filter_financial_year');
 		session(['filter_agency' => 1]);
-		$data['display_date'] = ' (April, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		$data['display_date'] = ' (July, ' . ($financial_year) . ' - September ' . $financial_year . ')';
 		return view('base.tx_curr', $data);		
 	}
+	
 
 
 	public function indicators()
