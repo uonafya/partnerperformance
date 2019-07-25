@@ -541,7 +541,7 @@ class Surge
             $paths[] = $path;
         }
 
-        Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
+        // Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
     }
 
 
