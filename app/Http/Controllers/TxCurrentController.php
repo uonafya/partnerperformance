@@ -71,7 +71,7 @@ class TxCurrentController extends Controller
 
 			$data["outcomes"][$key]["data"][$item] = (int) $row->value;
 		}
-		// dd($data);
+		dd($data);
 		return view('charts.line_graph', $data);
 	}
 
