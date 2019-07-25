@@ -137,6 +137,7 @@ Route::prefix('dispensing')->name('dispensing.')->group(function(){
 
 Route::prefix('tx_curr')->name('tx_curr.')->group(function(){
 	Route::get('gender', 'TxCurrentController@gender')->name('gender');
+	Route::get('age', 'TxCurrentController@age')->name('age');
 });
 
 Route::prefix('weekly')->name('weekly.')->group(function(){

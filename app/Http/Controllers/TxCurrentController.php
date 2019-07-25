@@ -10,6 +10,7 @@ use App\Facility;
 use App\SurgeColumn;
 use App\SurgeColumnView;
 use App\SurgeModality;
+use App\SurgeAge;
 use App\AgeCategory;
 use App\Period;
 
@@ -36,7 +37,7 @@ class TxCurrentController extends Controller
 			->selectRaw($q['select_query'] . ", gender, SUM(value) AS value ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->whereRaw(Lookup::surge_columns_query(false, false, true);)
+			->whereRaw(Lookup::surge_columns_query(false, false, true))
 			->groupby($q['group_query'], 'gender')
 			->when(true, function($query) use($groupby, $q) {
 				if($groupby < 10) return $query->orderBy('div_id');
@@ -44,8 +45,6 @@ class TxCurrentController extends Controller
 			})
 			->orderBy('gender_id')
 			->get();
-
-		// dd($rows);
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
@@ -67,6 +66,59 @@ class TxCurrentController extends Controller
 			else{
 				$item = 2;
 			}
+
+			$data["outcomes"][$item]["data"][$key] = (int) $row->value;
+		}
+
+		return view('charts.line_graph', $data);
+	}
+
+	public function age()
+	{
+		$q = Lookup::groupby_query();
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$groupby = session('filter_groupby', 1);
+
+		if($groupby != 12) $date_query = Lookup::year_month_query();
+		else if($groupby > 9) return null;
+
+		$rows = DB::table($this->my_table)
+			->join('view_facilitys', 'view_facilitys.id', '=', "{$this->my_table}.facility")
+			->join('periods', 'periods.id', '=', "{$this->my_table}.period_id")
+			->join('surge_columns_view', 'surge_columns_view.id', '=', "{$this->my_table}.column_id")
+			->selectRaw($q['select_query'] . ", age_name, SUM(value) AS value ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->whereRaw(Lookup::surge_columns_query(false, true, false))
+			->groupby($q['group_query'], 'age_name')
+			->when(true, function($query) use($groupby, $q) {
+				if($groupby < 10) return $query->orderBy('div_id');
+				return $query->orderBy($q['select_query']);
+			})
+			->orderBy('age_id')
+			->get();
+
+		$ages = SurgeAge::tx()->get();
+
+		$bars = $ages->pluck(['age_name'])->toArray();
+
+		$data['div'] = str_random(15);
+		$data['suffix'] = '';
+		$data['yAxis'] = 'Number of Clients';
+
+		Lookup::bars($data, $bars);
+
+		$data['categories'] = [];
+
+		foreach ($rows as $row) {
+			$needle = Lookup::get_category($row);
+			$key = array_search($needle, $data['categories']);
+
+			if(!is_int($key)) $data['categories'][] = $needle;
+			$key = array_search($needle, $data['categories']);
+			$item = array_search($$row->age_name, $bars);
+
 
 			$data["outcomes"][$item]["data"][$key] = (int) $row->value;
 		}

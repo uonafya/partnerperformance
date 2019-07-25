@@ -27,6 +27,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Age <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="age">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 @endsection
 
@@ -38,8 +51,10 @@
 	function reload_page()
 	{
 		$("#gender").html("<center><div class='loader'></div></center>");
+		$("#age").html("<center><div class='loader'></div></center>");
 
 		$("#gender").load("{{ url('tx_curr/gender') }}");
+		$("#age").load("{{ url('tx_curr/age') }}");
 	}
 
 
