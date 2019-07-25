@@ -44,6 +44,8 @@ class TxCurrentController extends Controller
 			->orderBy('gender')
 			->get();
 
+		dd($rows);
+
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Number of Clients';
