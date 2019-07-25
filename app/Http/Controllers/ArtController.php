@@ -231,17 +231,19 @@ class ArtController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['outcomes'][0]['name'] = "Below 1";
-		$data['outcomes'][1]['name'] = "Below 15";
-		$data['outcomes'][2]['name'] = "Above 15";
-		$data['outcomes'][3]['name'] = "MOH 729 Current tx Total";
-		$data['outcomes'][4]['name'] = "Target";
+		Lookup::bars($data, ["Below 1", "Below 15", "Above 15", "MOH 729 Current tx Total", "Target"], "column");
 
-		$data['outcomes'][0]['type'] = "column";
-		$data['outcomes'][1]['type'] = "column";
-		$data['outcomes'][2]['type'] = "column";
-		$data['outcomes'][3]['type'] = "column";
-		$data['outcomes'][4]['type'] = "spline";
+		// $data['outcomes'][0]['name'] = "Below 1";
+		// $data['outcomes'][1]['name'] = "Below 15";
+		// $data['outcomes'][2]['name'] = "Above 15";
+		// $data['outcomes'][3]['name'] = "MOH 729 Current tx Total";
+		// $data['outcomes'][4]['name'] = "Target";
+
+		// $data['outcomes'][0]['type'] = "column";
+		// $data['outcomes'][1]['type'] = "column";
+		// $data['outcomes'][2]['type'] = "column";
+		// $data['outcomes'][3]['type'] = "column";
+		// $data['outcomes'][4]['type'] = "spline";
 
 		$data['outcomes'][0]['stack'] = 'current_art';
 		$data['outcomes'][1]['stack'] = 'current_art';

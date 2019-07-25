@@ -698,12 +698,13 @@ class Lookup
 	{
 		$groupby = session('filter_groupby', 1);
 		if(!is_array($splines)) $splines = [$splines];
-		if($groupby < 10){
-			foreach ($splines as $key => $spline) {
+		foreach ($splines as $key => $spline) {
+			if($groupby < 10){
 				$data['outcomes'][$spline]['lineWidth'] = 0;
 				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
 				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
 			}
+			$data['outcomes'][$spline]['type'] = "spline";
 		}
 	}
 
