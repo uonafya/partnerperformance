@@ -63,9 +63,9 @@ class TxCurrentController extends Controller
 			$key = array_search($needle, $data['categories']);
 
 
-			if($key) $data['categories'][] = $needle;
+			if(!is_int($key)) $data['categories'][] = $needle;
 			$key = array_search($needle, $data['categories']);
-			
+
 			$data['keys'][] = $key;
 
 			if($row->gender == 'male') $item = 0;
