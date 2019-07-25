@@ -44,7 +44,7 @@ class TxCurrentController extends Controller
 			->orderBy('gender')
 			->get();
 
-		dd($rows);
+		// dd($rows);
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
@@ -52,6 +52,7 @@ class TxCurrentController extends Controller
 
 		$data['outcomes'][0]['name'] = "Male";
 		$data['outcomes'][1]['name'] = "Female";
+		$data['outcomes'][2]['name'] = "Unknown";
 
 		$data['categories'] = [];
 
@@ -62,10 +63,15 @@ class TxCurrentController extends Controller
 			if(!$key) $data['categories'][] = $needle;
 			$key = array_search($needle, $data['categories']);
 
-			$item = ($row->gender == 'Male') ? 0 : 1;
+			if($row->gender == 'Male') $item = 0;
+			else if($row->gender == 'Female') $item = 1;
+			else{
+				$item = 2;
+			}
+
 			$data["outcomes"][$key]["data"][$item] = (int) $row->value;
 		}
-		dd($data);
+		// dd($data);
 		return view('charts.line_graph', $data);
 	}
 
