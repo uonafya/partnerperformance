@@ -102,7 +102,7 @@
 					</div>
 				</div>
 
-			@elseif(ends_with(url()->current(), ['surge', 'vmmc',  'prep']))
+			@elseif(ends_with(url()->current(), ['surge', 'vmmc_circ',  'prep']))
 
 				@if(ends_with(url()->current(), ['surge']))
 
@@ -150,7 +150,7 @@
 
 				<div class="row">
 
-					@if(!ends_with(url()->current(), ['vmmc']))
+					@if(!ends_with(url()->current(), ['vmmc_circ']))
 						<div class="col-md-6">
 							<select class="btn filters form-control" id="filter_gender">
 								<option disabled='true'>Select Gender</option>
@@ -177,7 +177,7 @@
 
 
 			@elseif(ends_with(url()->current(), ['dispensing', 'tx_curr']))
-				@if(!ends_with(url()->current(), ['vmmc']))
+				@if(!ends_with(url()->current(), ['dispensing']))
 					<div class="row">
 						<div class="col-md-12">
 							<select class="btn filters form-control" multiple="multiple" id="filter_age">

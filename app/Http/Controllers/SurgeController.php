@@ -418,9 +418,8 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$rows = DB::table('d_surge')
-			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
 			->where('is_surge', 1)
@@ -470,9 +469,8 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$rows = DB::table('d_surge')
-			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
 			->where('is_surge', 1)
@@ -539,17 +537,15 @@ class SurgeController extends Controller
 		$sql = substr($sql, 0, -2);
 		$sql2 = substr($sql, 0, -2);
 
-		$rows = DB::table('d_surge')
-			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
 			->where('is_surge', 1)
 			->get();
 
-		$rows2 = DB::table('d_surge')
-			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+		$rows2 = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql2)
 			->when(true, $this->get_callback())
 			->where('is_surge', 1)
@@ -579,9 +575,8 @@ class SurgeController extends Controller
 
 		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($tx_new, 'tx_new') . ', SUM(pos_target) AS pos_target, SUM(tx_new_target) AS tx_new_target ';
 
-		$rows = DB::table('d_surge')
-			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('pos'))
 			->where('is_surge', 1)
