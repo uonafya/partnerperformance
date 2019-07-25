@@ -61,6 +61,7 @@ class TxCurrentController extends Controller
 			$item = ($row->gender == 'Male') ? 0 : 1;
 			$data["outcomes"][$key]["data"][$item] = (int) $row->value;
 		}
+		dd($data);
 		return view('charts.line_graph', $data);
 	}
 
