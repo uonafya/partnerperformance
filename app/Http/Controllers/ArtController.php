@@ -125,20 +125,7 @@ class ArtController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['outcomes'][0]['name'] = "New tx old form";
-		$data['outcomes'][1]['name'] = "New tx new form";
-		$data['outcomes'][2]['name'] = "Current tx old form";
-		$data['outcomes'][3]['name'] = "Current tx new form";
-
-		$data['outcomes'][4]['name'] = "Reporting New tx twice";
-		$data['outcomes'][5]['name'] = "Reporting Current tx twice";
-
-		$data['outcomes'][0]['type'] = "spline";
-		$data['outcomes'][1]['type'] = "spline";
-		$data['outcomes'][2]['type'] = "spline";
-		$data['outcomes'][3]['type'] = "spline";
-		$data['outcomes'][4]['type'] = "spline";
-		$data['outcomes'][5]['type'] = "spline";
+		Lookup::bars($data, ["New tx old form", "New tx new form", "Current tx old form", "Current tx new form", "Reporting New tx twice", "Reporting Current tx twice"], "spline");
 
 		$old_table = "`d_care_and_treatment`";
 		$new_table = "`d_hiv_and_tb_treatment`";
