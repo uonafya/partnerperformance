@@ -62,10 +62,11 @@ class TxCurrentController extends Controller
 			$needle = Lookup::get_category($row);
 			$key = array_search($needle, $data['categories']);
 
-			$data['keys'][] = $key;
 
-			if(is_numeric($key)) $data['categories'][] = $needle;
+			if($key) $data['categories'][] = $needle;
 			$key = array_search($needle, $data['categories']);
+			
+			$data['keys'][] = $key;
 
 			if($row->gender == 'male') $item = 0;
 			else if($row->gender == 'female') $item = 1;
