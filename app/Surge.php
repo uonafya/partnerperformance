@@ -498,7 +498,7 @@ class Surge
     {
         ini_set('memory_limit', -1);
         $partners = \App\Partner::where(['funding_agency_id' => 1, 'flag' => 1])->get();
-        $columns = SurgeColumn::all();
+        $columns = SurgeColumn::where(['tbl_name' => 'd_surge'])->get();
 
         $paths = $data = [];
 
