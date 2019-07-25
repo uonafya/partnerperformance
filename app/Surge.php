@@ -519,10 +519,7 @@ class Surge
                 ->selectRaw($sql)
                 ->where('week_id', '>', 32)
                 ->where('partner', $partner->id)
-                ->when($facilities, function($query) use ($facilities){
-                    return $query->whereIn('view_facilitys.id', $facilities);
-                })
-                // ->orderBy('name', 'asc')
+                ->whereIn('view_facilitys.id', $facilities)
                 ->get();
 
             foreach ($rows as $row) {
