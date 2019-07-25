@@ -55,18 +55,13 @@ class TxCurrentController extends Controller
 		$data['outcomes'][2]['name'] = "Unknown";
 
 		$data['categories'] = [];
-		$data['keys'] = [];
-
 
 		foreach ($rows as $row) {
 			$needle = Lookup::get_category($row);
 			$key = array_search($needle, $data['categories']);
 
-
 			if(!is_int($key)) $data['categories'][] = $needle;
 			$key = array_search($needle, $data['categories']);
-
-			$data['keys'][] = $key;
 
 			if($row->gender == 'male') $item = 0;
 			else if($row->gender == 'female') $item = 1;
