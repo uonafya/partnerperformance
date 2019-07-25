@@ -46,15 +46,7 @@ class RegimenController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['outcomes'][0]['name'] = "Current tx MOH 729";
-		$data['outcomes'][1]['name'] = "Current tx MOH 731";
-		$data['outcomes'][2]['name'] = "Current tx MOH 731 rev. 2018";
-		$data['outcomes'][3]['name'] = "Reporting on 731 old & new";
-
-		$data['outcomes'][0]['type'] = "spline";
-		$data['outcomes'][1]['type'] = "spline";
-		$data['outcomes'][2]['type'] = "spline";
-		$data['outcomes'][3]['type'] = "spline";
+		Lookup::bars($data, ["Current tx MOH 729", "Current tx MOH 731", "Current tx MOH 731 rev. 2018", "Reporting on 731 old & new"], "spline");
 
 		foreach ($current_art_other as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);

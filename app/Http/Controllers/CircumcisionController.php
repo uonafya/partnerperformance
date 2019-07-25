@@ -26,15 +26,7 @@ class CircumcisionController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['outcomes'][0]['name'] = "Positive";
-		$data['outcomes'][1]['name'] = "Negative";
-		$data['outcomes'][2]['name'] = "Unknown Status";
-		$data['outcomes'][3]['name'] = "Positivity";
-
-		$data['outcomes'][0]['type'] = "column";
-		$data['outcomes'][1]['type'] = "column";
-		$data['outcomes'][2]['type'] = "column";
-		$data['outcomes'][3]['type'] = "spline";
+		Lookup::bars($data, ["Positive", "Negative", "Unknown Status", "Positivity"], "column");
 
 		$data['outcomes'][0]['yAxis'] = 1;
 		$data['outcomes'][1]['yAxis'] = 1;

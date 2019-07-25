@@ -53,13 +53,7 @@ class IndicatorController extends Controller
 
 		$data['div'] = str_random(15);
 
-		$data['outcomes'][0]['type'] = "column";
-		$data['outcomes'][1]['type'] = "column";
-		$data['outcomes'][2]['type'] = "column";
-		$data['outcomes'][3]['type'] = "column";
-		$data['outcomes'][4]['type'] = "column";
-		$data['outcomes'][5]['type'] = "column";
-		$data['outcomes'][6]['type'] = "spline";
+		Lookup::bars($data, ["Partner Reported Positive Tests", "Partner Reported Negative Tests", "DHIS Positive Tests", "DHIS Negative Tests", "DHIS Positive PMTCT", "DHIS Negative PMTCT", "Target"], "column");
 
 		// $data['outcomes'][0]['color'] = "#F2784B";
 		// $data['outcomes'][1]['color'] = "#1BA39C";
@@ -68,17 +62,6 @@ class IndicatorController extends Controller
 		// $data['outcomes'][4]['color'] = "column";
 		// $data['outcomes'][5]['color'] = "column";
 		// $data['outcomes'][6]['color'] = "#ff4000";
-
-		$data['outcomes'][0]['name'] = "Partner Reported Positive Tests";
-		$data['outcomes'][1]['name'] = "Partner Reported Negative Tests";
-
-		$data['outcomes'][2]['name'] = "DHIS Positive Tests";
-		$data['outcomes'][3]['name'] = "DHIS Negative Tests";
-
-		$data['outcomes'][4]['name'] = "DHIS Positive PMTCT";
-		$data['outcomes'][5]['name'] = "DHIS Negative PMTCT";
-
-		$data['outcomes'][6]['name'] = "Target";
 
 		$data['outcomes'][0]['stack'] = 'datim';
 		$data['outcomes'][1]['stack'] = 'datim';

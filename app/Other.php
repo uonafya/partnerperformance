@@ -9,11 +9,14 @@ use App\User;
 use Illuminate\Support\Facades\Mail;
 
 use App\Mail\NewUser;
+use App\Mail\TestMail;
 use App\Mail\CustomMail;
 use Carbon\Carbon;
 
 class Other
 {
+
+
 
 	public static function reset_email($id)
 	{

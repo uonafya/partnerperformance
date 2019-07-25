@@ -526,8 +526,7 @@ class Surge
                 ->get();
 
             foreach ($rows as $row) {
-                $row_array = get_object_vars($row);
-                $data[] = $row_array;
+                $data[] = get_object_vars($row);
             }
             $path = storage_path('exports/' . $filename . '.csv');
             if(file_exists($path)) unlink($path);

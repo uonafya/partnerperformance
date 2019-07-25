@@ -36,6 +36,7 @@ class TxCurrentController extends Controller
 			->selectRaw($q['select_query'] . ", gender, SUM(value) AS value ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::surge_columns_query(false, false, true);)
 			->groupby($q['group_query'], 'gender')
 			->when(true, function($query) use($groupby, $q) {
 				if($groupby < 10) return $query->orderBy('div_id');
