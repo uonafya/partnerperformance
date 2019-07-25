@@ -79,7 +79,7 @@ class Controller extends BaseController
 
     public function year_callback($divisions_query, $date_query, $prepension)
     {
-    	return function($query) use($divisions_query, $prepension){
+    	return function($query) use($divisions_query, $date_query, $prepension){
     		return $query->addSelect("{$prepension}year")
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
