@@ -37,9 +37,9 @@ class TxCurrentController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupby($q['group_query'], 'gender')
-			->when(($groupby < 10), function($query){
-				return $query->orderBy('value');
-			})
+			// ->when(($groupby < 10), function($query){
+			// 	return $query->orderBy('value');
+			// })
 			->get();
 
 		$data['div'] = str_random(15);
@@ -59,7 +59,7 @@ class TxCurrentController extends Controller
 			$key = array_search($needle, $data['categories']);
 
 			$item = ($row->gender == 'Male') ? 0 : 1;
-			$data["outcomes"][$prop_key]["data"][$key] = (int) $row->value;
+			$data["outcomes"][$key]["data"][$item] = (int) $row->value;
 		}
 		return view('charts.line_graph', $data);
 	}
