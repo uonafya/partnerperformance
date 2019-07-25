@@ -41,10 +41,10 @@ class TxCurrentController extends Controller
 				if($groupby < 10) return $query->orderBy('div_id');
 				return $query->orderBy($q['select_query']);
 			})
-			->orderBy('gender')
+			->orderBy('gender_id')
 			->get();
 
-		// dd($rows);
+		dd($rows);
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
