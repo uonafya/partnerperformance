@@ -44,7 +44,7 @@ class TxCurrentController extends Controller
 			->orderBy('gender_id')
 			->get();
 
-		dd($rows);
+		// dd($rows);
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
@@ -63,8 +63,8 @@ class TxCurrentController extends Controller
 			if(!$key) $data['categories'][] = $needle;
 			$key = array_search($needle, $data['categories']);
 
-			if($row->gender == 'Male') $item = 0;
-			else if($row->gender == 'Female') $item = 1;
+			if($row->gender == 'male') $item = 0;
+			else if($row->gender == 'female') $item = 1;
 			else{
 				$item = 2;
 			}
