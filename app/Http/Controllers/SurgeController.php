@@ -34,7 +34,8 @@ class SurgeController extends Controller
 
 		$sql = $this->get_sum($tested_columns, 'tests') . ', ' . $this->get_sum($positive_columns, 'pos') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
 
-		$rows = DB::when(true, $this->get_joins_callback_weeks($this->my_table))
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('tests'))
 			->where('is_surge', 1)
@@ -108,7 +109,8 @@ class SurgeController extends Controller
 
 		$sql = $this->get_sum($positive_columns, 'pos') . ', ' .  $this->get_sum($tx_new, 'tx_new') . ', SUM(testing_target) AS testing_target, SUM(pos_target) AS pos_target ';
 
-		$rows = DB::when(true, $this->get_joins_callback_weeks($this->my_table))
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('pos'))
 			->where('is_surge', 1)
@@ -201,7 +203,8 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$rows = DB::when(true, $this->get_joins_callback_weeks($this->my_table))
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
 			->where('is_surge', 1)
@@ -319,7 +322,8 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$rows = DB::when(true, $this->get_joins_callback_weeks($this->my_table))
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
 			->where('is_surge', 1)
@@ -371,7 +375,8 @@ class SurgeController extends Controller
 
 		$sql = substr($sql, 0, -2);
 
-		$rows = DB::when(true, $this->get_joins_callback_weeks($this->my_table))
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback())
 			->where('is_surge', 1)
