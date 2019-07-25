@@ -80,11 +80,11 @@ class Controller extends BaseController
     public function year_callback($divisions_query, $date_query, $prepension)
     {
     	return function($query) use($divisions_query, $prepension){
-    		return $query->addSelect("{$prepension}.year")
+    		return $query->addSelect("{$prepension}year")
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
-    			->groupBy("{$prepension}.year")
-    			->orderBy("{$prepension}.year", 'asc');
+    			->groupBy("{$prepension}year")
+    			->orderBy("{$prepension}year", 'asc');
     	};
     }
 
@@ -102,12 +102,12 @@ class Controller extends BaseController
     public function year_month_callback($divisions_query, $date_query, $prepension)
     {
     	return function($query) use($divisions_query, $date_query, $prepension){
-    		return $query->addSelect("{$prepension}.year", "{$prepension}.month")
+    		return $query->addSelect("{$prepension}year", "{$prepension}month")
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
-    			->groupBy("{$prepension}.year", "{$prepension}.month")
-    			->orderBy("{$prepension}.year", 'asc')
-    			->orderBy("{$prepension}.month", 'asc');
+    			->groupBy("{$prepension}year", "{$prepension}.month")
+    			->orderBy("{$prepension}year", 'asc')
+    			->orderBy("{$prepension}month", 'asc');
     	};
     }
 
