@@ -10,12 +10,57 @@ use App\Facility;
 use App\SurgeColumn;
 use App\SurgeColumnView;
 use App\SurgeModality;
+use App\SurgeAge;
 use App\AgeCategory;
 use App\Week;
 
 class WeeklyController extends Controller
 {
 	private $my_table = 'd_weeklies';
+
+	// VMMC
+	public function vmmc_summary()
+	{
+		$groupby = session('filter_groupby', 1);
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->join('surge_columns_view', 'surge_columns_view.id', '=', "{$this->my_table}.column_id")
+			->selectRaw("age_name, SUM(value) AS value ")
+			->whereRaw(Lookup::surge_columns_query(false, false, true))
+			->when(true, $this->get_callback())
+			->when(($groupby < 10), function($query){
+				return $query->orderBy('div_id', 'asc');
+			})
+			->orderBy('max_age', 'asc')
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['suffix'] = '';
+		$data['yAxis'] = 'Number of Clients';
+
+		$ages = SurgeAge::vmmc_circ()->get();
+
+		$bars = $ages->pluck(['age_name'])->toArray();
+		Lookup::bars($data, $bars);
+		$data['categories'] = [];
+
+		foreach ($rows as $row) {
+			$needle = Lookup::get_category($row);
+			$key = array_search($needle, $data['categories']);
+
+			if(!is_int($key)) $data['categories'][] = $needle;
+			$key = array_search($needle, $data['categories']);
+			$item = array_search($row->age_name, $bars);
+
+			$data["outcomes"][$item]["data"][$key] = (int) $row->value;
+		}
+
+		return view('charts.line_graph', $data);
+
+	}
+
+
 
 
 	public function download_excel(Request $request)
