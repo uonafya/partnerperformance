@@ -37,9 +37,11 @@ class TxCurrentController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->groupby($q['group_query'], 'gender')
-			// ->when(($groupby < 10), function($query){
-			// 	return $query->orderBy('value');
-			// })
+			->when(, function($query) use($groupby, $q) {
+				if($groupby < 10) return $query->orderBy('div_id');
+				return $query->orderBy($q['select_query']);
+			})
+			->orderBy('gender')
 			->get();
 
 		$data['div'] = str_random(15);
