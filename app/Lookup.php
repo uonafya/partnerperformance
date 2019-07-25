@@ -436,47 +436,43 @@ class Lookup
 
 	public static function year_month_query($deduction=2)
 	{
-		// if(session('financial')){
-			$cfy = date('Y');
-			if(date('m') > 9) $cfy++;
+		$cfy = date('Y');
+		if(date('m') > 9) $cfy++;
 
-			$financial_year = session('filter_financial_year');
-			$quarter = session('filter_quarter');
-			$m = session('filter_month');
+		$financial_year = session('filter_financial_year');
+		$quarter = session('filter_quarter');
+		$m = session('filter_month');
 
-			if(!$quarter){
-				// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
-				if($financial_year <> $cfy){
-					$month = 9 - ($deduction-1);
-					if($m) $month = $m;
-				}
-				else{
-					$month = date('m') - $deduction;
-					// if(date('d') < 10) $month--;
-					// if($month == 9) $financial_year--;
-					if($month < 10 && date('m') > 9) $financial_year--;
-					if($month < 1) $month += 12;
-					if($m) $month = $m;
-					// return " financial_year='{$financial_year}' and month='{$month}'";
-				}
+		if($m) $month = $m;
+		else if(!$quarter){
+			// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
+			if($financial_year <> $cfy) $month = 9 - ($deduction-1);
+			else{
+				$month = date('m') - $deduction;
+				// if(date('d') < 10) $month--;
+				// if($month == 9) $financial_year--;
+				if($month < 10 && date('m') > 9) $financial_year--;
+				if($month < 1) $month += 12;
+				if($m) $month = $m;
+				// return " financial_year='{$financial_year}' and month='{$month}'";
+			}
+		}
+		else{
+			$n = \App\Synch::get_financial_year_quarter(date('Y'), date('m'));
+			$month = self::max_per_quarter($quarter) - ($deduction-1);
+
+			if($financial_year <> $cfy || ($financial_year == $cfy && $quarter <> $n['quarter'])){					
+				// return " financial_year='{$financial_year}' and month='{$month}'";
 			}
 			else{
-				$n = \App\Synch::get_financial_year_quarter(date('Y'), date('m'));
-				$month = self::max_per_quarter($quarter) - ($deduction-1);
-
-				if($financial_year <> $cfy || ($financial_year == $cfy && $quarter <> $n['quarter'])){					
-					// return " financial_year='{$financial_year}' and month='{$month}'";
-				}
-				else{
-					$month = date('m') - $deduction;
-					// if(date('d') < 10) $month--;
-					// if($month == 9) $financial_year--;
-					if($month < 10 && date('m') > 9) $financial_year--;
-					if($month < 1) $month += 12;
-					// return " financial_year='{$financial_year}' and month='{$month}'";
-				}
+				$month = date('m') - $deduction;
+				// if(date('d') < 10) $month--;
+				// if($month == 9) $financial_year--;
+				if($month < 10 && date('m') > 9) $financial_year--;
+				if($month < 1) $month += 12;
+				// return " financial_year='{$financial_year}' and month='{$month}'";
 			}
-		// }
+		}
 		session(['tx_financial_year' => $financial_year, 'tx_month' => $month]);
 		return " financial_year='{$financial_year}' and month='{$month}'";
 	}

@@ -19,6 +19,50 @@ class TxCurrentController extends Controller
 	private $my_conditions = ['modality' => 'tx_curr'];
 
 
+	public function gender()
+	{
+		$q = Lookup::groupby_query();
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$groupby = session('filter_groupby', 1);
+
+		if($groupby != 12) $date_query = Lookup::year_month_query();
+		else if($groupby > 9) return null;
+
+		$rows = DB::table($this->my_table)
+			->join('view_facilitys', 'view_facilitys.id', '=', "{$this->my_table}.facility")
+			->join('periods', 'periods.id', '=', "{$this->my_table}.period_id")
+			->join('surge_columns_view', 'surge_columns_view.id', '=', "{$this->my_table}.column_id")
+			->selectRaw($q['select_query'] . ", gender, SUM(value) AS value ")
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
+			->groupby($q['group_query'], 'gender')
+			->when(($groupby < 10), function($query){
+				return $query->orderBy('value');
+			})
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['suffix'] = '';
+		$data['yAxis'] = 'Number of Clients';
+
+		$data['outcomes'][0]['name'] = "Male";
+		$data['outcomes'][1]['name'] = "Female";
+
+		foreach ($rows as $row) {
+			$needle = Lookup::get_category($row);
+			$key = array_search($needle, $data['categories']);
+
+			if(!$key) $data['categories'][] = $needle;
+			$key = array_search($needle, $data['categories']);
+
+			$item = ($row->gender == 'Male') ? 0 : 1;
+			$data["outcomes"][$prop_key]["data"][$key] = (int) $row->value;
+		}
+		return view('charts.line_graph', $data);
+	}
+
+
 	public function download_excel(Request $request)
 	{		
 		ini_set('memory_limit', '-1');

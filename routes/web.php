@@ -136,7 +136,7 @@ Route::prefix('dispensing')->name('dispensing.')->group(function(){
 
 
 Route::prefix('tx_curr')->name('tx_curr.')->group(function(){
-	Route::get('summary', 'TxCurrentController@summary')->name('summary');
+	Route::get('gender', 'TxCurrentController@gender')->name('gender');
 });
 
 Route::prefix('weekly')->name('weekly.')->group(function(){
@@ -161,6 +161,7 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('surge', 'GeneralController@surge');
 	
 	Route::get('dispensing', 'GeneralController@dispensing');
+	Route::get('tx_curr', 'GeneralController@tx_curr');
 
 	Route::get('guide', 'GeneralController@guide');
 });

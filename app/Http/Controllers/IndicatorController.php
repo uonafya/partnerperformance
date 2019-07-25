@@ -200,6 +200,7 @@ class IndicatorController extends Controller
 		$groupby = session('filter_groupby', 1);
 
 		if($groupby != 12) $date_query = Lookup::year_month_query();
+		else if($groupby > 9) return null;
 
 		$sql = "
 			SUM(current_below1) AS below1,
