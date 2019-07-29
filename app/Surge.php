@@ -514,6 +514,8 @@ class Surge
         foreach ($partners as $partner) {
             $filename = str_replace(' ', '_', strtolower($partner->name)) . '_surge_data';
 
+            if($partner->id < 10) continue; 
+
             DB::enableQueryLog();
             $facilities = \App\Facility::where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck(['id'])->toArray();
 
@@ -521,7 +523,7 @@ class Surge
 
             // echo "File {$filename} - ID - {$partner->id} " . print_r(array_slice($facilities, 0, 10));
             echo "File {$filename} - ID - {$partner->id} ";
-            echo DB::getQueryLog();
+            dd(DB::getQueryLog());
             continue;
         
             $rows = DB::table('d_surge')
