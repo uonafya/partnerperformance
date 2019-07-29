@@ -9,6 +9,7 @@ use App\Synch;
 use App\Surge;
 use App\Period;
 use App\Week;
+use App\Facility;
 
 use App\AgeCategory;
 use App\SurgeAge;

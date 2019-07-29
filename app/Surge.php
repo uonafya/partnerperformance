@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\TestMail;
 use Excel;
 
+use App\Facility;
 use App\SurgeAge;
 use App\SurgeColumn;
 use App\SurgeGender;
