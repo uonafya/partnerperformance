@@ -514,6 +514,8 @@ class Surge
         foreach ($partners as $p) {
             if($p->id < 10) continue; 
 
+            $data = [];
+
             $filename = str_replace(' ', '_', strtolower($p->name)) . '_surge_data';
 
 
