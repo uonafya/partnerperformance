@@ -519,7 +519,8 @@ class Surge
 
             // $facilities = \App\Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
 
-            echo "File {$filename} - ID - {$partner->id} " . print_r(array_slice($facilities, 0, 10));
+            // echo "File {$filename} - ID - {$partner->id} " . print_r(array_slice($facilities, 0, 10));
+            echo "File {$filename} - ID - {$partner->id} ";
             echo DB::getQueryLog();
             continue;
         
