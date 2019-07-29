@@ -516,14 +516,14 @@ class Surge
 
             if($partner->id < 10) continue; 
 
-            DB::enableQueryLog();
+            // DB::enableQueryLog();
             $facilities = \App\Facility::where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck(['id'])->toArray();
 
             // $facilities = \App\Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
 
-            // echo "File {$filename} - ID - {$partner->id} " . print_r(array_slice($facilities, 0, 10));
-            echo "File {$filename} - ID - {$partner->id} ";
-            dd(DB::getQueryLog());
+            echo "File {$filename} - ID - {$partner->id} " . print_r(array_slice($facilities, 0, 15));
+            // echo "File {$filename} - ID - {$partner->id} ";
+            // dd(DB::getQueryLog());
             continue;
         
             $rows = DB::table('d_surge')
