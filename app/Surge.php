@@ -513,7 +513,7 @@ class Surge
 
         foreach ($partners as $p) {
             if($p->id < 10) continue; 
-            
+
             $filename = str_replace(' ', '_', strtolower($p->name)) . '_surge_data';
 
 
@@ -523,10 +523,10 @@ class Surge
 
             // $facilities = \App\Facility::select('id')->where(['is_surge' => 1, 'partner' => $p->id])->get()->pluck('id')->toArray();
 
-            echo "File {$filename} - ID - {$p->id} " . print_r(array_slice($facilities, 0, 15)) . " \n\n";
+            // echo "File {$filename} - ID - {$p->id} " . print_r(array_slice($facilities, 0, 15)) . " \n\n";
             // echo "File {$filename} - ID - {$p->id} ";
             // dd(DB::getQueryLog());
-            continue;
+            // continue;
         
             $rows = DB::table('d_surge')
                 ->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
@@ -549,6 +549,8 @@ class Surge
                 });
 
             })->store('csv');
+
+            Mail::to(['joelkith@gmail.com', 'bonyango@usaid.gov'])->send(new TestMail([$path], 'Surge Data'));
 
             $paths[] = $path;
         }
