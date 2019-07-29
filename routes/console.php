@@ -59,6 +59,10 @@ Artisan::command('surges', function () {
 	\App\Surge::surges();
 })->describe('Surges.');
 
+Artisan::command('surges:export', function () {
+	\App\Surge::surge_export();
+})->describe('Surges export.');
+
 
 
 Artisan::command('merge:all {year?}', function ($year=null) {
