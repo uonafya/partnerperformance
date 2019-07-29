@@ -503,7 +503,7 @@ class Surge
 
         $paths = $data = [];
 
-        $sql = "countyname as County, Subcounty, wardname AS `Ward`, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, start_date, end_date ";
+        $sql = "countyname as County, Subcounty, wardname AS `Ward`, facilitycode AS `MFL Code`, partnername as `Partner`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, start_date, end_date ";
 
         foreach ($columns as $column) {
             $sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
@@ -518,7 +518,7 @@ class Surge
 
 
             // DB::enableQueryLog();
-            $facilities = \App\Facility::where(['is_surge' => 1, 'partner' => $p->id])->get()->pluck(['id'])->toArray();
+            // $facilities = \App\Facility::where(['is_surge' => 1, 'partner' => $p->id])->get()->pluck(['id'])->toArray();
             // $facilities = DB::table('facilitys')->where(['is_surge' => 1, 'partner' => $p->id])->get()->pluck(['id'])->toArray();
 
             // $facilities = \App\Facility::select('id')->where(['is_surge' => 1, 'partner' => $p->id])->get()->pluck('id')->toArray();
@@ -533,7 +533,8 @@ class Surge
                 ->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
                 ->selectRaw($sql)
                 ->where('week_id', '>', 32)
-                ->where('partner', $p->id)
+                // ->where('partner', $p->id)
+                ->where(['is_surge' => 1, 'partner' => $p->id])
                 ->whereIn('view_facilitys.id', $facilities)
                 ->get();
 
@@ -550,7 +551,9 @@ class Surge
 
             })->store('csv');
 
-            Mail::to(['joelkith@gmail.com', 'bonyango@usaid.gov'])->send(new TestMail([$path], 'Surge Data'));
+            // Mail::to(['joelkith@gmail.com', 'bonyango@usaid.gov'])->send(new TestMail([$path], 'Surge Data'));
+            Mail::to(['joelkith@gmail.com'])->send(new TestMail([$path], 'Surge Data'));
+            break;
 
             $paths[] = $path;
         }
