@@ -508,12 +508,15 @@ class Surge
             $sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
         }
 
-        $partner = \App\Partner::find(22);
+        // $partner = \App\Partner::find(22);
 
-        // foreach ($partners as $partner) {
+        foreach ($partners as $partner) {
             $filename = str_replace(' ', '_', strtolower($partner->name)) . '_surge_data';
             
             $facilities = Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
+
+            echo "File {$filename} - " . print_r($facilities);
+            continue;
         
             $rows = DB::table('d_surge')
                 ->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
@@ -538,9 +541,9 @@ class Surge
             })->store('csv');
 
             $paths[] = $path;
-        // }
+        }
 
-        Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
+        // Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
     }
 
 
