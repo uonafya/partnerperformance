@@ -534,8 +534,8 @@ class Surge
                 ->selectRaw($sql)
                 ->where('week_id', '>', 32)
                 // ->where('partner', $p->id)
+                // ->whereIn('view_facilitys.id', $facilities)
                 ->where(['is_surge' => 1, 'partner' => $p->id])
-                ->whereIn('view_facilitys.id', $facilities)
                 ->get();
 
             foreach ($rows as $row) {
