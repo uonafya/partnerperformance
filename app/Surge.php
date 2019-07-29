@@ -512,9 +512,10 @@ class Surge
         // $partner = \App\Partner::find(22);
 
         foreach ($partners as $p) {
+            if($p->id < 10) continue; 
+            
             $filename = str_replace(' ', '_', strtolower($p->name)) . '_surge_data';
 
-            if($p->id < 10) continue; 
 
             // DB::enableQueryLog();
             $facilities = \App\Facility::where(['is_surge' => 1, 'partner' => $p->id])->get()->pluck(['id'])->toArray();
