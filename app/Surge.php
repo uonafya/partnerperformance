@@ -515,7 +515,7 @@ class Surge
             
             $facilities = Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
 
-            echo "File {$filename} - " . print_r($facilities);
+            echo "File {$filename} - ID - {$partner->id} " . print_r(array_slice($facilities, 0, 10));
             continue;
         
             $rows = DB::table('d_surge')
