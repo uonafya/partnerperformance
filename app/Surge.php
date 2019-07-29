@@ -551,8 +551,8 @@ class Surge
 
             })->store('csv');
 
-            // Mail::to(['joelkith@gmail.com', 'bonyango@usaid.gov'])->send(new TestMail([$path], 'Surge Data'));
-            Mail::to(['joelkith@gmail.com'])->send(new TestMail([$path], 'Surge Data'));
+            Mail::to(['joelkith@gmail.com', 'bonyango@usaid.gov'])->send(new TestMail([$path], 'Surge Data'));
+            // Mail::to(['joelkith@gmail.com'])->send(new TestMail([$path], 'Surge Data'));
             // break;
 
             $paths[] = $path;
