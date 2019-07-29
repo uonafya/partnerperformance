@@ -511,6 +511,7 @@ class Surge
         foreach ($partners as $partner) {
             $filename = str_replace(' ', '_', strtolower($partner->name)) . '_surge_data';
 
+            
             $facilities = Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
         
             $rows = DB::table('d_surge')
