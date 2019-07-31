@@ -516,7 +516,7 @@ class Surge
 
             $data = [];
 
-            $filename = str_replace(' ', '_', strtolower($p->name)) . '_surge_data';
+            $filename = $p->unspaced('name') . '_surge_data';
 
             // DB::enableQueryLog();
             // $facilities = \App\Facility::where(['is_surge' => 1, 'partner' => $p->id])->get()->pluck(['id'])->toArray();
@@ -552,7 +552,7 @@ class Surge
 
             })->store('csv');
 
-            Mail::to(['joelkith@gmail.com', 'bonyango@usaid.gov'])->send(new TestMail([$path], 'Surge Data ' . $p->name));
+            Mail::to(['joelkith@gmail.com', 'bonyango@usaid.gov'])->send(new TestMail([$path], "Surge Data {$p->name}" ));
             // Mail::to(['joelkith@gmail.com'])->send(new TestMail([$path], 'Surge Data'));
             // break;
 

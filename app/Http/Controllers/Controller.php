@@ -55,7 +55,7 @@ class Controller extends BaseController
     	}
     	else{
     		$var = Lookup::groupby_query();
-    		return $this->divisions_callback($divisions_query, $date_query, $var, $order_by, $having_null);
+    		return $this->divisions_callback($divisions_query, $date_query, $var, $groupby, $order_by, $having_null);
     	}
     }
 
@@ -135,12 +135,14 @@ class Controller extends BaseController
         };
     }
 
-    public function divisions_callback($divisions_query, $date_query, $var, $order_by=null, $having_null=null)
+    public function divisions_callback($divisions_query, $date_query, $var, $groupby, $order_by=null, $having_null=null)
     {
     	$raw = DB::raw($var['select_query']);
 
     	if($order_by){
-	    	return function($query) use($divisions_query, $date_query, $var, $raw, $order_by, $having_null){
+	    	return function($query) use($divisions_query, $date_query, $var, $groupby, $raw, $order_by, $having_null){
+                if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041]);
+
                 if($having_null){
                     return $query->addSelect($raw)
                         ->whereRaw($divisions_query)
@@ -157,7 +159,9 @@ class Controller extends BaseController
 	    	};
     	}
     	else{
-	    	return function($query) use($divisions_query, $date_query, $var, $raw){
+	    	return function($query) use($divisions_query, $date_query, $var, $groupby, $raw){
+                if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041]);
+                
 	    		return $query->addSelect($raw)
 					->whereRaw($divisions_query)
                     ->whereRaw($date_query)
