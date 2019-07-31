@@ -393,6 +393,7 @@ class OtzController extends Controller
 
 		$data['art'] = DB::table('m_art')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->where($col, 1)
 			->whereRaw($date_query)
