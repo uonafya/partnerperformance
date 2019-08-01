@@ -8,7 +8,6 @@ use App\Lookup;
 
 class ArtController extends Controller
 {
-
 	public function treatment()
 	{
 		$date_query = Lookup::date_query();
@@ -197,6 +196,7 @@ class ArtController extends Controller
 			->whereRaw($divisions_query)
 			->groupby($q['group_query'])
 			->when(($groupby < 10), function($query){
+				if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041]);
 				return $query->orderBy('above15');
 			})
 			->get();
