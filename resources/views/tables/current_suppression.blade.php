@@ -52,7 +52,8 @@
 		<tbody>
 			@foreach($rows as $key => $row)
 				<tr>
-					<td> {{ $key+1 }} </td>
+					<td> {{ $key+1 }} <div style="display: none;" > ID is {{ $row->div_id }} </div> </td>
+
 					@include('partials.rows', ['row' => $row])					
 
 					<td> {{ number_format( $row->total_m_sup ) }} </td>
