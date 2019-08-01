@@ -197,7 +197,7 @@ class ArtController extends Controller
 			->groupby($q['group_query'])
 			->when(($groupby < 10), function($query) use($groupby) {
 				if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041]);
-				return $query->orderBy('above15');
+				return $query->orderBy('above15', 'desc');
 			})
 			->get();
 
@@ -409,7 +409,7 @@ class ArtController extends Controller
 			->groupBy($q['group_query'])
 			->when(($groupby < 10), function($query) use($groupby) {
 				if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041]);
-				return $query->orderBy('reported_total');
+				return $query->orderBy('reported_total', 'desc');
 			})
 			->get();
 		$data['period_name'] = Lookup::year_month_name();
