@@ -7,6 +7,15 @@ use App\BaseModel;
 class Partner extends BaseModel
 {
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('hjf', function(Builder $builder){
+            $builder->where('id', '!=', 69);
+        });
+    }
+
 	public function facility()
 	{
 		return $this->hasMany('App\Facility', 'partner');
@@ -16,4 +25,6 @@ class Partner extends BaseModel
 	{
 		return $this->belongsTo('App\FundingAgency');
 	}
+
+
 }
