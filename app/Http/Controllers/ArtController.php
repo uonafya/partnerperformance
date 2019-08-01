@@ -198,6 +198,7 @@ class ArtController extends Controller
 			->groupby($q['group_query'])
 			->when(($groupby < 10), function($query) use($groupby) {
 				if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
+                if($groupby == 1) $query->where('partner', '!=', 69);
 				return $query->orderBy('above15', 'desc');
 			})
 			->get();
@@ -411,6 +412,7 @@ class ArtController extends Controller
 			->groupBy($q['group_query'])
 			->when(($groupby < 10), function($query) use($groupby) {
 				if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
+                if($groupby == 1) $query->where('partner', '!=', 69);
 				return $query->orderBy('reported_total', 'desc');
 			})
 			->get();
