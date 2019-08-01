@@ -7,14 +7,14 @@ use App\BaseModel;
 class Partner extends BaseModel
 {
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::addGlobalScope('hjf', function(Builder $builder){
-            $builder->where('id', '!=', 69);
-        });
-    }
+    //     static::addGlobalScope('hjf', function(Builder $builder){
+    //         $builder->where('id', '!=', 69);
+    //     });
+    // }
 
 	public function facility()
 	{
