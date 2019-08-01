@@ -1,4 +1,5 @@
 <div class="table-reponsive">
+	<div style="display: none;"> {{ $query_log }} </div>
 	<table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
 		<thead>
 			<tr class="colhead">
