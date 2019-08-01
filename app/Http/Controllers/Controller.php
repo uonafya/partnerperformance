@@ -141,7 +141,7 @@ class Controller extends BaseController
 
     	if($order_by){
 	    	return function($query) use($divisions_query, $date_query, $var, $groupby, $raw, $order_by, $having_null){
-                if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041]);
+                if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418]);
 
                 if($having_null){
                     return $query->addSelect($raw)
@@ -160,7 +160,7 @@ class Controller extends BaseController
     	}
     	else{
 	    	return function($query) use($divisions_query, $date_query, $var, $groupby, $raw){
-                if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041]);
+                if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418]);
                 
 	    		return $query->addSelect($raw)
 					->whereRaw($divisions_query)

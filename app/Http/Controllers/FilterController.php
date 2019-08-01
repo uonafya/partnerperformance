@@ -84,7 +84,7 @@ class FilterController extends Controller
         $search = $request->input('search');
         $facilities = Facility::select('id', 'name', 'facilitycode')
             ->whereRaw("(name like '%" . $search . "%' OR  facilitycode like '" . $search . "%')")
-            ->whereNotIn('id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041])
+            ->whereNotIn('id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418])
             ->where('flag', 1)
             ->paginate(10);
         return $facilities;
