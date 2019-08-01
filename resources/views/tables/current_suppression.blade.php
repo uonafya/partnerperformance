@@ -1,5 +1,5 @@
 <div class="table-reponsive">
-	<div style="display: none;"> {{ print_r($query_log) }} </div>
+	<div style="display: none;"> {{ print_r($query_log ?? []) }} </div>
 	<table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
 		<thead>
 			<tr class="colhead">
@@ -53,7 +53,7 @@
 		<tbody>
 			@foreach($rows as $key => $row)
 				<tr>
-					<td> {{ $key+1 }} <div style="display: none;" > ID is {{ $row->div_id }} </div> </td>
+					<td> {{ $key+1 }} </td>
 
 					@include('partials.rows', ['row' => $row])					
 

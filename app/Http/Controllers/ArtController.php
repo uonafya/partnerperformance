@@ -519,7 +519,7 @@ class ArtController extends Controller
 			(SUM(`total_m_sup`) + SUM(`total_f_sup`) + SUM(`total_u_sup`) + SUM(`total_m_nonsup`) + SUM(`total_f_nonsup`) + SUM(`total_u_nonsup`)) AS total
 		";
 
-		DB::enableQueryLog();
+		// DB::enableQueryLog();
 
 		$data['rows'] = DB::table('apidb.vl_site_suppression_datim')
 			->join('hcm.view_facilitys', 'view_facilitys.id', '=', 'vl_site_suppression_datim.facility')
@@ -527,7 +527,7 @@ class ArtController extends Controller
 			->when(true, $this->get_callback_no_dates('total'))
 			->get();
 
-		$data['query_log'] = DB::getQueryLog();
+		// $data['query_log'] = DB::getQueryLog();
 
 		return view('tables.current_suppression', $data);
 	}
