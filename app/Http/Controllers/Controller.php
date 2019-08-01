@@ -73,7 +73,7 @@ class Controller extends BaseController
         }
         else{
             $var = Lookup::groupby_query();
-            return $this->divisions_callback($divisions_query, $date_query, $var, $order_by, $having_null);
+            return $this->divisions_callback($divisions_query, $date_query, $var, $groupby, $order_by, $having_null);
         }
     }
 
