@@ -176,6 +176,7 @@ class ArtController extends Controller
 		$q = Lookup::groupby_query();
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
+        $unshowable = Lookup::get_unshowable();
 		$groupby = session('filter_groupby', 1);
 
 		if($groupby != 12) $date_query = Lookup::year_month_query();
@@ -196,7 +197,7 @@ class ArtController extends Controller
 			->whereRaw($divisions_query)
 			->groupby($q['group_query'])
 			->when(($groupby < 10), function($query) use($groupby) {
-				if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418]);
+				if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
 				return $query->orderBy('above15', 'desc');
 			})
 			->get();
@@ -391,6 +392,7 @@ class ArtController extends Controller
 
 		$divisions_query = Lookup::divisions_query();
 		$q = Lookup::groupby_query();
+        $unshowable = Lookup::get_unshowable();
 
 		$sql = $q['select_query'] . ", " . "
 			SUM(current_below1) AS below1,
@@ -408,7 +410,7 @@ class ArtController extends Controller
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
 			->when(($groupby < 10), function($query) use($groupby) {
-				if($groupby == 5) $query->whereNotIn('view_facilitys.id', [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418]);
+				if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
 				return $query->orderBy('reported_total', 'desc');
 			})
 			->get();

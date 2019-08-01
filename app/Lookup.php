@@ -34,6 +34,11 @@ class Lookup
 		return $months[$m] ?? '';
 	}
 
+	public static function get_unshowable()
+	{
+		return [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418, ];
+	}
+
 	public static function get_category($row)
 	{
 		$groupby = session('filter_groupby', 1);
