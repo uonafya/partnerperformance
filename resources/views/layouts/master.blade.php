@@ -59,6 +59,11 @@
 						<li><a href="{{ url('non_mer') }}">Non Mer</a></li>	
 						<li><a href="{{ url('pns') }}">PNS</a></li>	
 						<li><a href="{{ url('surge') }}">Surge</a></li>	
+						<!-- 
+						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
+						<li><a href="{{ url('tx_curr') }}">MMD</a></li>	
+						<li><a href="{{ url('weekly') }}">MMD</a></li>	
+						 -->
 						<li><a href="{{ url('regimen') }}">MOH 729</a></li>	
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
