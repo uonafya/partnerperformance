@@ -18,7 +18,7 @@ class CheckNascop
     public function handle($request, Closure $next)
     {
         if(env('DB_HOST') == '10.231.111.110'){
-            $base = 'https://kemrinairobi.nascop.org:7443/api/';
+            $base = 'https://kemrinairobi.nascop.org/api/';
             // $base = 'https://ampath.nascop.org/api/';
             try {
                 $client = new Client(['base_uri' => $base]); 
