@@ -288,7 +288,7 @@
 					reload_page();
 				});
 
-				posting.fail(function( data ) {
+				/*posting.fail(function( data ) {
 					console.log(data);
 		            setTimeout(function(){
 		                toastr.options = {
@@ -299,7 +299,7 @@
 		                };
 	                    toastr.warning("Kindly reload the page.", "Notice!");
 		            });
-				});
+				});*/
 			});		    
 
 		      //Getting the URL dynamically
