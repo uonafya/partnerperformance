@@ -8,8 +8,8 @@
 	    <meta name="csrf-token" content="{{ csrf_token() }}">
 		<!-- about this site -->
 		<meta name="description" content="A web platform for partner performance.">
-		<meta name="keywords" content="EID, VL, Early infant diagnosis, Viral Load, HIV, AIDS, HIV/AIDS, adults, paedeatrics, infants, partners">
-		<meta name="author" content="Star Sarifi Tours">
+		<meta name="keywords" content="DHIS, MOH 731, MOH 729, HIV, AIDS, HIV/AIDS, Kenya">
+		<meta name="author" content="NASCOP">
 		<meta name="Resource-type" content="Document">
 
 
@@ -286,6 +286,19 @@
 				posting.done(function( data ) {
 					console.log(data);
 					reload_page();
+				});
+
+				posting.fail(function( data ) {
+					console.log(data);
+		            setTimeout(function(){
+		                toastr.options = {
+		                    closeButton: false,
+		                    progressBar: false,
+		                    showMethod: 'slideDown',
+		                    timeOut: 10000
+		                };
+	                    toastr.warning("Kindly reload the page.", "Notice!");
+		            });
 				});
 			});		    
 
