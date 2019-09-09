@@ -129,7 +129,7 @@ function date_filter(criteria, id, date_url)
 		
 	});
 	
-	/*posting.fail(function( data ) {
+	posting.fail(function( data ) {
 		console.log(data);
         setTimeout(function(){
             toastr.options = {
@@ -140,5 +140,5 @@ function date_filter(criteria, id, date_url)
             };
             toastr.warning("Kindly reload the page.", "Notice!");
         });
-	});*/
+	});
 }

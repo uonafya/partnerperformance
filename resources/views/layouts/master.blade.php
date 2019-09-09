@@ -290,15 +290,15 @@
 
 				posting.fail(function( data ) {
 					console.log(data);
-		            // setTimeout(function(){
-		            //     toastr.options = {
-		            //         closeButton: false,
-		            //         progressBar: false,
-		            //         showMethod: 'slideDown',
-		            //         timeOut: 10000
-		            //     };
-	             //        toastr.warning("Kindly reload the page.", "Notice!");
-		            // });
+		            setTimeout(function(){
+		                toastr.options = {
+		                    closeButton: false,
+		                    progressBar: false,
+		                    showMethod: 'slideDown',
+		                    timeOut: 10000
+		                };
+	                    toastr.warning("Kindly reload the page.", "Notice!");
+		            });
 				});
 			});		    
 
