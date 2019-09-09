@@ -138,7 +138,7 @@ function date_filter(criteria, id, date_url)
                 showMethod: 'slideDown',
                 timeOut: 10000
             };
-            toastr.warning("Kindly reload the page.", "Notice!");
+            toastr.error("Kindly reload the page.", "Notice!");
         });
 	});
 }

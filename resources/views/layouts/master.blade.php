@@ -202,7 +202,7 @@
 	<script src='//cdn.datatables.net/buttons/1.4.2/js/buttons.colVis.min.js' type='text/javascript'></script>
 	<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js' type='text/javascript'></script>
 
-	<script src="{{ url('js/customFunctions1.3.js') }}"></script>
+	<script src="{{ url('js/customFunctions1.4.js') }}"></script>
 
 	<script type="text/javascript">
 	    $(function() {
@@ -297,7 +297,7 @@
 		                    showMethod: 'slideDown',
 		                    timeOut: 10000
 		                };
-	                    toastr.warning("Kindly reload the page.", "Notice!");
+	                    toastr.error("Kindly reload the page.", "Notice!");
 		            });
 				});
 			});		    
