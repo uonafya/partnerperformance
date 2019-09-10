@@ -17,7 +17,7 @@ class FilterController extends Controller
 {
 	public function filter_date(Request $request)
 	{
-		if(session('filter_groupby')) abort(400);
+		if(!session('filter_groupby')) abort(400);
 		$default_financial = session('filter_financial_year');
 
 		$year = $request->input('year');
@@ -71,7 +71,7 @@ class FilterController extends Controller
 
 	public function filter_any(Request $request)
 	{
-		if(session('filter_groupby')) abort(400);
+		if(!session('filter_groupby')) abort(400);
 		$var = $request->input('session_var');
 		$val = $request->input('value');
 
