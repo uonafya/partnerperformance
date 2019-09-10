@@ -28,17 +28,19 @@ class Dispensing
     {
         $tables = DB::select("show tables");
         foreach ($tables as $key => $row) {
-            if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) && $row->Tables_in_hcm != 'p_early_indicators') continue;
-            $columns = collect(DB::select("show columns from `" . $row->Tables_in_hcm . '`'));
+            $t = $row->Tables_in_hcm;
+            if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) && !in_array($t, ['p_early_indicators', 'd_dispensing'])) continue;
+            $columns = collect(DB::select("show columns from `" . $t . '`'));
             $p = $columns->where('Field', 'period_id')->first();
             if($p){
-                echo "Table is {$row->Tables_in_hcm} \n";
-                $indices = collect(DB::select("show index from `" . $row->Tables_in_hcm . '`'));
-                if($indices->where('Key_name', 'identifier')) DB::statement("DROP INDEX identifier on {$row->Tables_in_hcm}");
-                if($indices->where('Key_name', 'identifier_other')) DB::statement("DROP INDEX identifier_other on {$row->Tables_in_hcm}");
+                echo "Table is {$t} \n";
+                $indices = collect(DB::select("show index from `{$t}`"));
+                if($indices->where('Key_name', 'identifier')->first()) DB::statement("DROP INDEX identifier on {$t}");
+                if($indices->where('Key_name', 'identifier_other')->first()) DB::statement("DROP INDEX identifier_other on {$t}");
+                if($indices->where('Key_name', 'period_id')->first()) DB::statement("DROP INDEX period_id on {$t}");
 
-                DB::statement("CREATE INDEX period_id on {$row->Tables_in_hcm} (period_id)");
-                DB::statement("CREATE INDEX identifier on {$row->Tables_in_hcm} (period_id, facility)");
+                DB::statement("CREATE INDEX period_id on `{$t}` (period_id)");
+                DB::statement("CREATE INDEX identifier on `{$t}` (period_id, facility)");
             }
         }
     }
