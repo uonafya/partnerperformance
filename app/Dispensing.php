@@ -29,7 +29,7 @@ class Dispensing
         $tables = DB::select("show tables");
         foreach ($tables as $key => $row) {
             $t = $row->Tables_in_hcm;
-            if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) && !in_array($t, ['p_early_indicators', 'd_dispensing'])) continue;
+            if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) || in_array($t, ['p_early_indicators', 'd_dispensing'])) continue;
             $columns = collect(DB::select("show columns from `" . $t . '`'));
             $p = $columns->where('Field', 'period_id')->first();
             if($p){
