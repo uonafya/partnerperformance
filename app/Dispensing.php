@@ -35,9 +35,9 @@ class Dispensing
             if($p){
                 echo "Table is {$t} \n";
                 $indices = collect(DB::select("show index from `{$t}`"));
-                if($indices->where('Key_name', 'identifier')->first()) DB::statement("DROP INDEX identifier on {$t}");
-                if($indices->where('Key_name', 'identifier_other')->first()) DB::statement("DROP INDEX identifier_other on {$t}");
-                if($indices->where('Key_name', 'period_id')->first()) DB::statement("DROP INDEX period_id on {$t}");
+                if($indices->where('Key_name', 'identifier')->first()) DB::statement("DROP INDEX identifier on `{$t}`");
+                if($indices->where('Key_name', 'identifier_other')->first()) DB::statement("DROP INDEX identifier_other on `{$t}`");
+                if($indices->where('Key_name', 'period_id')->first()) DB::statement("DROP INDEX period_id on `{$t}`");
 
                 DB::statement("CREATE INDEX period_id on `{$t}` (period_id)");
                 DB::statement("CREATE INDEX identifier on `{$t}` (period_id, facility)");
