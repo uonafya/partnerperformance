@@ -289,6 +289,7 @@
 				});
 
 				posting.fail(function( data ) {
+					location.reload(true);
 					console.log(data);
 		            setTimeout(function(){
 		                toastr.options = {
