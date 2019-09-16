@@ -367,7 +367,10 @@ class SurgeController extends Controller
 				->when(true, $this->surge_columns_callback(true, false, true))
 				->get();
 
-			$sql .= $this->get_sum($tested_columns, $gender->gender . '_tested') . ', ' . $this->get_sum($positive_columns, $gender->gender . '_pos') . ', ';
+			if(!$tested_columns->isEmpty()){
+				$sql .= $this->get_sum($tested_columns, $gender->gender . '_tested') . ', ' . $this->get_sum($positive_columns, $gender->gender . '_pos') . ', ';				
+			}
+
 
 			$data['outcomes'][$key]['name'] = $gender->gender;
 			$data['outcomes'][$key]['type'] = "column";
@@ -389,7 +392,10 @@ class SurgeController extends Controller
 			foreach ($genders as $gender_key => $gender) {
 				$t = $gender->gender . '_tested';
 				$p = $gender->gender . '_pos';
-				$data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
+				if($row->$p) $data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
+				else{
+					$data["outcomes"][$gender_key]["data"][$key] = 0;
+				}
 			}
 		}
 		return view('charts.line_graph', $data);
