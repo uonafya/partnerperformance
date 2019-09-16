@@ -129,16 +129,7 @@ function date_filter(criteria, id, date_url)
 		
 	});
 	
-	posting.fail(function( data ) {
-		console.log(data);
-        setTimeout(function(){
-            toastr.options = {
-                closeButton: false,
-                progressBar: false,
-                showMethod: 'slideDown',
-                timeOut: 10000
-            };
-            toastr.error("Kindly reload the page.", "Notice!");
-        });
+	posting.fail(function( data ) {		
+		location.reload(true);
 	});
 }

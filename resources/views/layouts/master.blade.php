@@ -290,7 +290,7 @@
 
 				posting.fail(function( data ) {
 					location.reload(true);
-					console.log(data);
+					/*console.log(data);
 		            setTimeout(function(){
 		                toastr.options = {
 		                    closeButton: false,
@@ -299,7 +299,7 @@
 		                    timeOut: 10000
 		                };
 	                    toastr.error("Kindly reload the page.", "Notice!");
-		            });
+		            });*/
 				});
 			});		    
 

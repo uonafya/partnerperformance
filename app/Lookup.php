@@ -284,7 +284,7 @@ class Lookup
 
 		if($for_target) return " financial_year='{$financial_year}'";
 
-		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month);
+		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month, $prepension);
 
 		$query = " financial_year='{$financial_year}'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
@@ -394,10 +394,10 @@ class Lookup
 		return $query;
 	}
 
-	public static function date_range_query($year, $to_year, $month, $to_month)
+	public static function date_range_query($year, $to_year, $month, $to_month, $prepension='')
 	{
-		if($year == $to_year) return " year={$year} AND month between {$month} and {$to_month} ";
-		return " ((year = '{$year}' AND month >= '{$month}') OR (year = '{$to_year}' AND month <= '{$to_month}') OR (year > '{$year}' AND year < '{$to_year}')) ";
+		if($year == $to_year) return " {$prepension}year={$year} AND {$prepension}month between {$month} and {$to_month} ";
+		return " (({$prepension}year = '{$year}' AND {$prepension}month >= '{$month}') OR ({$prepension}year = '{$to_year}' AND {$prepension}month <= '{$to_month}') OR ({$prepension}year > '{$year}' AND {$prepension}year < '{$to_year}')) ";
 	}
 
 	/*public static function year_month_query()
