@@ -392,7 +392,7 @@ class SurgeController extends Controller
 			foreach ($genders as $gender_key => $gender) {
 				$t = $gender->gender . '_tested';
 				$p = $gender->gender . '_pos';
-				if($row->$p) $data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
+				if(isset($row->$p)) $data["outcomes"][$gender_key]["data"][$key] = Lookup::get_percentage($row->$p, $row->$t);
 				else{
 					$data["outcomes"][$gender_key]["data"][$key] = 0;
 				}
