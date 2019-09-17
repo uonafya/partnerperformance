@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('partner_id')->unsigned()->index();
             $table->tinyInteger('user_type_id')->unsigned()->index();
             $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

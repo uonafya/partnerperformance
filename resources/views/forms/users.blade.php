@@ -10,9 +10,10 @@
                 <div class="card-body">
 
                     @if (isset($user))
-                        {{ Form::open(['url' => '/user/' . $user->id, 'method' => 'put', 'class'=>'form-horizontal']) }}
+                        <form action="{{ url('/user/' . $user->id) }}" method="post" class="form-horizontal">
+                        @method('PUT')
                     @else
-                        {{ Form::open(['url'=>'/user', 'method' => 'post', 'class'=>'form-horizontal', 'id' => 'samples_form']) }}
+                        <form action="{{ url('/user/') }}" method="post" class="form-horizontal">
                     @endif
 
                         <div class="form-group row">
