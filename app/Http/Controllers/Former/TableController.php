@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Former\Controllers;
+namespace App\Http\Controllers\Former;
 
 use Illuminate\Http\Request;
 use DB;

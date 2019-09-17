@@ -27,7 +27,7 @@ class OtzController extends Controller
 		$viremia = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('viremia_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -35,7 +35,7 @@ class OtzController extends Controller
 		$dsd = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('dsd_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -43,7 +43,7 @@ class OtzController extends Controller
 		$otz = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('otz_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -51,7 +51,7 @@ class OtzController extends Controller
 		$men = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->where('men_clinic_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -140,6 +140,11 @@ class OtzController extends Controller
 			$data['outcomes'][1]['type'] = "spline";
 			$data['outcomes'][1]['name'] = "Targeted number of clinics";
 
+			$data['outcomes'][1]['lineWidth'] = 0;
+			$data['outcomes'][1]['marker'] = ['enabled' => true, 'radius' => 4];
+			$data['outcomes'][1]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			// $data['outcomes'][1]['color'] = "#000000";
+
 			$data["outcomes"][1]["data"][0] = (int) $targets->viremia ?? 0;
 			$data["outcomes"][1]["data"][1] = (int) $targets->dsd ?? 0;
 			$data["outcomes"][1]["data"][2] = (int) $targets->otz ?? 0;
@@ -152,13 +157,10 @@ class OtzController extends Controller
 
 	public function beneficiaries()
 	{
-		$date_query = Lookup::date_query(true);
-
 		$viremia = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(viremia_beneficiaries) AS beneficiaries, SUM(viremia_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -166,7 +168,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(dsd_beneficiaries) AS beneficiaries, SUM(dsd_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -174,7 +175,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(otz_beneficiaries) AS beneficiaries, SUM(otz_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -182,7 +182,6 @@ class OtzController extends Controller
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(men_clinic_beneficiaries) AS beneficiaries, SUM(men_clinic_target) AS target ")
 			->when(true, $this->get_callback())
-			->whereRaw($date_query)
 			->where('financial_year', '>', 2016)
 			->get();
 
@@ -215,8 +214,7 @@ class OtzController extends Controller
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(otz_beneficiaries) AS otz_beneficiaries, SUM(otz_target) AS otz_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
-			->when(true, $this->get_callback())
-			->whereRaw($date_query)
+			->when(true, $this->get_callback_no_dates())
 			->where('financial_year', '>', 2016)
 			->get();	
 
@@ -260,7 +258,7 @@ class OtzController extends Controller
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(otz_beneficiaries) AS otz_beneficiaries, SUM(otz_target) AS otz_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
-			->when(true, $this->get_callback())
+			->when(true, $this->get_callback_no_dates())
 			->whereRaw($date_query)
 			->get();
 
@@ -393,8 +391,9 @@ class OtzController extends Controller
 		SUM(`current_total`) as total
 		";	
 
-		$data['art'] = DB::table('d_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_art.facility')
+		$data['art'] = DB::table('m_art')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
+			->join('periods', 'periods.id', '=', 'm_art.period_id')
 			->selectRaw($sql)
 			->where($col, 1)
 			->whereRaw($date_query)
@@ -495,7 +494,7 @@ class OtzController extends Controller
 		$rows = DB::table('t_non_mer')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year AS `Financial Year`, name AS `Facility`, partnername AS `Partner Name`, facilitycode AS `MFL Code`, DHIScode AS `DHIS Code`, 
-				subcounty AS `Subcounty Name`, `countyname` AS `County Name`,
+				subcounty AS `Subcounty Name`, `countyname` AS `County Name`, is_pns AS `Is PNS (YES/NO)`,
 				is_viremia AS `Is Viremia (YES/NO)`, is_dsd AS `Is DSD (YES/NO)`, is_otz AS `Is OTZ (YES/NO)`, is_men_clinic AS `Is Men Clinic (YES/NO)`,
 				viremia_beneficiaries AS `Viremia Beneficiaries`, dsd_beneficiaries AS `DSD Beneficiaries`, otz_beneficiaries AS `OTZ Beneficiaries`, men_clinic_beneficiaries AS `Men Clinic Beneficiaries` ")
 			->when($financial_year, function($query) use ($financial_year){
@@ -508,6 +507,7 @@ class OtzController extends Controller
 		foreach ($rows as $key => $row) {
 			$row_array = get_object_vars($row);
 			$data[] = $row_array;
+			$data[$key]['Is PNS (YES/NO)'] = Lookup::get_boolean($row_array['Is PNS (YES/NO)']);
 			$data[$key]['Is Viremia (YES/NO)'] = Lookup::get_boolean($row_array['Is Viremia (YES/NO)']);
 			$data[$key]['Is DSD (YES/NO)'] = Lookup::get_boolean($row_array['Is DSD (YES/NO)']);
 			$data[$key]['Is OTZ (YES/NO)'] = Lookup::get_boolean($row_array['Is OTZ (YES/NO)']);
@@ -516,25 +516,25 @@ class OtzController extends Controller
 
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_non_mer_indicators_' . $financial_year;
 
-    	Excel::create($filename, function($excel) use($data, $key){
-    		$excel->sheet('sheet1', function($sheet) use($data, $key){
+    	Excel::create($filename, function($excel) use($data){
+    		$excel->sheet('sheet1', function($sheet) use($data){
     			$sheet->fromArray($data);
 
-	    		$letter_array = ['F', 'G', 'H', 'I'];
+	    		// $letter_array = ['F', 'G', 'H', 'I'];
 
-	    		for ($i=0; $i < $key; $i++) { 
-	    			foreach ($letter_array as $letter) {
-	    				$cell_no = $i+1;
-	    				// $sheet->
-	    				$objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
-	    				$objValidation->setType('list');
-	    				$objValidation->setErrorStyle('information');
-	    				$objValidation->setAllowBlank(true);
-	    				$objValidation->setPromptTitle('Pick from list');
-	    				$objValidation->setPrompt('Please pick a value from the drop-down list.');
-	    				$objValidation->setFormula1('"YES,NO"');
-	    			}
-	    		}
+	    		// for ($i=0; $i < $key; $i++) { 
+	    		// 	foreach ($letter_array as $letter) {
+	    		// 		$cell_no = $i+1;
+	    		// 		// $sheet->
+	    		// 		$objValidation = $sheet->getCell($letter . $cell_no)->getDataValidation();
+	    		// 		$objValidation->setType('list');
+	    		// 		$objValidation->setErrorStyle('information');
+	    		// 		$objValidation->setAllowBlank(true);
+	    		// 		$objValidation->setPromptTitle('Pick from list');
+	    		// 		$objValidation->setPrompt('Please pick a value from the drop-down list.');
+	    		// 		$objValidation->setFormula1('"YES,NO"');
+	    		// 	}
+	    		// }
     		});
 
     	})->store('xlsx');
@@ -570,6 +570,7 @@ class OtzController extends Controller
 		// print_r($data);die();
 
 		foreach ($data as $key => $value) {
+			if(!is_numeric($value->mfl_code) || (is_numeric($value->mfl_code) && $value->mfl_code < 10000)) continue;
 			if(!isset($value->mfl_code)){
 				session([
 				'toast_message' => "This upload is incorrect. Please ensure that you are submitting on the right form.",
@@ -584,10 +585,19 @@ class OtzController extends Controller
 				$unidentified++;
 				continue;
 			}
+			
+			if($fac->partner != $partner->id){
+				$fac->partner = $partner->id;
+				$fac->save();
 
-			if($fac->partner != auth()->user()->partner_id) continue;
+				DB::table('apidb.facilitys')->where('facilitycode', $fac->facilitycode)->update(['partner' => $partner->id]);
+				DB::table('national_db.facilitys')->where('facilitycode', $fac->facilitycode)->update(['partner' => $partner->id]);
+			}
+
+			// if($fac->partner != auth()->user()->partner_id) continue;
 
 			$fac->fill([
+				'is_pns' => Lookup::clean_boolean($value->is_pns_yesno), 
 				'is_viremia' => Lookup::clean_boolean($value->is_viremia_yesno), 
 				'is_dsd' => Lookup::clean_boolean($value->is_dsd_yesno), 
 				'is_otz' => Lookup::clean_boolean($value->is_otz_yesno), 

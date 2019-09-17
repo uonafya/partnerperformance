@@ -39,6 +39,8 @@ Artisan::command('truncate:tables', function () {
 
 Artisan::command('insert:rows {year?}', function ($year=null) {
 	\App\Synch::insert_rows($year);
+	\App\Merger::insert_rows($year);
+	\App\Other::partner_indicators_insert($year);
 })->describe('Insert rows for data tables.');
 
 Artisan::command('populate {year?}', function ($year=null) {
@@ -49,13 +51,27 @@ Artisan::command('regimens {year?}', function ($year=null) {
 	\App\Synch::populate_regimen($year);
 })->describe('Populate regimen tables with values.');
 
+Artisan::command('notify', function () {
+	\App\Other::send_pns();
+})->describe('Send emails to all partners.');
+
+Artisan::command('surges', function () {
+	\App\Surge::surges();
+})->describe('Surges.');
+
+Artisan::command('surges:export', function () {
+	\App\Surge::surge_export();
+})->describe('Surges export.');
+
 
 
 Artisan::command('merge:all {year?}', function ($year=null) {
 	\App\Merger::testing($year);
 	\App\Merger::art($year);
 	\App\Merger::pmtct($year);
-})->describe('Merge the testing, art and pmtct records.');
+	\App\Merger::circumcision($year);
+	\App\Merger::keypop($year);
+})->describe('Merge the testing, art, pmtct, keypop and circumcision records.');
 
 
 Artisan::command('merge:testing {year?}', function ($year=null) {
@@ -69,6 +85,14 @@ Artisan::command('merge:art {year?}', function ($year=null) {
 Artisan::command('merge:pmtct {year?}', function ($year=null) {
 	\App\Merger::pmtct($year);
 })->describe('Merge the pmtct records.');
+
+Artisan::command('merge:circumcision {year?}', function ($year=null) {
+	\App\Merger::circumcision($year);
+})->describe('Merge the circumcision records.');
+
+Artisan::command('merge:keypop {year?}', function ($year=null) {
+	\App\Merger::keypop($year);
+})->describe('Merge the keypop records.');
 
 
 

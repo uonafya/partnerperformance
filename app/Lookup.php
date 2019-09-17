@@ -10,6 +10,14 @@ use \App\Partner;
 use \App\Ward;
 use \App\Facility;
 
+use \App\Week;
+use App\AgeCategory;
+use App\SurgeAge;
+use App\SurgeGender;
+use App\SurgeModality;
+use App\SurgeColumn;
+use App\SurgeColumnView;
+
 use Excel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -20,52 +28,15 @@ use App\Mail\Duplicate;
 class Lookup
 {
 
-	public static function resolve_month($month)
+	public static function resolve_month($m)
 	{
-		switch ($month) {
-			case 1:
-				$value = 'Jan';
-				break;
-			case 2:
-				$value = 'Feb';
-				break;
-			case 3:
-				$value = 'Mar';
-				break;
-			case 4:
-				$value = 'Apr';
-				break;
-			case 5:
-				$value = 'May';
-				break;
-			case 6:
-				$value = 'Jun';
-				break;
-			case 7:
-				$value = 'Jul';
-				break;
-			case 8:
-				$value = 'Aug';
-				break;
-			case 9:
-				$value = 'Sep';
-				break;
-			case 10:
-				$value = 'Oct';
-				break;
-			case 11:
-				$value = 'Nov';
-				break;
-			case 12:
-				$value = 'Dec';
-				break;
-			default:
-				$value = '';
-				break;
-		}
+		$months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		return $months[$m] ?? '';
+	}
 
-		return $value;
-
+	public static function get_unshowable()
+	{
+		return [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418, 5272, 5595, 2386, 3433, 5539, 3465, 7239, 7237, 3490, 1275, 3515, 7143, 1816, ];
 	}
 
 	public static function get_category($row)
@@ -76,9 +47,10 @@ class Lookup
 			if($groupby == 11) return 'FY ' . $row->financial_year;
 			if($groupby == 12) return self::resolve_month($row->month) . ', ' . $row->year;
 			if($groupby == 13) return "FY {$row->financial_year} Q {$row->quarter}";
+			if($groupby == 14) return "FY {$row->financial_year} W {$row->week_number}";
 		}
 		else{
-			return $row->name;
+			return $row->name ?? '';
 		}	
 	} 
 
@@ -189,6 +161,35 @@ class Lookup
 		];
 	}
 
+	public static function view_data_surges()
+	{
+		$divisions = Division::all();
+		$agencies = FundingAgency::all();
+
+		$partners = Partner::select('id', 'name')->where('flag', 1)->orderBy('name', 'asc')->get();
+		$counties = County::select('id', 'name')->orderBy('name', 'asc')->get();
+		$subcounties = Subcounty::select('id', 'name')->orderBy('name', 'asc')->get();
+		$wards = Ward::select('id', 'name')->orderBy('name', 'asc')->get();
+
+		return [
+			'divisions' => $divisions,
+			'agencies' => $agencies,
+			'partners' => $partners,
+			'counties' => $counties,
+			'subcounties' => $subcounties,
+			'wards' => $wards,
+
+			'weeks' => Week::all(),
+			'modalities' => SurgeModality::surge()->get(),
+			'genders' => SurgeGender::all(),
+			'ages' => SurgeAge::surge()->get(),
+
+			'age_categories' => AgeCategory::all(),
+
+			'date_url' => url('filter/date'),
+		];
+	}
+
 	public static function table_data()
 	{
 		$data['div'] = str_random(15);
@@ -243,6 +244,7 @@ class Lookup
 			if($groupby == 11) $match = $collection->where('financial_year', $row->financial_year)->first();
 			if($groupby == 12) $match = $collection->where('year', $row->year)->where('month', $row->month)->first();
 			if($groupby == 13) $match = $collection->where('financial_year', $row->financial_year)->where('quarter', $row->quarter)->first();
+			if($groupby == 14) $match = $collection->where('financial_year', $row->financial_year)->where('week_number', $row->week_number)->first();
 		}
 		else{
 			$match = $collection->where('div_id', $row->div_id)->first();
@@ -269,7 +271,8 @@ class Lookup
 		return "<a href='javascript:void(0)' class='alert-link'><center><strong>{$name}</strong></center></a>";
 	}
 
-	public static function date_query($for_target=false)
+	// Prepension allows us to prepend 'periods.' so it doesn't clash
+	public static function date_query($for_target=false, $prepension = '')
 	{
 		$financial_year = session('filter_financial_year');
 		$quarter = session('filter_quarter');
@@ -281,11 +284,11 @@ class Lookup
 
 		if($for_target) return " financial_year='{$financial_year}'";
 
-		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month);
+		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month, $prepension);
 
 		$query = " financial_year='{$financial_year}'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
-		if($month) $query .= " AND quarter='{$quarter}'";
+		if($month) $query .= " AND {$prepension}month='{$month}'";
 
 		return $query;
 
@@ -391,10 +394,10 @@ class Lookup
 		return $query;
 	}
 
-	public static function date_range_query($year, $to_year, $month, $to_month)
+	public static function date_range_query($year, $to_year, $month, $to_month, $prepension='')
 	{
-		if($year == $to_year) return " year={$year} AND month between {$month} and {$to_month} ";
-		return " ((year = '{$year}' AND month >= '{$month}') OR (year = '{$to_year}' AND month <= '{$to_month}') OR (year > '{$year}' AND year > '{$to_year}')) ";
+		if($year == $to_year) return " {$prepension}year={$year} AND {$prepension}month between {$month} and {$to_month} ";
+		return " (({$prepension}year = '{$year}' AND {$prepension}month >= '{$month}') OR ({$prepension}year = '{$to_year}' AND {$prepension}month <= '{$to_month}') OR ({$prepension}year > '{$year}' AND {$prepension}year < '{$to_year}')) ";
 	}
 
 	/*public static function year_month_query()
@@ -438,46 +441,72 @@ class Lookup
 
 	public static function year_month_query($deduction=2)
 	{
-		if(session('financial')){
-			$cfy = date('Y');
-			if(date('m') > 9) $cfy++;
+		$cfy = date('Y');
+		if(date('m') > 9) $cfy++;
 
-			$financial_year = session('filter_financial_year');
-			$quarter = session('filter_quarter');
-			$m = session('filter_month');
+		$financial_year = session('filter_financial_year');
+		$quarter = session('filter_quarter');
+		$m = session('filter_month');
 
-			if(!$quarter){
-				// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
-				if($financial_year <> $cfy) $month = 9 - ($deduction-1);
-				else{
-					$month = date('m') - $deduction;
-					// if(date('d') < 10) $month--;
-					// if($month == 9) $financial_year--;
-					if($month < 10 && date('m') > 9) $financial_year--;
-					if($month < 1) $month += 12;
-					if($m) $month = $m;
-					// return " financial_year='{$financial_year}' and month='{$month}'";
-				}
+		if($m) $month = $m;
+		else if(!$quarter){
+			// if($financial_year <> $cfy) return " financial_year='{$financial_year}' and month=9";
+			if($financial_year <> $cfy) $month = 9 - ($deduction-1);
+			else{
+				$month = date('m') - $deduction;
+				// if(date('d') < 10) $month--;
+				// if($month == 9) $financial_year--;
+				if($month < 10 && date('m') > 9) $financial_year--;
+				if($month < 1) $month += 12;
+				if($m) $month = $m;
+				// return " financial_year='{$financial_year}' and month='{$month}'";
+			}
+		}
+		else{
+			$n = \App\Synch::get_financial_year_quarter(date('Y'), date('m'));
+			$month = self::max_per_quarter($quarter) - ($deduction-1);
+
+			if($financial_year <> $cfy || ($financial_year == $cfy && $quarter <> $n['quarter'])){					
+				// return " financial_year='{$financial_year}' and month='{$month}'";
 			}
 			else{
-				$n = \App\Synch::get_financial_year_quarter(date('Y'), date('m'));
-				$month = self::max_per_quarter($quarter) - ($deduction-1);
-
-				if($financial_year <> $cfy || ($financial_year == $cfy && $quarter <> $n['quarter'])){					
-					// return " financial_year='{$financial_year}' and month='{$month}'";
-				}
-				else{
-					$month = date('m') - $deduction;
-					// if(date('d') < 10) $month--;
-					// if($month == 9) $financial_year--;
-					if($month < 10 && date('m') > 9) $financial_year--;
-					if($month < 1) $month += 12;
-					// return " financial_year='{$financial_year}' and month='{$month}'";
-				}
+				$month = date('m') - $deduction;
+				// if(date('d') < 10) $month--;
+				// if($month == 9) $financial_year--;
+				if($month < 10 && date('m') > 9) $financial_year--;
+				if($month < 1) $month += 12;
+				// return " financial_year='{$financial_year}' and month='{$month}'";
 			}
 		}
 		session(['tx_financial_year' => $financial_year, 'tx_month' => $month]);
 		return " financial_year='{$financial_year}' and month='{$month}'";
+	}
+
+
+	public static function get_tx_week($param=1)
+	{
+		$year = session('filter_financial_year');
+		if(session('filter_week')) return session('filter_week');
+		else if(session('filter_month')){
+			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->first();
+		}
+		else if(session('filter_quarter')){
+			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->first();
+		}
+		else{
+			$current_financial_year = date('Y');
+			if(date('m') > 9) $current_financial_year++;
+
+			$days = date('w') + (7 * $param);
+			if($year == $current_financial_year){				
+				$start_date = date('Y-m-d', strtotime("-{$days} days"));
+				$week = \App\Week::where('start_date', $start_date)->first();	
+			}
+			else{
+				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
+			}
+		}
+		return $week->id;
 	}
 
 	public static function year_month_name()
@@ -486,46 +515,16 @@ class Lookup
 	}
 
 	public static function max_per_quarter($quarter){
-		switch ($quarter) {
-			case 1:
-				$m = 12;
-				break;
-			case 2:
-				$m = 3;
-				break;
-			case 3:
-				$m = 6;
-				break;
-			case 4:
-				$m = 9;
-				break;			
-			default:
-				break;
-		}
-		return $m;
+		$quarters = [null, 12, 3, 6, 9];
+		return $quarters[$quarter] ?? null;
 	}
 
 	public static function min_per_quarter($quarter){
-		switch ($quarter) {
-			case 1:
-				$m = 10;
-				break;
-			case 2:
-				$m = 1;
-				break;
-			case 3:
-				$m = 4;
-				break;
-			case 4:
-				$m = 7;
-				break;			
-			default:
-				break;
-		}
-		return $m;
+		$quarters = [null, 10, 1, 4, 7];
+		return $quarters[$quarter] ?? null;
 	}
 
-	public static function divisions_query()
+	/*public static function divisions_query()
 	{
 		$query = " 1 ";
 		if(session('filter_county')) $query .= " AND county=" . session('filter_county') . " ";
@@ -536,6 +535,53 @@ class Lookup
 		if(session('filter_agency')) $query .= " AND funding_agency_id=" . session('filter_agency') . " ";
 
 		return $query;
+	}*/
+
+	public static function divisions_query()
+	{
+		$query = " 1 ";
+		if(session('filter_county')) $query .= " AND county" . self::set_division_query(session('filter_county'));
+		if(session('filter_subcounty')) $query .= " AND subcounty_id" . self::set_division_query(session('filter_subcounty'));
+		if(session('filter_ward')) $query .= " AND ward_id" . self::set_division_query(session('filter_ward'));
+		if(session('filter_facility')) $query .= " AND view_facilitys.id" . self::set_division_query(session('filter_facility'));
+		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner" . self::set_division_query(session('filter_partner'));
+		if(session('filter_agency')) $query .= " AND funding_agency_id" . self::set_division_query(session('filter_agency'));
+
+		// Though week is a time period, considering the way it is filtered, filter_week will be part of the divisions query
+		if(session('filter_week')) $query .= " AND week_id" . self::set_division_query(session('filter_week'));
+
+		return $query;
+	}
+
+	public static function set_division_query($param, $quote=false)
+	{
+		if(is_array($param)){
+			$str = " IN (";
+			foreach ($param as $key => $value) {
+				if($quote) $str .= "'{$value}', ";
+				else{
+					$str .= "{$value}, ";
+				}				
+			}
+			$str = substr($str, 0, -2);
+			$str .= ") ";
+			return $str;
+		}
+		else{
+			if($quote) return "='{$param}' ";
+			return "={$param} ";
+		}
+	}
+
+	public static function surge_columns_query($modality, $gender, $age)
+	{
+		$query = " 1 ";
+		if(session('filter_gender') && $gender) $query .= " AND gender_id" . self::set_division_query(session('filter_gender'));
+		if(session('filter_modality') && $modality) $query .= " AND modality_id" . self::set_division_query(session('filter_modality'));
+		if(session('filter_age') && $age) $query .= " AND age_id" . self::set_division_query(session('filter_age'));
+		if(session('filter_age_category_id') && $age) $query .= " AND age_category_id" . self::set_division_query(session('filter_age_category_id'));
+
+		return $query;		
 	}
 
 	public static function groupby_query($def=true)
@@ -651,6 +697,35 @@ class Lookup
 				break;
 		}
 		return ['select_query' => $select_query, 'group_query' => $group_query];
+	}
+
+	public static function splines(&$data, $splines)
+	{
+		$groupby = session('filter_groupby', 1);
+		if(!is_array($splines)) $splines = [$splines];
+		foreach ($splines as $key => $spline) {
+			if($groupby < 10){
+				$data['outcomes'][$spline]['lineWidth'] = 0;
+				$data['outcomes'][$spline]['marker'] = ['enabled' => true, 'radius' => 4];
+				$data['outcomes'][$spline]['states'] = ['hover' => ['lineWidthPlus' => 0]];
+			}
+			$data['outcomes'][$spline]['type'] = "spline";
+		}
+	}
+
+	public static function bars(&$data, $categories=[], $type='column')
+	{
+		foreach ($categories as $key => $value) {
+			$data['outcomes'][$key]['name'] = $value;
+			$data['outcomes'][$key]['type'] = $type;
+		}
+	}
+
+	public static function columns(&$data, $start, $finish, $type='column')
+	{
+		for ($i=$start; $i <= $finish; $i++) { 
+			$data['outcomes'][$i]['type'] = $type;
+		}
 	}
 
     public static function send_report(){

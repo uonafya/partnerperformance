@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Lookup;
 use App\User;
+use App\Week;
 use DB;
 
 class GeneralController extends Controller
@@ -48,11 +49,83 @@ class GeneralController extends Controller
 		return view('base.testing', $data);
 	}
 
-	public function otz()
+	public function vmmc()
 	{
 		$data = Lookup::view_data();
-		return view('base.otz', $data);
+		return view('base.vmmc', $data);
 	}
+
+	public function tb()
+	{
+		$data = Lookup::view_data();
+		return view('base.tb', $data);
+	}
+
+	public function keypop()
+	{
+		$data = Lookup::view_data();
+		return view('base.keypop', $data);
+	}
+
+	public function non_mer()
+	{
+		$data = Lookup::view_data();
+		return view('base.non_mer', $data);
+	}
+
+	public function pns()
+	{
+		$data = Lookup::view_data();
+		$data['ages'] = [
+			'unknown_m' => 'Unknown Male',
+			'unknown_f' => 'Unknown Female',
+			'below_1' => 'Below 1',
+			'below_10' => '1-9',
+			'below_15_m' => '10-14 Male',
+			'below_15_f' => '10-14 Female',
+			'below_20_m' => '15-19 Male',
+			'below_20_f' => '15-19 Female',
+			'below_25_m' => '20-24 Male',
+			'below_25_f' => '20-24 Female',
+			'below_30_m' => '25-29 Male',
+			'below_30_f' => '25-29 Female',
+			'below_50_m' => '30-49 Male',
+			'below_50_f' => '30-49 Female',
+			'above_50_m' => 'Above 50 Male',
+			'above_50_f' => 'Above 50 Female',
+		];
+		return view('base.pns', $data);
+	}
+
+	public function surge()
+	{
+		$data = Lookup::view_data_surges();
+		$financial_year = session('filter_financial_year');
+		session(['filter_agency' => 1]);
+		$data['display_date'] = ' (April, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		return view('base.surge', $data);
+	}
+
+	public function dispensing()
+	{
+		$data = Lookup::view_data_surges();
+		$financial_year = session('filter_financial_year');
+		session(['filter_agency' => 1]);
+		$data['display_date'] = ' (July, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		return view('base.dispensing', $data);		
+	}
+
+	public function tx_curr()
+	{
+		$data = Lookup::view_data_surges();
+		$data['ages'] = \App\SurgeAge::tx()->get();
+		$financial_year = session('filter_financial_year');
+		session(['filter_agency' => 1]);
+		$data['display_date'] = ' (July, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		return view('base.tx_curr', $data);		
+	}
+	
+
 
 	public function indicators()
 	{
@@ -88,6 +161,7 @@ class GeneralController extends Controller
     }
 
 
+
 	public function targets()
 	{
 		$user = auth()->user();
@@ -96,17 +170,74 @@ class GeneralController extends Controller
 		return view('forms.nonmer', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner]);
 	}
 
-	public function upload_nonmer()
+	public function download_pns()
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
-		return view('forms.upload_nonmer', ['no_header' => true, 'partner' => $partner]);
+		return view('forms.download_pns', ['no_header' => true, 'partner' => $partner]);
 	}
 
-	public function upload_indicators()
+	public function set_surge_facilities()
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
-		return view('forms.upload_indicators', ['no_header' => true, 'partner' => $partner]);
+		$facilities = \App\Facility::where('partner', $partner->id)
+			->orderBy('is_surge', 'desc')
+			->orderBy('name', 'asc')
+			->get();
+		return view('forms.set_surge_facilities', ['no_header' => true, 'partner' => $partner, 'facilities' => $facilities]);		
+	}
+
+	public function download_surge()
+	{
+		$data = Lookup::view_data_surges();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_surge', $data);
+	}
+
+	public function download_dispensing()
+	{
+		$data = Lookup::view_data_surges();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_dispensing', $data);
+	}
+
+	public function download_tx_curr()
+	{
+		$data = Lookup::view_data_surges();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_tx_curr', $data);
+	}
+
+	public function download_weeklies($modality)
+	{
+		if(!in_array($modality, ['prep_new', 'vmmc_circ'])) abort(404);
+		$data = Lookup::view_data_surges();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		$data['modality'] = $modality;
+		return view('forms.download_weeklies', $data);
+	}
+
+	public function upload_any($path, $modality=null)
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+		return view('forms.upload_any', ['no_header' => true, 'partner' => $partner, 'path' => $path, 'modality' => $modality]);	
+	}
+
+	public function upload_facilities()
+	{
+		$user = auth()->user();
+		$partner = session('session_partner');
+        $partners = \App\Partner::orderBy('name', 'asc')->get();
+		return view('forms.upload_facilities', ['no_header' => true, 'partners' => $partners]);
 	}
 }

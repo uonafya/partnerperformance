@@ -3,9 +3,19 @@
 namespace App;
 
 use App\BaseModel;
+use Illuminate\Database\Eloquent\Builder;
 
 class Partner extends BaseModel
 {
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('hjf', function(Builder $builder){
+            $builder->where('id', '!=', 69);
+        });
+    }
 
 	public function facility()
 	{
@@ -16,4 +26,6 @@ class Partner extends BaseModel
 	{
 		return $this->belongsTo('App\FundingAgency');
 	}
+
+
 }

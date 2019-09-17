@@ -39,7 +39,7 @@ class LoginController extends Controller
         $user->save();
         $partner = $user->partner;
         session(['session_partner' => $partner]);
-        return '/upload_nonmer';
+        return '/pns/download';
     }
 
     /**

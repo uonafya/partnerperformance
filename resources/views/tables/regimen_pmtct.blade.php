@@ -2,21 +2,25 @@
 	<thead>
 		<tr class="colhead">
 			<th>No</th>
-			@component('partials.columns')@endcomponent
+			@include('partials.columns')
 			<th>ART</th>
 			<th>PMTCT</th>		
+			<th>PREP</th>		
+			<th>PEP</th>		
 		</tr>
 	</thead>
 	<tbody>
-		@foreach($art_rows as $key => $row)
+		@foreach($rows as $key => $row)
 			<tr>
 				<td> {{ $key+1 }} </td>
-				@component('partials.rows', ['row' => $row])@endcomponent
+				@include('partials.rows', ['row' => $row])
 				<td> {{ number_format($row->art + $row->pmtct) }} </td>
 				<td> {{ number_format($row->pmtct) }} </td>
+				<td> {{ number_format($row->prep) }} </td>
+				<td> {{ number_format($row->pep) }} </td>
 			</tr>
 		@endforeach
 	</tbody>	
 </table>
 
-@component('partials.table_footer', ['div' => $div])@endcomponent
+@include('partials.table_footer', ['div' => $div])

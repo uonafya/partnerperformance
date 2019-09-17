@@ -18,8 +18,11 @@
             title: {
                 text: ''
             },
+            chart: {
+                zoomType: 'xy'
+            },
             xAxis: [{
-                categories: {!! json_encode($categories) !!}
+                categories: {!! json_encode($categories ?? []) !!}
             }],
             yAxis: {
                 title: {
@@ -28,6 +31,8 @@
             },
 
             tooltip: {
+                valueSuffix: "{{ $suffix ?? '' }}",
+                valuePrefix: "{{ $prefix ?? '' }}",
                 borderRadius: 2,
                 borderWidth: 1,
                 borderColor: '#999',
@@ -37,16 +42,24 @@
                 yDecimals: 0,
                 valueDecimale: 0,
                 headerFormat: '<table class="tip"><caption>{point.key}</caption>'+'<tbody>',
-                pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}</td></tr>',
+                pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}' + 
+                @if(isset($extra_tooltip))
+                    '{point.z}'
+                @else
+                    ' '
+                @endif
+                 + '</td></tr>',
                 footerFormat: '<tr><th>Total:</th>'+'<td style="text-align:right"><b>{point.total}</b></td></tr>'+'</tbody></table>'
             },
             legend: {
                 layout: 'horizontal',
-                align: 'right',
-                x: -35,
+                align: 'left',
+                x: 5,
                 verticalAlign: 'bottom',
                 y: 5,
                 floating: false,
+                width: $(window).width() - 20,
+                // width: 1000,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {

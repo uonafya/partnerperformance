@@ -20,14 +20,30 @@
 		    <div class="panel-heading">
 			    {{ $partner->name ?? '' }} 
           <br />
-          Upload Early Warning Indicators Excel
+          Upload {{ strtoupper(str_replace('_', ' ', $path)) }} Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('indicators/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
+				<form action="{{ url($path . '/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
 					@csrf
 
+          @if($modality)
+            <input name="modality" type="hidden" value="{{ $modality }} " />
+          @endif
+
+
+          <p style="font-size: 16;">
+            If you are getting a <br />
+            <b>413 Request Entity Too Large</b> Error  <br />
+
+            try saving the excel file as a csv and then try again.
+          </p>
+
           <div class="form-group">
-              <label class="col-sm-5 control-label">Upload Early Warning Indicators File (Monthly Data, Not Cumulative)</label>
+              <label class="col-sm-5 control-label">Upload {{ strtoupper(str_replace('_', ' ', $path)) }} Data
+                @if($path == 'indicators')
+                   (Monthly Data, Not Cumulative)
+                @endif
+              </label>
               <div class="col-sm-7">
                   <input class="form-control" name="upload" id="upload" type="file" accept=".xlsx, .xls, .csv" />
               </div>

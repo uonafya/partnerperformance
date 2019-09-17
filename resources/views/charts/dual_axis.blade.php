@@ -3,6 +3,11 @@
 <script type="text/javascript">
 	
     $(function () {
+        @isset($dd)
+            var dump_data = {!! $dd !!};
+            console.log(dump_data);
+        @endisset
+
         $('#{{$div}}').highcharts({
             plotOptions: {
                 column: {
@@ -16,7 +21,7 @@
                 text: ''
             },
             xAxis: [{
-                categories: {!! json_encode($categories) !!}
+                categories: {!! json_encode($categories ?? []) !!}
             }],
             yAxis: [{ // Primary yAxis
                 labels: {
@@ -28,7 +33,7 @@
                     }
                 },
                 title: {
-                    text: '<?= (isset($tat) ? @"Days": @"Percentage"); ?>',
+                    text: "{{ $yAxis2 ?? 'Percentage' }} ",
                     style: {
                         color: '#89A54E'
                     }
@@ -38,7 +43,7 @@
             }, { // Secondary yAxis
                 gridLineWidth: 0,
                 title: {
-                    text: '<?= (isset($tat) ? @"Days": @"Tests"); ?>',
+                    text: "{{ $yAxis ?? 'Tests' }} ",
                     style: {
                         color: '#4572A7'
                     }
@@ -65,16 +70,29 @@
                 yDecimals: 0,
                 valueDecimale: 0,
                 headerFormat: '<table class="tip"><caption>{point.key}</caption>'+'<tbody>',
-                pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}</td></tr>',
-                footerFormat: '<tr><th>Total:</th>'+'<td style="text-align:right"><b>{point.total}</b></td></tr>'+'</tbody></table>'
+                pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}' 
+                    @if(isset($extra_tooltip))
+                        + '</td><td> {point.z}'
+                    @endif
+                    @if(isset($point_percentage))
+                        + '</td><td> Contribution <b>({point.percentage:.1f}%)</b>'
+                    @endif
+
+                + '</td></tr>',
+                footerFormat: '<tr><th>Total:</th>'+'<td style="text-align:right"><b>{point.total}</b>' 
+                    @if(isset($extra_tooltip) || isset($point_percentage))
+                        + '</td><td>'
+                    @endif
+                +'</td></tr>'+'</tbody></table>'
             },
             legend: {
                 layout: 'horizontal',
-                align: 'right',
-                x: -100,
+                align: 'left',
+                x: 5,
                 verticalAlign: 'bottom',
-                y: -25,
+                y: 5,
                 floating: false,
+                width: $(window).width() - 20,
                 backgroundColor: '#FFFFFF'
             },
             navigation: {

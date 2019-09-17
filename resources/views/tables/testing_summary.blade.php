@@ -3,11 +3,11 @@
 		<thead>
 			<tr class="colhead">
 				<th rowspan="2">No</th>
-				@component('partials.columns', ['cols' => 'rowspan=2'])@endcomponent
+				@include('partials.columns', ['cols' => 'rowspan=2'])
 				<th rowspan="2">Below 10</th>
-				<th colspan="2">Below 15</th>
-				<th colspan="2">Below 20</th>
-				<th colspan="2">Below 25</th>
+				<th colspan="2">10-14</th>
+				<th colspan="2">15-19</th>
+				<th colspan="2">20-24</th>
 				<th colspan="2">Above 25</th>		
 				<th rowspan="2">Reported Total</th>			
 			</tr>
@@ -26,7 +26,7 @@
 			@foreach($rows as $key => $row)
 				<tr>
 					<td> {{ $key+1 }} </td>
-					@component('partials.rows', ['row' => $row])@endcomponent
+					@include('partials.rows', ['row' => $row])
 					<td> {{ number_format($row->below_10 ) }} </td>
 					<td> {{ number_format($row->below_15_m ) }} </td>
 					<td> {{ number_format($row->below_15_f ) }} </td>
@@ -43,4 +43,4 @@
 	</table>
 </div>
 
-@component('partials.table_footer', ['div' => $div])@endcomponent
+@include('partials.table_footer', ['div' => $div])

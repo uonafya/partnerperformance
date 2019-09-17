@@ -24,6 +24,7 @@
                                     <option selected='true'>Select Partner</option>
 
                                     @foreach($partners as $partner)
+                                        @continue($partner->funding_agency_id != 1)
                                         <option value="{{ $partner->id }}"
                                             @if(isset($user) && $user->partner_id == $partner->id)
                                                 selected
@@ -41,7 +42,8 @@
                                 <select class="btn filters form-control" id="filter_partner" name="user_type_id">
                                     <option selected='true'>Select User Type</option>
                                     <option value="1"> Admin </option>
-                                    <option value="2"> Partner </option>
+                                    <option value="2"> USAID </option>
+                                    <option value="3"> Partner </option>
                                 </select>   
                             </div>    
                         </div> 

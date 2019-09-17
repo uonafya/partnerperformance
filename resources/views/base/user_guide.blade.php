@@ -32,7 +32,9 @@
 				</p>
 				<p>
 					Each page has a number of dropdowns at the top. You can use them to filter to specific datasets e.g. you can select a partner, then to see how the partner is performing in a county you can select the desired county.
-					The group by dropdown is used to determine in what divisions you would like to see in the tables that can be found on that page e.g. if a partner is selected, you can select group by county to see how the partner is performing in their counties. You can then select a particular county and then select group by subcounty to see how the partner is performing in the subcounties of the selected county.
+					The group by dropdown is used to determine in what divisions you would like to see the data. It could either be a time period e.g. quarters or geographical divisions such as counties. 
+					<br />
+					An example of use is selecting a partner and then selecting group by counties to see the performance in the counties. If you are underperforming in a county, you can select the county then select group by month to see which month had a problem or you can select group by subcounties to see which subcounty was a problem.
 				</p>
 				<p>
 					If you are a partner and you have been given credentials, once you login you should see some more links. Download a template e.g. a non mer template for a particular financial year, fill in the excel with your data then upload the data on the link <b> Upload Non Mer</b>.

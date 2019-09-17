@@ -128,4 +128,8 @@ function date_filter(criteria, id, date_url)
 		reload_page();
 		
 	});
+	
+	posting.fail(function( data ) {		
+		location.reload(true);
+	});
 }

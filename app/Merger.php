@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use \App\Synch;
+use \App\Period;
 
 class Merger
 {
@@ -30,6 +31,18 @@ class Merger
         self::merge_rows($year, 'merge_pmtct', 'd_prevention_of_mother-to-child_transmission', 'd_pmtct', 'm_pmtct');
     }
 
+    public static function circumcision($year=null)
+    {
+        self::merge_rows($year, 'merge_circumcision', 'd_medical_male_circumcision', 'd_voluntary_male_circumcision', 'm_circumcision');
+    }
+
+    public static function keypop($year=null)
+    {
+        self::merge_rows($year, 'merge_keypop_testing', 'd_hiv_testing_and_prevention_services', null, 'm_keypop');
+        self::merge_rows($year, 'merge_keypop_art', 'd_hiv_and_tb_treatment', null, 'm_keypop');
+        self::merge_rows($year, 'merge_keypop_mat', 'd_methadone_assisted_therapy', null, 'm_keypop');
+    }
+
 	public static function merge_rows($year, $function_name, $new_table, $old_table, $merged_table)
 	{
         if(!$year) $year = date('Y');
@@ -37,35 +50,42 @@ class Merger
         $limit=500;
         $today = date('Y-m-d');
 
-        for ($month=1; $month < 13; $month++) { 
-            if($year == date('Y') && $month > date('m')) break;
+        $periods = Period::where(['year' => $year])->get();
+
+        foreach ($periods as $period) { 
+            if($period->year == date('Y') && $period->month > date('m')) break;
             $offset=0;
 
             while (true) {
                 $rows = DB::table($new_table)
-                        ->where(['year' => $year, 'month' => $month])
+                        ->where(['period_id' => $period->id])
                         ->limit($limit)->offset($offset)->get();
 
-                $old_rows = DB::table($old_table)
-                        ->where(['year' => $year, 'month' => $month])
-                        ->limit($limit)->offset($offset)->get();
+                if($old_table != null){
+                    $old_rows = DB::table($old_table)
+                            ->where(['period_id' => $period->id])
+                            ->limit($limit)->offset($offset)->get();
+                }
 
                 if($rows->isEmpty()) break;
 
                 foreach ($rows as $key => $row) {
-                    $old_row = $old_rows[$key];
-                    if($row->facility != $old_row->facility) $old_row = $old_rows->where('facility', $row->facility)->first();
+                    $old_row=null;
+                    if($old_table != null){
+                        $old_row = $old_rows[$key];
+                        if($row->facility != $old_row->facility) $old_row = $old_rows->where('facility', $row->facility)->first();
+                    }
 
                     $data = self::$function_name($row, $old_row);
 			        $data['dateupdated'] = $today;
 
 			        DB::connection('mysql_wr')->table($merged_table)
-			        			->where(['facility' => $row->facility, 'year' => $year, 'month' => $month])
+			        			->where(['facility' => $row->facility, 'period_id' => $period->id])
 			        			->update($data);
                 }
                 $offset+=$limit;
             }
-            echo "Completed merging for {$merged_table} for month {$month} at " . date('Y-m-d H:i:s a') . " \n";
+            echo "Completed merging for {$merged_table} for month {$period->month} at " . date('Y-m-d H:i:s a') . " \n";
         }
 	}
 
@@ -76,6 +96,9 @@ class Merger
         $data['repeat_test_hiv'] = self::merged_value($row->{'tested_repeat_hv01-14'}, $old_row->repeat_testing_hiv );
         $data['facility_test_hiv'] = self::merged_value($row->{'tested_facility_hv01-11'}, $old_row->{'static_testing_hiv_(health_facility)'} );
         $data['outreach_test_hiv'] = self::merged_value($row->{'tested_community_hv01-12'}, $old_row->outreach_testing_hiv );
+
+        $data['tested_couples'] = self::merged_value($row->{'tested_couples_hv01-15'}, $old_row->couples_testing);
+        $data['discordant_couples'] = self::merged_value($row->{'discordant_hv01-28'}, $old_row->discordant_couples_receiving_results);
 
 
         $data['positive_below10'] = $row->{'positive_1-9_hv01-17'};
@@ -157,6 +180,22 @@ class Merger
 
     	$data['current_total'] = self::merged_value($row->{'on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038'}, $old_row->total_currently_on_art);
 
+
+        $below15 = $old_row->male_below_15_years_screened_for_tb + $old_row->female_under_15_years_screened_for_tb;
+        $above15 = $old_row->male_15_years_and_older_screened_for_tb + $old_row->female_15_years_and_older_screened_for_tb;
+
+        $data['tb_screened_below1'] = $row->{'screen_for_tb_<1_hv03-051'};
+        $data['tb_screened_below10'] = $row->{'screen_for_tb_1-9_hv03-052'};
+        $data['tb_screened_below15'] = self::merged_value($row->{'screen_for_tb_10-14_hv03-053'}, $below15);
+        $data['tb_screened_below20'] = $row->{'screen_for_tb_15-19_hv03-054'};
+        $data['tb_screened_below25'] = $row->{'screen_for_tb_20-24_hv03-055'};
+        $data['tb_screened_above25'] = self::merged_value($row->{'screen_for_tb_25pos_hv03-056'}, $above15); 
+        $data['tb_screened_total'] = self::merged_value($row->{'screen_for_tb_total_hv03-057'}, $old_row->{'total_screened_for_tb'});
+
+        $data['tb_starting_art'] = self::merged_value($row->{'tb_start_haart_hv03-083'}, $old_row->{'tb_patient_starting_on_art'}); 
+        $data['tb_already_on_art'] = $row->{'tb_already_on_haart_hv03-082'}; 
+        $data['tb_art_total'] = $row->{'tb_total_on_haart(hv03-082pos083)_hv03-084'};   
+
     	return $data;
     }
 
@@ -181,6 +220,7 @@ class Merger
         $data['total_positive_pmtct'] = self::merged_value($row->{'total_positive_(add_hv02-10_-_hv02-14)_hv02-15'}, $old_row->{'total_positive_(pmtct)'});
 
         $data['total_new_positive_pmtct'] = $data['total_positive_pmtct'] - $data['known_pos_anc'];
+        if($data['total_new_positive_pmtct'] < 0) $data['total_new_positive_pmtct'] = $data['total_positive_pmtct'];
 
         $data['haart_total'] = self::merged_value($row->{'on_maternal_haart_total_hv02-20'}, $old_row->{'haart_(art)'});
 
@@ -206,9 +246,63 @@ class Merger
         return $data;
     }
 
+    public static function merge_circumcision($row, $old_row)
+    {
+        $data['circumcised_below1'] = $row->{'circumcised_1-9yr_hv04-02'};
+        $data['circumcised_below10'] = $row->{'circumcised_1-9yr_hv04-02'};
+        $data['circumcised_below15'] = self::merged_value($row->{'circumcised_10-14_hv04-03'}, $old_row->{'circumcised_0-14_yrs'});
+        $data['circumcised_below20'] = $row->{'circumcised_15-19_hv04-04'};
+        $data['circumcised_below25'] = self::merged_value($row->{'circumcised_20-24_hv04-05'}, $old_row->{'circumcised_15-24_yrs'});
+        $data['circumcised_above25'] = self::merged_value($row->{'circumcised_25pos_hv04-06'}, $old_row->{'circumcised_25_yrs_and_above'});
+        $data['circumcised_total'] = self::merged_value($row->{'circumcised_total_hv04-07'}, $old_row->{'total_circumcised'});
+
+        $data['circumcised_pos'] = self::merged_value($row->{'circumcised_hivpos_hv04-08'}, $old_row->{'positive_-hiv_status_(at_circumcision)'});
+        $data['circumcised_neg'] = self::merged_value($row->{'circumcised_hiv-_hv04-09'}, $old_row->{'negative_-hiv_status_(at_circumcision)'});
+        $data['circumcised_nk'] = self::merged_value($row->{'circumcised_hiv_nk_hv04-10'}, $old_row->{'unknown_-hiv_status_(at_circumcision)'});
+
+
+        $data['circumcised_surgical'] = $row->{'surgical_hv04-11'};
+        $data['circumcised_devices'] = $row->{'devices_hv04-12'};
+
+        $data['ae_during_moderate'] = self::merged_value($row->{'ae_during_moderate_hv04-13'}, $old_row->{'during_-_ae(s)_moderate_adverse_events_(circumcision)'});
+        $data['ae_during_severe'] = self::merged_value($row->{'ae_during_severe_hv04-14'}, $old_row->{'during_-_ae(s)_severe_adverse_events_(circumcision)'});
+        $data['ae_post_moderate'] = self::merged_value($row->{'ae_post_moderate_hv04-15'}, $old_row->{'post_-_ae(s)_moderate_adverse_events_(circumcision)'});
+        $data['ae_post_severe'] = self::merged_value($row->{'ae_post_severe_hv04-16'}, $old_row->{'post_-_ae(s)_severe_adverse_events_(circumcision)'});
+
+        return $data;
+    }
+
+    public static function merge_keypop_testing($row, $old_row)
+    {
+        $data['tested'] = $row->{'tested_keypop_hv01-16'};
+        $data['positive'] = $row->{'positive_keypop_hv01-29'};
+
+        return $data;
+    }
+
+    public static function merge_keypop_art($row, $old_row)
+    {
+        $data['enrolled'] = $row->{'enrolled_in_care_keypop_hv03-012'};        
+        $data['current_tx'] = $row->{'on_art_keypop_(hiv3-038_plus_hiv3-050)_hv03-039'};        
+        $data['new_tx'] = $row->{'start_art_keypop_hv03-027'};
+
+        return $data;    
+    }
+
+    public static function merge_keypop_mat($row, $old_row)
+    {
+        $data['mat_total'] = $row->{'keypop_on_mat_hv06-01'}; 
+        $data['mat_clients_pos'] = $row->{'mat_clients_hivpos_hv06-02'}; 
+        $data['mat_on_art'] = $row->{'hivpos_mat_clients_on_art_hv06-03'}; 
+        $data['keypop_pwid'] = $row->{'keypop_who_are_pwid_hv06-04'}; 
+
+        return $data;    
+    }
+
 
     public static function create_merged_tables()
     {
+        /*
         $art = "
             current_below1 int(10) DEFAULT NULL,
             current_below10 int(10) DEFAULT NULL,
@@ -255,6 +349,9 @@ class Merger
             repeat_test_hiv int(10) DEFAULT NULL,
             facility_test_hiv int(10) DEFAULT NULL,
             outreach_test_hiv int(10) DEFAULT NULL,
+
+                tested_couples int(10) DEFAULT NULL,
+                discordant_couples int(10) DEFAULT NULL,
 
             positive_below10 int(10) DEFAULT NULL,
             positive_below15_m int(10) DEFAULT NULL,
@@ -306,28 +403,67 @@ class Merger
             initial_pcr_2m int(10) DEFAULT NULL,
             initial_pcr_12m int(10) DEFAULT NULL,
             confirmed_pos int(10) DEFAULT NULL,
-
         ";
 
         self::table_base('m_pmtct', $pmtct);
+
+        $circumcision = "
+            circumcised_below1 int(10) DEFAULT NULL,
+            circumcised_below10 int(10) DEFAULT NULL,
+            circumcised_below15 int(10) DEFAULT NULL,
+            circumcised_below20 int(10) DEFAULT NULL,
+            circumcised_below25 int(10) DEFAULT NULL,
+            circumcised_above25 int(10) DEFAULT NULL,
+            circumcised_total int(10) DEFAULT NULL,
+
+            circumcised_pos int(10) DEFAULT NULL,
+            circumcised_neg int(10) DEFAULT NULL,
+            circumcised_nk int(10) DEFAULT NULL,
+
+            circumcised_surgical int(10) DEFAULT NULL,
+            circumcised_devices int(10) DEFAULT NULL,
+
+            ae_during_moderate int(10) DEFAULT NULL,
+            ae_during_severe int(10) DEFAULT NULL,
+            ae_post_moderate int(10) DEFAULT NULL,
+            ae_post_severe int(10) DEFAULT NULL,
+        ";
+
+        self::table_base('m_circumcision', $circumcision);
+
+        $keypop = "
+            tested int(10) DEFAULT NULL,
+            positive int(10) DEFAULT NULL,
+            enrolled int(10) DEFAULT NULL,
+            current_tx int(10) DEFAULT NULL,
+            new_tx int(10) DEFAULT NULL,
+
+            mat_total int(10) DEFAULT NULL,
+            mat_clients_pos int(10) DEFAULT NULL,
+            mat_on_art int(10) DEFAULT NULL,
+            keypop_pwid int(10) DEFAULT NULL,
+        ";
+
+        self::table_base('m_keypop', $keypop);
+        */
     }
 
     public static function insert_rows($year=null)
     {        
         if(!$year) $year = date('Y');
         $facilities = \App\Facility::select('id')->get();
-        $tables = ['m_testing', 'm_art', 'm_pmtct'];
+        $tables = ['m_testing', 'm_art', 'm_pmtct', 'm_circumcision', 'm_keypop', 'd_regimen_totals', 'd_pns'];
+
+        $periods = Period::where(['year' => $year])->get();
 
         foreach ($tables as $table) {
 
             $i=0;
             $data_array = [];
 
-            for ($month=1; $month < 13; $month++) { 
-                foreach ($facilities as $k => $val) {
-                    $data = array('year' => $year, 'month' => $month, 'facility' => $val->id);
-                    $data = array_merge($data, Synch::get_financial_year_quarter($year, $month) );
-                    $data_array[$i] = $data;
+            foreach ($periods as $period) { 
+                foreach ($facilities as $k => $fac) {
+                    $data_array[$i] = ['period_id' => $period->id, 'facility' => $fac->id];
                     $i++;
 
                     if ($i == 200) {

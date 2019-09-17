@@ -3,7 +3,7 @@
 		<thead>
 			<tr class="colhead">
 				<th>No</th>
-				@component('partials.columns')@endcomponent
+				@include('partials.columns')
 				<th>Below 1</th>
 				<th>Below 15</th>
 				<th>Above 15</th>
@@ -16,7 +16,7 @@
 			@foreach($rows as $key => $row)				
 				<tr>
 					<td> {{ $key+1 }} </td>
-					@component('partials.rows', ['row' => $row])@endcomponent
+					@include('partials.rows', ['row' => $row])
 					<td> {{ number_format($row->below1) }} </td>
 					<td> {{ number_format($row->below15) }} </td>
 					<td> {{ number_format($row->above15 ) }} </td>

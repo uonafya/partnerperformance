@@ -22,4 +22,10 @@ class BaseModel extends Model
 
         return '';
     }
+
+    public function unspaced($value)
+    {
+        if($this->$value) return str_replace(' ', '_', strtolower($this->$value));
+        return '';
+    }
 }

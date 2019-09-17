@@ -45,9 +45,8 @@ class UserController extends Controller
         $user->password = env('DEFAULT_PASSWORD');
         $user->save();
 
-        $mail_array = [$user->email];
-        Mail::to($mail_array)->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser($user));
-        // Mail::to($mail_array)->cc(['joelkith@gmail.com'])->send(new NewUser($user));
+        // Mail::to([$user->email])->cc(['jbatuka@usaid.gov', 'joelkith@gmail.com'])->send(new NewUser($user));
+        Mail::to([$user->email])->cc(['joelkith@gmail.com'])->send(new NewUser($user));
 
         session(['toast_message' => 'User Created.']);
 
@@ -90,7 +89,7 @@ class UserController extends Controller
         $user->last_login = date('Y-m-d H:i:s');
         $user->save();
         session(['toast_message' => 'The updates to your profile has been made.']);
-        return redirect('/upload_nonmer');
+        return redirect('/pns/download');
     }
 
     /**
@@ -102,17 +101,13 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect('/upload_nonmer');
+        return redirect('/pns/download');
     }
 
-
-    public function change_password(Request $request, User $user)
+    public function change_password()
     {
-        if(Auth::user()) Auth::logout();
-        Auth::login($user);
-        $partner = $user->partner;
-        session(['session_partner' => $partner]);
-
-        return view('forms.password_update', ['user' => $user]);
+        $user = auth()->user();
+        session(['session_partner' => $user->partner]);        
+        return view('forms.password_update', ['no_header' => true, 'user' => $user]);
     }
 }

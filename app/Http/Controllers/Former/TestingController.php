@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Former\Controllers;
+namespace App\Http\Controllers\Former;
 
 use Illuminate\Http\Request;
 use DB;
@@ -173,7 +173,7 @@ class TestingController extends Controller
 		$t = round(($target->tests / 12), 2);
 
 		$data['div'] = str_random(15);
-		$data['ytitle'] = 'Percentage';
+		$data['yAxis'] = 'Percentage';
 
 		$data['outcomes'][0]['name'] = "Positivity";
 		$data['outcomes'][1]['name'] = "Targeted Positivity";

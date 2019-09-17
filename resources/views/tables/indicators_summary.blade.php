@@ -3,7 +3,7 @@
 		<thead>
 			<tr class="colhead">
 				<th>No</th>
-				@component('partials.columns')@endcomponent
+				@include('partials.columns')
 				<th>Current TX {{ $current_tx_date ?? '' }}</th>
 				<th>Net New TX</th>
 				<th>Tests</th>
@@ -23,7 +23,7 @@
 
 				<tr>
 					<td> {{ $i }} </td>
-					@component('partials.rows', ['row' => $row])@endcomponent
+					@include('partials.rows', ['row' => $row])
 
 					<td> {{ number_format($current_tx) }} </td>
 
@@ -39,4 +39,4 @@
 	</table>
 </div>
 
-@component('partials.table_footer', ['div' => $div])@endcomponent
+@include('partials.table_footer', ['div' => $div])

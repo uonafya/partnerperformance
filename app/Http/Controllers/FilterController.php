@@ -17,6 +17,7 @@ class FilterController extends Controller
 {
 	public function filter_date(Request $request)
 	{
+		if(!session('filter_groupby')) abort(400);
 		$default_financial = session('filter_financial_year');
 
 		$year = $request->input('year');
@@ -70,10 +71,11 @@ class FilterController extends Controller
 
 	public function filter_any(Request $request)
 	{
+		if(!session('filter_groupby')) abort(400);
 		$var = $request->input('session_var');
 		$val = $request->input('value');
 
-		if($val == null || !is_numeric($val)) $val = null;
+		if($val == null || (!is_array($val) && in_array($val, ['null', ''])) || (is_array($val) && in_array('null', $val)) ) $val = null;
 		session([$var => $val]);
 
 		return [$var => $val];
@@ -84,6 +86,7 @@ class FilterController extends Controller
         $search = $request->input('search');
         $facilities = Facility::select('id', 'name', 'facilitycode')
             ->whereRaw("(name like '%" . $search . "%' OR  facilitycode like '" . $search . "%')")
+            ->whereNotIn('id', Lookup::get_unshowable())
             ->where('flag', 1)
             ->paginate(10);
         return $facilities;

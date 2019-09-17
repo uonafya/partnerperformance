@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "63a13fff526d7657c090a19778de7c8d",
+=======
+    "content-hash": "840f6098d1b2c4f8bfb840ee2d9c8f46",
+>>>>>>> 9aa258094aee3b9edbcec90e923941e967f94cc1
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4299,6 +4303,68 @@
     ],
     "packages-dev": [
         {
+            "name": "beyondcode/laravel-er-diagram-generator",
+            "version": "1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beyondcode/laravel-er-diagram-generator.git",
+                "reference": "70c8cf8417146c6371b3bcbb67dcf4e6fb7b6968"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beyondcode/laravel-er-diagram-generator/zipball/70c8cf8417146c6371b3bcbb67dcf4e6fb7b6968",
+                "reference": "70c8cf8417146c6371b3bcbb67dcf4e6fb7b6968",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "~2.3",
+                "nikic/php-parser": "^2.0|^3.0|^4.0",
+                "php": "^7.1",
+                "phpdocumentor/graphviz": "^1.0"
+            },
+            "require-dev": {
+                "larapack/dd": "^1.0",
+                "orchestra/testbench": "~3.5",
+                "phpunit/phpunit": "^7.0",
+                "spatie/phpunit-snapshot-assertions": "^1.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BeyondCode\\ErdGenerator\\ErdGeneratorServiceProvider"
+                    ],
+                    "aliases": {
+                        "ErdGenerator": "BeyondCode\\ErdGenerator\\ErdGeneratorFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BeyondCode\\ErdGenerator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Pociot",
+                    "email": "marcel@beyondco.de",
+                    "homepage": "https://beyondcode.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate ER diagrams from your Laravel models.",
+            "homepage": "https://github.com/beyondcode/laravel-er-diagram-generator",
+            "keywords": [
+                "beyondcode",
+                "laravel-er-diagram-generator"
+            ],
+            "time": "2019-05-30T09:30:07+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.2.0",
             "source": {
@@ -4792,6 +4858,7 @@
             "time": "2018-07-08T19:19:57+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "phpdocumentor/reflection-common",
             "version": "2.0.0",
             "source": {
@@ -4878,6 +4945,33 @@
                 "psr-4": {
                     "phpDocumentor\\Reflection\\": [
                         "src/"
+=======
+            "name": "phpdocumentor/graphviz",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/GraphViz.git",
+                "reference": "a906a90a9f230535f25ea31caf81b2323956283f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/a906a90a9f230535f25ea31caf81b2323956283f",
+                "reference": "a906a90a9f230535f25ea31caf81b2323956283f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "phpDocumentor": [
+                        "src/",
+                        "tests/unit"
+>>>>>>> 9aa258094aee3b9edbcec90e923941e967f94cc1
                     ]
                 }
             },
@@ -4888,6 +4982,7 @@
             "authors": [
                 {
                     "name": "Mike van Riel",
+<<<<<<< HEAD
                     "email": "me@mikevanriel.com"
                 }
             ],
@@ -4940,6 +5035,12 @@
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "time": "2019-08-22T18:11:29+00:00"
+=======
+                    "email": "mike.vanriel@naenius.com"
+                }
+            ],
+            "time": "2016-02-02T13:00:08+00:00"
+>>>>>>> 9aa258094aee3b9edbcec90e923941e967f94cc1
         },
         {
             "name": "phpspec/prophecy",
