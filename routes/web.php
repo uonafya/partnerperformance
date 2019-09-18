@@ -230,6 +230,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	// Upload any Data
 	Route::get('upload/{path}/{modality?}', 'GeneralController@upload_any');
+	Route::post('upload/{path}', 'ImportsController@upload_any');
 
 	Route::get('user/change_password', 'UserController@change_password');
 	Route::resource('user', 'UserController');

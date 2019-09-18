@@ -21,7 +21,8 @@
           Upload Facilities List Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('facilities/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
+				<!-- <form action="{{ url('facilities/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data">  -->
+        <form action="{{ url('upload/facilities') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
 					@csrf
 
           <div class="form-group">
@@ -33,7 +34,7 @@
 
 
           <div class="form-group">
-              <label for="name" class="col-sm-5 control-label">Partners</label>
+              <label for="name" class="col-sm-5 control-label">Partner</label>
 
               <div class="col-sm-7">
                   <select class="btn filters form-control" id="filter_partner" name="partner_id">
