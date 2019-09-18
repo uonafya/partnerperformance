@@ -4,24 +4,25 @@ namespace App\Exports;
 
 use DB;
 
-use Maatwebsite\Excel\Excel;
-use Illuminate\Contracts\Support\Responsable;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+// use Maatwebsite\Excel\Excel;
+// use Illuminate\Contracts\Support\Responsable;
+// use Maatwebsite\Excel\Concerns\FromQuery;
+// use Maatwebsite\Excel\Concerns\Exportable;
+// use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class SurgeExport implements FromQuery, Responsable, WithHeadings
+// class SurgeExport implements FromQuery, Responsable, WithHeadings
+class SurgeExport extends BaseExport
 {
-	use Exportable;
+	// use Exportable;
 
-	protected $fileName;
-	protected $writerType = Excel::CSV;
-	protected $sql;
+	// protected $fileName;
+	// protected $writerType = Excel::CSV;
+	// protected $sql;
 	protected $week_id;
 	protected $modalities;
 	protected $gender;
 	protected $ages;
-	protected $partner;
+	// protected $partner;
 
   //   function __construct($request)
   //   {
@@ -87,9 +88,6 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 			->first();
 
 		return collect($row)->keys()->all();
-
-		$c = collect($row);
-		return $c->keys()->all();
     }
 
 

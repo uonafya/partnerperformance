@@ -2,15 +2,22 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
+use DB;
 
-class BaseExport implements FromCollection
+use Maatwebsite\Excel\Excel;
+use Illuminate\Contracts\Support\Responsable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
+class BaseExport implements FromQuery, Responsable, WithHeadings
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
-    {
-        //
-    }
+	use Exportable;
+
+	protected $fileName;
+	protected $writerType = Excel::CSV;
+	protected $sql;
+	protected $partner;
+
+	
 }
