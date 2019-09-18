@@ -86,11 +86,10 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 			->where('partner', $partner->id)
 			->first();
 
+		return $row->keys()->all();
+
 		$c = collect($row);
 		return $c->keys()->all();
-
-
-    	return $this->collection()->first()->toArray();
     }
 
 
