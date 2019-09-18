@@ -14,13 +14,14 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 {
 	use Exportable;
 
-	private $fileName;
-	private $writerType = Excel::CSV;
-	private $week_id;
-	private $modalities;
-	private $gender;
-	private $ages;
-	private $partner;
+	protected $fileName;
+	protected $writerType = Excel::CSV;
+	protected $sql;
+	protected $week_id;
+	protected $modalities;
+	protected $gender;
+	protected $ages;
+	protected $partner;
 
   //   function __construct($request)
   //   {
@@ -41,10 +42,54 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 
 		$week = \App\Week::findOrFail($this->week_id);
 		$this->fileName = $this->partner->download_name . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
+
+
+    	$modalities = $this->modalities;
+    	$gender = $this->gender;
+    	$ages = $this->ages;
+    	$partner = $this->partner;
+    	$week_id = $this->week_id;
+
+		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
+				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
+				return $query->where('modality_id', $modalities);
+			})->when($gender, function($query) use ($gender){
+				return $query->where('gender_id', $gender);
+			})->when($ages, function($query) use ($ages){
+				if(is_array($ages)) return $query->whereIn('age_id', $ages);
+				return $query->where('age_id', $ages);
+			})
+			->orderBy('modality_id', 'asc')
+			->orderBy('gender_id', 'asc')
+			->orderBy('age_id', 'asc')
+			->orderBy('id', 'asc')
+			->get();
+
+		$sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";
+
+		foreach ($columns as $column) {
+			$sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
+		}
+		$this->sql = $sql;
     }
 
     public function headings() : array
     {
+		$row = DB::table('d_surge')
+			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
+			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+			->selectRaw($this->sql)
+			->where('week_id', $week_id)
+			->where('partner', $partner->id)
+			->when($facilities, function($query) use ($facilities){
+				return $query->whereIn('view_facilitys.id', $facilities);
+			})
+			->orderBy('name', 'asc')->first();
+
+		$c = collect($row);
+		return $c->keys()->all();
+
+
     	return $this->collection()->first()->toArray();
     }
 
@@ -83,7 +128,7 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 		return DB::table('d_surge')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
-			->selectRaw($sql)
+			->selectRaw($this->sql)
 			->where('week_id', $week_id)
 			->where('partner', $partner->id)
 			->when($facilities, function($query) use ($facilities){
