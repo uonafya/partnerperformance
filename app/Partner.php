@@ -27,5 +27,10 @@ class Partner extends BaseModel
 		return $this->belongsTo('App\FundingAgency');
 	}
 
+	public function getDownloadNameAttribute()
+	{
+		return str_replace(' ', '_', strtolower($this->name));
+	}
+
 
 }

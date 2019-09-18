@@ -8,27 +8,28 @@ use Maatwebsite\Excel\Excel;
 use Illuminate\Contracts\Support\Responsable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class SurgeExport implements FromQuery, Responsable
+class SurgeExport implements FromQuery, Responsable, WithHeadings
 {
 	use Exportable;
 
 	private $fileName;
-	private $writerType = Excel::XLSX;
+	private $writerType = Excel::CSV;
 	private $week_id;
 	private $modalities;
 	private $gender;
 	private $ages;
 	private $partner;
 
-    /*function __construct($request)
-    {
-		$this->week_id = $request->input('week');
-		$this->modalities = $request->input('modalities');
-		$this->gender = $request->input('gender');
-		$this->ages = $request->input('ages');
-		$this->partner = auth()->user()->partner;*/
-		
+  //   function __construct($request)
+  //   {
+		// $this->week_id = $request->input('week');
+		// $this->modalities = $request->input('modalities');
+		// $this->gender = $request->input('gender');
+		// $this->ages = $request->input('ages');
+		// $this->partner = auth()->user()->partner;
+
     function __construct()
     {
 		$this->week_id = 35;
@@ -39,7 +40,7 @@ class SurgeExport implements FromQuery, Responsable
 
 
 		$week = \App\Week::findOrFail($this->week_id);
-		$this->fileName = str_replace(' ', '_', strtolower($this->partner->name)) . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
+		$this->fileName = $this->partner->download_name . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
     }
 
 
