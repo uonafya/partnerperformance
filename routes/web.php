@@ -229,6 +229,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 	});
 
 	// Upload any Data
+	Route::get('upload/facilities', 'GeneralController@upload_facilities');
 	Route::get('upload/{path}/{modality?}', 'GeneralController@upload_any');
 	Route::post('upload/{path}', 'ImportsController@upload_any');
 
