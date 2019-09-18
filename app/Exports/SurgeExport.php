@@ -19,13 +19,21 @@ class SurgeExport implements FromQuery, Responsable
 	private $ages;
 	private $partner;
 
-    function __construct($request)
+  //   function __construct($request)
+  //   {
+		// $this->week_id = $request->input('week');
+		// $this->modalities = $request->input('modalities');
+		// $this->gender = $request->input('gender');
+		// $this->ages = $request->input('ages');
+		// $this->partner = auth()->user()->partner;
+
+    function __construct()
     {
-		$this->week_id = $request->input('week');
-		$this->modalities = $request->input('modalities');
-		$this->gender = $request->input('gender');
-		$this->ages = $request->input('ages');
-		$this->partner = auth()->user()->partner;
+		$this->week_id = 35;
+		$this->modalities = null;
+		$this->gender = null;
+		$this->ages = null;
+		$this->partner = 55;
 
 		$week = \App\Week::find($this->week_id);
 		$this->fileName = str_replace(' ', '_', strtolower($this->partner->name)) . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
