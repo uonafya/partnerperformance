@@ -4,41 +4,28 @@ namespace App\Exports;
 
 use DB;
 
-// use Maatwebsite\Excel\Excel;
-// use Illuminate\Contracts\Support\Responsable;
-// use Maatwebsite\Excel\Concerns\FromQuery;
-// use Maatwebsite\Excel\Concerns\Exportable;
-// use Maatwebsite\Excel\Concerns\WithHeadings;
-
-// class SurgeExport implements FromQuery, Responsable, WithHeadings
 class SurgeExport extends BaseExport
 {
-	// use Exportable;
-
-	// protected $fileName;
-	// protected $writerType = Excel::CSV;
-	// protected $sql;
 	protected $week_id;
 	protected $modalities;
 	protected $gender;
 	protected $ages;
-	// protected $partner;
 
-  //   function __construct($request)
-  //   {
-		// $this->week_id = $request->input('week');
-		// $this->modalities = $request->input('modalities');
-		// $this->gender = $request->input('gender');
-		// $this->ages = $request->input('ages');
-		// $this->partner = auth()->user()->partner;
-
-    function __construct()
+    function __construct($request)
     {
-		$this->week_id = 35;
-		$this->modalities = [1,2];
-		$this->gender = null;
-		$this->ages = null;
-		$this->partner = \App\Partner::find(55);
+		$this->partner = auth()->user()->partner;
+		$this->week_id = $request->input('week');
+		$this->modalities = $request->input('modalities');
+		$this->gender = $request->input('gender');
+		$this->ages = $request->input('ages');
+
+  //   function __construct()
+  //   {
+		// $this->week_id = 35;
+		// $this->modalities = [1,2];
+		// $this->gender = null;
+		// $this->ages = null;
+		// $this->partner = \App\Partner::find(55);
 
 
 		$week = \App\Week::findOrFail($this->week_id);

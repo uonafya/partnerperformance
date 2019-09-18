@@ -15,7 +15,8 @@ class BaseExport implements FromQuery, Responsable, WithHeadings
 	use Exportable;
 
 	protected $fileName;
-	protected $writerType = Excel::CSV;
+	// protected $writerType = Excel::CSV;
+	protected $writerType = Excel::XLSX;
 	protected $sql;
 	protected $partner;
 
