@@ -75,16 +75,16 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 
     public function headings() : array
     {
+    	$partner = $this->partner;
+    	$week_id = $this->week_id;
+
 		$row = DB::table('d_surge')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->selectRaw($this->sql)
 			->where('week_id', $week_id)
 			->where('partner', $partner->id)
-			->when($facilities, function($query) use ($facilities){
-				return $query->whereIn('view_facilitys.id', $facilities);
-			})
-			->orderBy('name', 'asc')->first();
+			->first();
 
 		$c = collect($row);
 		return $c->keys()->all();
