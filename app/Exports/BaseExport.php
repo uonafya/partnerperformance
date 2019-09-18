@@ -19,5 +19,15 @@ class BaseExport implements FromQuery, Responsable, WithHeadings
 	protected $sql;
 	protected $partner;
 
-	
+    public function headings() : array
+    {
+    	return [];
+    }
+
+    public function query()
+    {
+    	return null;
+    }
+
+
 }
