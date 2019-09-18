@@ -33,7 +33,7 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
     function __construct()
     {
 		$this->week_id = 35;
-		$this->modalities = null;
+		$this->modalities = [1,2];
 		$this->gender = null;
 		$this->ages = null;
 		$this->partner = DB::table('partners')->where('id', 55)->first();
@@ -41,6 +41,11 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 
 		$week = \App\Week::findOrFail($this->week_id);
 		$this->fileName = $this->partner->download_name . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
+    }
+
+    public function headings() : array
+    {
+    	return $this->collection()->first()->toArray();
     }
 
 
