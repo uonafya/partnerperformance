@@ -68,7 +68,7 @@ class SurgeExport implements FromQuery, Responsable
 			$sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
 		}
 
-		$facilities = \AppFacility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
+		$facilities = \App\Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
 		
 		return DB::table('d_surge')
 			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
