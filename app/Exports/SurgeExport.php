@@ -46,6 +46,7 @@ class SurgeExport implements FromQuery, Responsable
     	$gender = $this->gender;
     	$ages = $this->ages;
     	$partner = $this->partner;
+    	$week_id = $this->week_id;
 
 		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
