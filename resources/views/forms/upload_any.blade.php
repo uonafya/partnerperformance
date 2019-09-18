@@ -23,7 +23,8 @@
           Upload {{ strtoupper(str_replace('_', ' ', $path)) }} Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url($path . '/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
+				<!-- <form action="{{ url($path . '/upload') }}" method="post" class="form-horizontal" enctype="multipart/form-data">  -->
+        <form action="{{ url('upload/' . $path) }}" method="post" class="form-horizontal" enctype="multipart/form-data"> 
 					@csrf
 
           @if($modality)

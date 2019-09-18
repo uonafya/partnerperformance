@@ -24,6 +24,8 @@ use App\SurgeModality;
 class Dispensing
 {
 
+    public static $dispensations = ['Dispensed One', 'Dispensed Two', 'Dispensed Three', 'Dispensed Four', 'Dispensed Five', 'Dispensed Six', ];
+
     public static function edit_indexes()
     {
         $tables = DB::select("show tables");
