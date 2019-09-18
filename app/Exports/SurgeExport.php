@@ -33,7 +33,7 @@ class SurgeExport implements FromQuery, Responsable
 		$this->modalities = null;
 		$this->gender = null;
 		$this->ages = null;
-		$this->partner = 55;
+		$this->partner = DB::table('partners')->where('id', 55)->first();
 
 		$week = \App\Week::find($this->week_id);
 		$this->fileName = str_replace(' ', '_', strtolower($this->partner->name)) . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
