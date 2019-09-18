@@ -36,7 +36,7 @@ class SurgeExport implements FromQuery, Responsable, WithHeadings
 		$this->modalities = [1,2];
 		$this->gender = null;
 		$this->ages = null;
-		$this->partner = DB::table('partners')->where('id', 55)->first();
+		$this->partner = \App\Partner::find(55);
 
 
 		$week = \App\Week::findOrFail($this->week_id);
