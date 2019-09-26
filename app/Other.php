@@ -378,6 +378,7 @@ class Other
             if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) || in_array($t, ['p_early_indicators', 'd_dispensing'])) continue;
             DB::connection('mysql_wr')->table($row->Tables_in_hcm)->where('facility', $id)->delete();
         }
+        DB::connection('mysql_wr')->table('facilitys')->where('id', $id)->delete();
 	}
 
 }
