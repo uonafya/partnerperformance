@@ -360,7 +360,7 @@ class Other
 	}
 
 
-	public static function delete_data($id=55222)
+	public static function delete_data($id)
     {
 		// $tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
 		// foreach ($tables as $key => $table) {
