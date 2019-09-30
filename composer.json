@@ -7,6 +7,7 @@
     "require": {
         "php": ">=7.2",
         "barryvdh/laravel-cors": "0.11.*",
+        "dingo/api": "^2",
         "doctrine/dbal": "^2.8",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
@@ -14,7 +15,6 @@
         "laravel/helpers": "^1.1",
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",
-        "phpoffice/phpspreadsheet": "^1.6",
         "predis/predis": "^1.1",
         "tymon/jwt-auth": "1.0.*",
         "venturecraft/revisionable": "^1.28"
