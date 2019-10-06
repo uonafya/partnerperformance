@@ -41,7 +41,7 @@ class ClearSession
 
         $m = date('m');
 
-        if($m < 10){
+        if($m < 11){
             $f = date('Y');
         }else{
            $f = date('Y')+1; 
