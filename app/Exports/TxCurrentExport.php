@@ -15,7 +15,7 @@ class TxCurrentExport extends BaseExport
 
     function __construct($request)
     {
-		$this->partner = auth()->user()->partner;
+    	parent::__construct();
 		$this->month = $request->input('month', date('m')-1);
 		$this->financial_year = $request->input('financial_year', date('Y'));
 		$this->age_category_id = $request->input('age_category_id');

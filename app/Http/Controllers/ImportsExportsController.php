@@ -14,10 +14,19 @@ use App\Imports\SurgeImport;
 use App\Imports\TxCurrentImport;
 use App\Imports\WeeklyImport;
 
-class ImportsController extends Controller
+
+use App\Exports\DispensingExport;
+use App\Exports\IndicatorExport;
+use App\Exports\NonMerExport;
+use App\Exports\PNSExport;
+use App\Exports\SurgeExport;
+use App\Exports\TxCurrentExport;
+use App\Exports\WeeklyExport;
+
+class ImportsExportsController extends Controller
 {
 
-	public function upload_any(Request $request, $type)
+	public function upload_any(Request $request, $path)
 	{
 		ini_set('memory_limit', '-1');
 		if (!$request->hasFile('upload')){
@@ -36,13 +45,13 @@ class ImportsController extends Controller
 			'weekly' => WeeklyImport::class,
 		];
 
-		$c = $classes[$type];
+		$c = $classes[$path];
 
-		if($type == 'facilities'){
+		if($path == 'facilities'){
 			if(auth()->user()->user_type_id != 1) return back();
 			Excel::import(new $c($request->input('partner_id')), $request->upload->path());
 		}
-		else if($type == 'weekly'){
+		else if($path == 'weekly'){
 			Excel::import(new $c($request->input('modality')), $request->upload->path());			
 		}
 		else{
@@ -51,6 +60,34 @@ class ImportsController extends Controller
 
 		session(['toast_message' => 'The updates have been made.']);
 		return back();
+	}
+
+	public function export_non_mer($financial_year)
+	{
+		ini_set('memory_limit', '-1');
+		return new NonMerExport($financial_year);
+	}
+
+	public function export_indicator($financial_year)
+	{
+		ini_set('memory_limit', '-1');
+		return new IndicatorExport($financial_year);
+	}
+
+	public function export_any(Request $request, $path)
+	{
+		ini_set('memory_limit', '-1');
+		$classes = [
+			'dispensing' => DispensingExport::class,
+			'non_mer' => NonMerExport::class,
+			'pns' => PNSExport::class,
+			'surge' => SurgeExport::class,
+			'tx_curr' => TxCurrentExport::class,
+			'weekly' => WeeklyExport::class,
+		];
+
+		$c = $classes[$path];
+		return new $c($request);
 	}
 
 

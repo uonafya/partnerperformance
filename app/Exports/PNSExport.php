@@ -14,7 +14,7 @@ class PNSExport extends BaseExport
 
     function __construct($request)
     {
-		$this->partner = auth()->user()->partner;
+    	parent::__construct();
 		$this->items = $request->input('items');
 		$this->months = $request->input('months');
 		$this->financial_year = $request->input('financial_year', date('Y'));

@@ -14,7 +14,7 @@ class NonMerExport extends BaseExport implements WithMapping
 
     function __construct($financial_year)
     {
-		$this->partner = auth()->user()->partner;
+    	parent::__construct();
 		$this->financial_year = $financial_year;
 
 		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_non_mer_indicators';

@@ -231,7 +231,13 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 	// Upload any Data
 	Route::get('upload/facilities', 'GeneralController@upload_facilities');
 	Route::get('upload/{path}/{modality?}', 'GeneralController@upload_any');
-	Route::post('upload/{path}', 'ImportsController@upload_any');
+	// The one with a modality will include it in the post params
+	Route::post('upload/{path}', 'ImportsExportsController@upload_any');
+
+	// Download any Template
+	Route::get('download/non_mer/{financial_year}', 'ImportsExportsController@export_non_mer');
+	Route::get('download/indicator/{financial_year}', 'ImportsExportsController@export_indicator');
+	Route::post('download/{path}', 'ImportsExportsController@export_indicator');
 
 	Route::get('user/change_password', 'UserController@change_password');
 	Route::resource('user', 'UserController');

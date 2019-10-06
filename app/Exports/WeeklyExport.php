@@ -13,7 +13,7 @@ class WeeklyExport extends BaseExport
 
     function __construct($request)
     {
-		$this->partner = auth()->user()->partner;
+    	parent::__construct();
 		$this->week_id = $request->input('week');
 		$this->modality_name = $request->input('modality');
 		$this->gender_id = $request->input('gender_id');

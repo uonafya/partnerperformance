@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Functional\Api\V1\Controllers;
+namespace Tests\Functional\Api\V1\Controllers;
 
 use Hash;
 use App\User;
-use App\TestCase;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LoginControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

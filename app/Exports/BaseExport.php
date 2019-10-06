@@ -20,6 +20,12 @@ class BaseExport implements FromQuery, Responsable, WithHeadings
 	protected $sql;
 	protected $partner;
 
+    public function __construct()
+    {
+        $this->fileName = 'download.xlsx';
+        $this->partner = auth()->user()->partner;
+    }
+
     public function headings() : array
     {
     	return [];

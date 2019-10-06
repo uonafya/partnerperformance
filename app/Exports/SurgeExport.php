@@ -13,7 +13,7 @@ class SurgeExport extends BaseExport
 
     function __construct($request)
     {
-		$this->partner = auth()->user()->partner;
+    	parent::__construct();
 		$this->week_id = $request->input('week');
 		$this->modalities = $request->input('modalities');
 		$this->gender = $request->input('gender');
