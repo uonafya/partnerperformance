@@ -4,10 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 use \App\User;
-use InteractsWithAuthentication;
 
 class DownloadsTest extends TestCase
 {
@@ -16,9 +14,7 @@ class DownloadsTest extends TestCase
     {
         parent::setUp();
 
-
         $user = User::first();
-        // Auth::login($user);
         $partner = $user->partner;
         $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
@@ -28,7 +24,6 @@ class DownloadsTest extends TestCase
         $user = User::first();
         $this->assertAuthenticatedAs($user);
     }
-
 
     public function testDownloadNonMer()
     {
@@ -44,13 +39,21 @@ class DownloadsTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function testDownloadPNS()
+    {
+        $response = $this->post('/download/pns', [
+            'items' => 40,
+
+        ]);
+        $response->assertOk();
+    }
+
     public function testDownloadSurge()
     {
         $response = $this->post('/download/surge', [
-            'week' => 40,
+            'week' => ['screened', 'contacts_identified'],
 
         ]);
-        // dd($response);
         $response->assertOk();
     }
 
