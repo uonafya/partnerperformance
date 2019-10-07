@@ -42,7 +42,7 @@ class DownloadsTest extends TestCase
     public function testDownloadPNS()
     {
         $response = $this->post('/download/pns', [
-            'items' => 40,
+            'items' => ['screened', 'contacts_identified'],
 
         ]);
         $response->assertOk();
@@ -51,7 +51,7 @@ class DownloadsTest extends TestCase
     public function testDownloadSurge()
     {
         $response = $this->post('/download/surge', [
-            'week' => ['screened', 'contacts_identified'],
+            'week' => 40,
 
         ]);
         $response->assertOk();
