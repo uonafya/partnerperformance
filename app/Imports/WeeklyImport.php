@@ -14,11 +14,13 @@ class WeeklyImport implements OnEachRow, WithHeadingRow
 {
 
     private $surge_columns;
+    private $table_name;
 
     function __construct($m_name)
     {
 		$m = \App\SurgeModality::where(['modality' => $m_name])->first();
-		$surge_columns = \App\SurgeColumn::where(['modality_id' => $m->id])->get();
+		$this->surge_columns = \App\SurgeColumn::where(['modality_id' => $m->id])->get();
+		$this->table_name = $m->tbl_name;
     }
 
     public function onRow(Row $row)
@@ -36,5 +38,5 @@ class WeeklyImport implements OnEachRow, WithHeadingRow
 
 		$update_data = ['dateupdated' => $today, 'value' => $val]; 
 
-		DB::table('d_weeklies')->where(['facility' => $fac->id, 'week_id' => $w->id, 'column_id' => $c->id])->update($update_data);
+		DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $w->id, 'column_id' => $c->id])->update($update_data);
 }
