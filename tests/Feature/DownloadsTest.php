@@ -52,4 +52,6 @@ class DownloadsTest extends TestCase
 
         $response->assertOk();
     }
+
+    
 }
