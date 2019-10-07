@@ -40,7 +40,7 @@ class DownloadsTest extends TestCase
 
     public function testDownloadIndicator()
     {
-        $response = $this->get('/download/non_mer/2019');
+        $response = $this->get('/download/indicator/2019');
         $response->assertStatus(200);
     }
 
