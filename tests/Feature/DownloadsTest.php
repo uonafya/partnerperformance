@@ -19,7 +19,7 @@ class DownloadsTest extends TestCase
         $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
 
-    /*public function testLoggedStatus()
+    public function testLoggedStatus()
     {
         $user = User::first();
         $this->assertAuthenticatedAs($user);
@@ -78,7 +78,7 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }*/
+    }
 
     public function testDownloadWeeklyPrepNew()
     {
@@ -86,20 +86,21 @@ class DownloadsTest extends TestCase
             'week_id' => 40,
             'modality' => 'prep_new',
             'gender_id' => 1,
+            'age_category_id' => 1,
 
         ]);
         $response->assertOk();
     }
 
-    /*public function testDownloadWeeklyVmmc()
+    public function testDownloadWeeklyVmmc()
     {
         $response = $this->post('/download/weekly', [
             'week_id' => 40,
             'modality' => 'vmmc_circ',
-            'age_category_id' => 2,
+            'age_category_id' => 1,
         ]);
         $response->assertOk();
-    }*/
+    }
 
 
 }
