@@ -19,7 +19,7 @@ class DownloadsTest extends TestCase
 
         $user = User::first();
         // Auth::login($user);
-        // $partner = $user->partner;
+        $partner = $user->partner;
         $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
 
