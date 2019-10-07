@@ -195,9 +195,8 @@ class Dispensing
 
     // VMMC
     // PREP New On Treatment
-    public static function weeklies_table()
-    {       
-        $table_name = 'd_weeklies';
+    public static function weeklies_table($table_name='d_weeklies')
+    {
         $sql = "CREATE TABLE `{$table_name}` (
                     id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 
