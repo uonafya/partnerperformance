@@ -78,7 +78,7 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }
+    }*/
 
     public function testDownloadWeeklyPrepNew()
     {
@@ -90,9 +90,9 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }*/
+    }
 
-    public function testDownloadWeeklyVmmc()
+    /*public function testDownloadWeeklyVmmc()
     {
         $response = $this->post('/download/weekly', [
             'week_id' => 40,
@@ -102,7 +102,7 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }
+    }*/
 
 
 }
