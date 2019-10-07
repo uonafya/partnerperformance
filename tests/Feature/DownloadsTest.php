@@ -14,9 +14,9 @@ class DownloadsTest extends TestCase
 
     public function setUp(): void
     {
-        /*parent::setUp();
+        parent::setUp();
 
-        $user = new User([
+        /*$user = new User([
             'name' => 'Test',
             'email' => 'test@email.com',
             'password' => '123456'
