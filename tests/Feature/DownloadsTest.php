@@ -23,7 +23,7 @@ class DownloadsTest extends TestCase
         $user->save();*/
 
 
-        $u = User::first();
+        $user = User::first();
         $partner = $user->partner;
         $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
@@ -53,5 +53,5 @@ class DownloadsTest extends TestCase
         $response->assertOk();
     }
 
-    
+
 }
