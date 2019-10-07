@@ -17,7 +17,7 @@ class WeeklyExport extends BaseExport
     	parent::__construct();
 		$this->week_id = $request->input('week_id');
 		$modality = $request->input('modality');
-		$this->modality_id = \App\SurgeModality::where(['modality' => $modality_name])->first()->id;
+		$this->modality_id = \App\SurgeModality::where(['modality' => $modality])->first()->id;
 		$this->gender_id = $request->input('gender_id');
 		$this->age_category_id = $request->input('age_category_id');
 
