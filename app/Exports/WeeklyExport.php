@@ -8,6 +8,7 @@ class WeeklyExport extends BaseExport
 {
 	protected $week_id;
 	protected $modality_id;
+	protected $table_name;
 	protected $gender_id;
 	protected $age_category_id;
 
@@ -16,7 +17,9 @@ class WeeklyExport extends BaseExport
     	parent::__construct();
 		$this->week_id = $request->input('week_id');
 		$modality = $request->input('modality');
-		$this->modality_id = \App\SurgeModality::where(['modality' => $modality])->first()->id;
+		$m = \App\SurgeModality::where(['modality' => $modality])->first();
+		$this->modality_id = $m->id;
+		$this->table_name = $m->tbl_name;
 		$this->gender_id = $request->input('gender_id');
 		$this->age_category_id = $request->input('age_category_id');
 
@@ -31,10 +34,10 @@ class WeeklyExport extends BaseExport
 
     public function headings() : array
     {
-		$row = DB::table('d_weeklies')
-			->join('view_facilitys', 'view_facilitys.id', '=', "d_weeklies.facility")
-            ->join('weeks', 'weeks.id', '=', "d_weeklies.week_id")
-			->join('surge_columns_view', "d_weeklies.column_id", '=', 'surge_columns_view.id')
+		$row = DB::table($this->table_name)
+			->join('view_facilitys', 'view_facilitys.id', '=', "{$this->table_name}.facility")
+            ->join('weeks', 'weeks.id', '=', "{$this->table_name}.week_id")
+			->join('surge_columns_view', "{$this->table_name}.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
 			->where(['partner' => $this->partner->id, 'week_id' => $this->week_id, 'modality_id' => $this->modality_id])
 			->first();
@@ -48,10 +51,10 @@ class WeeklyExport extends BaseExport
     	$gender_id = $this->gender_id;
     	$age_category_id = $this->age_category_id;
 
-		return DB::table('d_weeklies')
-			->join('view_facilitys', 'view_facilitys.id', '=', "d_weeklies.facility")
-            ->join('weeks', 'weeks.id', '=', "d_weeklies.week_id")
-			->join('surge_columns_view', "d_weeklies.column_id", '=', 'surge_columns_view.id')
+		return DB::table($this->table_name)
+			->join('view_facilitys', 'view_facilitys.id', '=', "{$this->table_name}.facility")
+            ->join('weeks', 'weeks.id', '=', "{$this->table_name}.week_id")
+			->join('surge_columns_view', "{$this->table_name}.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
 			->where(['partner' => $this->partner->id, 'week_id' => $this->week_id, 'modality_id' => $this->modality_id])
 			->when($age_category_id, function($query) use ($age_category_id){
