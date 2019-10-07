@@ -90,6 +90,12 @@ class ImportsExportsController extends Controller
 		return new $c($request);
 	}
 
+	public function export_surge(Request $request)
+	{
+		ini_set('memory_limit', '-1');
+		return new SurgeExport($request);
+	}
+
 
 	/*
 		public function upload_dispensing(Request $request)
