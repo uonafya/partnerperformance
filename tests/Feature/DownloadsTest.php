@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 use \App\User;
+use InteractsWithAuthentication;
 
 class DownloadsTest extends TestCase
 {
@@ -24,16 +25,16 @@ class DownloadsTest extends TestCase
         $user->save();*/
 
 
-        $user = User::first();
-        Auth::login($user);
-        $partner = $user->partner;
-        $this->actingAs($user)->withSession(['session_partner' => $partner]);
+        // $user = User::first();
+        // Auth::login($user);
+        // $partner = $user->partner;
+        // $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
 
     public function testLoggedStatus()
     {
         $user = User::first();
-        Auth::login($user);
+        // Auth::login($user);
         $this->actingAs($user)->assertAuthenticatedAs($user);
         // $u = auth()->user();
         // $this->assertTrue($u);
