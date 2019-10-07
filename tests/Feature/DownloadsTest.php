@@ -33,7 +33,7 @@ class DownloadsTest extends TestCase
     public function testDownloadNonMer()
     {
         $response = $this->get('/download/non_mer/2019');
-        // $response->assertHeader('attachment');
+        $response->assertHeader('content-disposition');
         $response->assertStatus(200);
     }
 
@@ -50,8 +50,8 @@ class DownloadsTest extends TestCase
             'week' => 40,
 
         ]);
-        dd($response);
-        $response->assertStatus(200);
+        // dd($response);
+        $response->assertOk();
     }
 
 
