@@ -7,7 +7,6 @@ use DB;
 class WeeklyExport extends BaseExport
 {
 	protected $week_id;
-	// protected $modality_name;
 	protected $modality_id;
 	protected $gender_id;
 	protected $age_category_id;

@@ -78,7 +78,7 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }
+    }*/
 
     public function testDownloadWeeklyPrepNew()
     {
@@ -86,23 +86,20 @@ class DownloadsTest extends TestCase
             'week_id' => 40,
             'modality' => 'prep_new',
             'gender_id' => 1,
-            'age_category_id' => 2,
-
-        ]);
-        $response->assertOk();
-    }*/
-
-    public function testDownloadWeeklyVmmc()
-    {
-        $response = $this->post('/download/weekly', [
-            'week_id' => 40,
-            'modality' => 'vmmc_circ',
-            'gender_id' => 1,
-            'age_category_id' => 2,
 
         ]);
         $response->assertOk();
     }
+
+    /*public function testDownloadWeeklyVmmc()
+    {
+        $response = $this->post('/download/weekly', [
+            'week_id' => 40,
+            'modality' => 'vmmc_circ',
+            'age_category_id' => 2,
+        ]);
+        $response->assertOk();
+    }*/
 
 
 }
