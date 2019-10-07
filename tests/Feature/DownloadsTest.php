@@ -54,7 +54,6 @@ class DownloadsTest extends TestCase
     public function testDownloadTxCurr()
     {
         $response = $this->post('/download/tx_curr', [
-            'month' => 1,
             'gender_id' => 1,
             'age_category_id' => 1,
         ]);
@@ -81,12 +80,13 @@ class DownloadsTest extends TestCase
         $response->assertOk();
     }
 
-    public function testDownloadWeeklyPrepNew()
+    /*public function testDownloadWeeklyPrepNew()
     {
         $response = $this->post('/download/weekly', [
             'week_id' => 40,
             'modality' => 'prep_new',
             'gender_id' => 1,
+            'age_category_id' => 2,
 
         ]);
         $response->assertOk();
@@ -98,10 +98,11 @@ class DownloadsTest extends TestCase
             'week_id' => 40,
             'modality' => 'vmmc_circ',
             'gender_id' => 1,
+            'age_category_id' => 2,
 
         ]);
         $response->assertOk();
-    }
+    }*/
 
 
 }
