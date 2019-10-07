@@ -14,7 +14,7 @@ class WeeklyExport extends BaseExport
     function __construct($request)
     {
     	parent::__construct();
-		$this->week_id = $request->input('week');
+		$this->week_id = $request->input('week_id');
 		$this->modality_name = $request->input('modality');
 		$this->gender_id = $request->input('gender_id');
 		$this->age_category_id = $request->input('age_category_id');

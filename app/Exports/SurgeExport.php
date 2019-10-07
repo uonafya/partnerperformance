@@ -8,22 +8,22 @@ class SurgeExport extends BaseExport
 {
 	protected $week_id;
 	protected $modalities;
-	protected $gender;
+	protected $gender_id;
 	protected $ages;
 
     function __construct($request)
     {
     	parent::__construct();
-		$this->week_id = $request->input('week');
+		$this->week_id = $request->input('week_id');
 		$this->modalities = $request->input('modalities');
-		$this->gender = $request->input('gender');
+		$this->gender_id = $request->input('gender_id');
 		$this->ages = $request->input('ages');
 
   //   function __construct()
   //   {
 		// $this->week_id = 35;
 		// $this->modalities = [1,2];
-		// $this->gender = null;
+		// $this->gender_id = null;
 		// $this->ages = null;
 		// $this->partner = \App\Partner::find(55);
 
@@ -33,7 +33,7 @@ class SurgeExport extends BaseExport
 
 
     	$modalities = $this->modalities;
-    	$gender = $this->gender;
+    	$gender_id = $this->gender_id;
     	$ages = $this->ages;
     	$partner = $this->partner;
     	$week_id = $this->week_id;
@@ -41,8 +41,8 @@ class SurgeExport extends BaseExport
 		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
 				return $query->where('modality_id', $modalities);
-			})->when($gender, function($query) use ($gender){
-				return $query->where('gender_id', $gender);
+			})->when($gender_id, function($query) use ($gender_id){
+				return $query->where('gender_id', $gender_id);
 			})->when($ages, function($query) use ($ages){
 				if(is_array($ages)) return $query->whereIn('age_id', $ages);
 				return $query->where('age_id', $ages);
@@ -81,7 +81,7 @@ class SurgeExport extends BaseExport
     public function query()
     {
     	$modalities = $this->modalities;
-    	$gender = $this->gender;
+    	$gender_id = $this->gender_id;
     	$ages = $this->ages;
     	$partner = $this->partner;
     	$week_id = $this->week_id;
@@ -89,8 +89,8 @@ class SurgeExport extends BaseExport
 		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
 				return $query->where('modality_id', $modalities);
-			})->when($gender, function($query) use ($gender){
-				return $query->where('gender_id', $gender);
+			})->when($gender_id, function($query) use ($gender_id){
+				return $query->where('gender_id', $gender_id);
 			})->when($ages, function($query) use ($ages){
 				if(is_array($ages)) return $query->whereIn('age_id', $ages);
 				return $query->where('age_id', $ages);

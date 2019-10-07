@@ -32,7 +32,7 @@
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Week</label>
-              <select class="col-sm-7 select_tag" name="week">
+              <select class="col-sm-7 select_tag" name="week_id">
                 <option></option>
                 @foreach($weeks as $week)
                   <option value="{{ $week->id }}"> {{ $week->name }} </option>
@@ -52,7 +52,7 @@
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Gender</label>
-              <select class="col-sm-7 select_tag" name="gender">
+              <select class="col-sm-7 select_tag" name="gender_id">
                 <option></option>
                 @foreach($genders as $gender)
                   <option value="{{ $gender->id }}"> {{ $gender->gender }} </option>
