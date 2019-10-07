@@ -80,7 +80,7 @@ class DownloadsTest extends TestCase
         $response->assertOk();
     }
 
-    /*public function testDownloadWeeklyPrepNew()
+    public function testDownloadWeeklyPrepNew()
     {
         $response = $this->post('/download/weekly', [
             'week_id' => 40,
@@ -102,7 +102,7 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }*/
+    }
 
 
 }
