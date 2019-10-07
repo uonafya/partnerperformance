@@ -29,7 +29,7 @@ class PNSExport extends BaseExport
 		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name` ";
 		$pns = new PNS;
 
-		foreach ($items as $item) {
+		foreach ($this->items as $item) {
 			foreach ($pns->ages_array as $key => $value) {
 				$sql .= ", {$item}_{$key} AS `" . $pns->item_array[$item] . " {$value}` ";
 			}

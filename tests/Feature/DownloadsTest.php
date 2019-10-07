@@ -43,7 +43,6 @@ class DownloadsTest extends TestCase
     {
         $response = $this->post('/download/pns', [
             'items' => ['screened', 'contacts_identified'],
-
         ]);
         $response->assertOk();
     }
