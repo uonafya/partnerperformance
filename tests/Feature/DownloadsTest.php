@@ -19,13 +19,13 @@ class DownloadsTest extends TestCase
         $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
 
-    public function testLoggedStatus()
+    /*public function testLoggedStatus()
     {
         $user = User::first();
         $this->assertAuthenticatedAs($user);
     }
 
-    /*public function testDownloadNonMer()
+    public function testDownloadNonMer()
     {
         $response = $this->get('/download/non_mer/2019');
         $response->assertHeader('content-disposition');
@@ -78,7 +78,7 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }*/
+    }
 
     public function testDownloadWeeklyPrepNew()
     {
@@ -90,9 +90,9 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }
+    }*/
 
-    /*public function testDownloadWeeklyVmmc()
+    public function testDownloadWeeklyVmmc()
     {
         $response = $this->post('/download/weekly', [
             'week_id' => 40,
@@ -102,7 +102,7 @@ class DownloadsTest extends TestCase
 
         ]);
         $response->assertOk();
-    }*/
+    }
 
 
 }
