@@ -44,13 +44,13 @@ class Other
 
     public static function create_other_weeklies()
     {
-        Dispensing::weeklies_table('d_prep');
+        Dispensing::weeklies_table('d_prep_new');
         Dispensing::weeklies_table('d_vmmc_circ');
 
-        Dispensing::insert_weekly_rows(2019, 'd_prep');
+        Dispensing::insert_weekly_rows(2019, 'd_prep_new');
         Dispensing::insert_weekly_rows(2019, 'd_vmmc_circ');
 
-        Dispensing::insert_weekly_rows(2020, 'd_prep');
+        Dispensing::insert_weekly_rows(2020, 'd_prep_new');
         Dispensing::insert_weekly_rows(2020, 'd_vmmc_circ');
     }
     
