@@ -46,7 +46,7 @@ class DownloadsTest extends TestCase
 
     public function testDownloadSurge()
     {
-        $response = $this->call('POST', '/download/surge', [
+        $response = $this->call('POST', '/download_any/surge', [
             'week_id' => 40,
         ]);
         $response->assertStatus(200);

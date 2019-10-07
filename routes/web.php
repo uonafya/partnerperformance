@@ -237,7 +237,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 	// Download any Template
 	Route::get('download/non_mer/{financial_year}', 'ImportsExportsController@export_non_mer');
 	Route::get('download/indicator/{financial_year}', 'ImportsExportsController@export_indicator');
-	Route::post('download/{path}', 'ImportsExportsController@export_any');
+	Route::post('download_any/{path}', 'ImportsExportsController@export_any');
 
 	Route::get('user/change_password', 'UserController@change_password');
 	Route::resource('user', 'UserController');
