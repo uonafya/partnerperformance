@@ -85,7 +85,7 @@ class DownloadsTest extends TestCase
     {
         $response = $this->post('/download/weekly', [
             'week_id' => 40,
-            'modality' => 'prep_new'
+            'modality' => 'prep_new',
             'gender_id' => 1,
 
         ]);
@@ -96,7 +96,7 @@ class DownloadsTest extends TestCase
     {
         $response = $this->post('/download/weekly', [
             'week_id' => 40,
-            'modality' => 'vmmc_circ'
+            'modality' => 'vmmc_circ',
             'gender_id' => 1,
 
         ]);
