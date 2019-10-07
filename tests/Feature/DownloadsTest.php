@@ -50,7 +50,6 @@ class DownloadsTest extends TestCase
             'week' => 40,
 
         ]);
-        // dd($response);
         $response->assertStatus(200);
     }
 
