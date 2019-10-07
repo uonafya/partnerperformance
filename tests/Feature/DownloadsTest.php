@@ -32,6 +32,9 @@ class DownloadsTest extends TestCase
 
     public function testLoggedStatus()
     {
+        $user = User::first();
+        Auth::login($user);
+        $this->assertAuthenticatedAs($user);
         $u = auth()->user();
         $this->assertTrue($u);
     }
