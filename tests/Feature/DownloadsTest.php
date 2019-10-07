@@ -22,15 +22,15 @@ class DownloadsTest extends TestCase
 
         $user->save();*/
 
-
-        $user = User::first();
-        $partner = $user->partner;
-        $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
 
 
     public function testDownloadNonMer()
     {
+        $user = User::first();
+        $partner = $user->partner;
+        $this->actingAs($user)->withSession(['session_partner' => $partner]);
+        
         $response = $this->get('/download/non_mer/2019');
 
         $response->assertStatus(200);
@@ -39,6 +39,10 @@ class DownloadsTest extends TestCase
 
     public function testDownloadIndicator()
     {
+        $user = User::first();
+        $partner = $user->partner;
+        $this->actingAs($user)->withSession(['session_partner' => $partner]);
+        
         $response = $this->get('/download/non_mer/2019');
 
         $response->assertStatus(200);
@@ -46,6 +50,10 @@ class DownloadsTest extends TestCase
 
     public function testDownloadSurge()
     {
+        $user = User::first();
+        $partner = $user->partner;
+        $this->actingAs($user)->withSession(['session_partner' => $partner]);
+        
         $response = $this->call('POST', '/upload/surge', [
             'week_id' => 40,
         ]);
