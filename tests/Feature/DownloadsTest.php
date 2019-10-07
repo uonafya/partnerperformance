@@ -15,7 +15,7 @@ class DownloadsTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        
+
 
         $user = User::first();
         // Auth::login($user);
@@ -37,14 +37,14 @@ class DownloadsTest extends TestCase
     public function testDownloadNonMer()
     {
         $response = $this->get('/download/non_mer/2019');
-        $response->assertStatus(302);
+        $response->assertStatus(200);
     }
 
 
     public function testDownloadIndicator()
     {
         $response = $this->get('/download/non_mer/2019');
-        $response->assertStatus(302);
+        $response->assertStatus(200);
     }
 
     public function testDownloadSurge()
@@ -52,7 +52,7 @@ class DownloadsTest extends TestCase
         $response = $this->call('POST', '/upload/surge', [
             'week_id' => 40,
         ]);
-        $response->assertStatus(302);
+        $response->assertStatus(200);
     }
 
 
