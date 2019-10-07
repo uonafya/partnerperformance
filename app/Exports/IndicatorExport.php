@@ -19,7 +19,7 @@ class IndicatorExport extends BaseExport implements WithMapping
 		$this->financial_year = $financial_year;
 		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_early_warning_indicators';
 
-		$this->counties_array = DB::table('view_facilitys')->select('county')->where('partner', $partner->id)->groupBy('county')->get()->pluck(['county'])->toArray();
+		$this->counties_array = DB::table('view_facilitys')->select('county')->where('partner', $this->partner->id)->groupBy('county')->get()->pluck(['county'])->toArray();
 
 		$this->sql = "
 		countymflcode AS `County MFL`, name as `County`, 
