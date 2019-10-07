@@ -106,11 +106,11 @@ class Surge
         DB::table($table_name)->insert([
             ['modality' => 'mmd', 'modality_name' => 'Multi Month Dispensing', 'hts' => 0, 'tbl_name' => 'd_dispensing', ],
             ['modality' => 'tx_curr', 'modality_name' => 'Currently On Treatment', 'hts' => 0, 'tbl_name' => 'd_tx_curr', ],
-            ['modality' => 'prep_new', 'modality_name' => 'Pre-Exposure Prophylaxis New Tx', 'hts' => 0, 'tbl_name' => 'd_weeklies', ],
+            ['modality' => 'prep_new', 'modality_name' => 'Pre-Exposure Prophylaxis New Tx', 'hts' => 0, 'tbl_name' => 'd_prep_new', ],
         ]);
 
         DB::table($table_name)->insert([
-            ['modality' => 'vmmc_circ', 'modality_name' => 'VMMC CIRC', 'hts' => 0, 'tbl_name' => 'd_weeklies', 'female' => 0, 'unknown' => 0, ],
+            ['modality' => 'vmmc_circ', 'modality_name' => 'VMMC CIRC', 'hts' => 0, 'tbl_name' => 'd_vmmc_circ', 'female' => 0, 'unknown' => 0, ],
         ]);
 	}
 
