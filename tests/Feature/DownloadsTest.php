@@ -43,6 +43,7 @@ class DownloadsTest extends TestCase
     {
         $response = $this->post('/download/pns', [
             'items' => ['screened', 'contacts_identified'],
+            'months' => [1],
         ]);
         $response->assertOk();
     }
@@ -51,6 +52,7 @@ class DownloadsTest extends TestCase
     {
         $response = $this->post('/download/surge', [
             'week' => 40,
+            'modalities' => 1,
 
         ]);
         $response->assertOk();
