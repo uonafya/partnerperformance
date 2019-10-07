@@ -39,6 +39,15 @@ class DownloadsTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function testDownloadDispensing()
+    {
+        $response = $this->post('/download/dispensing', [
+            'month' => 1,
+            'gender_id' => 1,
+        ]);
+        $response->assertOk();
+    }
+
     public function testDownloadPNS()
     {
         $response = $this->post('/download/pns', [
@@ -53,6 +62,7 @@ class DownloadsTest extends TestCase
         $response = $this->post('/download/surge', [
             'week' => 40,
             'modalities' => 1,
+            'gender' => 1,
 
         ]);
         $response->assertOk();
