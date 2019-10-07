@@ -30,6 +30,12 @@ class DownloadsTest extends TestCase
         $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }
 
+    public function testLoggedStatus()
+    {
+        $u = auth()->user();
+        $this->assertTrue($u);
+    }
+
 
     public function testDownloadNonMer()
     {
