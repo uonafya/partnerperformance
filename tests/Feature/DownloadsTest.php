@@ -34,9 +34,9 @@ class DownloadsTest extends TestCase
     {
         $user = User::first();
         Auth::login($user);
-        $this->assertAuthenticatedAs($user);
-        $u = auth()->user();
-        $this->assertTrue($u);
+        $this->actingAs($user)->assertAuthenticatedAs($user);
+        // $u = auth()->user();
+        // $this->assertTrue($u);
     }
 
 
