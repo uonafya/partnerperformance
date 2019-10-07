@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ForgotPasswordControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    // use DatabaseMigrations;
 
     public function setUp(): void
     {

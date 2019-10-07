@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LoginControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    // use DatabaseMigrations;
 
     public function setUp(): void
     {
