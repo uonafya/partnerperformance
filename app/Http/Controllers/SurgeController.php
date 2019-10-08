@@ -778,6 +778,11 @@ class SurgeController extends Controller
 
 			if(!$week) $week = Week::where(['financial_year' => $row->financial_year, 'week_number' => $row->week_number])->first();
 
+			if(!$week){
+				session(['toast_error' => 1, 'toast_message' => 'The week that you are trying to upload data for could not be found.']);
+				return back();
+			}
+
 			$update_data = ['dateupdated' => $today];
 
 			foreach ($row as $key => $value) {
