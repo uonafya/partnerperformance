@@ -8,18 +8,6 @@ use Tests\TestCase;
 
 class ChartsTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->withSession(['filter_financial_year' => date('Y'), 'filter_groupby' => 1])->get('/non_mer/clinic_setup');
-
-        $response->assertStatus(200);
-    }
-
     public function testCharts()
     {
         $routes = [
@@ -49,7 +37,12 @@ class ChartsTest extends TestCase
 
         foreach ($routes as $base => $endpoints) {
             foreach ($endpoints as $endpoint) {
-                $response = $this->withSession(['filter_financial_year' => date('Y'), 'filter_groupby' => 1])->get('/' . $base . '/' . $endpoint);
+                $response = $this->withSession(
+                    [
+                        'filter_financial_year' => date('Y'),
+                        'filter_groupby' => 1,
+                    ]
+                )->get('/' . $base . '/' . $endpoint);
                 $response->assertStatus(200); 
             }
         }

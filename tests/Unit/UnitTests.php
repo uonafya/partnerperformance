@@ -15,6 +15,8 @@ class UnitTests extends TestCase
      */
     public function testExample()
     {
-        $this->assertTrue(true);
+        // $this->assertTrue(true);
+
+        $this->assertEqual(env('APP_ENV'), 'testing');
     }
 }
