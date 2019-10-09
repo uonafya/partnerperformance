@@ -25,7 +25,7 @@ class ChartsTest extends TestCase
         $routes = [
             'testing' => ['testing_outcomes', 'testing_age', 'testing_gender', 'pos_age', 'pos_gender', 'positivity', 'discordancy', 'testing_summary', 'summary'],
 
-            // 'pmtct' => ['haart', 'testing', 'starting_point', 'discovery_positivity', 'eid', 'male_testing'],
+            'pmtct' => ['haart', 'testing', 'starting_point', 'discovery_positivity', 'eid', 'male_testing'],
 
             // 'art' => ['current_age_breakdown', 'new_age_breakdown', 'enrolled_age_breakdown', 'new_art', 'current_art', 'current_suppression', 'treatment', 'reporting'],
 
