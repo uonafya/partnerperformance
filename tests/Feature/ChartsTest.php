@@ -15,7 +15,7 @@ class ChartsTest extends TestCase
      */
     public function testExample()
     {
-        $response = $this->get('/non_mer/clinic_setup');
+        $response = $this->withSession(['filter_financial_year' => date('Y'), 'filter_groupby' => 1])->get('/non_mer/clinic_setup');
 
         $response->assertStatus(200);
     }
@@ -49,8 +49,8 @@ class ChartsTest extends TestCase
 
         foreach ($routes as $base => $endpoints) {
             foreach ($endpoints as $endpoint) {
-                $response = $this->get('/' . $base . '/' . $endpoint);
-                $response->withSession(['filter_financial_year' => date('Y'), 'filter_groupby' => 1])->assertStatus(200); 
+                $response = $this->withSession(['filter_financial_year' => date('Y'), 'filter_groupby' => 1])->get('/' . $base . '/' . $endpoint);
+                $response->assertStatus(200); 
             }
         }
     }
