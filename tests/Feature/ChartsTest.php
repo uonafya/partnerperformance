@@ -15,7 +15,7 @@ class ChartsTest extends TestCase
      */
     public function testExample()
     {
-        $response = $this->get('/non_mer/breakdown');
+        $response = $this->get('/non_mer/clinic_setup');
 
         $response->assertStatus(200);
     }
