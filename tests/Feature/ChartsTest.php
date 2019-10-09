@@ -47,11 +47,11 @@ class ChartsTest extends TestCase
 
         ];
 
-        foreach ($routes as $base => $ends) {
-            // foreach ($ends as $end) {
-                $response = $this->get('/' . $base . '/' . $ends);
+        foreach ($routes as $base => $endpoints) {
+            foreach ($endpoints as $endpoint) {
+                $response = $this->get('/' . $base . '/' . $endpoint);
                 $response->assertStatus(200);
-            // }
+            }
         }
     }
 }
