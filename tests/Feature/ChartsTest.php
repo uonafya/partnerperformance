@@ -25,25 +25,25 @@ class ChartsTest extends TestCase
         $routes = [
             'testing' => ['testing_outcomes', 'testing_age', 'testing_gender', 'pos_age', 'pos_gender', 'positivity', 'discordancy', 'testing_summary', 'summary'],
 
-            'pmtct' => ['haart', 'testing', 'starting_point', 'discovery_positivity', 'eid', 'male_testing'],
+            // 'pmtct' => ['haart', 'testing', 'starting_point', 'discovery_positivity', 'eid', 'male_testing'],
 
-            'art' => ['current_age_breakdown', 'new_age_breakdown', 'enrolled_age_breakdown', 'new_art', 'current_art', 'current_suppression', 'treatment', 'reporting'],
+            // 'art' => ['current_age_breakdown', 'new_age_breakdown', 'enrolled_age_breakdown', 'new_art', 'current_art', 'current_suppression', 'treatment', 'reporting'],
 
-            'vmmc' => ['testing', 'summary', 'adverse'],
+            // 'vmmc' => ['testing', 'summary', 'adverse'],
 
-            'tb' => ['known_status', 'newly_tested', 'tb_screening', 'ipt'],
+            // 'tb' => ['known_status', 'newly_tested', 'tb_screening', 'ipt'],
 
-            'keypop' => ['testing', 'summary', 'current_tx'],
+            // 'keypop' => ['testing', 'summary', 'current_tx'],
 
             // 'non_mer' => ['facilities_count', 'clinics', 'achievement', 'breakdown', 'clinics_setup', 'otz_breakdown', 'dsd_impact', 'mens_impact'],
 
-            'regimen' => ['reporting', 'summary'],
+            // 'regimen' => ['reporting', 'summary'],
 
-            'indicators' => ['testing', 'positivity', 'summary', 'currenttx', 'newtx'],
+            // 'indicators' => ['testing', 'positivity', 'summary', 'currenttx', 'newtx'],
 
-            'pns' => ['summary_chart', 'pns_contribution', 'summary_table', 'get_table/screened'],
+            // 'pns' => ['summary_chart', 'pns_contribution', 'summary_table', 'get_table/screened'],
 
-            'surge' => ['testing', 'linkage', 'modality_yield', 'gender_yield', 'age_yield', 'pns', 'tx_sv', 'tx_btc', 'targets'],
+            // 'surge' => ['testing', 'linkage', 'modality_yield', 'gender_yield', 'age_yield', 'pns', 'tx_sv', 'tx_btc', 'targets'],
 
         ];
 
