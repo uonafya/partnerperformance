@@ -27,7 +27,7 @@ class ChartsTest extends TestCase
 
             'pmtct' => ['haart', 'testing', 'starting_point', 'discovery_positivity', 'eid', 'male_testing'],
 
-            // 'art' => ['current_age_breakdown', 'new_age_breakdown', 'enrolled_age_breakdown', 'new_art', 'current_art', 'current_suppression', 'treatment', 'reporting'],
+            'art' => ['current_age_breakdown', 'new_age_breakdown', 'enrolled_age_breakdown', 'new_art', 'current_art', 'current_suppression', 'treatment', 'reporting'],
 
             // 'vmmc' => ['testing', 'summary', 'adverse'],
 
