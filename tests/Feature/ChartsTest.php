@@ -29,9 +29,9 @@ class ChartsTest extends TestCase
 
             'art' => ['current_age_breakdown', 'new_age_breakdown', 'enrolled_age_breakdown', 'new_art', 'current_art', 'current_suppression', 'treatment', 'reporting'],
 
-            // 'vmmc' => ['testing', 'summary', 'adverse'],
+            'vmmc' => ['testing', 'summary', 'adverse'],
 
-            // 'tb' => ['known_status', 'newly_tested', 'tb_screening', 'ipt'],
+            'tb' => ['known_status', 'newly_tested', 'tb_screening', 'ipt'],
 
             // 'keypop' => ['testing', 'summary', 'current_tx'],
 
