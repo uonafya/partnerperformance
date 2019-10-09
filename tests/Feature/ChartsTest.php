@@ -35,7 +35,7 @@ class ChartsTest extends TestCase
 
             'keypop' => ['testing', 'summary', 'current_tx'],
 
-            'non_mer' => ['facilities_count', 'clinics', 'achievement', ],
+            'non_mer' => ['facilities_count', 'clinics', 'achievement', 'breakdown', 'clinic_setup', 'otz_breakdown', 'dsd_impact', 'mens_impact'],
 
             // 'regimen' => ['reporting', 'summary'],
 
