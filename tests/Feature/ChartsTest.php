@@ -13,12 +13,12 @@ class ChartsTest extends TestCase
      *
      * @return void
      */
-    /*public function testExample()
+    public function testExample()
     {
-        $response = $this->get('/');
+        $response = $this->get('/non_mer/breakdown');
 
         $response->assertStatus(200);
-    }*/
+    }
 
     public function testCharts()
     {
@@ -37,13 +37,13 @@ class ChartsTest extends TestCase
 
             'non_mer' => ['facilities_count', 'clinics', 'achievement', 'breakdown', 'clinic_setup', 'otz_breakdown', 'dsd_impact', 'mens_impact'],
 
-            // 'regimen' => ['reporting', 'summary'],
+            'regimen' => ['reporting', 'summary'],
 
-            // 'indicators' => ['testing', 'positivity', 'summary', 'currenttx', 'newtx'],
+            'indicators' => ['testing', 'positivity', 'summary', 'currenttx', 'newtx'],
 
-            // 'pns' => ['summary_chart', 'pns_contribution', 'summary_table', 'get_table/screened'],
+            'pns' => ['summary_chart', 'pns_contribution', 'summary_table', 'get_table/screened'],
 
-            // 'surge' => ['testing', 'linkage', 'modality_yield', 'gender_yield', 'age_yield', 'pns', 'tx_sv', 'tx_btc', 'targets'],
+            'surge' => ['testing', 'linkage', 'modality_yield', 'gender_yield', 'age_yield', 'pns', 'tx_sv', 'tx_btc', 'targets'],
 
         ];
 
