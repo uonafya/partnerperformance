@@ -50,7 +50,7 @@ class ChartsTest extends TestCase
         foreach ($routes as $base => $endpoints) {
             foreach ($endpoints as $endpoint) {
                 $response = $this->get('/' . $base . '/' . $endpoint);
-                $response->assertStatus(200);
+                $response->withSession(['filter_financial_year' => date('Y')])->assertStatus(200); 
             }
         }
     }
