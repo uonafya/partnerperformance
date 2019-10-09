@@ -33,7 +33,7 @@ class ChartsTest extends TestCase
 
             'tb' => ['known_status', 'newly_tested', 'tb_screening', 'ipt'],
 
-            // 'keypop' => ['testing', 'summary', 'current_tx'],
+            'keypop' => ['testing', 'summary', 'current_tx'],
 
             // 'non_mer' => ['facilities_count', 'clinics', 'achievement', 'breakdown', 'clinics_setup', 'otz_breakdown', 'dsd_impact', 'mens_impact'],
 
