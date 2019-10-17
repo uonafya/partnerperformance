@@ -20,7 +20,7 @@ class DispensingImport implements OnEachRow, WithHeadingRow
 		$d = \App\Dispensing::$dispensations;
 		$props = [];
 
-		foreach ($t as $key => $value) {
+		foreach ($d as $key => $value) {
 			$str = strtolower(str_replace(' ', '_', $value));
 			$props[] = $str;
 		}

@@ -40,8 +40,6 @@ class PNSImport implements OnEachRow, WithHeadingRow
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		if(!$fac) return;
 
-		$week = Week::where(['financial_year' => $row->financial_year, 'week_number' => $row->week_number])->first();
-
 		$update_data = ['dateupdated' => date("Y-m-d")];
 		$hasdata = false;
 

@@ -40,7 +40,7 @@ class UploadsTest extends TestCase
         $name = 'ampath_plus_2017_early_warning_indicators_monthly_data.xlsx';
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
-        $response = $this->call('POST', '/upload/indicator', [], [], ['upload' => $file]);
+        $response = $this->call('POST', '/upload/indicators', [], [], ['upload' => $file]);
         $response->assertStatus(200);
     } 
 

@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Facility;
 use App\Week;
+use App\SurgeColumn;
 use DB;
 
 use Maatwebsite\Excel\Row;

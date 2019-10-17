@@ -5,6 +5,7 @@ namespace App\Imports;
 use DB;
 use \App\Period;
 use \App\Facility;
+use \App\Lookup;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;

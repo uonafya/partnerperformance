@@ -39,4 +39,5 @@ class WeeklyImport implements OnEachRow, WithHeadingRow
 		$update_data = ['dateupdated' => $today, 'value' => $val]; 
 
 		if(env('APP_ENV') != 'testing')  DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $w->id, 'column_id' => $c->id])->update($update_data);
+	}
 }
