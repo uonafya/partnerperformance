@@ -6,6 +6,7 @@ namespace Tests\Feature;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use \App\User;
 
 class UploadsTest extends TestCase
 {
