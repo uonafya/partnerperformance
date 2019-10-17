@@ -19,7 +19,13 @@ class UploadsTest extends TestCase
         $this->actingAs($user)->withSession(['session_partner' => $partner]);
     }    
 
-    /*public function testUploadNonmer()
+    public function testLoggedStatus()
+    {
+        $user = User::first();
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function testUploadNonmer()
     {
         $path = public_path('test/ampath_plus_non_mer_indicators_2017.xlsx');
         $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
@@ -81,5 +87,5 @@ class UploadsTest extends TestCase
         $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/weekly', ['modality' => 'vmmc_circ'], [], ['upload' => $file]);
         $response->assertStatus(200);
-    }*/
+    }
 }
