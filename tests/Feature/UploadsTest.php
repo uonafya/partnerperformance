@@ -30,7 +30,7 @@ class UploadsTest extends TestCase
     {
         $name = 'ampath_plus_non_mer_indicators_2017.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/non_mer', [], [], ['upload' => $file]);
         $response->assertStatus(200);
     }  
@@ -39,7 +39,7 @@ class UploadsTest extends TestCase
     {
         $name = 'ampath_plus_2017_early_warning_indicators_monthly_data.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/indicator', [], [], ['upload' => $file]);
         $response->assertStatus(200);
     } 
@@ -48,7 +48,7 @@ class UploadsTest extends TestCase
     {
         $name = 'AMPATH_Plus_FY_2019_Sep_dispensing.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/dispensing', [], [], ['upload' => $file]);
         $response->assertStatus(200);
     }
@@ -57,7 +57,7 @@ class UploadsTest extends TestCase
     {
         $name = 'AMPATH_Plus_FY_2019_Sep_tx_curr.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/tx_curr', [], [], ['upload' => $file]);
         $response->assertStatus(200);
     }
@@ -66,7 +66,7 @@ class UploadsTest extends TestCase
     {
         $name = 'ampath_plus_2018_pns.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/pns', [], [], ['upload' => $file]);
         $response->assertStatus(200);
     }
@@ -75,7 +75,7 @@ class UploadsTest extends TestCase
     {
         $name = 'ampath_plus_surge_data_for_2019-04-28_to_2019-05-04.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/surge', [], [], ['upload' => $file]);
         $response->assertStatus(200);
     }
@@ -84,7 +84,7 @@ class UploadsTest extends TestCase
     {
         $name = 'AMPATH_Plus_prep_new_for_2019-04-28_to_2019-05-04.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/weekly', ['modality' => 'prep_new'], [], ['upload' => $file]);
         $response->assertStatus(200);
     }
@@ -93,7 +93,7 @@ class UploadsTest extends TestCase
     {
         $name = 'AMPATH_Plus_vmmc_circ_for_2019-04-28_to_2019-05-04.xlsx';
         $path = public_path('test/' . $name);
-        $file = new UploadedFile($path, $name, filesize($path), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/weekly', ['modality' => 'vmmc_circ'], [], ['upload' => $file]);
         $response->assertStatus(200);
     }
