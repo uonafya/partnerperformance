@@ -34,7 +34,7 @@ class PNSImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	$row = json_decode(json_encode($row));
+    	$row = json_decode(json_encode($row->toArray()));
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
@@ -58,11 +58,13 @@ class PNSImport implements OnEachRow, WithHeadingRow
 		}
 
 		$period = Period::where(['financial_year' => $row->financial_year, 'month' => $row->month])->first();
-		if(!$period) continue;
+		if(!$period) return;
 
-		DB::connection('mysql_wr')->table('d_pns')
+		if(env('APP_ENV') != 'testing'){
+			DB::connection('mysql_wr')->table('d_pns')
 			->where(['facility' => $fac->id, 'period_id' => $period->id, ])
 			->update($update_data);
+		}
 
     }
 }

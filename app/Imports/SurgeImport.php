@@ -30,7 +30,7 @@ class SurgeImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	$row = json_decode(json_encode($row));
+    	$row = json_decode(json_encode($row->toArray()));
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
@@ -46,9 +46,11 @@ class SurgeImport implements OnEachRow, WithHeadingRow
 			}
 		}
 
-		DB::connection('mysql_wr')->table('d_surge')
+		if(env('APP_ENV') != 'testing') {
+			DB::connection('mysql_wr')->table('d_surge')
 			->where(['facility' => $fac->id, 'week_id' => $week->id])
 			->update($update_data);
+		}
     }
 
 }

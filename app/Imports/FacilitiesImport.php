@@ -27,9 +27,10 @@ class FacilitiesImport implements ToCollection, WithHeadingRow
             $mflcodes[] = $row['mfl_code'];
         }
 
-        DB::table('facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
-        DB::table('apidb.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
-        DB::table('national_db.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
-
+        if(env('APP_ENV') != 'testing'){
+            DB::table('facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+            DB::table('apidb.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+            DB::table('national_db.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+        }
     }
 }

@@ -25,7 +25,7 @@ class WeeklyImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	$row = json_decode(json_encode($row));
+    	$row = json_decode(json_encode($row->toArray()));
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
@@ -34,9 +34,9 @@ class WeeklyImport implements OnEachRow, WithHeadingRow
 		$col = $this->surge_columns->where('alias_name', $row->column_name)->first();
 		$w = Week::where('financial_year', $row->financial_year)->where('week_number', $row->week_number)->first();
 		$val = (int) $row->value;
-		if(!$col || !$val || !$w) continue;
+		if(!$col || !$val || !$w) return;
 
 		$update_data = ['dateupdated' => $today, 'value' => $val]; 
 
-		DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $w->id, 'column_id' => $c->id])->update($update_data);
+		if(env('APP_ENV') != 'testing')  DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $w->id, 'column_id' => $c->id])->update($update_data);
 }

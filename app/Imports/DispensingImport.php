@@ -33,7 +33,7 @@ class DispensingImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	$row = json_decode(json_encode($row));
+    	$row = json_decode(json_encode($row->toArray()));
 
 		$hasdata = false;
 		$update_data['dateupdated'] = date('Y-m-d'); 
@@ -43,19 +43,19 @@ class DispensingImport implements OnEachRow, WithHeadingRow
 			if($update_data[$prop] > 0) $hasdata = true;
 		}
 
-		if(!$hasdata) continue;
+		if(!$hasdata) return;
 
 		$g = $this->genders->where('gender', $row->gender)->first();
 		$a = $this->age_categories->where('age_category', $row->age_category)->first();
 		$p = $this->periods->where('financial_year', $row->financial_year)->where('month', $row->month)->first();
 
-		if(!$a || !$g || !$p) continue;
+		if(!$a || !$g || !$p) return;
 
-		if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) continue;
+		if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 		$fac = \App\Facility::where('facilitycode', $row->mfl_code)->first();
 
-		if(!$fac) continue;
+		if(!$fac) return;
 
-		DB::table('d_dispensing')->where(['facility' => $fac->id, 'period_id' => $p->id, 'age_category_id' => $a->id, 'gender_id' => $g->id])->update($update_data);
+		if(env('APP_ENV') != 'testing') DB::table('d_dispensing')->where(['facility' => $fac->id, 'period_id' => $p->id, 'age_category_id' => $a->id, 'gender_id' => $g->id])->update($update_data);
     }
 }
