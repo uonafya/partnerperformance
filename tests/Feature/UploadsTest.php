@@ -32,7 +32,7 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/non_mer', [], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }  
 
     public function testUploadIndicator()
@@ -41,7 +41,7 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/indicators', [], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     } 
 
     public function testUploadDispensing()
@@ -50,7 +50,7 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/dispensing', [], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testUploadTxCurr()
@@ -59,7 +59,7 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/tx_curr', [], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testUploadPNS()
@@ -68,7 +68,7 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/pns', [], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testUploadSurge()
@@ -77,7 +77,7 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/surge', [], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testUploadWeeklyPrepNew()
@@ -86,7 +86,7 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/weekly', ['modality' => 'prep_new'], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testUploadWeeklyVmmc()
@@ -95,6 +95,6 @@ class UploadsTest extends TestCase
         $path = public_path('test/' . $name);
         $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
         $response = $this->call('POST', '/upload/weekly', ['modality' => 'vmmc_circ'], [], ['upload' => $file]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 }

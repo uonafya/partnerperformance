@@ -25,7 +25,7 @@ class DownloadsTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
-    /*public function testDownloadNonMer()
+    public function testDownloadNonMer()
     {
         $response = $this->get('/download/non_mer/2019');
         $response->assertHeader('content-disposition');
@@ -100,7 +100,7 @@ class DownloadsTest extends TestCase
             'age_category_id' => 1,
         ]);
         $response->assertOk();
-    }*/
+    }
 
 
 }
