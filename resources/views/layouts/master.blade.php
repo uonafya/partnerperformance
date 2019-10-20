@@ -77,9 +77,10 @@
 									Download Indicators Template <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('indicators/download/2017') }}">2017</a></li>
-									<li><a href="{{ url('indicators/download/2018') }}">2018</a></li>
-									<li><a href="{{ url('indicators/download/2019') }}">2019</a></li>
+									<li><a href="{{ url('download/indicators/2017') }}">2017</a></li>
+									<li><a href="{{ url('download/indicators/2018') }}">2018</a></li>
+									<li><a href="{{ url('download/indicators/2019') }}">2019</a></li>
+									<li><a href="{{ url('download/indicators/2020') }}">2020</a></li>
 								</ul>
 							</li>							
 							<li class="dropdown">
@@ -87,9 +88,10 @@
 									Download Non-mer Template <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('non_mer/download/2017') }}">2017</a></li>
-									<li><a href="{{ url('non_mer/download/2018') }}">2018</a></li>
-									<li><a href="{{ url('non_mer/download/2019') }}">2019</a></li>
+									<li><a href="{{ url('download/non_mer/2017') }}">2017</a></li>
+									<li><a href="{{ url('download/non_mer/2018') }}">2018</a></li>
+									<li><a href="{{ url('download/non_mer/2019') }}">2019</a></li>
+									<li><a href="{{ url('download/non_mer/2020') }}">2019</a></li>
 								</ul>
 							</li>	
 							<li class="dropdown">
@@ -113,10 +115,10 @@
 									Upload Templates <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									{{--<li><a href="{{ url('/upload/weekly/vmmc_circ') }}">Upload VMMC Circ</a></li>
+									<li><a href="{{ url('/upload/weekly/vmmc_circ') }}">Upload VMMC Circ</a></li>
 									<li><a href="{{ url('/upload/weekly/prep_new') }}">Upload PREP New</a></li>
 									<li><a href="{{ url('/upload/tx_curr') }}">Upload TX Current</a></li>
-									<li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>--}}
+									<li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>
 
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
 									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>

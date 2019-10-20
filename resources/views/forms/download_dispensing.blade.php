@@ -23,7 +23,7 @@
           Download Dispensing Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('dispensing/download') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('download/dispensing') }}" method="post" class="form-horizontal"> 
 					@csrf
 
           <p style="font-size: 16;">
@@ -35,6 +35,7 @@
               <select class="col-sm-7 select_tag" name="financial_year">
                 <option></option>
                 <option value="2019">2019</option>
+                <option value="2020" selected>2020</option>
               </select>
           </div>
 

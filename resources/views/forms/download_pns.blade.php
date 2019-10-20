@@ -23,7 +23,7 @@
           Download PNS Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('pns/download') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('download/pns') }}" method="post" class="form-horizontal"> 
 					@csrf
 
           <p style="font-size: 16;">
@@ -34,8 +34,9 @@
               <label class="col-sm-3 control-label">Financial Year</label>
               <select class="col-sm-7 select_tag" name="financial_year">
                 <option></option>
-                <option value="2018" selected>2018</option>
+                <option value="2018">2018</option>
                 <option value="2019">2019</option>
+                <option value="2020" selected="">2020</option>
               </select>
           </div>
 
