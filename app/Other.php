@@ -383,16 +383,25 @@ class Other
 	}
 
 
-	public static function delete_data($id=55222){
-		$tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
-		foreach ($tables as $key => $table) {
-			DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
-		}
-		$tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
-		foreach ($tables as $key => $table) {
-			DB::connection('mysql_wr')->table($table->targets_table_name)->where('facility', $id)->delete();
-		}
-		DB::connection('mysql_wr')->table("d_regimen_totals")->where('facility', $id)->delete();
+	public static function delete_data($id)
+    {
+		// $tables = DB::table('data_set_elements')->selectRaw('Distinct table_name')->get();
+		// foreach ($tables as $key => $table) {
+		// 	DB::connection('mysql_wr')->table($table->table_name)->where('facility', $id)->delete();
+		// }
+		// $tables = DB::table('data_set_elements')->selectRaw('Distinct targets_table_name')->get();
+		// foreach ($tables as $key => $table) {
+		// 	DB::connection('mysql_wr')->table($table->targets_table_name)->where('facility', $id)->delete();
+		// }
+		// DB::connection('mysql_wr')->table("d_regimen_totals")->where('facility', $id)->delete();
+
+        $tables = DB::select("show tables");
+        foreach ($tables as $key => $row) {
+            $t = $row->Tables_in_hcm;
+            if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) || in_array($t, ['p_early_indicators', 'd_dispensing'])) continue;
+            DB::connection('mysql_wr')->table($row->Tables_in_hcm)->where('facility', $id)->delete();
+        }
+        DB::connection('mysql_wr')->table('facilitys')->where('id', $id)->delete();
 	}
 
 }
