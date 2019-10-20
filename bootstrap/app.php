@@ -42,7 +42,7 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$app->withFacades();
+// $app->withFacades();
 
 /*
 |--------------------------------------------------------------------------
