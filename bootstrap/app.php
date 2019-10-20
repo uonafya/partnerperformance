@@ -42,6 +42,8 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->withFacades();
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
