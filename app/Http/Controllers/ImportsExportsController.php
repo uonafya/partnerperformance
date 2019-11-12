@@ -48,18 +48,16 @@ class ImportsExportsController extends Controller
 		$c = $classes[$path];
 
 		$upload = $request->upload->store('uploads');
-		dd($upload);
 
 		if($path == 'facilities'){
 			if(auth()->user()->user_type_id != 1) return back();
-			Excel::import(new $c($request->input('partner_id')), $request->upload->path());
+			Excel::import(new $c($request->input('partner_id')), $upload);
 		}
 		else if($path == 'weekly'){
-			Excel::import(new $c($request->input('modality')), $request->upload->path());			
+			Excel::import(new $c($request->input('modality')), $upload);			
 		}
 		else{
-			dd($request->upload->path());
-			Excel::import(new $c, $request->upload->path());			
+			Excel::import(new $c, $upload);			
 		}
 
 		session(['toast_message' => 'The updates have been made.']);
