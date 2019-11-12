@@ -55,6 +55,7 @@ class ImportsExportsController extends Controller
 			Excel::import(new $c($request->input('modality')), $request->upload->path());			
 		}
 		else{
+			dd($request->upload->path());
 			Excel::import(new $c, $request->upload->path());			
 		}
 

@@ -35,7 +35,7 @@ class ChartsTest extends TestCase
 
         ];
 
-        /*foreach ($routes as $base => $endpoints) {
+        foreach ($routes as $base => $endpoints) {
             foreach ($endpoints as $endpoint) {
                 $response = $this->withSession(
                     [
@@ -45,8 +45,8 @@ class ChartsTest extends TestCase
                 )->get('/' . $base . '/' . $endpoint);
                 $response->assertStatus(200); 
             }
-        }*/
+        }
 
-        $this->assertEqual(env('APP_ENV'), 'testing');
+        $this->assertEquals('testing', env('APP_ENV'));
     }
 }
