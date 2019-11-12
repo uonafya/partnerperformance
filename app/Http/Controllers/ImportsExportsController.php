@@ -47,6 +47,9 @@ class ImportsExportsController extends Controller
 
 		$c = $classes[$path];
 
+		$upload = $request->upload->store('uploads');
+		dd($upload);
+
 		if($path == 'facilities'){
 			if(auth()->user()->user_type_id != 1) return back();
 			Excel::import(new $c($request->input('partner_id')), $request->upload->path());
