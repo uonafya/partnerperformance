@@ -223,6 +223,7 @@
 			<center>
 				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2018, '{{ $date_url }}')" class="alert-link"> FY 2018 </a>|
 				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2019, '{{ $date_url }}')" class="alert-link"> FY 2019 </a>|
+				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2020, '{{ $date_url }}')" class="alert-link"> FY 2020 </a>|
 				<br />
 
 				<a href="javascript:void(0)" onclick="date_filter('quarter', 1, '{{ $date_url }}')" class="alert-link"> Quarter 1 </a>|
