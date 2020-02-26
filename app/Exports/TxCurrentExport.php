@@ -21,7 +21,7 @@ class TxCurrentExport extends BaseExport
 		$this->age_category_id = $request->input('age_category_id');
 		$this->gender_id = $request->input('gender_id');
 
-		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr';
+		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
 		$this->sql = "countyname as County, Subcounty,		
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
 		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, facilitycode AS `MFL Code`, 

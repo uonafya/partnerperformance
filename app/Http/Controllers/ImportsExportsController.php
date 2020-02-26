@@ -33,6 +33,10 @@ class ImportsExportsController extends Controller
 	        session(['toast_error' => 1, 'toast_message' => 'Please select a file before clicking the submit button.']);
 			return back();
 		}
+		if(auth()->user()->user_type_id != 3){
+	        session(['toast_error' => 1, 'toast_message' => 'You are not allowed to make an upload.']);
+			return back();			
+		}
 
 		$classes = [
 			'dispensing' => DispensingImport::class,

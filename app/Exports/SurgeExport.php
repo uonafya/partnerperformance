@@ -29,7 +29,7 @@ class SurgeExport extends BaseExport
 
 
 		$week = \App\Week::findOrFail($this->week_id);
-		$this->fileName = $this->partner->download_name . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date;
+		$this->fileName = $this->partner->download_name . '_surge_data_for_' . $week->start_date . '_to_' . $week->end_date . '.xlsx';
 
 
     	$modalities = $this->modalities;

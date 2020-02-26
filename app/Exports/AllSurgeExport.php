@@ -17,7 +17,7 @@ class AllSurgeExport extends BaseExport
         }
         $this->sql = $sql;
         $this->partner = $partner;
-        $this->fileName = $this->partner->download_name . '_surge_data';
+        $this->fileName = $this->partner->download_name . '_surge_data' . '.xlsx';
 	}
 
     public function headings() : array

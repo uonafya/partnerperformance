@@ -20,7 +20,7 @@ class PNSExport extends BaseExport
 		$this->financial_year = $request->input('financial_year', date('Y'));
 
 
-		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_pns';
+		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_pns' . '.xlsx';
 
 
 		$sql = "countyname as County, Subcounty,

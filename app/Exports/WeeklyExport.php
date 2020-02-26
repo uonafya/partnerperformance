@@ -24,7 +24,7 @@ class WeeklyExport extends BaseExport
 		$this->age_category_id = $request->input('age_category_id');
 
 		$week = \App\Week::findOrFail($this->week_id);
-		$this->fileName = $this->partner->download_name . '_' . $modality . '_for_' . $week->start_date . '_to_' . $week->end_date;
+		$this->fileName = $this->partner->download_name . '_' . $modality . '_for_' . $week->start_date . '_to_' . $week->end_date . '.xlsx';
 
 		$this->sql = "countyname as County, Subcounty,
 		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`, 
