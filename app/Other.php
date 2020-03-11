@@ -222,7 +222,7 @@ class Other
 			foreach ($partners as $partner) {
 				foreach ($counties as $county) {
 					$data = ['period_id' => $period->id, 'partner' => $partner->id, 'county' => $county->id];
-					$data = array_merge($data, $fq);
+					// $data = array_merge($data, $fq);
 
 					$data_array[$i] = $data;
 					$i++;

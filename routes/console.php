@@ -67,6 +67,14 @@ Artisan::command('insert:weekly', function () {
 	\App\Other::create_weeks();
 })->describe('Add weeks and create rows.');
 
+Artisan::command('insert:periods', function ($year=null) {
+	\App\Insert::insert_periods($year);
+})->describe('Add periods.');
+
+Artisan::command('insert:period-rows', function ($year=null) {
+	\App\Insert::insert_rows($year);
+})->describe('Add periods and create rows.');
+
 
 
 Artisan::command('merge:all {year?}', function ($year=null) {
