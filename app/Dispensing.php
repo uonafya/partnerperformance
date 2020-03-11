@@ -123,20 +123,6 @@ class Dispensing
         DB::statement($sql);
 	}
 
-    public static function insert_periods($year)
-    {
-        if(!$year) $year = date('Y');
-        $data_array = [];
-
-        for ($month=1; $month < 13; $month++) { 
-            $data = array('year' => $year, 'month' => $month);
-            $data = array_merge($data, Synch::get_financial_year_quarter($year, $month) );
-            $data_array[] = $data;
-        }
-
-        DB::connection('mysql_wr')->table('periods')->insert($data_array);
-    }
-
     public static function create_tables()
     {
         self::dispensing_table();
