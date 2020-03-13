@@ -207,9 +207,13 @@ class TestingController extends Controller
 			if(isset($target)) $data["outcomes"][1]["data"][$key] = $target;
 			else{
 				$obj = $target_obj->where('div_id', $row->div_id)->first();
-				$target_tests = round(($obj->tests / $divisor), 2);
-				$target_pos = round(($obj->pos / $divisor), 2);
-				$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($target_pos, $target_tests);
+				if($obj){
+					$target_tests = round(($obj->tests / $divisor), 2);
+					$target_pos = round(($obj->pos / $divisor), 2);
+					$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($target_pos, $target_tests);
+				}else{
+					$data["outcomes"][1]["data"][$key] = 0;					
+				}
 			}
 		}	
 		return view('charts.line_graph', $data);
