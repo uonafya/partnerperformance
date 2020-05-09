@@ -91,7 +91,7 @@ class ImportsExportsController extends Controller
 			'surge' => SurgeExport::class,
 			'tx_curr' => TxCurrentExport::class,
 			'weekly' => WeeklyExport::class,
-			'gbv' => WeeklyExport::class,
+			'gbv' => GBVExport::class,
 		];
 
 		$c = $classes[$path];
