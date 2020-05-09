@@ -20,7 +20,7 @@
 		    <div class="panel-heading">
 			    {{ $partner->name ?? '' }} 
           <br />
-          Download TX Curr Excel
+          Download Gender Based Violence Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
 				<form action="{{ url('download/gbv') }}" method="post" class="form-horizontal"> 
@@ -35,7 +35,7 @@
               <select class="col-sm-7 select_tag" required name="period_id">
                 <option></option>
                 @foreach($periods as $period)
-                  <option value="{{ $period->id }} "></option>
+                  <option value="{{ $period->id }} "> FY {{ $period->financial_year }} Month {{ $period->month_name }} </option>
                 @endforeach
               </select>
           </div>
