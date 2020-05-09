@@ -286,7 +286,7 @@
 				var posting = $.post( "{{ url('filter/any') }}", { 'session_var': id, 'value': em } );
 
 				posting.done(function( data ) {
-					console.log(data);
+					// console.log(data);
 					reload_page();
 				});
 

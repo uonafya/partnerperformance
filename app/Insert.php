@@ -30,6 +30,7 @@ class Insert
 
         foreach ($tables as $key => $row) {
             $table_name = $row->Tables_in_hcm;
+            if($table_name != 'd_gender_based_violence') continue;
             if(!starts_with($table_name, ['d_', 'm_']) || in_array($table_name, ['d_tx_curr', 'd_dispensing'])) continue;
 
             $columns = collect(DB::select("show columns from `" . $table_name . '`'));
@@ -39,7 +40,7 @@ class Insert
             $i = 0;
             $data = [];
 
-			echo "Begin entry for {$table_name} for {$year} as {date('Y-m-d H:i:s')}  \n";
+			echo "Begin entry for {$table_name} for {$year} at " . date('Y-m-d H:i:s') . "\n";
 
             foreach ($periods as $period) {
             	foreach ($facilities as $facility) {
@@ -58,8 +59,9 @@ class Insert
 			$i=0;
 			$data=[];
 
-			echo "Completed entry for {$table_name} for {$year} as {date('Y-m-d H:i:s')}  \n";
+			echo "Completed entry for {$table_name} for {$year} at " . date('Y-m-d H:i:s') . "\n";
         }
+        return;
         self::insert_dispensing_rows($year);
         self::insert_tx_curr_rows($year);
         self::partner_indicators_insert($year);

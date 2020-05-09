@@ -11,7 +11,6 @@ class CircumcisionController extends Controller
 
 	public function testing()
 	{
-		$date_query = Lookup::date_query();
 		$groupby = session('filter_groupby', 1);
 
 		$rows = DB::table('m_circumcision')
@@ -21,7 +20,6 @@ class CircumcisionController extends Controller
 				(SUM(circumcised_neg) + SUM(circumcised_pos) + SUM(circumcised_nk)) AS total
 				")
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		$data['div'] = str_random(15);
@@ -55,7 +53,6 @@ class CircumcisionController extends Controller
 
 	public function summary()
 	{		
-		$date_query = Lookup::date_query();
 		$data = Lookup::table_data();
 
 		$sql = "SUM(circumcised_below1) AS below1, SUM(circumcised_below10) AS below10, 
@@ -68,7 +65,6 @@ class CircumcisionController extends Controller
 			->join('periods', 'periods.id', '=', 'm_circumcision.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('circumcised_total'))
-			->whereRaw($date_query)
 			->get();
 
 		return view('tables.circumcision_summary', $data);
@@ -76,7 +72,6 @@ class CircumcisionController extends Controller
 
 	public function adverse()
 	{		
-		$date_query = Lookup::date_query();
 		$data = Lookup::table_data();
 
 		$sql = "SUM(ae_during_moderate) AS ae_during_moderate, SUM(ae_during_severe) AS ae_during_severe, 
@@ -88,7 +83,6 @@ class CircumcisionController extends Controller
 			->join('periods', 'periods.id', '=', 'm_circumcision.period_id')
 			->selectRaw($sql)
 			->when(true, $this->get_callback('total'))
-			->whereRaw($date_query)
 			->get();
 
 		return view('tables.circumcision_ae', $data);

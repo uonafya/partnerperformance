@@ -279,6 +279,38 @@ class Dispensing
 
 
 
+    public static function gbv_table()
+    {
+        $table_name = 'd_gender_based_violence';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    facility int(10) UNSIGNED DEFAULT 0,
+                    period_id smallint(5) UNSIGNED DEFAULT 0, ";
+
+        $modalities = SurgeModality::where(['tbl_name' => $table_name])->get();
+        $ages = SurgeAge::gbv()->get();
+        $genders = SurgeGender::all();
+
+        foreach ($modalities as $modality) {
+            foreach ($ages as $age) {
+                $base = $modality->modality . '_' . $age->age . '_';
+                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+            }
+        }
+
+        $sql .= "        
+                    dateupdated date DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    KEY `facility` (`facility`),
+                    KEY `period_id` (`period_id`),
+                    KEY `specific` (`facility`, `period_id`)
+        )";
+        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::statement($sql);
+    }
+
+
 
 
     public static function insert_dispensing_rows($year=null,$table_name = 'd_dispensing')

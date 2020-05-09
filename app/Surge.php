@@ -53,55 +53,58 @@ class Surge
         DB::statement($sql);
 
         DB::table($table_name)->insert([
-        	['modality' => 'emergency_ward', 'modality_name' => 'Emergency Ward' ],
+        	['modality' => 'emergency_ward', 'modality_name' => 'Emergency Ward', 'tbl_name' => 'd_surge' ],
         	// ['modality' => 'facility_index', 'modality_name' => 'Facility Index' ],
         	// ['modality' => 'community_index', 'modality_name' => 'Community Index' ],
-            ['modality' => 'index', 'modality_name' => 'Facility and Community Index' ],
-        	['modality' => 'inpatient', 'modality_name' => 'Inpatient' ],
-        	['modality' => 'malnutrution', 'modality_name' => 'Malnutrition' ],
-        	['modality' => 'community_mobile', 'modality_name' => 'Community Mobile' ],
-        	['modality' => 'community_other_services', 'modality_name' => 'Community Other Services' ],
-        	['modality' => 'other_pitc', 'modality_name' => 'Other PITC' ],
-        	['modality' => 'pediatric', 'modality_name' => 'Pediatric' ],
-        	['modality' => 'sti_clinic', 'modality_name' => 'STI Clinic' ],
-        	['modality' => 'vct', 'modality_name' => 'VCT' ],
-            ['modality' => 'community_vct', 'modality_name' => 'Community VCT' ],
-        	['modality' => 'tb_clinic', 'modality_name' => 'TB Clinic' ],
+            ['modality' => 'index', 'modality_name' => 'Facility and Community Index', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'inpatient', 'modality_name' => 'Inpatient', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'malnutrution', 'modality_name' => 'Malnutrition', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'community_mobile', 'modality_name' => 'Community Mobile', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'community_other_services', 'modality_name' => 'Community Other Services', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'other_pitc', 'modality_name' => 'Other PITC', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'pediatric', 'modality_name' => 'Pediatric', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'sti_clinic', 'modality_name' => 'STI Clinic', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'vct', 'modality_name' => 'VCT', 'tbl_name' => 'd_surge' ],
+            ['modality' => 'community_vct', 'modality_name' => 'Community VCT', 'tbl_name' => 'd_surge' ],
+        	['modality' => 'tb_clinic', 'modality_name' => 'TB Clinic', 'tbl_name' => 'd_surge' ],
         	// ['modality' => '', 'modality_name' => '' ],
         ]);
 
         DB::table($table_name)->insert([
-        	['modality' => 'pmtct_anc1', 'modality_name' => 'PMTCT ANC1 Only', 'male' => 0, 'female' => 1, 'unknown' => 0, ],
-            ['modality' => 'pmtct_post_anc', 'modality_name' => 'PMTCT POST ANC', 'male' => 0, 'female' => 1, 'unknown' => 0, ],
-        	['modality' => 'vmmc', 'modality_name' => 'VMMC', 'male' => 1, 'female' => 0, 'unknown' => 0, ],
+        	['modality' => 'pmtct_anc1', 'modality_name' => 'PMTCT ANC1 Only', 'male' => 0, 'female' => 1, 'unknown' => 0, 'tbl_name' => 'd_surge', ],
+            ['modality' => 'pmtct_post_anc', 'modality_name' => 'PMTCT POST ANC', 'male' => 0, 'female' => 1, 'unknown' => 0, 'tbl_name' => 'd_surge', ],
+        	['modality' => 'vmmc', 'modality_name' => 'VMMC', 'male' => 1, 'female' => 0, 'unknown' => 0, 'tbl_name' => 'd_surge', ],
         	// ['modality' => '', 'modality_name' => '', 'male' => 1, 'female' => 0, 'unknown' => 0, ],
         ]);
 
         DB::table($table_name)->insert([
             // PNS Columns
-        	['modality' => 'clients_screened', 'modality_name' => 'Index Clients Screened', 'hts' => 0, ],
-            ['modality' => 'contacts_identified', 'modality_name' => 'Contacts Identified', 'hts' => 0, ],
-        	['modality' => 'pos_contacts', 'modality_name' => 'Known HIV Positive Contacts', 'hts' => 0, ],
-        	['modality' => 'eligible_contacts', 'modality_name' => 'Eligible Contacts', 'hts' => 0, ],
-        	['modality' => 'contacts_tested', 'modality_name' => 'Contacts Tested', 'hts' => 0, ],
-        	['modality' => 'new_pos', 'modality_name' => 'Newly Identified Positives', 'hts' => 0, ],
-            ['modality' => 'linked_to_haart', 'modality_name' => 'Linked To HAART', 'hts' => 0, ],
+        	['modality' => 'clients_screened', 'modality_name' => 'Index Clients Screened', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+            ['modality' => 'contacts_identified', 'modality_name' => 'Contacts Identified', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+        	['modality' => 'pos_contacts', 'modality_name' => 'Known HIV Positive Contacts', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+        	['modality' => 'eligible_contacts', 'modality_name' => 'Eligible Contacts', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+        	['modality' => 'contacts_tested', 'modality_name' => 'Contacts Tested', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+        	['modality' => 'new_pos', 'modality_name' => 'Newly Identified Positives', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+            ['modality' => 'linked_to_haart', 'modality_name' => 'Linked To HAART', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+        ]);
 
-        	['modality' => 'tx_new', 'modality_name' => 'New On Treatment', 'hts' => 0, ],
-            ['modality' => 'tx_sv_d', 'modality_name' => 'New On Treatment Second Visit Due', 'hts' => 0, ],
-            ['modality' => 'tx_sv_n', 'modality_name' => 'New On Treatment Second Visit Number', 'hts' => 0, ],
-            ['modality' => 'tx_btc_t', 'modality_name' => 'LTFU Restored to Treatment Target', 'hts' => 0, ],
-            ['modality' => 'tx_btc_n', 'modality_name' => 'LTFU Restored to Treatment Number', 'hts' => 0, ],
+
+        DB::table($table_name)->insert([
+        	['modality' => 'tx_new', 'modality_name' => 'New On Treatment', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+            ['modality' => 'tx_sv_d', 'modality_name' => 'New On Treatment Second Visit Due', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+            ['modality' => 'tx_sv_n', 'modality_name' => 'New On Treatment Second Visit Number', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+            ['modality' => 'tx_btc_t', 'modality_name' => 'LTFU Restored to Treatment Target', 'hts' => 0, 'tbl_name' => 'd_surge', ],
+            ['modality' => 'tx_btc_n', 'modality_name' => 'LTFU Restored to Treatment Number', 'hts' => 0, 'tbl_name' => 'd_surge', ],
         ]);
 
         DB::table($table_name)->insert([
-            ['modality' => 'target', 'modality_name' => 'Target', 'hts' => 0, 'target' => 1 ],
+            ['modality' => 'target', 'modality_name' => 'Target', 'hts' => 0, 'target' => 1, 'tbl_name' => 'd_surge', ],
             // ['modality' => 'testing_target', 'modality_name' => 'Testing Target', 'hts' => 0, 'target' => 1 ],
             // ['modality' => 'pos_target', 'modality_name' => 'Pos Target', 'hts' => 0, 'target' => 1 ],
             // ['modality' => 'tx_new_target', 'modality_name' => 'TX New Target', 'hts' => 0, 'target' => 1 ],
         ]);
 
-        DB::table($table_name)->update(['tbl_name' => 'd_surge']);
+        // DB::table($table_name)->update(['tbl_name' => 'd_surge']);
 
         DB::table($table_name)->insert([
             ['modality' => 'mmd', 'modality_name' => 'Multi Month Dispensing', 'hts' => 0, 'tbl_name' => 'd_dispensing', ],
@@ -111,6 +114,13 @@ class Surge
 
         DB::table($table_name)->insert([
             ['modality' => 'vmmc_circ', 'modality_name' => 'VMMC CIRC', 'hts' => 0, 'tbl_name' => 'd_vmmc_circ', 'female' => 0, 'unknown' => 0, ],
+        ]);
+
+        // GBV
+        DB::table($table_name)->insert([
+            ['modality' => 'gbv_sexual', 'modality_name' => 'Gender Based Violence - Sexual Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
+            ['modality' => 'gbv_physical', 'modality_name' => 'Gender Based Violence - Physical/Emotional Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
+            ['modality' => 'pep_number', 'modality_name' => 'Number Receiving PEP', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
         ]);
 	}
 
@@ -147,6 +157,7 @@ class Surge
                     for_surge tinyint(1) UNSIGNED DEFAULT 1,
                     for_vmmc tinyint(1) UNSIGNED DEFAULT 1,
                     for_tx_curr tinyint(1) UNSIGNED DEFAULT 1,
+                    for_gbv tinyint(1) UNSIGNED DEFAULT 1,
                     PRIMARY KEY (`id`),
                     KEY `age` (`age`),
                     KEY `age_category_id` (`age_category_id`)
@@ -162,7 +173,7 @@ class Surge
 
         // Only VMMC doesn't have
         DB::table($table_name)->insert([
-        	['age' => 'below_1', 'age_name' => 'Below 1', 'age_category_id' => 2, 'max_age' => 1, 'no_gender' => 1, 'for_vmmc' => 0, ],
+        	['age' => 'below_1', 'age_name' => 'Below 1', 'age_category_id' => 2, 'max_age' => 1, 'no_gender' => 1, 'for_vmmc' => 0, 'for_gbv' => 0 ],
         ]);
 
         // Only for Surge
@@ -185,20 +196,29 @@ class Surge
         	// ['age' => '', 'age_name' => '', ],
         ]);
 
+        DB::table($table_name)->where(['age_name' => '40-49'])->update(['for_gbv' => 0]);
+
         // Only VMMC
         DB::table($table_name)->insert([
-            ['age' => 'below_60_d', 'age_name' => '0-60 Days', 'age_category_id' => 2, 'max_age' => 1, 'for_surge' => 0, 'for_tx_curr' => 0, ],
-            ['age' => 'below_4', 'age_name' => '2 Months - 4 Years', 'age_category_id' => 2, 'max_age' => 4, 'for_surge' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_60_d', 'age_name' => '0-60 Days', 'age_category_id' => 2, 'max_age' => 1, 'for_surge' => 0, 'for_tx_curr' => 0, 'for_gbv' => 0, ],
+            ['age' => 'below_4', 'age_name' => '2 Months - 4 Years', 'age_category_id' => 2, 'max_age' => 4, 'for_surge' => 0, 'for_tx_curr' => 0, 'for_gbv' => 0, ],
         ]);
 
         // Only TX Curr
         DB::table($table_name)->insert([
-            ['age' => 'below_4', 'age_name' => '1-4', 'no_gender' => 1, 'age_category_id' => 2, 'max_age' => 4, 'for_surge' => 0, 'for_vmmc' => 0, ],
+            ['age' => 'below_4', 'age_name' => '1-4', 'no_gender' => 1, 'age_category_id' => 2, 'max_age' => 4, 'for_surge' => 0, 'for_vmmc' => 0, 'for_gbv' => 0, ],
         ]);
 
         // Only Surge Doesn't have
         DB::table($table_name)->insert([
-            ['age' => 'below_10', 'age_name' => '5-9', 'age_category_id' => 2, 'max_age' => 9, 'for_surge' => 0, ],
+            ['age' => 'below_10', 'age_name' => '5-9', 'age_category_id' => 2, 'max_age' => 9, 'for_surge' => 0, 'for_gbv' => 0, ],
+        ]);
+
+
+        // Only GBV
+        DB::table($table_name)->insert([
+            ['age' => 'below_45', 'age_name' => '40-44', 'age_category_id' => 3, 'max_age' => 44, 'for_surge' => 0, 'for_vmmc' => 0, 'for_tx_curr' => 0, ],
+            ['age' => 'below_50', 'age_name' => '45-49', 'age_category_id' => 3, 'max_age' => 49, 'for_surge' => 0, 'for_vmmc' => 0, 'for_tx_curr' => 0, ],
         ]);
 
 	}

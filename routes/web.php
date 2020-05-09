@@ -228,6 +228,11 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		Route::post('upload', 'WeeklyController@upload_excel')->name('upload');
 	});
 
+	Route::prefix('gbv')->name('gbv')->group(function(){
+		Route::get('download', 'GeneralController@download_gbv');
+
+	});
+
 	// Upload any Data
 	Route::get('upload/facilities', 'GeneralController@upload_facilities');
 	Route::get('upload/{path}/{modality?}', 'GeneralController@upload_any');

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Lookup;
 use App\User;
 use App\Week;
+use App\Period;
 use DB;
 
 class GeneralController extends Controller
@@ -224,6 +225,16 @@ class GeneralController extends Controller
 		$data['no_header'] = true;
 		$data['modality'] = $modality;
 		return view('forms.download_weeklies', $data);
+	}
+
+	public function download_gbv()
+	{
+		$data['modalities'] = \App\SurgeModality::where(['tbl_name' => ])
+		$data['periods'] = \App\Period::where('year', '>', 2019)->get();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_gbv', $data);
 	}
 
 	public function upload_any($path, $modality=null)

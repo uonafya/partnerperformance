@@ -22,6 +22,7 @@ use App\Exports\PNSExport;
 use App\Exports\SurgeExport;
 use App\Exports\TxCurrentExport;
 use App\Exports\WeeklyExport;
+use App\Exports\GBVExport;
 
 class ImportsExportsController extends Controller
 {
@@ -90,6 +91,7 @@ class ImportsExportsController extends Controller
 			'surge' => SurgeExport::class,
 			'tx_curr' => TxCurrentExport::class,
 			'weekly' => WeeklyExport::class,
+			'gbv' => WeeklyExport::class,
 		];
 
 		$c = $classes[$path];
