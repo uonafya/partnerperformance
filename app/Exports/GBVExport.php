@@ -59,7 +59,7 @@ class GBVExport extends BaseExport
     {
 		$row = DB::table($this->table_name)
 			->join('view_facilitys', 'view_facilitys.id', '=', $this->table_name . '.facility')
-			->join('periods', 'periods.id', '=', $this->table_name . '.week_id')
+			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
 			->where('period_id', $this->period_id)
 			->where('partner', $this->partner->id)
@@ -75,7 +75,7 @@ class GBVExport extends BaseExport
 		
 		return DB::table($this->table_name)
 			->join('view_facilitys', 'view_facilitys.id', '=', $this->table_name . '.facility')
-			->join('periods', 'periods.id', '=', $this->table_name . '.week_id')
+			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
 			->where('period_id', $this->period_id)
 			->where('partner', $this->partner->id)
