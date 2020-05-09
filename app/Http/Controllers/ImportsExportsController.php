@@ -13,6 +13,7 @@ use App\Imports\PNSImport;
 use App\Imports\SurgeImport;
 use App\Imports\TxCurrentImport;
 use App\Imports\WeeklyImport;
+use App\Imports\GbvImport;
 
 
 use App\Exports\DispensingExport;
@@ -48,6 +49,7 @@ class ImportsExportsController extends Controller
 			'surge' => SurgeImport::class,
 			'tx_curr' => TxCurrentImport::class,
 			'weekly' => WeeklyImport::class,
+			'gbv' => GbvImport::class,
 		];
 
 		$c = $classes[$path];
