@@ -25,8 +25,8 @@ class GBVExport extends BaseExport
 		$period = \App\Period::findOrFail($this->period_id);
 		$this->fileName = $this->partner->download_name . '_gbv_data_FY_' . $period->financialYear . '.xlsx';
 
-
-    	$modalities = $this->modalities;
+		$modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get();
+    	// $modalities = $this->modalities;
     	$gender_id = $this->gender_id;
     	$ages = $this->ages;
     	$partner = $this->partner;
