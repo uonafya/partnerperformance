@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Facility;
-use App\Week;
+use App\Period;
 use App\SurgeColumn;
 use App\SurgeModality;
 use DB;
@@ -40,7 +40,8 @@ class GbvImport implements OnEachRow, WithHeadingRow
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		if(!$fac) return;
 
-		$week = Week::where(['financial_year' => $row->financial_year, 'week_number' => $row->week_number])->first();
+		$period = Period::where(['financial_year' => $row->financial_year, 'month' => $row->month])->first();
+		if(!$period) return;
 
 		$update_data = ['dateupdated' => date("Y-m-d")];
 
@@ -52,7 +53,7 @@ class GbvImport implements OnEachRow, WithHeadingRow
 
 		if(env('APP_ENV') != 'testing') {
 			DB::connection('mysql_wr')->table('d_gender_based_violence')
-			->where(['facility' => $fac->id, 'week_id' => $week->id])
+			->where(['facility' => $fac->id, 'period_id' => $period->id, ])
 			->update($update_data);
 		}
     }
