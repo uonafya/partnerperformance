@@ -336,15 +336,18 @@ class Surge
 
 			$col = $base . $gender->gender;
 
-            $existing_column = SurgeColumn::where(['column_name' => $col])->first();
-            if($existing_column) continue;
+            $column = SurgeColumn::where(['column_name' => $col])->first();
+            if(!$column) $column = new SurgeColumn;
 
 			$alias = $base2 . title_case($gender->gender);
 			$ex = str_replace(' ', '_', strtolower($alias));
 			$ex = str_replace('-', '_', strtolower($ex));
+            $ex = str_replace('/', '', strtolower($ex));
+            $ex = str_replace('__', '_', strtolower($ex));
+            $ex = str_replace('__', '_', strtolower($ex));
 			$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0, ";
             
-			$s = SurgeColumn::create([
+			$column->fill([
 				'column_name' => $col,
 				'alias_name' => $alias,
 				'excel_name' => $ex,
@@ -352,6 +355,7 @@ class Surge
 				'gender_id' => $gender->id,
 				'modality_id' => $modality->id,
 			]);
+            $column->save();
 		}
 	}
 
