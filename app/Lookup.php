@@ -718,6 +718,7 @@ class Lookup
 		foreach ($categories as $key => $value) {
 			$data['outcomes'][$key]['name'] = $value;
 			$data['outcomes'][$key]['type'] = $type;
+			$data['outcomes'][$key]['tooltip'] = ' ';
 		}
 	}
 

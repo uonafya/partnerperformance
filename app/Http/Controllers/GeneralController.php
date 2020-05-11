@@ -125,6 +125,17 @@ class GeneralController extends Controller
 		$data['display_date'] = ' (July, ' . ($financial_year) . ' - September ' . $financial_year . ')';
 		return view('base.tx_curr', $data);		
 	}
+
+
+	public function gbv()
+	{
+		$data = Lookup::view_data_surges();
+		$data['ages'] = \App\SurgeAge::gbv()->get();
+		$financial_year = session('filter_financial_year');
+		session(['filter_agency' => 1]);
+		$data['display_date'] = ' (April, ' . ($financial_year) . ' - September ' . $financial_year . ')';
+		return view('base.gbv', $data);
+	}
 	
 
 

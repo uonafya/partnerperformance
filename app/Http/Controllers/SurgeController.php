@@ -627,18 +627,6 @@ class SurgeController extends Controller
 
 
 
-	public function get_sum($columns, $name)
-	{
-		$sql = "(";
-
-		foreach ($columns as $column) {
-			$sql .= "SUM(`{$column->column_name}`) + ";
-		}
-		$sql = substr($sql, 0, -3);
-		$sql .= ") AS {$name} ";
-		return $sql;
-	}
-
 	public function get_pns_sum($pns_name)
 	{
 		$pns_columns = SurgeColumn::where('column_name', 'LIKE', "{$pns_name}%")

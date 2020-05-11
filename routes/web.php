@@ -145,6 +145,12 @@ Route::prefix('weekly')->name('weekly.')->group(function(){
 });
 
 
+Route::prefix('gbv')->name('gbv.')->group(function(){
+	Route::get('violence', 'GBVController@violence')->name('violence');
+	Route::get('sexual', 'GBVController@sexual')->name('sexual');
+});
+
+
 Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
 	Route::get('/config', 'GeneralController@config');
@@ -160,6 +166,7 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('pns', 'GeneralController@pns');
 	Route::get('indicators', 'GeneralController@indicators');
 	Route::get('surge', 'GeneralController@surge');
+	Route::get('gbv', 'GeneralController@gbv');
 	
 	Route::get('dispensing', 'GeneralController@dispensing');
 	Route::get('tx_curr', 'GeneralController@tx_curr');

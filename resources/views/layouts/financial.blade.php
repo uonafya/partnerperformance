@@ -176,7 +176,7 @@
 				</div>
 
 
-			@elseif(ends_with(url()->current(), ['dispensing', 'tx_curr']))
+			@elseif(ends_with(url()->current(), ['dispensing', 'tx_curr', 'gbv']))
 				@if(!ends_with(url()->current(), ['dispensing']))
 					<div class="row">
 						<div class="col-md-12">
