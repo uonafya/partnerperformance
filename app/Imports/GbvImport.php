@@ -16,10 +16,12 @@ class GbvImport implements OnEachRow, WithHeadingRow
 {
 
     private $gbv_columns;
+    private $table_name;
 
     function __construct()
     {
-    	$modalities = SurgeModality::where(['tbl_name' => 'd_gender_based_violence'])->get()->pluck('id')->toArray();
+    	$this->table_name = 'd_gender_based_violence';
+    	$modalities = SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
 		$gbv_columns = SurgeColumn::whereIn('modality_id', $modalities)->get();
 
 		$columns = [];
@@ -33,7 +35,7 @@ class GbvImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	dd($row);
+    	// dd($row);
     	$row = json_decode(json_encode($row->toArray()));
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
@@ -52,7 +54,7 @@ class GbvImport implements OnEachRow, WithHeadingRow
 		}
 
 		if(env('APP_ENV') != 'testing') {
-			DB::connection('mysql_wr')->table('d_gender_based_violence')
+			DB::connection('mysql_wr')->table($this->table_name)
 			->where(['facility' => $fac->id, 'period_id' => $period->id, ])
 			->update($update_data);
 		}

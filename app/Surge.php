@@ -118,8 +118,13 @@ class Surge
 
         // GBV
         DB::table($table_name)->insert([
-            ['modality' => 'gbv_sexual', 'modality_name' => 'Gender Based Violence - Sexual Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
+            /*['modality' => 'gbv_sexual', 'modality_name' => 'Gender Based Violence - Sexual Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
             ['modality' => 'gbv_physical', 'modality_name' => 'Gender Based Violence - Physical/Emotional Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
+            ['modality' => 'pep_number', 'modality_name' => 'Number Receiving PEP', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],*/
+
+
+            ['modality' => 'gbv_sexual', 'modality_name' => 'GBV - Sexual Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
+            ['modality' => 'gbv_physical', 'modality_name' => 'GBV - Physical/Emotional Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
             ['modality' => 'pep_number', 'modality_name' => 'Number Receiving PEP', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
         ]);
 	}
@@ -297,7 +302,7 @@ class Surge
         			foreach ($hts as $h) {
         				$base = $modality->modality . '_' . $h . '_' . $age->age . '_';
         				$base2 = $modality->modality_name . ' ' . title_case($h) . ' ' . $age->age_name . ' ';
-	        			self::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+	        			self::create_surge_column($sql, $modality, $age, $genders, $h);
         			}
         		}
                 else if($modality->target){
@@ -310,9 +315,7 @@ class Surge
                     break;
                 }
         		else{
-        			$base = $modality->modality . '_' . $age->age . '_';
-        			$base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-        			self::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+        			self::create_surge_column($sql, $modality, $age, $genders);
         		}
         	}
         }
@@ -328,8 +331,16 @@ class Surge
         DB::statement($sql);
 	}
 
-	public static function create_surge_column(&$sql, $base, $base2, $modality, $age, $genders)
+	public static function create_surge_column(&$sql, $modality, $age, $genders, $h=null)
 	{
+        $base = $modality->modality . '_' . $age->age . '_';
+        $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
+
+        if($modality->hts && $h){
+            $base = $modality->modality . '_' . $h . '_' . $age->age . '_';
+            $base2 = $modality->modality_name . ' ' . title_case($h) . ' ' . $age->age_name . ' ';
+        }
+
 		foreach ($genders as $gender) {
 			if($gender->id == 3 && !$age->no_gender) continue;
             if(!$modality->{$gender->gender}) continue;
@@ -337,6 +348,9 @@ class Surge
 			$col = $base . $gender->gender;
 
             $column = SurgeColumn::where(['column_name' => $col])->first();
+            if(!$column && !$h){
+                $column = SurgeColumn::where(['age_id' => $age->id,  'gender_id' => $gender->id, 'modality_id' => $modality->id, ])->first();
+            }
             if(!$column) $column = new SurgeColumn;
 
 			$alias = $base2 . title_case($gender->gender);

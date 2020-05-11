@@ -241,9 +241,7 @@ class Dispensing
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
-            $base = $modality->modality . '_' . $age->age . '_';
-            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+            Surge::create_surge_column($sql, $modality, $age, $genders);
         }
     }
 
@@ -256,9 +254,7 @@ class Dispensing
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
-            $base = $modality->modality . '_' . $age->age . '_';
-            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+            Surge::create_surge_column($sql, $modality, $age, $genders);
         }
     }
 
@@ -271,9 +267,7 @@ class Dispensing
         $genders = SurgeGender::all();
 
         foreach ($ages as $key => $age) {
-            $base = $modality->modality . '_' . $age->age . '_';
-            $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-            Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+            Surge::create_surge_column($sql, $modality, $age, $genders);
         }
     }
 
@@ -293,9 +287,7 @@ class Dispensing
 
         foreach ($modalities as $modality) {
             foreach ($ages as $age) {
-                $base = $modality->modality . '_' . $age->age . '_';
-                $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
-                Surge::create_surge_column($sql, $base, $base2, $modality, $age, $genders);
+                Surge::create_surge_column($sql, $modality, $age, $genders);
             }
         }
 
