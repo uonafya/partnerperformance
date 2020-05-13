@@ -34,6 +34,7 @@ class GBVController extends Controller
 
 
 		$data['div'] = str_random(15);
+		$data['suffix'] = '';
 
 		Lookup::bars($data, ['Sexual', 'Physical']);
 
@@ -67,6 +68,7 @@ class GBVController extends Controller
 
 
 		$data['div'] = str_random(15);
+		$data['suffix'] = '';
 
 		Lookup::bars($data, ['Sexual', 'Post Exposure Prophylaxis']);
 		Lookup::splines($data, [2]);
