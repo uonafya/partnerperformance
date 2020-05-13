@@ -18,7 +18,7 @@ class GBVExport extends BaseExport
 		$this->period_id = $request->input('period_id');
 		$modalities = $request->input('modalities');
 		$this->gender_id = $request->input('gender_id');
-		$this->ages = $request->input('ages');
+		$ages = $request->input('ages');
 
 
 		$period = \App\Period::findOrFail($this->period_id);
@@ -27,7 +27,6 @@ class GBVExport extends BaseExport
 		if(!$modalities) $modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
     	// $modalities = $this->modalities;
     	$gender_id = $this->gender_id;
-    	$ages = $this->ages;
     	$partner = $this->partner;
     	$period_id = $this->period_id;
 
