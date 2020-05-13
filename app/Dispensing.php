@@ -375,43 +375,6 @@ class Dispensing
         echo 'Completed entry for ' . $table_name . " \n";
     }
 
-    public static function insert_weekly_rows($year=null, $table_name='d_weeklies')
-    {
-        if(!$year){
-            $year = date('Y');
-            if(date('m') > 9) $year++;
-        }
-
-        $weeks = Week::where('financial_year', $year)->get();
-
-        $modalities = SurgeModality::where(['tbl_name' => $table_name])->get();
-
-        $i=0;
-        $data_array = [];
-        
-        $facilities = Facility::select('id')->get();
-        foreach ($modalities as $modality) {
-            $columns  = SurgeColumn::where(['modality_id' => $modality->id])->get();
-            foreach ($facilities as $fac) {
-                foreach ($columns as $column) {
-                    foreach ($weeks as $week) {
-                        $data_array[$i] = ['week_id' => $week->id, 'facility' => $fac->id, 'column_id' => $column->id];
-                        $i++;
-
-                        if ($i == 200) {
-                            DB::table($table_name)->insert($data_array);
-                            $data_array=null;
-                            $i=0;
-                        }               
-                    }
-                }
-            }
-            echo 'Completed entry for ' . $modality->modality . " \n";
-        }
-
-        if($data_array) DB::table($table_name)->insert($data_array);
-    }
-
 
 
 }

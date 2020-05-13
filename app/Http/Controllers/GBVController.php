@@ -53,7 +53,7 @@ class GBVController extends Controller
 		$view_data .= view('charts.line_graph', $data)->render();
 		return $view_data;
 
-		return view('charts.line_graph', $data);
+		return view('charts.bar_graph', $data);
 
 
 	}

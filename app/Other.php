@@ -31,17 +31,6 @@ class Other
         Mail::to(['joelkith@gmail.com'])->send(new CustomMail(null));
     }
 
-    public static function create_weeks($financial_year=null)
-    {
-        if(!$financial_year){
-            $financial_year = date('Y');
-            if(date('m') > 9) $financial_year++;
-        }
-        \App\Surge::create_weeks($financial_year);
-        \App\Surge::surges_insert($financial_year);
-        \App\Dispensing::insert_weekly_rows($financial_year);
-    }
-
     public static function create_other_weeklies()
     {
         Dispensing::weeklies_table('d_prep_new');

@@ -19,14 +19,14 @@ use App\SurgeModality;
 class Surge
 {
 
-	public static function surges()
+	/*public static function surges()
 	{
 		self::ages_table();
 		self::genders_table();
 		self::modalities_table();
 		self::surges_table();
 		self::surges_insert();
-	}
+	}*/
 
 	public static function modalities_table()
 	{		
@@ -388,36 +388,6 @@ class Surge
     }
 
 
-
-	public static function surges_insert($year=null, $table_name='d_surge')
-	{
-		if(!$year){
-            $year = date('Y');
-            if(date('m') > 9) $year++;
-        }
-
-		$weeks = Week::where('financial_year', $year)->get();
-
-		$i=0;
-		$data_array = [];
-		
-		$facilities = Facility::select('id')->get();
-		foreach ($facilities as $fac) {
-			foreach ($weeks as $week) {
-				$data_array[$i] = array('week_id' => $week->id, 'facility' => $fac->id);
-				$i++;
-
-				if ($i == 200) {
-					DB::table($table_name)->insert($data_array);
-					$data_array=null;
-			    	$i=0;
-				}				
-			}
-		}
-
-		if($data_array) DB::table($table_name)->insert($data_array);
-	}
-
     public static function create_weeks_table()
     {
         $table_name = 'weeks';
@@ -443,58 +413,6 @@ class Surge
         ";
         DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::connection('mysql_wr')->statement($sql);
-    }
-
-    // Week starts on Sunday
-    // Week belongs to the month where the Saturday is
-    // ISO 8601 states that the week begins on Monday
-    // It also states that the week belongs to the month/year that the Thursday is in
-    public static function create_weeks($financial_year)
-    {
-        $year = $financial_year - 1;
-        $dt = Carbon::createFromDate($year, 10, 1);
-        $week = 1;
-
-        if($dt->dayOfWeek != 0){
-
-            while(true){
-                if($dt->dayOfWeek == 0) break;
-                $dt->subDay();
-            }
-
-            $data = [
-                'week_number' => $week++,
-                'start_date' => $dt->toDateString(),
-                'end_date' => $dt->addDays(6)->toDateString(),
-                'year' => $dt->year,
-                'month' => $dt->month,
-            ];
-
-            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
-            $dt->addDay();
-
-            $w = Week::create($data);
-
-        }
-
-        while(true) {
-            $data = [
-                'week_number' => $week++,
-                'start_date' => $dt->toDateString(),
-                'end_date' => $dt->addDays(6)->toDateString(),
-                'year' => $dt->year,
-                'month' => $dt->month,
-            ];
-
-            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
-            $dt->addDay();
-
-            $w = new Week;
-            $w->fill($data);
-            if($w->financial_year != $financial_year) break;
-            $w->save();
-        }
-        DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 31 and financial_year = 2019;");
     }
 
 

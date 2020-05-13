@@ -127,7 +127,6 @@ class Insert
             }
         }
 
-
         if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
 
         echo 'Completed entry for ' . $table_name . " \n";
@@ -167,5 +166,140 @@ class Insert
         if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
 
         echo 'Completed entry for ' . $table_name . " \n";
+    }
+
+
+
+    // Week starts on Sunday
+    // Week belongs to the month where the Saturday is
+    // ISO 8601 states that the week begins on Monday
+    // It also states that the week belongs to the month/year that the Thursday is in
+    public static function insert_weeks($financial_year)
+    {
+        $year = $financial_year - 1;
+        $dt = Carbon::createFromDate($year, 10, 1);
+        $week = 1;
+
+        if($dt->dayOfWeek != 0){
+
+            while(true){
+                if($dt->dayOfWeek == 0) break;
+                $dt->subDay();
+            }
+
+            $data = [
+                'week_number' => $week++,
+                'start_date' => $dt->toDateString(),
+                'end_date' => $dt->addDays(6)->toDateString(),
+                'year' => $dt->year,
+                'month' => $dt->month,
+            ];
+
+            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+            $dt->addDay();
+
+            $w = Week::create($data);
+
+        }
+
+        while(true) {
+            $data = [
+                'week_number' => $week++,
+                'start_date' => $dt->toDateString(),
+                'end_date' => $dt->addDays(6)->toDateString(),
+                'year' => $dt->year,
+                'month' => $dt->month,
+            ];
+
+            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+            $dt->addDay();
+
+            $w = new Week;
+            $w->fill($data);
+            if($w->financial_year != $financial_year) break;
+            $w->save();
+        }
+        DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 31 and financial_year = 2019;");
+    }
+
+
+    public static function insert_weekly_column_rows($year=null, $table_name='d_weeklies')
+    {
+        if(!$year){
+            $year = date('Y');
+            if(date('m') > 9) $year++;
+        }
+
+        $weeks = Week::where('financial_year', $year)->get();
+
+        $modalities = SurgeModality::where(['tbl_name' => $table_name])->get();
+
+        $i=0;
+        $data_array = [];
+        
+        $facilities = Facility::select('id')->get();
+        foreach ($modalities as $modality) {
+            $columns  = SurgeColumn::where(['modality_id' => $modality->id])->get();
+            foreach ($facilities as $fac) {
+                foreach ($columns as $column) {
+                    foreach ($weeks as $week) {
+                        $data_array[$i] = ['week_id' => $week->id, 'facility' => $fac->id, 'column_id' => $column->id];
+                        $i++;
+
+                        if ($i == 200) {
+                            DB::table($table_name)->insert($data_array);
+                            $data_array=null;
+                            $i=0;
+                        }               
+                    }
+                }
+            }
+            echo 'Completed entry for ' . $modality->modality . " \n";
+        }
+
+        if($data_array) DB::table($table_name)->insert($data_array);
+    }
+
+
+    public static function insert_weekly_rows($year=null, $table_name='d_surge')
+    {
+        if(!$year){
+            $year = date('Y');
+            if(date('m') > 9) $year++;
+        }
+
+        $weeks = Week::where('financial_year', $year)->get();
+
+        $i=0;
+        $data_array = [];
+        
+        $facilities = Facility::select('id')->get();
+        foreach ($facilities as $fac) {
+            foreach ($weeks as $week) {
+                $data_array[$i] = array('week_id' => $week->id, 'facility' => $fac->id);
+                $i++;
+
+                if ($i == 200) {
+                    DB::table($table_name)->insert($data_array);
+                    $data_array=null;
+                    $i=0;
+                }               
+            }
+        }
+
+        if($data_array) DB::table($table_name)->insert($data_array);
+    }
+
+    public static function create_weeks($financial_year=null)
+    {
+        if(!$financial_year){
+            $financial_year = date('Y');
+            if(date('m') > 9) $financial_year++;
+        }
+        self::insert_weeks($financial_year);
+        self::insert_weekly_rows($financial_year, 'd_surge');
+        self::insert_weekly_column_rows($financial_year, 'd_weeklies');
+        self::insert_weekly_column_rows($financial_year, 'd_prep_new');
+        self::insert_weekly_column_rows($financial_year, 'd_vmmc_circ');
     }
 }
