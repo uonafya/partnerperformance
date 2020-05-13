@@ -44,7 +44,7 @@ class GBVController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
 		}
 
-		return view('charts.bar_graph', $data);
+		return view('charts.line_graph', $data);
 	}
 
 
