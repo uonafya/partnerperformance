@@ -35,7 +35,7 @@ class GBVController extends Controller
 
 		$data['div'] = str_random(15);
 
-		Lookup::columns($data, ['Sexual', 'Physical']);
+		Lookup::bars($data, ['Sexual', 'Physical']);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -68,7 +68,7 @@ class GBVController extends Controller
 
 		$data['div'] = str_random(15);
 
-		Lookup::columns($data, ['Sexual', 'Post Exposure Prophylaxis']);
+		Lookup::bars($data, ['Sexual', 'Post Exposure Prophylaxis']);
 		Lookup::splines($data, [2]);
 
 		foreach ($rows as $key => $row) {
