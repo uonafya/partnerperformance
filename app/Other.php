@@ -97,7 +97,6 @@ class Other
 		}
 
 		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
-
 	}
 
 	public static function partner_targets()
@@ -141,6 +140,44 @@ class Other
 
 		if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
 	}
+
+    public static function facility_targets()
+    {
+        $table_name = 't_facility_target';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    facility int(10) UNSIGNED DEFAULT 0,
+                    financial_year smallint(4) UNSIGNED DEFAULT 0,
+                    gbv int(10) UNSIGNED DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    KEY `identifier`(`facility`, `financial_year`),
+                    KEY `facility` (`facility`)
+                );
+        ";
+        DB::connection('mysql_wr')->statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::connection('mysql_wr')->statement($sql);
+    }
+
+    public static function insert_facility_targets($year)
+    {
+        $table_name = 't_facility_target';
+        $i=0;
+        $data_array = [];
+        
+        $partners = Facility::select('id')->get();
+        foreach ($partners as $k => $val) {
+            $data_array[$i] = array('financial_year' => $year, 'facility' => $val->id);
+            $i++;
+
+            if ($i == 200) {
+                DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+                $data_array=null;
+                $i=0;
+            }
+        }
+
+        if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+    }
 
 	public static function partner_indicators()
 	{
