@@ -240,7 +240,7 @@ class GeneralController extends Controller
 
 	public function download_gbv()
 	{
-		// $data['modalities'] = \App\SurgeModality::where(['tbl_name' => ])
+		$data['modalities'] = \App\SurgeModality::where(['tbl_name' => 'd_gender_based_violence'])->get();
 		$data['periods'] = \App\Period::where('year', '>', 2019)->get();
 		$user = auth()->user();
 		$data['partner'] = session('session_partner');

@@ -166,7 +166,12 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('pns', 'GeneralController@pns');
 	Route::get('indicators', 'GeneralController@indicators');
 	Route::get('surge', 'GeneralController@surge');
-	Route::get('gbv', 'GeneralController@gbv');
+
+
+	Route::middleware(['auth', 'usaid'])->group(function(){
+		Route::get('gbv', 'GeneralController@gbv');
+	});
+	// Route::get('gbv', 'GeneralController@gbv');
 	
 	Route::get('dispensing', 'GeneralController@dispensing');
 	Route::get('tx_curr', 'GeneralController@tx_curr');
@@ -235,10 +240,12 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		Route::post('upload', 'WeeklyController@upload_excel')->name('upload');
 	});
 
-	Route::prefix('gbv')->name('gbv')->group(function(){
-		Route::get('download', 'GeneralController@download_gbv');
-
+	Route::middleware(['usaid'])->group(function(){
+		Route::prefix('gbv')->name('gbv')->group(function(){
+			Route::get('download', 'GeneralController@download_gbv');
+		});
 	});
+
 
 	// Upload any Data
 	Route::get('upload/facilities', 'GeneralController@upload_facilities');

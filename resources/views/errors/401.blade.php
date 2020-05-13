@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Error.</title>
+        <title>Unauthorised</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -41,8 +41,8 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Oops!</div>
-                {!! $exception->getMessage() !!}
+                <div class="title">Unauthorised. You do not have permission to view this page.</div>
+                You do not have permission to view this page.
             </div>
         </div>
     </body>

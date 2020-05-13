@@ -40,6 +40,16 @@
               </select>
           </div>
 
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Modality</label>
+              <select class="col-sm-7 select_tag" required name="period_id">
+                <option></option>
+                @foreach($modalities as $modality)
+                  <option value="{{ $modality->id }} "> {{ $period->modality_name }} </option>
+                @endforeach
+              </select>
+          </div>
+
 
           <div class="col-sm-6 col-sm-offset-6">
               <button class="btn btn-success" type="submit" >Submit</button>

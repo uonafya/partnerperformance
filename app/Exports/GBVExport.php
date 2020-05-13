@@ -8,7 +8,6 @@ class GBVExport extends BaseExport
 {
 	protected $table_name;
 	protected $period_id;
-	protected $modalities;
 	protected $gender_id;
 	protected $ages;
 
@@ -17,7 +16,7 @@ class GBVExport extends BaseExport
     	parent::__construct();
     	$this->table_name = 'd_gender_based_violence';
 		$this->period_id = $request->input('period_id');
-		$this->modalities = $request->input('modalities');
+		$modalities = $request->input('modalities');
 		$this->gender_id = $request->input('gender_id');
 		$this->ages = $request->input('ages');
 
@@ -25,7 +24,7 @@ class GBVExport extends BaseExport
 		$period = \App\Period::findOrFail($this->period_id);
 		$this->fileName = "{$this->partner->download_name}_gbv_data_FY_{$period->financial_year}_month_{$period->month_name}.xlsx";
 
-		$modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
+		if(!$modalities) $modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
     	// $modalities = $this->modalities;
     	$gender_id = $this->gender_id;
     	$ages = $this->ages;

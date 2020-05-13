@@ -91,7 +91,7 @@
 									<li><a href="{{ url('download/non_mer/2017') }}">2017</a></li>
 									<li><a href="{{ url('download/non_mer/2018') }}">2018</a></li>
 									<li><a href="{{ url('download/non_mer/2019') }}">2019</a></li>
-									<li><a href="{{ url('download/non_mer/2020') }}">2019</a></li>
+									<li><a href="{{ url('download/non_mer/2020') }}">2020</a></li>
 								</ul>
 							</li>	
 							<li class="dropdown">
@@ -103,8 +103,11 @@
 									<li><a href="{{ url('/weekly/download/prep_new') }}">Download PREP New Template</a></li>
 									<li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
 									<li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
-									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
 									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
+									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
+									@if(auth()->user()->user_type_id != 3)
+									<li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
+									@endif
 								</ul>
 							</li>
 

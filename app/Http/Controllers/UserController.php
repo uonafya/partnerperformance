@@ -89,7 +89,7 @@ class UserController extends Controller
         $user->last_login = date('Y-m-d H:i:s');
         $user->save();
         session(['toast_message' => 'The updates to your profile has been made.']);
-        return redirect('/pns/download');
+        return redirect('/');
     }
 
     /**
