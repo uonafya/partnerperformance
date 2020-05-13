@@ -36,6 +36,7 @@ class GBVController extends Controller
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
+		$data['stacking'] = true;
 
 		Lookup::bars($data, ['Sexual', 'Physical']);
 
@@ -49,13 +50,10 @@ class GBVController extends Controller
 
 		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
 		$data['div'] = str_random(15);		
+		// unset($data['stacking']);
 
 		$view_data .= view('charts.line_graph', $data)->render();
 		return $view_data;
-
-		return view('charts.bar_graph', $data);
-
-
 	}
 
 
