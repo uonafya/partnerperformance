@@ -44,7 +44,7 @@ class GBVController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
 		}
 
-		return view('charts.line_graph', $data);
+		return view('charts.bar_graph', $data);
 	}
 
 
@@ -71,7 +71,7 @@ class GBVController extends Controller
 		$data['suffix'] = '';
 
 		Lookup::bars($data, ['Sexual', 'Post Exposure Prophylaxis']);
-		Lookup::splines($data, [2]);
+		// Lookup::splines($data, [2]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
@@ -79,6 +79,8 @@ class GBVController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->pep;
 		}
 
-		return view('charts.line_graph', $data);
+		return view('charts.dual_axis', $data);
 	}
+
+
 }
