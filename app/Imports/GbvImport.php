@@ -35,7 +35,7 @@ class GbvImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	dd($row);
+    	// dd($row);
     	$excel_row = json_decode(json_encode($row->toArray()));
     	// dd($excel_row);
     	if(!is_numeric($excel_row->mfl_code) || (is_numeric($excel_row->mfl_code) && $excel_row->mfl_code < 10000)) return;
@@ -53,7 +53,7 @@ class GbvImport implements OnEachRow, WithHeadingRow
 				$update_data[$this->gbv_columns[$key]] = (int) $value;
 			}
 		}
-		// dd($update_data);
+		dd($update_data);
 
 		if(env('APP_ENV') != 'testing') {
 			DB::connection('mysql_wr')->table($this->table_name)
