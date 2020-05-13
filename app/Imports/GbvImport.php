@@ -35,19 +35,20 @@ class GbvImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	$row = json_decode(json_encode($row->toArray()));
     	dd($row);
-    	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
+    	$excel_row = json_decode(json_encode($row->toArray()));
+    	// dd($excel_row);
+    	if(!is_numeric($excel_row->mfl_code) || (is_numeric($excel_row->mfl_code) && $excel_row->mfl_code < 10000)) return;
 
-		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
+		$fac = Facility::where('facilitycode', $excel_row->mfl_code)->first();
 		if(!$fac) return;
 
-		$period = Period::where(['financial_year' => $row->financial_year, 'month' => $row->month])->first();
+		$period = Period::where(['financial_year' => $excel_row->financial_year, 'month' => $excel_row->month])->first();
 		if(!$period) return;
 
 		$update_data = ['dateupdated' => date("Y-m-d")];
 
-		foreach ($row as $key => $value) {
+		foreach ($excel_row as $key => $value) {
 			if(isset($this->gbv_columns[$key])){
 				$update_data[$this->gbv_columns[$key]] = (int) $value;
 			}
