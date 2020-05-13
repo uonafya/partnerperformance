@@ -45,7 +45,7 @@
               <select class="col-sm-7 select_tag" required name="period_id">
                 <option></option>
                 @foreach($modalities as $modality)
-                  <option value="{{ $modality->id }} "> {{ $period->modality_name }} </option>
+                  <option value="{{ $modality->id }} "> {{ $modality->modality_name }} </option>
                 @endforeach
               </select>
           </div>
