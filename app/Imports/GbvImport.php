@@ -35,8 +35,8 @@ class GbvImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
-    	dd($row->toArray()['gbv_sexual_violence_unknown_male']);
-    	$row = json_decode(json_encode($row->toArray()));
+    	// dd($row->toArray()['gbv_sexual_violence_unknown_male']);
+    	$row = json_decode(json_encode($row->toArray(null, true)));
     	// dd($row);
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
