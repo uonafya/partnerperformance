@@ -52,6 +52,7 @@ class GbvImport implements OnEachRow, WithHeadingRow
 				$update_data[$this->gbv_columns[$key]] = (int) $value;
 			}
 		}
+		dd($update_data);
 
 		if(env('APP_ENV') != 'testing') {
 			DB::connection('mysql_wr')->table($this->table_name)
