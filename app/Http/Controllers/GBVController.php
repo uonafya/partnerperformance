@@ -68,15 +68,16 @@ class GBVController extends Controller
 
 
 		$data['div'] = str_random(15);
-		$data['suffix'] = '';
+		// $data['suffix'] = '';
 
-		Lookup::bars($data, ['Sexual', 'Post Exposure Prophylaxis']);
-		// Lookup::splines($data, [2]);
+		Lookup::bars($data, ['No. Receiving PEP', 'No. Not Receiving PEP', 'PEP Coverage (%)']);
+		Lookup::splines($data, [2]);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
-			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
-			$data["outcomes"][1]["data"][$key] = (int) $row->pep;
+			$data["outcomes"][0]["data"][$key] = (int) $row->pep;
+			$data["outcomes"][1]["data"][$key] = (int) ($row->sexual - $row->pep);
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pep, $row->sexual);
 		}
 
 		return view('charts.dual_axis', $data);
