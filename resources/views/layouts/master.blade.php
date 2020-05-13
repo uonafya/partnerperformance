@@ -122,7 +122,9 @@
 									<li><a href="{{ url('/upload/weekly/prep_new') }}">Upload PREP New</a></li>
 									<li><a href="{{ url('/upload/tx_curr') }}">Upload TX Current</a></li>
 									<li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>
-
+									@if(auth()->user()->user_type_id != 3)
+									<li><a href="{{ url('/upload/gbv') }}">Upload GBV</a></li>
+									@endif
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
 									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
 									<li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>
