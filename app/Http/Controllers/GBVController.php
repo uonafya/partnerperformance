@@ -35,6 +35,7 @@ class GBVController extends Controller
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
+		$data['yAxis'] = 'Gender Based Violence Cases';
 
 		Lookup::bars($data, ['Sexual', 'Physical']);
 
@@ -78,7 +79,7 @@ class GBVController extends Controller
 
 
 		$data['div'] = str_random(15);
-		// $data['suffix'] = '';
+		$data['yAxis'] = 'PEP';
 
 		Lookup::bars($data, ['No. Receiving PEP', 'No. Not Receiving PEP', 'PEP Coverage (%)']);
 		Lookup::splines($data, [2]);
