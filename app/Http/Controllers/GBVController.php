@@ -44,6 +44,13 @@ class GBVController extends Controller
 			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
 		}
 
+		$view_data = view('charts.line_graph', $data)->render() . '<br /><br /><br /> ';
+
+		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
+
+		$view_data .= view('charts.line_graph', $data)->render();
+		return $view_data;
+
 		return view('charts.line_graph', $data);
 
 
