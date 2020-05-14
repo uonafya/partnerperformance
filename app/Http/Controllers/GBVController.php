@@ -32,6 +32,20 @@ class GBVController extends Controller
 			->when(true, $this->get_callback('sexual'))
 			->get();
 
+		$target_obj = DB::table('t_facility_target')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
+			->selectRaw("SUM(gbv) AS gbv")
+			->when(true, $this->target_callback())
+			->get();
+
+		$groupby = session('filter_groupby', 1);
+		$divisor = Lookup::get_target_divisor();
+
+		if($groupby > 9){
+			$t = $target_obj->first()->tests;
+			$target = round(($t / $divisor), 2);
+		}
+
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
@@ -39,17 +53,25 @@ class GBVController extends Controller
 		$data['stacking'] = true;
 
 		Lookup::bars($data, ['Sexual', 'Physical']);
+		Lookup::splines($data, 2);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
 			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
+
+			if(isset($target)) $data["outcomes"][2]["data"][$key] = $target;
+			else{
+				$t = $target_obj->where('div_id', $row->div_id)->first()->tests ?? 0;
+				$data["outcomes"][2]["data"][$key] = round(($t / $divisor), 2);
+			}
 		}
 
 		$view_data = view('charts.line_graph', $data)->render() . '<br /><br /><br /> ';
 
 		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
-		$data['div'] = str_random(15);		
+		$data['div'] = str_random(15);	
+		unset($data['outcomes'][2]);	
 
 		$view_data .= view('charts.line_graph', $data)->render();
 		return $view_data;

@@ -97,6 +97,7 @@ class ImportsExportsController extends Controller
 			'tx_curr' => TxCurrentExport::class,
 			'weekly' => WeeklyExport::class,
 			'gbv' => GBVExport::class,
+			'targets' => TargetsExport::class,
 		];
 
 		$c = $classes[$path];
