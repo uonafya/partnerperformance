@@ -148,6 +148,8 @@ Route::prefix('weekly')->name('weekly.')->group(function(){
 Route::prefix('gbv')->name('gbv.')->group(function(){
 	Route::get('violence', 'GBVController@violence')->name('violence');
 	Route::get('sexual', 'GBVController@sexual')->name('sexual');
+	Route::get('age', 'GBVController@age')->name('age');
+	Route::get('gender', 'GBVController@gender')->name('gender');
 });
 
 

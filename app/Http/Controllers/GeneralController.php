@@ -131,6 +131,7 @@ class GeneralController extends Controller
 	{
 		$data = Lookup::view_data_surges();
 		$data['ages'] = \App\SurgeAge::gbv()->get();
+		$data['modalities'] = \App\SurgeModality::whereIn('modality', ['gbv_sexual', 'gbv_physical'])->get();
 		$financial_year = session('filter_financial_year');
 		session(['filter_agency' => 1]);
 		$data['display_date'] = ' (April, ' . ($financial_year) . ' - September ' . $financial_year . ')';
