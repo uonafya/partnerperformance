@@ -13,7 +13,8 @@ use App\Imports\PNSImport;
 use App\Imports\SurgeImport;
 use App\Imports\TxCurrentImport;
 use App\Imports\WeeklyImport;
-use App\Imports\GbvImport;
+use App\Imports\GBVImport;
+use App\Imports\TargetsImport;
 
 
 use App\Exports\DispensingExport;
@@ -24,6 +25,7 @@ use App\Exports\SurgeExport;
 use App\Exports\TxCurrentExport;
 use App\Exports\WeeklyExport;
 use App\Exports\GBVExport;
+use App\Exports\TargetsExport;
 
 class ImportsExportsController extends Controller
 {
@@ -49,7 +51,8 @@ class ImportsExportsController extends Controller
 			'surge' => SurgeImport::class,
 			'tx_curr' => TxCurrentImport::class,
 			'weekly' => WeeklyImport::class,
-			'gbv' => GbvImport::class,
+			'gbv' => GBVImport::class,
+			'targets' => TargetsImport::class,
 		];
 
 		$c = $classes[$path];

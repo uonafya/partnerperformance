@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class GbvImport implements OnEachRow, WithHeadingRow
+class GBVImport implements OnEachRow, WithHeadingRow
 {
 
     private $gbv_columns;

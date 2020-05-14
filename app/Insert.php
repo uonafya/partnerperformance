@@ -15,10 +15,11 @@ class Insert
         for ($month=1; $month < 13; $month++) { 
             $data = array('year' => $year, 'month' => $month);
             $data = array_merge($data, Synch::get_financial_year_quarter($year, $month) );
-            $data_array[] = $data;
+            // $data_array[] = $data;
+            $period = Period::firstOrCreate($data);
         }
 
-        DB::connection('mysql_wr')->table('periods')->insert($data_array);
+        // DB::connection('mysql_wr')->table('periods')->insert($data_array);
     }
 
 	public static function insert_rows($year=null)
@@ -26,8 +27,8 @@ class Insert
 		if(!$year) $year = date('Y');
         $tables = DB::select("show tables");
 		$facilities = Facility::select('id')->get();
-		// $periods = Period::where(['year' => $year])->get();
-        $periods = Period::where(['year' => 2019, 'financial_year' => 2020])->get();
+		$periods = Period::where(['year' => $year])->get();
+        // $periods = Period::where(['year' => 2019, 'financial_year' => 2020])->get();
 
         foreach ($tables as $key => $row) {
             $table_name = $row->Tables_in_hcm;
