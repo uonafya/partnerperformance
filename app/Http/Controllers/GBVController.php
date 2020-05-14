@@ -127,6 +127,7 @@ class GBVController extends Controller
 			->get();
 
 		$female = SurgeColumnView::where('gender_id', 2)
+			->whereIn('modality', ['gbv_sexual', 'gbv_physical'])
 			->when(true, $this->surge_columns_callback(true, false))
 			->get();
 
@@ -165,6 +166,7 @@ class GBVController extends Controller
 
 
 		$ages = SurgeAge::gbv()->get();
+		$sql = '';
 
 		foreach ($ages as $key => $age) {
 
