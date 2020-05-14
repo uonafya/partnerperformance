@@ -42,7 +42,7 @@ class GBVController extends Controller
 		$divisor = Lookup::get_target_divisor();
 
 		if($groupby > 9){
-			$t = $target_obj->first()->tests;
+			$t = $target_obj->first()->gbv;
 			$target = round(($t / $divisor), 2);
 		}
 
@@ -52,7 +52,7 @@ class GBVController extends Controller
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['stacking'] = true;
 
-		Lookup::bars($data, ['Sexual', 'Physical']);
+		Lookup::bars($data, ['Sexual', 'Physical', 'Target']);
 		Lookup::splines($data, 2);
 
 		foreach ($rows as $key => $row) {
@@ -62,7 +62,7 @@ class GBVController extends Controller
 
 			if(isset($target)) $data["outcomes"][2]["data"][$key] = $target;
 			else{
-				$t = $target_obj->where('div_id', $row->div_id)->first()->tests ?? 0;
+				$t = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
 				$data["outcomes"][2]["data"][$key] = round(($t / $divisor), 2);
 			}
 		}
