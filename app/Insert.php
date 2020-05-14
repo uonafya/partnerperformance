@@ -26,7 +26,8 @@ class Insert
 		if(!$year) $year = date('Y');
         $tables = DB::select("show tables");
 		$facilities = Facility::select('id')->get();
-		$periods = Period::where(['year' => $year])->get();
+		// $periods = Period::where(['year' => $year])->get();
+        $periods = Period::where(['year' => 2019, 'financial_year' => 2020])->get();
 
         foreach ($tables as $key => $row) {
             $table_name = $row->Tables_in_hcm;

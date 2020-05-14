@@ -59,6 +59,9 @@
 						<li><a href="{{ url('non_mer') }}">Non Mer</a></li>	
 						<li><a href="{{ url('pns') }}">PNS</a></li>	
 						<li><a href="{{ url('surge') }}">Surge</a></li>	
+						@if(auth()->user() && auth()->user()->user_type_id != 3)
+							<li><a href="{{ url('gbv') }}">GBV</a></li>	
+						@endif
 						<!-- 
 						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
 						<li><a href="{{ url('tx_curr') }}">MMD</a></li>	
