@@ -59,9 +59,7 @@
 						<li><a href="{{ url('non_mer') }}">Non Mer</a></li>	
 						<li><a href="{{ url('pns') }}">PNS</a></li>	
 						<li><a href="{{ url('surge') }}">Surge</a></li>	
-						@if(auth()->user() && auth()->user()->user_type_id != 3)
-							<li><a href="{{ url('gbv') }}">GBV</a></li>	
-						@endif
+						<li><a href="{{ url('gbv') }}">GBV</a></li>	
 						<!-- 
 						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
 						<li><a href="{{ url('tx_curr') }}">MMD</a></li>	
@@ -108,9 +106,7 @@
 									<li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
 									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
-									@if(auth()->user()->user_type_id != 3)
 									<li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
-									@endif
 								</ul>
 							</li>
 
@@ -125,9 +121,7 @@
 									<li><a href="{{ url('/upload/weekly/prep_new') }}">Upload PREP New</a></li>
 									<li><a href="{{ url('/upload/tx_curr') }}">Upload TX Current</a></li>
 									<li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>
-									@if(auth()->user()->user_type_id != 3)
 									<li><a href="{{ url('/upload/gbv') }}">Upload GBV</a></li>
-									@endif
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
 									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
 									<li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>
@@ -199,7 +193,7 @@
 
 	<script src="{{ asset('js/highcharts/highcharts.js') }}" type='text/javascript'></script>
 	<script src="{{ asset('js/highcharts/highcharts-more.js') }}" type='text/javascript'></script>
-	@if(ends_with(url()->current(), 'surge') && !auth()->user())
+	@if(ends_with(url()->current(), ['surge', 'gbv']) && !auth()->user())
 	@else
 		<script src="{{ asset('js/highcharts/exporting.js') }}" type='text/javascript'></script>
 		<script src="{{ asset('js/highcharts/export-data.js') }}" type='text/javascript'></script>
