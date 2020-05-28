@@ -44,19 +44,6 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Gender Based Sexual Violence & Post Exposure Prophylaxis <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="sexual">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
 			    Gender Based Sexual Violence By Age <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="age">
