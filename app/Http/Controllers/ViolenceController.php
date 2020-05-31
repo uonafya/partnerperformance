@@ -231,7 +231,7 @@ class ViolenceController extends Controller
 	}
 
 	// 
-	public function sexual()
+	public function pep()
 	{
 		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
 			->when(true, $this->surge_columns_callback(false))
@@ -271,50 +271,21 @@ class ViolenceController extends Controller
 		return view('charts.dual_axis', $data);
 	}
 
-	public function gender()
-	{
-		$male = SurgeColumnView::where('gender_id', 1)
-			->whereIn('modality', ['gbv_sexual', 'gbv_physical'])
-			->when(true, $this->surge_columns_callback(true, false))
-			->get();
 
-		$female = SurgeColumnView::where('gender_id', 2)
-			->whereIn('modality', ['gbv_sexual', 'gbv_physical'])
-			->when(true, $this->surge_columns_callback(true, false))
-			->get();
 
-		$sql = $this->get_sum($male, 'male') . ', ' . $this->get_sum($female, 'female') . ' ';
-
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('male'))
-			->get();
-
-		$data['div'] = str_random(15);
-		$data['suffix'] = '';
-		$data['yAxis'] = 'Gender Based Violence By Gender';
-		$data['stacking'] = true;
-		$data['point_percentage'] = true;
-		Lookup::bars($data, ['Male', 'Female']);
-
-		foreach ($rows as $key => $row) {
-			$data['categories'][$key] = Lookup::get_category($row);
-			$data["outcomes"][0]["data"][$key] = (int) $row->male;
-			$data["outcomes"][1]["data"][$key] = (int) $row->female;
-		}
-		return view('charts.line_graph', $data);
-	}
-
-	public function age()
+	public function age_gender()
 	{
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Gender Based Violence By Age";
 		$data['suffix'] = '';
-		$data['stacking'] = true;
+		$data['stacking_percent'] = true;
 		// $data['extra_tooltip'] = true;
 		$data['point_percentage'] = true;
+		Lookup::bars($data, ['Male', 'Female']);
+
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
 
 
 		$ages = SurgeAge::gbv()->get();
@@ -322,33 +293,39 @@ class ViolenceController extends Controller
 
 		foreach ($ages as $key => $age) {
 
-			$gbv_columns = SurgeColumnView::where('age_id', $age->id)
+			$male_columns = SurgeColumnView::where('age_id', $age->id)
 				->whereIn('modality', ['gbv_sexual', 'gbv_physical'])
+				->where('gender_id', 1)
 				->when(true, $this->surge_columns_callback(true, true, false))
 				->get();
 
-			$sql .= $this->get_sum($gbv_columns, $age->age) . ', ';
+			$female_columns = SurgeColumnView::where('age_id', $age->id)
+				->whereIn('modality', ['gbv_sexual', 'gbv_physical'])
+				->where('gender_id', 1)
+				->when(true, $this->surge_columns_callback(true, true, false))
+				->get();
 
-			$data['outcomes'][$key]['name'] = $age->age_name;
-			$data['outcomes'][$key]['type'] = "column";
+			$sql .= $this->get_sum($male_columns, 'male_' . $age->age) . ', ';
+			$sql .= $this->get_sum($female_columns, 'female_' . $age->age) . ', ';
 		}
 
 		$sql = substr($sql, 0, -2);
 
-		$rows = DB::table($this->my_table)
+		$row = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
-			->when(true, $this->get_callback())
+			->whereRaw($date_query)
+			->whereRaw($divisions_query)
 			->get();
 
-		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
+		foreach ($ages as $key => $age){
+			$data['categories'][$key] = $age->age;
 
-			foreach ($ages as $age_key => $age) {
-				$p = $age->age;
-				$data["outcomes"][$age_key]["data"][$key]['y'] = (int) $row->$p;
-				// $data["outcomes"][$age_key]["data"][$key]['z'] = ', yield of ' .  Lookup::get_percentage($row->$p, $row->$t) . '%';
-			}
+			$male_column = 'male_' . $age->age;
+			$female_column = 'male_' . $age->age;
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->$male_column;
+			$data["outcomes"][1]["data"][$key] = (int) $row->$female_column;
 		}
 		return view('charts.line_graph', $data);
 

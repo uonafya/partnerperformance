@@ -157,6 +157,8 @@ Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('monthly_achievement', 'ViolenceController@monthly_achievement')->name('monthly_achievement');
 	Route::get('performance', 'ViolenceController@performance')->name('performance');
 	Route::get('monthly_cases', 'ViolenceController@monthly_cases')->name('monthly_cases');
+	Route::get('pep', 'ViolenceController@pep')->name('pep');
+	Route::get('age_gender', 'ViolenceController@age_gender')->name('age_gender');
 });
 
 
