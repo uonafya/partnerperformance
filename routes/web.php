@@ -154,6 +154,7 @@ Route::prefix('gbv')->name('gbv.')->group(function(){
 
 Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('cumulative_pie', 'ViolenceController@cumulative_pie')->name('cumulative_pie');
+	Route::get('monthly_achievement', 'ViolenceController@monthly_achievement')->name('monthly_achievement');
 });
 
 
@@ -177,7 +178,6 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::middleware(['auth', 'usaid'])->group(function(){
 		Route::get('gbv', 'GeneralController@gbv');
 		Route::get('violence', 'GeneralController@violence');
-		Route::get('monthly_achievement', 'GeneralController@monthly_achievement');
 	});
 	// Route::get('gbv', 'GeneralController@gbv');
 	
