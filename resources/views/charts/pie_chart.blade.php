@@ -27,6 +27,7 @@
 			        cursor: 'pointer',
 			        dataLabels: {
 			            enabled: true,
+			            distance: -50,
 			            format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f}%)',
 			            style: {
 			                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'

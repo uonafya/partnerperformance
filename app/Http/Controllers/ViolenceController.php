@@ -24,7 +24,6 @@ class ViolenceController extends Controller
 			->when(true, $this->surge_columns_callback(false))
 			->get();
 
-
 		$sql = $this->get_sum($violence, 'violence');
 
 		$row = DB::table($this->my_table)
@@ -51,8 +50,8 @@ class ViolenceController extends Controller
 		$data['outcomes']['data'][0]['name'] = "Results";
 		$data['outcomes']['data'][1]['name'] = "Gap";
 
-		$data['outcomes'][0]['color'] = "#F2784B";
-		$data['outcomes'][1]['color'] = "#F2784B";
+		$data['outcomes']['data'][0]['color'] = "#00ff00";
+		$data['outcomes']['data'][1]['color'] = "#ff0000";
 
 		$data['outcomes']['data'][0]['y'] = (int) $row->violence;
 		$data['outcomes']['data'][1]['y'] = (int) ($target_obj->gbv - $row->violence);
