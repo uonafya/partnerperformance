@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
+use App\Period;
 
 use App\SurgeAge;
 use App\SurgeColumn;
@@ -62,6 +63,16 @@ class ViolenceController extends Controller
 			->whereRaw($divisions_query)
 			->whereRaw(Lookup::date_query(true))
 			->first();
+
+		$periods = Period::whereRaw($date_query)
+			->where('year', '<=', date('Y'))
+			->where('month', '<', date('m'))
+			->get()
+			->count();
+
+		$time_percentage = Lookup::get_percentage($periods, 12);
+		if($time_percentage > 100) $time_percentage = 100;
+		$data['chart_title'] = "Cumulative Achievement at {$time_percentage} of time";
 
 		$data['div'] = str_random(15);
 
