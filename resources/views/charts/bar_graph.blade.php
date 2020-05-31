@@ -9,7 +9,9 @@
             plotOptions: {
                 column: {
                     @if(isset($stacking_false))
-                        stacking: false
+                        stacking: false                    
+                    @elseif(isset($stacking_percent))
+                        stacking: 'percent'
                     @else
                         stacking: 'normal'
                     @endif
