@@ -18,6 +18,19 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
+			    Reporting Rates <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="reporting">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
 			    Cumulative Achievement vs Target <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="cumulative_pie">
@@ -101,6 +114,7 @@
 
 	function reload_page()
 	{
+		$("#reporting").html("<center><div class='loader'></div></center>");
 		$("#cumulative_pie").html("<center><div class='loader'></div></center>");
 		$("#monthly_achievement").html("<center><div class='loader'></div></center>");
 		$("#performance").html("<center><div class='loader'></div></center>");
@@ -108,6 +122,7 @@
 		$("#pep").html("<center><div class='loader'></div></center>");
 		$("#age_gender").html("<center><div class='loader'></div></center>");
 
+		$("#reporting").load("{{ url('violence/reporting') }}");
 		$("#cumulative_pie").load("{{ url('violence/cumulative_pie') }}");
 		$("#monthly_achievement").load("{{ url('violence/monthly_achievement') }}");
 		$("#performance").load("{{ url('violence/performance') }}");

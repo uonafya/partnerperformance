@@ -14,6 +14,28 @@ class ViolenceController extends Controller
 {
 	private $my_table = 'd_gender_based_violence';
 
+	public function reporting()
+	{
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
+			->selectRaw("COUNT(DISTINCT facility) AS total ")
+			->when(true, $this->get_callback('total'))
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['yAxis'] = 'Reporting Rates';
+		$data['suffix'] = '';
+
+		Lookup::bars($data, ['Facilities Reported']);
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$key] = (int) $row->total;
+		}
+
+		return view('charts.line_graph', $data);
+	}
+
 	// 1a)
 	public function cumulative_pie()
 	{
