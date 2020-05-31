@@ -342,7 +342,7 @@ class ViolenceController extends Controller
 			->first();
 
 		foreach ($ages as $key => $age){
-			$data['categories'][$key] = $age->age;
+			$data['categories'][$key] = $age->age_name;
 
 			$male_column = 'male_' . $age->age;
 			$female_column = 'female_' . $age->age;
