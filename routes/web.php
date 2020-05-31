@@ -177,6 +177,7 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::middleware(['auth', 'usaid'])->group(function(){
 		Route::get('gbv', 'GeneralController@gbv');
 		Route::get('violence', 'GeneralController@violence');
+		Route::get('monthly_achievement', 'GeneralController@monthly_achievement');
 	});
 	// Route::get('gbv', 'GeneralController@gbv');
 	

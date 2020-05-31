@@ -31,9 +31,9 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Gender Based Sexual Violence & Post Exposure Prophylaxis <div class="display_date"></div>
+			    Achievement <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="sexual">
+			<div class="panel-body" id="monthly_achievement">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -76,14 +76,10 @@
 	function reload_page()
 	{
 		$("#cumulative_pie").html("<center><div class='loader'></div></center>");
-		// $("#sexual").html("<center><div class='loader'></div></center>");
-		// $("#age").html("<center><div class='loader'></div></center>");
-		// $("#gender").html("<center><div class='loader'></div></center>");
+		$("#monthly_achievement").html("<center><div class='loader'></div></center>");
 
 		$("#cumulative_pie").load("{{ url('violence/cumulative_pie') }}");
-		// $("#sexual").load("{{ url('gbv/sexual') }}");
-		// $("#age").load("{{ url('gbv/age') }}");
-		// $("#gender").load("{{ url('gbv/gender') }}");
+		$("#monthly_achievement").load("{{ url('violence/monthly_achievement') }}");
 	}
 
 

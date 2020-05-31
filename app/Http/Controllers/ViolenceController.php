@@ -114,15 +114,7 @@ class ViolenceController extends Controller
 			}
 		}
 
-		$view_data = view('charts.line_graph', $data)->render() . '<br /><br /><br /> ';
-
-		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
-		$data['div'] = str_random(15);	
-		unset($data['outcomes'][2]);	
-
-		$view_data .= view('charts.line_graph', $data)->render();
-		return $view_data;
-
+		return view('charts.line_graph', $data);
 	}
 
 	// 1b)
