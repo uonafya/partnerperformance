@@ -65,7 +65,7 @@ class ViolenceController extends Controller
 			->first();
 
 
-		$periods = Period::achievement()->first()->total;
+		$periods = Period::achievement()->get()->count();
 
 		$time_percentage = Lookup::get_percentage($periods, 12);
 		if($time_percentage > 100) $time_percentage = 100;
@@ -185,7 +185,7 @@ class ViolenceController extends Controller
 			$target = round(($t / $divisor), 2);
 		}
 
-		$periods = Period::achievement()->first()->total;
+		$periods = Period::achievement()->get()->count();
 
 		$time_percentage = Lookup::get_percentage($periods, 12);
 		if($time_percentage > 100) $time_percentage = 100;

@@ -143,7 +143,7 @@ class GeneralController extends Controller
 		$data['ages'] = \App\SurgeAge::gbv()->get();
 		$data['modalities'] = \App\SurgeModality::whereIn('modality', ['gbv_sexual', 'gbv_physical'])->get();
 		$financial_year = session('filter_financial_year');
-		session(['filter_agency' => 1]);
+		session(['filter_agency' => 1, 'filter_groupby' => 12]);
 		return view('base.violence', $data);
 	}
 	

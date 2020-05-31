@@ -17,8 +17,7 @@ class Period extends BaseModel
     {
     	$date_query = Lookup::date_query();
 
-        return $query->selectRaw('COUNT(id) AS total')
-        	->whereRaw($date_query)
+        return $query->whereRaw($date_query)
         	->whereRaw("year < ". date('Y') ." OR (year = ". date('Y') ." AND month < ". date('m') .")  ");
     }
 }
