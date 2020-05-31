@@ -345,7 +345,7 @@ class ViolenceController extends Controller
 			$data['categories'][$key] = $age->age;
 
 			$male_column = 'male_' . $age->age;
-			$female_column = 'male_' . $age->age;
+			$female_column = 'female_' . $age->age;
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->$male_column;
 			$data["outcomes"][1]["data"][$key] = (int) $row->$female_column;
