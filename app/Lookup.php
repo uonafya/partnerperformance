@@ -713,12 +713,13 @@ class Lookup
 		}
 	}
 
-	public static function bars(&$data, $categories=[], $type='column')
+	public static function bars(&$data, $categories=[], $type='column', $colours=[])
 	{
 		foreach ($categories as $key => $value) {
 			$data['outcomes'][$key]['name'] = $value;
 			$data['outcomes'][$key]['type'] = $type;
 			$data['outcomes'][$key]['tooltip'] = ["valueSuffix" => ' '];
+			if(isset($colours[$key])) $data['outcomes'][$key]['color'] = $colours[$key];
 		}
 	}
 

@@ -174,7 +174,7 @@ class ViolenceController extends Controller
 				$ta = round(($t / $divisor), 2);
 			}
 
-			$data["outcomes"][2]["data"][$key] = round((($row->sexual + $row->physical) / $ta), 2);
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage(($row->sexual + $row->physical), $ta);
 		}
 
 		return view('charts.dual_axis', $data);
