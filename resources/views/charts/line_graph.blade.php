@@ -18,6 +18,13 @@
                 }
             },
         @endisset
+        @isset($stacking_percent)
+            plotOptions: {
+                column: {
+                    stacking: 'percent'
+                }
+            },
+        @endisset
         xAxis: {
             categories: {!! json_encode($categories ?? []) !!}
         },

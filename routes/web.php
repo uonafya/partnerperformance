@@ -156,6 +156,7 @@ Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('cumulative_pie', 'ViolenceController@cumulative_pie')->name('cumulative_pie');
 	Route::get('monthly_achievement', 'ViolenceController@monthly_achievement')->name('monthly_achievement');
 	Route::get('performance', 'ViolenceController@performance')->name('performance');
+	Route::get('monthly_cases', 'ViolenceController@monthly_cases')->name('monthly_cases');
 });
 
 

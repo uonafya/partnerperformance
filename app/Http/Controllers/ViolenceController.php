@@ -53,8 +53,12 @@ class ViolenceController extends Controller
 		$data['outcomes']['data'][0]['color'] = "#00ff00";
 		$data['outcomes']['data'][1]['color'] = "#ff0000";
 
+		$gap = $target_obj->gbv - $row->violence;
+		if($gap < 0) $gap = 0;
+
 		$data['outcomes']['data'][0]['y'] = (int) $row->violence;
-		$data['outcomes']['data'][1]['y'] = (int) ($target_obj->gbv - $row->violence);
+		// $data['outcomes']['data'][1]['y'] = (int) ($target_obj->gbv - $row->violence);
+		$data['outcomes']['data'][1]['y'] = (int) $gap;
 
 		return view('charts.pie_chart', $data);
 
@@ -180,8 +184,10 @@ class ViolenceController extends Controller
 		return view('charts.dual_axis', $data);
 	}
 
-	// 1b)
-	public function violence()
+
+
+	// 2a) 2b)
+	public function monthly_cases()
 	{
 		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
 			->when(true, $this->surge_columns_callback(false))
@@ -199,46 +205,26 @@ class ViolenceController extends Controller
 			->when(true, $this->get_callback('sexual'))
 			->get();
 
-		$target_obj = DB::table('t_facility_target')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
-			->selectRaw("SUM(gbv) AS gbv")
-			->when(true, $this->target_callback())
-			->get();
-
-		$groupby = session('filter_groupby', 1);
-		$divisor = Lookup::get_target_divisor();
-
-		if($groupby > 9){
-			$t = $target_obj->first()->gbv;
-			$target = round(($t / $divisor), 2);
-		}
-
-
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['stacking'] = true;
 
-		Lookup::bars($data, ['Sexual', 'Physical', 'Target']);
-		Lookup::splines($data, 2);
+		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
+		// Lookup::splines($data, 2);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
 			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
-
-			if(isset($target)) $data["outcomes"][2]["data"][$key] = $target;
-			else{
-				$t = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
-				$data["outcomes"][2]["data"][$key] = round(($t / $divisor), 2);
-			}
 		}
 
 		$view_data = view('charts.line_graph', $data)->render() . '<br /><br /><br /> ';
 
-		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
+		Lookup::bars($data, ['Sexual', 'Physical'], 'column');
 		$data['div'] = str_random(15);	
-		unset($data['outcomes'][2]);	
+		$data['stacking_percent'] = true;
+		// unset($data['outcomes'][2]);	
 
 		$view_data .= view('charts.line_graph', $data)->render();
 		return $view_data;
