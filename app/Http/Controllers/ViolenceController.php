@@ -65,14 +65,15 @@ class ViolenceController extends Controller
 			->first();
 
 		$periods = Period::whereRaw($date_query)
-			->where('year', '<=', date('Y'))
-			->where('month', '<', date('m'))
+			// ->where('year', '<=', date('Y'))
+			// ->where('month', '<', date('m'))
+			->whereRaw("year < ". date('Y') ." OR (year = ". date('Y') ." AND month < ". date('m') .")  ")
 			->get()
 			->count();
 
 		$time_percentage = Lookup::get_percentage($periods, 12);
 		if($time_percentage > 100) $time_percentage = 100;
-		$data['chart_title'] = "Cumulative Achievement at {$time_percentage} of time";
+		$data['chart_title'] = "Cumulative Achievement at {$time_percentage}% of time";
 
 		$data['div'] = str_random(15);
 

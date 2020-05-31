@@ -70,7 +70,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Monthly Cases <div class="display_date"></div>
+			    Monthly Violence Cases Reported By Type <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="monthly_cases">
 				<center><div class="loader"></div></center>
