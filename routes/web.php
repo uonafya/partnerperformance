@@ -152,6 +152,10 @@ Route::prefix('gbv')->name('gbv.')->group(function(){
 	Route::get('gender', 'GBVController@gender')->name('gender');
 });
 
+Route::prefix('violence')->name('violence.')->group(function(){
+	Route::get('cumulative_pie', 'ViolenceController@cumulative_pie')->name('cumulative_pie');
+});
+
 
 Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
@@ -170,10 +174,11 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('surge', 'GeneralController@surge');
 
 
-	/*Route::middleware(['auth', 'usaid'])->group(function(){
+	Route::middleware(['auth', 'usaid'])->group(function(){
 		Route::get('gbv', 'GeneralController@gbv');
-	});*/
-	Route::get('gbv', 'GeneralController@gbv');
+		Route::get('violence', 'GeneralController@violence');
+	});
+	// Route::get('gbv', 'GeneralController@gbv');
 	
 	Route::get('dispensing', 'GeneralController@dispensing');
 	Route::get('tx_curr', 'GeneralController@tx_curr');
