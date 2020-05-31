@@ -18,7 +18,7 @@
                 zoomType: 'xy'
             },
             title: {
-                text: ''
+                text: "{{ $chart_title ?? '' }}"
             },
             xAxis: [{
                 categories: {!! json_encode($categories ?? []) !!}

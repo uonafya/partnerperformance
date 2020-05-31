@@ -64,12 +64,8 @@ class ViolenceController extends Controller
 			->whereRaw(Lookup::date_query(true))
 			->first();
 
-		$periods = Period::whereRaw($date_query)
-			// ->where('year', '<=', date('Y'))
-			// ->where('month', '<', date('m'))
-			->whereRaw("year < ". date('Y') ." OR (year = ". date('Y') ." AND month < ". date('m') .")  ")
-			->get()
-			->count();
+
+		$periods = Period::achievement()->first()->total;
 
 		$time_percentage = Lookup::get_percentage($periods, 12);
 		if($time_percentage > 100) $time_percentage = 100;
@@ -189,6 +185,11 @@ class ViolenceController extends Controller
 			$target = round(($t / $divisor), 2);
 		}
 
+		$periods = Period::achievement()->first()->total;
+
+		$time_percentage = Lookup::get_percentage($periods, 12);
+		if($time_percentage > 100) $time_percentage = 100;
+		$data['chart_title'] = "Performance at {$time_percentage}% of time";
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
