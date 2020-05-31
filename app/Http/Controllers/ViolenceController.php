@@ -24,6 +24,7 @@ class ViolenceController extends Controller
 			->when(true, $this->surge_columns_callback(false))
 			->get();
 
+
 		$sql = $this->get_sum($violence, 'violence');
 
 		$row = DB::table($this->my_table)
