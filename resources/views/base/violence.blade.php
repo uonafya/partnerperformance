@@ -44,9 +44,9 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Gender Based Sexual Violence By Age <div class="display_date"></div>
+			    Performance <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="age">
+			<div class="panel-body" id="performance">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -77,9 +77,11 @@
 	{
 		$("#cumulative_pie").html("<center><div class='loader'></div></center>");
 		$("#monthly_achievement").html("<center><div class='loader'></div></center>");
+		$("#performance").html("<center><div class='loader'></div></center>");
 
 		$("#cumulative_pie").load("{{ url('violence/cumulative_pie') }}");
 		$("#monthly_achievement").load("{{ url('violence/monthly_achievement') }}");
+		$("#performance").load("{{ url('violence/performance') }}");
 	}
 
 
