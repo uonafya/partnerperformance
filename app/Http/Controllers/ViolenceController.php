@@ -19,6 +19,7 @@ class ViolenceController extends Controller
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("COUNT(DISTINCT facility) AS total ")
+			->whereNotNull('dateupdated')
 			->when(true, $this->get_callback('total'))
 			->get();
 
@@ -338,7 +339,7 @@ class ViolenceController extends Controller
 			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->get();
+			->first();
 
 		foreach ($ages as $key => $age){
 			$data['categories'][$key] = $age->age;
