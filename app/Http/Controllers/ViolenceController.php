@@ -45,12 +45,13 @@ class ViolenceController extends Controller
 		$data['outcomes']['name'] = "";
 		$data['outcomes']['colorByPoint'] = true;
 
+		$chart['outcomes']['innerSize'] = '50%';
 
 		$data['outcomes']['data'][0]['name'] = "Results";
 		$data['outcomes']['data'][1]['name'] = "Gap";
 
 		$data['outcomes']['data'][0]['y'] = (int) $row->violence;
-		$data['outcomes']['data'][1]['y'] = (int) ($target_obj - $row->violence);
+		$data['outcomes']['data'][1]['y'] = (int) ($target_obj->gbv - $row->violence);
 
 		return view('charts.pie_chart', $data);
 
