@@ -324,7 +324,7 @@ class ViolenceController extends Controller
 
 			$female_columns = SurgeColumnView::where('age_id', $age->id)
 				->whereIn('modality', ['gbv_sexual', 'gbv_physical'])
-				->where('gender_id', 1)
+				->where('gender_id', 2)
 				->when(true, $this->surge_columns_callback(true, true, false))
 				->get();
 
