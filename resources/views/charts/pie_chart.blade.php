@@ -16,7 +16,7 @@
 				type: 'pie'
 			},
 			title: {
-			    text: ''
+			    text: "{{ $title ?? '' }}"
 			},
 			tooltip: {
 			    pointFormat: '{series.name}:  <b> {point.y} ({point.percentage:.1f}%)</b>'

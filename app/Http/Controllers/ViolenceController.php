@@ -14,7 +14,7 @@ class ViolenceController extends Controller
 {
 	private $my_table = 'd_gender_based_violence';
 
-
+	// 1a)
 	public function cumulative_pie()
 	{
 		$date_query = Lookup::date_query();
@@ -26,7 +26,7 @@ class ViolenceController extends Controller
 
 		$sql = $this->get_sum($violence, 'violence');
 
-		$row = DB::tabletable($this->my_table)
+		$row = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
 			->whereRaw($date_query)
@@ -50,6 +50,9 @@ class ViolenceController extends Controller
 		$data['outcomes']['data'][0]['name'] = "Results";
 		$data['outcomes']['data'][1]['name'] = "Gap";
 
+		$data['outcomes'][0]['color'] = "#F2784B";
+		$data['outcomes'][1]['color'] = "#F2784B";
+
 		$data['outcomes']['data'][0]['y'] = (int) $row->violence;
 		$data['outcomes']['data'][1]['y'] = (int) ($target_obj->gbv - $row->violence);
 
@@ -57,7 +60,72 @@ class ViolenceController extends Controller
 
 	}
 
+	// 1b)
+	public function monthly_achievement()
+	{
+		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
+			->when(true, $this->surge_columns_callback(false))
+			->get();
 
+		$physical = SurgeColumnView::where('modality', 'gbv_physical')
+			->when(true, $this->surge_columns_callback(false))
+			->get();
+
+		$sql = $this->get_sum($sexual, 'sexual') . ', ' . $this->get_sum($physical, 'physical') . ' ';
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_callback('sexual'))
+			->get();
+
+		$target_obj = DB::table('t_facility_target')
+			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
+			->selectRaw("SUM(gbv) AS gbv")
+			->when(true, $this->target_callback())
+			->get();
+
+		$groupby = session('filter_groupby', 1);
+		$divisor = Lookup::get_target_divisor();
+
+		if($groupby > 9){
+			$t = $target_obj->first()->gbv;
+			$target = round(($t / $divisor), 2);
+		}
+
+
+		$data['div'] = str_random(15);
+		$data['suffix'] = '';
+		$data['yAxis'] = 'Gender Based Violence Cases';
+		$data['stacking'] = true;
+
+		Lookup::bars($data, ['Sexual', 'Physical', 'Target']);
+		Lookup::splines($data, 2);
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
+			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
+
+			if(isset($target)) $data["outcomes"][2]["data"][$key] = $target;
+			else{
+				$t = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
+				$data["outcomes"][2]["data"][$key] = round(($t / $divisor), 2);
+			}
+		}
+
+		$view_data = view('charts.line_graph', $data)->render() . '<br /><br /><br /> ';
+
+		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
+		$data['div'] = str_random(15);	
+		unset($data['outcomes'][2]);	
+
+		$view_data .= view('charts.line_graph', $data)->render();
+		return $view_data;
+
+	}
+
+	// 1b)
 	public function violence()
 	{
 		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
@@ -121,7 +189,7 @@ class ViolenceController extends Controller
 		return $view_data;
 	}
 
-
+	// 
 	public function sexual()
 	{
 		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
