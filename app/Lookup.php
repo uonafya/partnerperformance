@@ -701,7 +701,7 @@ class Lookup
 		return ['select_query' => $select_query, 'group_query' => $group_query];
 	}
 
-	public static function splines(&$data, $splines, $force_filter)
+	public static function splines(&$data, $splines, $force_filter=null)
 	{
 		$groupby = session('filter_groupby', 1);
 		if($force_filter) $groupby = $force_filter;
