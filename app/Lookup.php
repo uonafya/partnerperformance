@@ -584,9 +584,10 @@ class Lookup
 		return $query;		
 	}
 
-	public static function groupby_query($def=true)
+	public static function groupby_query($def=true, $force_filter=null)
 	{
 		$groupby = session('filter_groupby', 1);
+		if($force_filter) $groupby = $force_filter;
 
 		switch ($groupby) {
 			case 1:

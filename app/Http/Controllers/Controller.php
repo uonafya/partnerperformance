@@ -41,9 +41,10 @@ class Controller extends BaseController
     // Add Divisions Query Here
     // Also Add Date Query Here
 
-    public function get_callback($order_by=null, $having_null=null, $prepension='')
+    public function get_callback($order_by=null, $having_null=null, $prepension='', $force_filter=null)
     {
     	$groupby = session('filter_groupby', 1);
+        if($force_filter) $groupby = $force_filter;
     	$divisions_query = Lookup::divisions_query();
         $date_query = Lookup::date_query(false, $prepension);
     	if($groupby > 9){
@@ -54,7 +55,7 @@ class Controller extends BaseController
             if($groupby == 14) return $this->week_callback($divisions_query, $date_query);
     	}
     	else{
-    		$var = Lookup::groupby_query();
+    		$var = Lookup::groupby_query(true, $force_filter);
     		return $this->divisions_callback($divisions_query, $date_query, $var, $groupby, $order_by, $having_null);
     	}
     }
@@ -173,9 +174,10 @@ class Controller extends BaseController
     	}
     }
 
-    public function target_callback()
+    public function target_callback($force_filter=null)
     {    	
 		$groupby = session('filter_groupby', 1);
+        if($force_filter) $groupby = $force_filter;
 		$date_query = Lookup::date_query(true);
 		$divisions_query = Lookup::divisions_query();
 
@@ -186,7 +188,7 @@ class Controller extends BaseController
 	    	};
 		}
 		else{
-			$var = Lookup::groupby_query();
+			$var = Lookup::groupby_query(true, $force_filter);
 			$raw = DB::raw($var['select_query']);
 
 	    	return function($query) use($date_query, $divisions_query, $var, $raw){

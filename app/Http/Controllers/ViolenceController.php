@@ -98,20 +98,16 @@ class ViolenceController extends Controller
 	// 1b)
 	public function monthly_achievement()
 	{
-		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
+		$violence = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical'])
 			->when(true, $this->surge_columns_callback(false))
 			->get();
 
-		$physical = SurgeColumnView::where('modality', 'gbv_physical')
-			->when(true, $this->surge_columns_callback(false))
-			->get();
-
-		$sql = $this->get_sum($sexual, 'sexual') . ', ' . $this->get_sum($physical, 'physical') . ' ';
+		$sql = $this->get_sum($violence, 'violence');
 
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
-			->when(true, $this->get_callback('sexual'))
+			->when(true, $this->get_callback('violence'))
 			->get();
 
 		$target_obj = DB::table('t_facility_target')
@@ -135,18 +131,17 @@ class ViolenceController extends Controller
 		$data['stacking'] = true;
 		$data['stack_labels'] = true;
 
-		Lookup::bars($data, ['Sexual', 'Physical', 'Target']);
-		Lookup::splines($data, 2);
+		Lookup::bars($data, ['Results', 'Target'], 'column', ['#5c85d6', '#ff3300']);
+		Lookup::splines($data, 1);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
-			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
-			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
+			$data["outcomes"][0]["data"][$key] = (int) $row->violence;
 
-			if(isset($target)) $data["outcomes"][2]["data"][$key] = $target;
+			if(isset($target)) $data["outcomes"][1]["data"][$key] = $target;
 			else{
 				$t = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
-				$data["outcomes"][2]["data"][$key] = round(($t / $divisor), 2);
+				$data["outcomes"][1]["data"][$key] = round(($t / $divisor), 2);
 			}
 		}
 
@@ -156,26 +151,26 @@ class ViolenceController extends Controller
 	// 1c)
 	public function performance()
 	{
-		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
+		$date_query = Lookup::date_query();
+		$divisions_query = Lookup::divisions_query();
+		$groupby_query = Lookup::groupby_query(true, 1);
+
+		$violence = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical'])
 			->when(true, $this->surge_columns_callback(false))
 			->get();
 
-		$physical = SurgeColumnView::where('modality', 'gbv_physical')
-			->when(true, $this->surge_columns_callback(false))
-			->get();
-
-		$sql = $this->get_sum($sexual, 'sexual') . ', ' . $this->get_sum($physical, 'physical') . ' ';
+		$sql = $this->get_sum($violence, 'violence');
 
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
-			->when(true, $this->get_callback('sexual'))
+			->when(true, $this->get_callback('violence', null, '', 1))
 			->get();
 
 		$target_obj = DB::table('t_facility_target')
 			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
 			->selectRaw("SUM(gbv) AS gbv")
-			->when(true, $this->target_callback())
+			->when(true, $this->target_callback(1))
 			->get();
 
 		$groupby = session('filter_groupby', 1);
@@ -199,15 +194,14 @@ class ViolenceController extends Controller
 		$data['stacking'] = true;
 
 		$data['outcomes'][0]['yAxis'] = 1;
-		$data['outcomes'][1]['yAxis'] = 1;
+		// $data['outcomes'][1]['yAxis'] = 1;
 
-		Lookup::bars($data, ['Sexual', 'Physical', 'Target']);
-		Lookup::splines($data, 2);
+		Lookup::bars($data, ['Results', 'Achieved'], 'column', ['#5c85d6', '#ff3300']);
+		Lookup::splines($data, 1);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
-			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
-			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
+			$data["outcomes"][0]["data"][$key] = (int) $row->violence;
 
 			if(isset($target)) $ta = $target;
 			else{
@@ -215,7 +209,7 @@ class ViolenceController extends Controller
 				$ta = round(($t / $divisor), 2);
 			}
 
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage(($row->sexual + $row->physical), $ta);
+			$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($row->violence, $ta);
 		}
 
 		return view('charts.dual_axis', $data);

@@ -101,6 +101,13 @@
                     y: -20
                 }
             },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                    },
+                },
+            },
             colors: [
                 '#F2784B',
                 '#1BA39C',
