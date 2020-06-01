@@ -237,7 +237,7 @@ class ViolenceController extends Controller
 		$data['stacking'] = true;
 		$data['data_labels'] = true;
 
-		Lookup::bars($data, ['Sexual', 'Physical'], 'spline');
+		Lookup::bars($data, ['Sexual Violence', 'Physical/Emotional Violence'], 'spline');
 		// Lookup::splines($data, 2);
 
 		foreach ($rows as $key => $row) {
@@ -248,7 +248,7 @@ class ViolenceController extends Controller
 
 		$view_data = view('charts.line_graph', $data)->render() . '<br /><br /><br /> ';
 
-		Lookup::bars($data, ['Sexual', 'Physical'], 'column');
+		Lookup::bars($data, ['Sexual Violence', 'Physical/Emotional Violence'], 'column');
 		$data['div'] = str_random(15);	
 		$data['stacking_percent'] = true;
 		// unset($data['outcomes'][2]);	
