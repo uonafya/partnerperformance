@@ -191,7 +191,7 @@ class ViolenceController extends Controller
 		Lookup::splines($data, 1);
 
 		foreach ($rows as $key => $row) {
-			$data['categories'][$key] = Lookup::get_category($row);
+			$data['categories'][$key] = $row->name;
 			$data["outcomes"][0]["data"][$key] = (int) $row->violence;
 
 			if(isset($target)) $ta = $target;
