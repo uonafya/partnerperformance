@@ -9,11 +9,6 @@
         @endisset
 
         $('#{{$div}}').highcharts({
-            plotOptions: {
-                column: {
-                    stacking: 'normal'
-                }
-            },
             chart: {
                 zoomType: 'xy'
             },
@@ -101,12 +96,13 @@
                     y: -20
                 }
             },
-            @isset($data_labels)
+            @if(isset($data_labels))
                 plotOptions: {
                     column: {
                         dataLabels: {
                             enabled: true,
                         },
+                        stacking: 'normal'
                     },
                     spline: {
                         dataLabels: {
@@ -115,7 +111,13 @@
                         },
                     },
                 },
-            @endisset
+            @else
+                plotOptions: {
+                    column: {
+                        stacking: 'normal'
+                    }
+                },            
+            @endif
             colors: [
                 '#F2784B',
                 '#1BA39C',

@@ -18,6 +18,11 @@
                 @elseif(isset($stacking_percent))
                     stacking: 'percent'
                 @endif
+                @if(isset($data_labels))  
+                    dataLabels: {
+                        enabled: true,
+                    },
+                @endif
             },
             spline: {
                 @if(isset($data_labels))  
