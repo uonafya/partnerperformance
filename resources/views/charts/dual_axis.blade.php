@@ -102,18 +102,18 @@
                 }
             },
             @isset($data_labels)
-            plotOptions: {
-                column: {
-                    dataLabels: {
-                        enabled: true,
+                plotOptions: {
+                    column: {
+                        dataLabels: {
+                            enabled: true,
+                        },
+                    },
+                    spline: {
+                        dataLabels: {
+                            enabled: true,
+                        },
                     },
                 },
-                line: {
-                    dataLabels: {
-                        enabled: true,
-                    },
-                },
-            },
             @endisset
             colors: [
                 '#F2784B',
