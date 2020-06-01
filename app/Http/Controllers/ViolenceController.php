@@ -151,10 +151,6 @@ class ViolenceController extends Controller
 	// 1c)
 	public function performance()
 	{
-		$date_query = Lookup::date_query();
-		$divisions_query = Lookup::divisions_query();
-		$groupby_query = Lookup::groupby_query(true, 1);
-
 		$violence = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical'])
 			->when(true, $this->surge_columns_callback(false))
 			->get();
@@ -173,13 +169,8 @@ class ViolenceController extends Controller
 			->when(true, $this->target_callback(1))
 			->get();
 
-		$groupby = session('filter_groupby', 1);
-		$divisor = Lookup::get_target_divisor();
-
-		if($groupby > 9){
-			$t = $target_obj->first()->gbv;
-			$target = round(($t / $divisor), 2);
-		}
+		$groupby = 1;
+		$divisor = Lookup::get_target_divisor(1);
 
 		$periods = Period::achievement()->get()->count();
 

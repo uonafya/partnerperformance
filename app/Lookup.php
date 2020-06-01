@@ -70,9 +70,10 @@ class Lookup
 		return $val;
 	}
 
-	public static function get_target_divisor()
+	public static function get_target_divisor($force_filter=null)
 	{
 		$groupby = session('filter_groupby', 1);
+		if($force_filter) $groupby = $force_filter;
 		if($groupby > 9){
 			if($groupby == 10 || $groupby == 11) return 1;
 			if($groupby == 12) return 12;
