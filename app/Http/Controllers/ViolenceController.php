@@ -205,6 +205,8 @@ class ViolenceController extends Controller
 			$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($row->violence, $ta);
 		}
 
+		$data['outcomes'][1]['tooltip'] = ["valueSuffix" => ' %'];
+
 		return view('charts.dual_axis', $data);
 	}
 

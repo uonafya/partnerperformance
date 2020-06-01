@@ -111,6 +111,7 @@
                     spline: {
                         dataLabels: {
                             enabled: true,
+                            format: '{point.y}{{ $suffix2 ?? "" }}'
                         },
                     },
                 },
