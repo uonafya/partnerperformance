@@ -256,7 +256,7 @@ class ViolenceController extends Controller
 		return $view_data;
 	}
 
-	// 
+	// 3
 	public function pep()
 	{
 		$sexual = SurgeColumnView::where('modality', 'gbv_sexual')
@@ -277,6 +277,7 @@ class ViolenceController extends Controller
 
 
 		$data['div'] = str_random(15);
+		$data['data_labels'] = true;
 		$data['yAxis'] = 'PEP';
 
 		Lookup::bars($data, ['No. Receiving PEP', 'No. Not Receiving PEP', 'PEP Coverage (%)']);
@@ -298,7 +299,7 @@ class ViolenceController extends Controller
 	}
 
 
-
+	// 4
 	public function age_gender()
 	{
 		$groupby = session('filter_groupby', 1);
@@ -308,6 +309,7 @@ class ViolenceController extends Controller
 		$data['stacking_percent'] = true;
 		// $data['extra_tooltip'] = true;
 		$data['point_percentage'] = true;
+		$data['data_labels'] = true;
 		Lookup::bars($data, ['Male', 'Female']);
 
 		$date_query = Lookup::date_query();
