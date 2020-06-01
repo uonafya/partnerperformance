@@ -14,9 +14,16 @@
         plotOptions: {
             column: {
                 @if(isset($stacking))
-                    stacking: 'normal',
+                    stacking: 'normal'
                 @elseif(isset($stacking_percent))
-                    stacking: 'percent',
+                    stacking: 'percent'
+                @endif
+            },
+            spline: {
+                @if(isset($data_labels))  
+                    dataLabels: {
+                        enabled: true,
+                    },
                 @endif
             },
         },
