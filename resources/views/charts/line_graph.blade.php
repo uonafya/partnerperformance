@@ -11,20 +11,15 @@
         chart: {
             zoomType: 'xy'
         },
-        @isset($stacking)
-            plotOptions: {
-                column: {
+        plotOptions: {
+            column: {
+                @if(isset($stacking))
                     stacking: 'normal'
-                }
-            },
-        @endisset
-        @isset($stacking_percent)
-            plotOptions: {
-                column: {
+                @elseif(isset($stacking_percent))
                     stacking: 'percent'
-                }
-            },
-        @endisset
+                @endif
+            }
+        },
         xAxis: {
             categories: {!! json_encode($categories ?? []) !!}
         },
@@ -45,6 +40,17 @@
                     
                 }
             },
+            @if(isset($stack_labels))
+                stackLabels: {
+                    enabled: true,
+                    /*rotation: -75,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    },
+                    y:-20*/
+                },
+            @endif
         },
         tooltip: {
             valueSuffix: "{{ $suffix ?? '%' }}",

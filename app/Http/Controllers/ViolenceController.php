@@ -133,6 +133,7 @@ class ViolenceController extends Controller
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['stacking'] = true;
+		$data['stack_labels'] = true;
 
 		Lookup::bars($data, ['Sexual', 'Physical', 'Target']);
 		Lookup::splines($data, 2);
