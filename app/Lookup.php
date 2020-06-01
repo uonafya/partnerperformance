@@ -701,9 +701,10 @@ class Lookup
 		return ['select_query' => $select_query, 'group_query' => $group_query];
 	}
 
-	public static function splines(&$data, $splines)
+	public static function splines(&$data, $splines, $force_filter)
 	{
 		$groupby = session('filter_groupby', 1);
+		if($force_filter) $groupby = $force_filter;
 		if(!is_array($splines)) $splines = [$splines];
 		foreach ($splines as $key => $spline) {
 			if($groupby < 10){

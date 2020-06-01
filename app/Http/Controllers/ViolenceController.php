@@ -180,15 +180,17 @@ class ViolenceController extends Controller
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '';
+		$data['suffix2'] = '%';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['yAxis2'] = 'Achievement Percentage';
 		$data['stacking'] = true;
+		$data['data_labels'] = true;
 
 		$data['outcomes'][0]['yAxis'] = 1;
 		// $data['outcomes'][1]['yAxis'] = 1;
 
 		Lookup::bars($data, ['Results', 'Achieved'], 'column', ['#5c85d6', '#ff3300']);
-		Lookup::splines($data, 1);
+		Lookup::splines($data, 1, 1);
 
 		foreach ($rows as $key => $row) {
 			$data['categories'][$key] = $row->name;

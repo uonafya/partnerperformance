@@ -26,7 +26,7 @@
             yAxis: [{ // Primary yAxis
                 labels: {
                     formatter: function() {
-                        return this.value +'<?= (isset($tat) ? @"": @"%"); ?>';
+                        return this.value + "{{ $suffix ?? '' }}";
                     },
                     style: {
                         
@@ -50,7 +50,7 @@
                 },
                 labels: {
                     formatter: function() {
-                        return this.value +'';
+                        return this.value  + "{{ $suffix2 ?? '' }}";
                     },
                     style: {
                         color: '#4572A7'
@@ -101,13 +101,20 @@
                     y: -20
                 }
             },
+            @isset($data_labels)
             plotOptions: {
                 column: {
                     dataLabels: {
                         enabled: true,
                     },
                 },
+                line: {
+                    dataLabels: {
+                        enabled: true,
+                    },
+                },
             },
+            @endisset
             colors: [
                 '#F2784B',
                 '#1BA39C',
