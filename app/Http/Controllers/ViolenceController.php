@@ -191,8 +191,8 @@ class ViolenceController extends Controller
 		$data['chart_title'] = "Performance at {$time_percentage}% of time";
 
 		$data['div'] = str_random(15);
-		$data['suffix'] = '';
-		$data['suffix2'] = '%';
+		$data['suffix'] = '%';
+		$data['suffix2'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['yAxis2'] = 'Achievement Percentage';
 		$data['stacking'] = true;
