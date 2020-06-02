@@ -28,7 +28,7 @@ class ViolenceController extends Controller
 			->groupBy('partner')
 			->get();
 
-		$partners = DB::table('partners')->where('funding_agency_id', 1)->get();
+		$partners = DB::table('partners')->where(['funding_agency_id' => 1, 'flag' => 1])->get();
 
 		$data['div'] = str_random(15);
 		$data['yAxis'] = 'Reporting Rates';
