@@ -21,6 +21,7 @@ class ViolenceController extends Controller
 		$period = Period::lastMonth()->first();
 
 		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("partner as div_id, partnername as name, COUNT(DISTINCT facility) AS total ")
 			->whereNotNull('dateupdated')
 			->where('period_id', $period->id)
