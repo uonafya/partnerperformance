@@ -22,7 +22,7 @@ class Period extends BaseModel
 
         return $query->whereRaw($date_query)
             ->when((!$quarter && !$month), function($query){
-                return $query->whereRaw("year < ". date('Y') ." OR (year = ". date('Y') ." AND month < ". date('m') .")  ");
+                return $query->whereRaw("(year < ". date('Y') ." OR (year = ". date('Y') ." AND month < ". date('m') ."))  ");
             });
     }
 
