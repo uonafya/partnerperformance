@@ -157,6 +157,10 @@ class ViolenceController extends Controller
 			}
 		}
 
+		array_unshift($data['categories'], 'Baseline');
+		array_unshift($data["outcomes"][0]["data"], 0);
+		array_unshift($data["outcomes"][1]["data"], 0);
+
 		return view('charts.line_graph', $data);
 	}
 
@@ -192,7 +196,6 @@ class ViolenceController extends Controller
 
 		$data['div'] = str_random(15);
 		$data['suffix'] = '%';
-		$data['suffix2'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['yAxis2'] = 'Achievement Percentage';
 		$data['stacking'] = true;
@@ -291,6 +294,7 @@ class ViolenceController extends Controller
 
 		$data['div'] = str_random(15);
 		$data['data_labels'] = true;
+		$data['suffix'] = '%';
 		$data['yAxis'] = 'PEP';
 
 		Lookup::bars($data, ['No. Receiving PEP', 'No. Not Receiving PEP', 'PEP Coverage (%)']);
