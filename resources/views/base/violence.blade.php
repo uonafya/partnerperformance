@@ -18,7 +18,7 @@
 	<div class="col-md-3 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Cumulative Achievement vs Target <div class="display_date"></div>
+			    Cumulative Achievement vs Target (1a) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="cumulative_pie">
 				<center><div class="loader"></div></center>
@@ -44,7 +44,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Achievement <div class="display_date"></div>
+			    Achievement (1b) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="monthly_achievement">
 				<center><div class="loader"></div></center>
@@ -57,7 +57,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Performance <div class="display_date"></div>
+			    Performance (1c) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="performance">
 				<center><div class="loader"></div></center>
@@ -70,7 +70,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Monthly Violence Cases Reported By Type <div class="display_date"></div>
+			    Monthly Violence Cases Reported By Type (2a & b) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="monthly_cases">
 				<center><div class="loader"></div></center>
@@ -83,7 +83,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    PEP Provision to Sexual Violence Victims <div class="display_date"></div>
+			    PEP Provision to Sexual Violence Victims (3) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="pep">
 				<center><div class="loader"></div></center>
@@ -96,7 +96,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Violence Case Reports Disaggregated by Age & Sex <div class="display_date"></div>
+			    Violence Case Reports Disaggregated by Age & Sex (4) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="age_gender">
 				<center><div class="loader"></div></center>
