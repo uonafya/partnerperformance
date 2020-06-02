@@ -28,7 +28,7 @@
 	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Reporting Status <div class="display_date"></div>
+			    Reporting Status 
 		    </div>
 			<div class="panel-body" id="reporting">
 				<center><div class="loader"></div></center>

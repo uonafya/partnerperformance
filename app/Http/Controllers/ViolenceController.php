@@ -15,25 +15,36 @@ class ViolenceController extends Controller
 {
 	private $my_table = 'd_gender_based_violence';
 
+
 	public function reporting()
 	{
+		$period = Period::lastMonth()->first();
+
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback($this->my_table))
-			->selectRaw("COUNT(DISTINCT facility) AS total ")
+			->selectRaw("partner as div_id, partnername as name, COUNT(DISTINCT facility) AS total ")
 			->whereNotNull('dateupdated')
-			->when(true, $this->get_callback('total'))
+			->where('period_id', $period->id)
+			->groupBy('partner')
 			->get();
+
+		$partners = DB::table('partners')->where('funding_agency_id', 1)->get();
 
 		$data['div'] = str_random(15);
 		$data['yAxis'] = 'Reporting Rates';
 		$data['suffix'] = '';
+		$data['chart_title'] = "Reporting For {$period->year}, {$period->month_name} " ;
 
 		Lookup::bars($data, ['Facilities Reported']);
 
-		foreach ($rows as $key => $row) {
+		foreach ($partners as $key => $partner) {
+			$data['categories'][$key] = $partner->name;
+			$data["outcomes"][0]["data"][$key] = (int) ($rows->where('div_id', $partner->id)->first()->total ?? 0);
+		}
+
+		/*foreach ($rows as $key => $row) {
 			$data['categories'][$key] = Lookup::get_category($row);
 			$data["outcomes"][0]["data"][$key] = (int) $row->total;
-		}
+		}*/
 
 		return view('charts.line_graph', $data);
 	}
