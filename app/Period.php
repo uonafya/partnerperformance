@@ -17,8 +17,13 @@ class Period extends BaseModel
     {
     	$date_query = Lookup::date_query();
 
+        $quarter = session('filter_quarter');
+        $month = session('filter_month');
+
         return $query->whereRaw($date_query)
-        	->whereRaw("year < ". date('Y') ." OR (year = ". date('Y') ." AND month < ". date('m') .")  ");
+            ->when((!$quarter && !$month), function($query){
+                return $query->whereRaw("year < ". date('Y') ." OR (year = ". date('Y') ." AND month < ". date('m') .")  ");
+            });
     }
 
     public function scopeLastMonth($query)
