@@ -60,7 +60,15 @@
 						<li><a href="{{ url('pns') }}">PNS</a></li>	
 						<li><a href="{{ url('surge') }}">Surge</a></li>	
 						@if(auth()->user() && auth()->user()->user_type_id < 3)
-						<li><a href="{{ url('gbv') }}">GBV</a></li>	
+							<li class="dropdown">
+								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+									GBV <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ url('violence') }}">GBV</a></li>
+									<li><a href="{{ url('gbv') }}">GBV 2</a></li>
+								</ul>
+							</li>		
 						@endif
 						<!-- 
 						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
