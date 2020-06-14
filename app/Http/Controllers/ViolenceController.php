@@ -250,7 +250,7 @@ class ViolenceController extends Controller
 			->get();
 
 		$data['div'] = str_random(15);
-		$data['div_class'] = 'col-md-5';
+		$data['div_class'] = 'col-md-6';
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['stacking'] = true;
