@@ -1,4 +1,4 @@
-<div id="{{$div}}"></div>
+<div id="{{$div}}" class="{{ $div_class ?? '' }}"></div>
 
 <script type="text/javascript">
 

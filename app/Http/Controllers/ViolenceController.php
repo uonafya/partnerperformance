@@ -31,7 +31,7 @@ class ViolenceController extends Controller
 		$partners = DB::table('partners')->where(['funding_agency_id' => 1, 'flag' => 1])->get();
 
 		$data['div'] = str_random(15);
-		$data['yAxis'] = 'Reporting Rates';
+		$data['yAxis'] = 'Number of Facilities Reported';
 		$data['suffix'] = '';
 		$data['chart_title'] = "Reporting For {$period->year}, {$period->month_name} " ;
 
@@ -217,7 +217,10 @@ class ViolenceController extends Controller
 				$ta = round(($t / $divisor), 2);
 			}
 
-			$data["outcomes"][1]["data"][$key] = Lookup::get_percentage($row->violence, $ta);
+			$percentage = Lookup::get_percentage($row->violence, $ta);
+			if($percentage > 100) $percentage = 100;
+
+			$data["outcomes"][1]["data"][$key] = $percentage;
 		}
 
 		$data['outcomes'][1]['tooltip'] = ["valueSuffix" => ' %'];
@@ -247,6 +250,7 @@ class ViolenceController extends Controller
 			->get();
 
 		$data['div'] = str_random(15);
+		$data['div_class'] = 'col-md-6';
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['stacking'] = true;

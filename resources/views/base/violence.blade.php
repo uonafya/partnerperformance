@@ -15,17 +15,7 @@
 
 
 <div class="row">
-	<div class="col-md-3 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Cumulative Achievement vs Target (1a) <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="cumulative_pie">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-9 col-sm-12 col-xs-12">
+	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    Reporting Status 
@@ -41,7 +31,17 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="col-md-3 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Cumulative Achievement vs Target (1a) <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="cumulative_pie">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    Achievement (1b) <div class="display_date"></div>
@@ -57,7 +57,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Performance (1c) <div class="display_date"></div>
+			    Partner Performance (1c) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="performance">
 				<center><div class="loader"></div></center>

@@ -65,7 +65,7 @@
 									GBV <b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="{{ url('violence') }}">GBV</a></li>
+									<li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
 									<li><a href="{{ url('gbv') }}">GBV 2</a></li>
 								</ul>
 							</li>		
