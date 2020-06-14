@@ -264,7 +264,6 @@ class ViolenceController extends Controller
 			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
 			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
 		}
-
 		$view_data = view('charts.line_graph', $data)->render() . ' ';
 
 		Lookup::bars($data, ['Sexual Violence', 'Physical/Emotional Violence'], 'column');
