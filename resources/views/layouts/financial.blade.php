@@ -262,7 +262,9 @@
 
 		<div class="col-md-5">
 			<center>
+				@if(!ends_with(url()->current(), ['violence', 'gbv']))
 				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2018, '{{ $date_url }}')" class="alert-link"> FY 2018 </a>|
+				@endif
 				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2019, '{{ $date_url }}')" class="alert-link"> FY 2019 </a>|
 				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2020, '{{ $date_url }}')" class="alert-link"> FY 2020 </a>|
 				<br />

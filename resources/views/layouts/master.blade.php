@@ -66,7 +66,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
-									<li><a href="{{ url('gbv') }}">GBV 2</a></li>
+									<li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
 								</ul>
 							</li>		
 						@endif

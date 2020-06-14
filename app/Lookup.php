@@ -167,7 +167,11 @@ class Lookup
 		$divisions = Division::all();
 		$agencies = FundingAgency::all();
 
-		$partners = Partner::select('id', 'name')->where('flag', 1)->orderBy('name', 'asc')->get();
+		$partners = Partner::select('id', 'name')
+		->when(ends_with(url()->current(), ['violence', 'gbv', 'surge', 'non_mer']), function($query){
+			return $query->where('funding_agency_id', 1);
+		})
+		->where('flag', 1)->orderBy('name', 'asc')->get();
 		$counties = County::select('id', 'name')->orderBy('name', 'asc')->get();
 		$subcounties = Subcounty::select('id', 'name')->orderBy('name', 'asc')->get();
 		$wards = Ward::select('id', 'name')->orderBy('name', 'asc')->get();
