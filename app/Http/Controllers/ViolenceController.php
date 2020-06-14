@@ -269,6 +269,7 @@ class ViolenceController extends Controller
 		Lookup::bars($data, ['Sexual Violence', 'Physical/Emotional Violence'], 'column');
 		$data['div'] = str_random(15);	
 		unset($data['stacking']);
+		$data['suffix'] = '%';
 		$data['stacking_percent'] = true;
 		// unset($data['outcomes'][2]);	
 
