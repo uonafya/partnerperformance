@@ -34,7 +34,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
 		if(!$fac) return;
 
         $update_data = [];
-        $columns = ['gbv', 'emotional_violence', 'violence_post_rape_care', 'total_gender_gbv'];
+        $columns = ['gbv', 'physical_emotional_violence', 'sexual_violence_post_rape_care', 'total_gender_gbv'];
 
         foreach ($columns as $column) {
             if(isset($row->$column) && is_numeric($row->$column)) $update_data[$column] = $row->$column;
