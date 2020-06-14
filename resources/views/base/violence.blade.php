@@ -72,7 +72,7 @@
 		    <div class="panel-heading">
 			    Monthly Violence Cases Reported By Type (2a & b) <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="monthly_cases">
+			<div class="panel-body row" id="monthly_cases">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
