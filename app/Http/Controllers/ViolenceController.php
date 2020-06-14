@@ -157,7 +157,7 @@ class ViolenceController extends Controller
 			}
 		}
 
-		$total_gender_gbv = DB::table('t_facility_target')->selectRaw('SUM(total_gender_gbv) AS value')->where('financial_year', date('Y'))->first()->value;
+		$total_gender_gbv = DB::table('t_facility_target')->selectRaw('SUM(total_gender_gbv) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
 
 		array_unshift($data['categories'], 'Baseline');
 		array_unshift($data["outcomes"][0]["data"], (int) $total_gender_gbv);
