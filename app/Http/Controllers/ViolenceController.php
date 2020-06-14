@@ -266,6 +266,15 @@ class ViolenceController extends Controller
 			$data["outcomes"][0]["data"][$key] = (int) $row->sexual;
 			$data["outcomes"][1]["data"][$key] = (int) $row->physical;
 		}
+
+		$divisor = Lookup::get_target_divisor();
+		$physical_baseline = DB::table('t_facility_target')->selectRaw('SUM(physical_emotional_violence) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
+		$sexual_baseline = DB::table('t_facility_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
+
+		array_unshift($data['categories'], 'Baseline');
+		array_unshift($data["outcomes"][0]["data"], (int) $sexual_baseline);
+		array_unshift($data["outcomes"][1]["data"], (int) $physical_baseline);
+
 		$view_data = view('charts.line_graph', $data)->render() . ' ';
 
 		Lookup::bars($data, ['Sexual Violence', 'Physical/Emotional Violence'], 'column');
