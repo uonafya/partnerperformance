@@ -38,8 +38,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
 
         foreach ($columns as $column) {
             if(isset($row->$column) && is_numeric($row->$column)) $update_data[$column] = $row->$column;
-        }
-        
+        }        
 
 		if(env('APP_ENV') != 'testing') {
 			DB::connection('mysql_wr')->table($this->table_name)
