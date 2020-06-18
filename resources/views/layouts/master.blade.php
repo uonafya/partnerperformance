@@ -59,17 +59,15 @@
 						<li><a href="{{ url('non_mer') }}">Non Mer</a></li>	
 						<li><a href="{{ url('pns') }}">PNS</a></li>	
 						<li><a href="{{ url('surge') }}">Surge</a></li>	
-						@if(auth()->user() && auth()->user()->user_type_id < 3)
-							<li class="dropdown">
-								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-									GBV <b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
-									<li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
-								</ul>
-							</li>		
-						@endif
+						<li class="dropdown">
+							<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+								GBV <b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
+								<li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
+							</ul>
+						</li>		
 						<!-- 
 						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
 						<li><a href="{{ url('tx_curr') }}">MMD</a></li>	

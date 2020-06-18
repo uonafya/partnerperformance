@@ -180,10 +180,8 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('surge', 'GeneralController@surge');
 
 
-	Route::middleware(['auth', 'usaid'])->group(function(){
 		Route::get('gbv', 'GeneralController@gbv');
 		Route::get('violence', 'GeneralController@violence');
-	});
 	// Route::get('gbv', 'GeneralController@gbv');
 	
 	Route::get('dispensing', 'GeneralController@dispensing');

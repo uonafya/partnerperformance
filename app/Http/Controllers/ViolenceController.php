@@ -79,7 +79,7 @@ class ViolenceController extends Controller
 
 		$periods = Period::achievement()->get()->count();
 
-		$time_percentage = Lookup::get_percentage($periods, 12);
+		$time_percentage = Lookup::get_percentage($periods, 12, 0);
 		if($time_percentage > 100) $time_percentage = 100;
 		$data['chart_title'] = "Cumulative Achievement at {$time_percentage}% of time";
 
@@ -133,7 +133,7 @@ class ViolenceController extends Controller
 
 		if($groupby > 9){
 			$t = $target_obj->first()->gbv;
-			$target = round(($t / $divisor), 2);
+			$target = round(($t / $divisor), 0);
 		}
 
 
@@ -153,7 +153,7 @@ class ViolenceController extends Controller
 			if(isset($target)) $data["outcomes"][1]["data"][$key] = $target;
 			else{
 				$t = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
-				$data["outcomes"][1]["data"][$key] = round(($t / $divisor), 2);
+				$data["outcomes"][1]["data"][$key] = round(($t / $divisor), 0);
 			}
 		}
 
@@ -162,7 +162,7 @@ class ViolenceController extends Controller
 		array_unshift($data['categories'], 'Baseline');
 		array_unshift($data["outcomes"][0]["data"], (int) $total_gender_gbv);
 		array_unshift($data["outcomes"][1]["data"], 0);
-
+		$data["outcomes"][1]["data"][0] = $data["outcomes"][1]["data"][1];
 		return view('charts.line_graph', $data);
 	}
 
@@ -192,7 +192,7 @@ class ViolenceController extends Controller
 
 		$periods = Period::achievement()->get()->count();
 
-		$time_percentage = Lookup::get_percentage($periods, 12);
+		$time_percentage = Lookup::get_percentage($periods, 12, 0);
 		if($time_percentage > 100) $time_percentage = 100;
 		$data['chart_title'] = "Performance at {$time_percentage}% of time";
 
@@ -216,10 +216,10 @@ class ViolenceController extends Controller
 			if(isset($target)) $ta = $target;
 			else{
 				$t = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
-				$ta = round(($t / $divisor), 2);
+				$ta = round(($t / $divisor), 0);
 			}
 
-			$percentage = Lookup::get_percentage($row->violence, $ta);
+			$percentage = Lookup::get_percentage($row->violence, $ta, 0);
 			if($percentage > 100) $percentage = 100;
 
 			$data["outcomes"][1]["data"][$key] = $percentage;
@@ -326,8 +326,13 @@ class ViolenceController extends Controller
 			$data['categories'][$key] = Lookup::get_category($row);
 			$data["outcomes"][0]["data"][$key] = (int) $row->pep;
 			$data["outcomes"][1]["data"][$key] = (int) ($row->sexual - $row->pep);
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pep, $row->sexual);
+			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pep, $row->sexual, 0);
 		}
+
+		array_unshift($data['categories'], 'Baseline');
+		array_unshift($data["outcomes"][0]["data"], 0);
+		array_unshift($data["outcomes"][1]["data"], 0);
+		array_unshift($data["outcomes"][2]["data"], 0);
 
 		return view('charts.dual_axis', $data);
 	}
@@ -339,7 +344,7 @@ class ViolenceController extends Controller
 		$groupby = session('filter_groupby', 1);
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Gender Based Violence By Age";
-		$data['suffix'] = '';
+		$data['suffix'] = '%';
 		$data['stacking_percent'] = true;
 		// $data['extra_tooltip'] = true;
 		$data['point_percentage'] = true;
