@@ -329,10 +329,15 @@ class ViolenceController extends Controller
 			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pep, $row->sexual, 0);
 		}
 
+		$divisor = Lookup::get_target_divisor();
+		
+		$pep_baseline = DB::table('t_facility_target')->selectRaw('SUM(pep) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
+		$sexual_baseline = DB::table('t_facility_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
+
 		array_unshift($data['categories'], 'Baseline');
-		array_unshift($data["outcomes"][0]["data"], 0);
-		array_unshift($data["outcomes"][1]["data"], 0);
-		array_unshift($data["outcomes"][2]["data"], 0);
+		array_unshift($data["outcomes"][0]["data"], $pep_baseline);
+		array_unshift($data["outcomes"][1]["data"], $sexual_baseline - $pep_baseline);
+		array_unshift($data["outcomes"][2]["data"], Lookup::get_percentage($pep_baseline, $sexual_baseline, 0));
 
 		return view('charts.dual_axis', $data);
 	}
