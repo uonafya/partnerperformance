@@ -331,8 +331,8 @@ class ViolenceController extends Controller
 
 		$divisor = Lookup::get_target_divisor();
 		
-		$pep_baseline = (int) DB::table('t_facility_target')->selectRaw('SUM(pep) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
-		$sexual_baseline = (int) DB::table('t_facility_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
+		$pep_baseline = (int) (DB::table('t_facility_target')->selectRaw('SUM(pep) AS value')->where('financial_year', date('Y'))->first()->value / $divisor);
+		$sexual_baseline = (int) (DB::table('t_facility_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor);
 
 		array_unshift($data['categories'], 'Baseline');
 		array_unshift($data["outcomes"][0]["data"], $pep_baseline);
