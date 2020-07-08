@@ -78,7 +78,7 @@ class ViolenceController extends Controller
 			->first();
 
 		$wards_target_obj = DB::table('t_ward_target')
-			->join('view_wards', 'view_wards.id', '=', 't_ward_target.facility')
+			->join('view_wards', 'view_wards.id', '=', 't_ward_target.ward_id')
 			->selectRaw("SUM(gbv) AS gbv")
 			->whereRaw($wards_divisions_query)
 			->whereRaw(Lookup::date_query(true))
@@ -136,7 +136,7 @@ class ViolenceController extends Controller
 			->get();
 
 		$wards_target_obj = DB::table('t_ward_target')
-			->join('view_wards', 'view_wards.id', '=', 't_ward_target.facility')
+			->join('view_wards', 'view_wards.id', '=', 't_ward_target.ward_id')
 			->selectRaw("SUM(gbv) AS gbv")
 			->when(true, $this->target_callback(null, true))
 			->first();
