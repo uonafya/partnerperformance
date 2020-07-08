@@ -621,8 +621,8 @@ class Synch
 
 		$final = $raw;
 
-		if(starts_with($final, '_')) $final = str_replace_first('_', '', $final);
-		if(starts_with($final, '_')) $final = str_replace_first('_', '', $final);
+		if(\Str::startsWith($final, '_')) $final = str_replace_first('_', '', $final);
+		if(\Str::startsWith($final, '_')) $final = str_replace_first('_', '', $final);
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 		if(ends_with($final, '_')) $final = str_replace_last('_', '', $final);
 

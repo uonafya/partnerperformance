@@ -179,6 +179,27 @@ class Other
         if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
     }
 
+    public static function insert_ward_targets($year)
+    {
+        $table_name = 't_ward_target';
+        $i=0;
+        $data_array = [];
+        
+        $partners = Ward::select('id')->get();
+        foreach ($partners as $k => $val) {
+            $data_array[$i] = array('financial_year' => $year, 'ward_id' => $val->id);
+            $i++;
+
+            if ($i == 200) {
+                DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+                $data_array=null;
+                $i=0;
+            }
+        }
+
+        if($data_array) DB::connection('mysql_wr')->table($table_name)->insert($data_array);
+    }
+
 	public static function partner_indicators()
 	{
 		$table_name = 'p_early_indicators';
@@ -424,7 +445,7 @@ class Other
         $tables = DB::select("show tables");
         foreach ($tables as $key => $row) {
             $t = $row->Tables_in_hcm;
-            if(!starts_with($row->Tables_in_hcm, ['d_', 'm_']) || in_array($t, ['p_early_indicators', 'd_dispensing'])) continue;
+            if(!\Str::startsWith($row->Tables_in_hcm, ['d_', 'm_']) || in_array($t, ['p_early_indicators', 'd_dispensing'])) continue;
             DB::connection('mysql_wr')->table($row->Tables_in_hcm)->where('facility', $id)->delete();
         }
         DB::connection('mysql_wr')->table('facilitys')->where('id', $id)->delete();

@@ -32,8 +32,8 @@ class Insert
 
         foreach ($tables as $key => $row) {
             $table_name = $row->Tables_in_hcm;
-            if($table_name != 'd_gender_based_violence') continue;
-            if(!starts_with($table_name, ['d_', 'm_']) || in_array($table_name, ['d_tx_curr', 'd_dispensing'])) continue;
+            // if($table_name != 'd_gender_based_violence') continue;
+            if(!\Str::startsWith($table_name, ['d_', 'm_']) || in_array($table_name, ['d_tx_curr', 'd_dispensing'])) continue;
 
             $columns = collect(DB::select("show columns from `" . $table_name . '`'));
             $p = $columns->where('Field', 'period_id')->first();

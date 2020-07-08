@@ -3,11 +3,13 @@
 namespace App\Imports;
 
 use App\Facility;
+use App\Ward;
 use DB;
 
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Str;
 
 class TargetsImport implements OnEachRow, WithHeadingRow
 {
@@ -27,10 +29,21 @@ class TargetsImport implements OnEachRow, WithHeadingRow
     public function onRow(Row $row)
     {
     	$row = json_decode(json_encode($row->toArray()));
-    	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
+        $table_name = $this->table_name;
+        $column_name = 'facility';
 
-		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
-		if(!$fac) return;
+        if(Str::contains($row->site_name, ['Ward', 'ward'])){
+            $table_name = 't_ward_target';
+            $column_name = 'ward_id';
+            $a = explode(' ', $row->site_name);
+            $fac = Ward::where('name', 'like', '%' . $a[0] . '%')->first();
+            if(!$fac) return;
+        }else{
+            if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
+
+            $fac = Facility::where('facilitycode', $row->mfl_code)->first();
+            if(!$fac) return;
+        }
 
         $update_data = [];
         $columns = ['gbv', 'pep', 'physical_emotional_violence', 'sexual_violence_post_rape_care', 'total_gender_gbv'];
@@ -40,8 +53,8 @@ class TargetsImport implements OnEachRow, WithHeadingRow
         }        
 
 		if(env('APP_ENV') != 'testing') {
-			DB::connection('mysql_wr')->table($this->table_name)
-			->where(['facility' => $fac->id, 'financial_year' => $this->financial_year ])
+			DB::connection('mysql_wr')->table($table_name)
+			->where([$column_name => $fac->id, 'financial_year' => $this->financial_year ])
 			->update($update_data);
             // ->update(['gbv' => $row->gbv]);
 		}
