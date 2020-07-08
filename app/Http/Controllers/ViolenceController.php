@@ -55,6 +55,7 @@ class ViolenceController extends Controller
 	{
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
+		$wards_divisions_query = Lookup::divisions_query(true);
 
 		$violence = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical'])
 			->when(true, $this->surge_columns_callback(false))
@@ -76,6 +77,12 @@ class ViolenceController extends Controller
 			->whereRaw(Lookup::date_query(true))
 			->first();
 
+		$wards_target_obj = DB::table('t_ward_target')
+			->join('view_wards', 'view_wards.id', '=', 't_ward_target.facility')
+			->selectRaw("SUM(gbv) AS gbv")
+			->whereRaw($wards_divisions_query)
+			->whereRaw(Lookup::date_query(true))
+			->first();
 
 		$periods = Period::achievement()->get()->count();
 
@@ -96,7 +103,7 @@ class ViolenceController extends Controller
 		$data['outcomes']['data'][0]['color'] = "#00ff00";
 		$data['outcomes']['data'][1]['color'] = "#ff0000";
 
-		$gap = $target_obj->gbv - $row->violence;
+		$gap = $target_obj->gbv + $wards_target_obj->gbv - $row->violence;
 		if($gap < 0) $gap = 0;
 
 		$data['outcomes']['data'][0]['y'] = (int) $row->violence;
@@ -128,11 +135,17 @@ class ViolenceController extends Controller
 			->when(true, $this->target_callback())
 			->get();
 
+		$wards_target_obj = DB::table('t_ward_target')
+			->join('view_wards', 'view_wards.id', '=', 't_ward_target.facility')
+			->selectRaw("SUM(gbv) AS gbv")
+			->when(true, $this->target_callback(null, true))
+			->first();
+
 		$groupby = session('filter_groupby', 1);
 		$divisor = Lookup::get_target_divisor();
 
 		if($groupby > 9){
-			$t = $target_obj->first()->gbv;
+			$t = $target_obj->first()->gbv + $wards_target_obj->first()->gbv;
 			$target = round(($t / $divisor), 0);
 		}
 
@@ -152,7 +165,9 @@ class ViolenceController extends Controller
 
 			if(isset($target)) $data["outcomes"][1]["data"][$key] = $target;
 			else{
-				$t = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
+				$t1 = $target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
+				$t2 = $wards_target_obj->where('div_id', $row->div_id)->first()->gbv ?? 0;
+				$t = $t1 + $t2;
 				$data["outcomes"][1]["data"][$key] = round(($t / $divisor), 0);
 			}
 		}
@@ -271,6 +286,9 @@ class ViolenceController extends Controller
 		
 		$physical_baseline = DB::table('t_facility_target')->selectRaw('SUM(physical_emotional_violence) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
 		$sexual_baseline = DB::table('t_facility_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
+		
+		$physical_baseline += DB::table('t_ward_target')->selectRaw('SUM(physical_emotional_violence) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
+		$sexual_baseline += DB::table('t_ward_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor;
 
 		array_unshift($data['categories'], 'Baseline');
 		array_unshift($data["outcomes"][0]["data"], (int) $sexual_baseline);
@@ -308,7 +326,6 @@ class ViolenceController extends Controller
 			->when(true, $this->get_callback('sexual'))
 			->get();
 
-
 		$data['div'] = str_random(15);
 		$data['data_labels'] = true;
 		$data['suffix'] = '%';
@@ -333,10 +350,13 @@ class ViolenceController extends Controller
 		
 		$pep_baseline = (int) (DB::table('t_facility_target')->selectRaw('SUM(pep) AS value')->where('financial_year', date('Y'))->first()->value / $divisor);
 		$sexual_baseline = (int) (DB::table('t_facility_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor);
+		
+		$pep_baseline += (int) (DB::table('t_ward_target')->selectRaw('SUM(pep) AS value')->where('financial_year', date('Y'))->first()->value / $divisor);
+		$sexual_baseline += (int) (DB::table('t_ward_target')->selectRaw('SUM(sexual_violence_post_rape_care) AS value')->where('financial_year', date('Y'))->first()->value / $divisor);
 
 		array_unshift($data['categories'], 'Baseline');
-		array_unshift($data["outcomes"][0]["data"], $pep_baseline);
-		array_unshift($data["outcomes"][1]["data"], $sexual_baseline - $pep_baseline);
+		array_unshift($data["outcomes"][0]["data"], (int) $pep_baseline);
+		array_unshift($data["outcomes"][1]["data"], (int) ($sexual_baseline - $pep_baseline));
 		array_unshift($data["outcomes"][2]["data"], Lookup::get_percentage($pep_baseline, $sexual_baseline, 0));
 
 		return view('charts.dual_axis', $data);

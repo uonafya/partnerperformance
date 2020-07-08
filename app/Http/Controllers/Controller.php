@@ -174,12 +174,12 @@ class Controller extends BaseController
     	}
     }
 
-    public function target_callback($force_filter=null)
+    public function target_callback($force_filter=null,$for_ward=false)
     {    	
 		$groupby = session('filter_groupby', 1);
         if($force_filter) $groupby = $force_filter;
 		$date_query = Lookup::date_query(true);
-		$divisions_query = Lookup::divisions_query();
+		$divisions_query = Lookup::divisions_query($for_ward);
 
 		if($groupby > 9){
 	    	return function($query) use($date_query, $divisions_query){

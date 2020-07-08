@@ -542,12 +542,14 @@ class Lookup
 		return $query;
 	}*/
 
-	public static function divisions_query()
+	public static function divisions_query($for_ward=false)
 	{
 		$query = " 1 ";
 		if(session('filter_county')) $query .= " AND county" . self::set_division_query(session('filter_county'));
 		if(session('filter_subcounty')) $query .= " AND subcounty_id" . self::set_division_query(session('filter_subcounty'));
 		if(session('filter_ward')) $query .= " AND ward_id" . self::set_division_query(session('filter_ward'));
+
+		if($for_ward) return $query;
 		if(session('filter_facility')) $query .= " AND view_facilitys.id" . self::set_division_query(session('filter_facility'));
 		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner" . self::set_division_query(session('filter_partner'));
 		if(session('filter_agency')) $query .= " AND funding_agency_id" . self::set_division_query(session('filter_agency'));
