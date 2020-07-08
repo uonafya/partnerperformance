@@ -33,6 +33,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
         $column_name = 'facility';
 
         if(Str::contains($row->site_name, ['Ward', 'ward'])){
+            dd($row);
             $table_name = 't_ward_target';
             $column_name = 'ward_id';
             $a = explode(' ', $row->site_name);
