@@ -139,7 +139,7 @@ class ViolenceController extends Controller
 			->join('view_wards', 'view_wards.id', '=', 't_ward_target.ward_id')
 			->selectRaw("SUM(gbv) AS gbv")
 			->when(true, $this->target_callback(null, true))
-			->first();
+			->get();
 
 		$groupby = session('filter_groupby', 1);
 		$divisor = Lookup::get_target_divisor();
