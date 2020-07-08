@@ -33,11 +33,10 @@ class TargetsImport implements OnEachRow, WithHeadingRow
         $column_name = 'facility';
 
         if(Str::contains($row->site_name, ['Ward', 'ward'])){
-            dd($row);
             $table_name = 't_ward_target';
             $column_name = 'ward_id';
             $a = explode(' ', $row->site_name);
-            $fac = Ward::where('name', 'like', '%' . $a[0] . '%')->first();
+            $fac = Ward::where('name', 'like', $a[0] . '%')->first();
             if(!$fac) return;
         }else{
             return;
