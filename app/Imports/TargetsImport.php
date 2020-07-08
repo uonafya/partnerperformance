@@ -39,6 +39,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
             $fac = Ward::where('name', 'like', '%' . $a[0] . '%')->first();
             if(!$fac) return;
         }else{
+            return;
             if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
             $fac = Facility::where('facilitycode', $row->mfl_code)->first();
