@@ -18,6 +18,7 @@ function set_select_facility(div_name, url, minimum_length, placeholder) {
 	$(div_name).select2({
 		minimumInputLength: minimum_length,
 		placeholder: placeholder,
+		allowClear: true,
 		ajax: {
 			delay	: 100,
 			type	: "POST",

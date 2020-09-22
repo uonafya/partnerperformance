@@ -106,7 +106,7 @@ class Controller extends BaseController
     		return $query->addSelect("{$prepension}year", "{$prepension}month")
 				->whereRaw($divisions_query)
                 ->whereRaw($date_query)
-    			->groupBy("{$prepension}year", "{$prepension}.month")
+    			->groupBy("{$prepension}year", "{$prepension}month")
     			->orderBy("{$prepension}year", 'asc')
     			->orderBy("{$prepension}month", 'asc');
     	};
