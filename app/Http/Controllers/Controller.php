@@ -177,6 +177,7 @@ class Controller extends BaseController
     public function target_callback($force_filter=null,$for_ward=false)
     {    	
 		$groupby = session('filter_groupby', 1);
+        if(in_array($groupby, [1,5]) && $for_ward) $force_filter = 2;
         if($force_filter) $groupby = $force_filter;
 		$date_query = Lookup::date_query(true);
 		$divisions_query = Lookup::divisions_query($for_ward);
@@ -190,6 +191,12 @@ class Controller extends BaseController
 		else{
 			$var = Lookup::groupby_query(true, $force_filter);
 			$raw = DB::raw($var['select_query']);
+
+            if(in_array($groupby, [1,5]) && $for_ward){
+                return function($query) use(){
+                    return $query->where('ward_id', '<', 0);
+                };  
+            }
 
 	    	return function($query) use($date_query, $divisions_query, $var, $raw){
 	    		return $query->addSelect($raw)
