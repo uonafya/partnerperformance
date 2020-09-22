@@ -193,7 +193,7 @@ class Controller extends BaseController
 			$raw = DB::raw($var['select_query']);
 
             if(in_array($groupby, [1,5]) && $for_ward){
-                return function($query) use(){
+                return function($query){
                     return $query->where('ward_id', '<', 0);
                 };  
             }
