@@ -22,6 +22,7 @@ class FacilitiesImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         $mflcodes = [];
+        $partner = $this->partner;
 
         foreach ($collection as $key => $row) {
             $mflcodes[] = $row['mfl_code'];
