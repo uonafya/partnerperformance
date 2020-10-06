@@ -16,6 +16,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
 
     private $table_name;
     private $financial_year;
+    private $compass_directions;
 
     function __construct()
     {
@@ -23,6 +24,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
     	$financial_year = date('Y');
 		// if(date('m') > 9) $financial_year++;
 		$this->financial_year = $financial_year;
+        $this->compass_directions = ['east', 'west', 'north', 'south', 'central'];
     }
 
 
@@ -37,20 +39,23 @@ class TargetsImport implements OnEachRow, WithHeadingRow
         if(Str::contains($site_name, ['ward'])){
             $table_name = 't_ward_target';
             $column_name = 'ward_id';
-            $compass = Str::contains($site_name, ['east', 'west', 'north', 'south', 'central']);
+            $compass = Str::contains($site_name, $this->compass_directions);
             $a = explode(' ', $site_name);
-            $compass_direction = null;
+            $direction = null;
             if($compass){
                 foreach ($a as $value) {
-                    if(in_array($value, ['east', 'west', 'north', 'south', 'central'])){
-                        $compass_direction = $value;
+                    if(in_array($value, $this->compass_directions)){
+                        $direction = $value;
                         break;
                     }
                 }
             }
             $fac = Ward::where('name', 'like', $a[0] . '%')
-                ->when($compass_direction, function($query) use($compass_direction){
-                    return $query->where('name', 'like', "%{$compass_direction}%");
+                ->when($direction, function($query) use($direction){
+                    return $query->where('name', 'like', '%' . $direction . '%');
+                })
+                ->when(Str::startsWith($site_name, $this->compass_directions), function($query) use($a){
+                    return $query->where('name', 'like', '%' . $a[1] . '%');
                 })
                 ->first();
             if(!$fac) return;
