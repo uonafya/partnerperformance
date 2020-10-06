@@ -9,7 +9,7 @@
 	$().ready(function(){
 
 		@isset($logs)
-			console.log({!! $logs !!});
+			console.log({!! json_encode($logs) !!});
 		@endisset
 
 		$('#{{$div}}').highcharts({
