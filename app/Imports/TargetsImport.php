@@ -22,7 +22,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
     {
     	$this->table_name = 't_facility_target';
     	$financial_year = date('Y');
-		// if(date('m') > 9) $financial_year++;
+		if(date('m') > 9) $financial_year++;
 		$this->financial_year = $financial_year;
         $this->compass_directions = ['east', 'west', 'north', 'south', 'central'];
     }

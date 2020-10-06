@@ -37,7 +37,10 @@ class TxCurrentController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->whereRaw(Lookup::surge_columns_query(false, false, true))
-			->groupby($q['group_query'], 'gender')
+			->groupby($q['group_array'][0], 'gender')
+			->when(sizeof($q['group_array']) == 2, function($query) use($q){
+				return $query->groupBy($q['group_array'][1]);
+			})
 			->when(true, function($query) use($groupby, $q) {
 				if($groupby < 10) return $query->orderBy('div_id');
 				return $query->orderBy($q['select_query']);
@@ -89,7 +92,10 @@ class TxCurrentController extends Controller
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
 			->whereRaw(Lookup::surge_columns_query(false, true, false))
-			->groupby($q['group_query'], 'age_name')
+			->groupBy($q['group_array'][0], 'age_name')
+			->when(sizeof($q['group_array']) == 2, function($query) use($q){
+				return $query->groupBy($q['group_array'][1]);
+			})
 			->when(true, function($query) use($groupby, $q) {
 				if($groupby < 10) return $query->orderBy('div_id');
 				return $query->orderBy($q['select_query']);

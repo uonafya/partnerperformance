@@ -634,15 +634,19 @@ class Lookup
 			case 12:
 				$select_query = "year, month";
 				$group_query = "year, month";
+				$group_array = ["year", "month"];
 				break;	
 			case 13:
 				$select_query = "financial_year, quarter";
 				$group_query = "financial_year, quarter";
+				$group_array = ["financial_year", "quarter"];
 				break;			
 			default:
 				break;
 		}
-		return ['select_query' => $select_query, 'group_query' => $group_query];
+		if(!isset($group_array)) $group_array = [$group_query];
+		return compact('select_query', 'group_query', 'group_array');
+		// return ['select_query' => $select_query, 'group_query' => $group_query];
 	}
 
 	public static function duplicate_parameters($row)

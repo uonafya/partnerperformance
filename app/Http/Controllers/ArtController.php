@@ -195,7 +195,10 @@ class ArtController extends Controller
 			->selectRaw($q['select_query'] . ", " . $sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupby($q['group_query'])
+			->groupby($q['group_array'][0])
+			->when(sizeof($q['group_array']) == 2, function($query) use($q){
+				return $query->groupBy($q['group_array'][1]);
+			})
 			->when(($groupby < 10), function($query) use($groupby) {
 				if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
                 if($groupby == 1) $query->where('partner', '!=', 69);
@@ -213,7 +216,10 @@ class ArtController extends Controller
 			->selectRaw($q['select_query'] . ", " . "(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupby($q['group_query'])
+			->groupby($q['group_array'][0])
+			->when(sizeof($q['group_array']) == 2, function($query) use($q){
+				return $query->groupBy($q['group_array'][1]);
+			})
 			->get();
 
 		$date_query = Lookup::date_query(true);
@@ -409,7 +415,10 @@ class ArtController extends Controller
 			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
-			->groupBy($q['group_query'])
+			->groupBy($q['group_array'][0])
+			->when(sizeof($q['group_array']) == 2, function($query) use($q){
+				return $query->groupBy($q['group_array'][1]);
+			})
 			->when(($groupby < 10), function($query) use($groupby) {
 				if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
                 if($groupby == 1) $query->where('partner', '!=', 69);
