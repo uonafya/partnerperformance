@@ -21,7 +21,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
     {
     	$this->table_name = 't_facility_target';
     	$financial_year = date('Y');
-		if(date('m') > 9) $financial_year++;
+		// if(date('m') > 9) $financial_year++;
 		$this->financial_year = $financial_year;
     }
 
@@ -32,11 +32,27 @@ class TargetsImport implements OnEachRow, WithHeadingRow
         $table_name = $this->table_name;
         $column_name = 'facility';
 
-        if(Str::contains($row->site_name, ['Ward', 'ward'])){
+        $site_name = strtolower($row->site_name);
+
+        if(Str::contains($site_name, ['ward'])){
             $table_name = 't_ward_target';
             $column_name = 'ward_id';
-            $a = explode(' ', $row->site_name);
-            $fac = Ward::where('name', 'like', $a[0] . '%')->first();
+            $compass = Str::contains($site_name, ['east', 'west', 'north', 'south', 'central']);
+            $a = explode(' ', $site_name);
+            $compass_direction = null;
+            if($compass){
+                foreach ($a as $value) {
+                    if(in_array($value, ['east', 'west', 'north', 'south', 'central'])){
+                        $compass_direction = $value;
+                        break;
+                    }
+                }
+            }
+            $fac = Ward::where('name', 'like', $a[0] . '%')
+                ->when($compass_direction, function($query) use($compass_direction){
+                    return $query->where('name', 'like', "%{$compass_direction}%")
+                })
+                ->first();
             if(!$fac) return;
         }else{
             return;
