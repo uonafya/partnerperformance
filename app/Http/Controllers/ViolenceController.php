@@ -110,6 +110,11 @@ class ViolenceController extends Controller
 		// $data['outcomes']['data'][1]['y'] = (int) ($target_obj->gbv - $row->violence);
 		$data['outcomes']['data'][1]['y'] = (int) $gap;
 
+		$data['logs'] = [
+			'wards_target' => $wards_target_obj->gbv,
+			'facility_target' => $target_obj->gbv,
+		];
+
 		return view('charts.pie_chart', $data);
 
 	}

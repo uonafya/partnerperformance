@@ -8,6 +8,10 @@
 <script type="text/javascript">
 	$().ready(function(){
 
+		@isset($logs)
+			console.log({!! $logs !!});
+		@endisset
+
 		$('#{{$div}}').highcharts({
 			chart: {
 				plotBackgroundColor: null,
