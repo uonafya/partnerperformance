@@ -50,7 +50,7 @@ class TargetsImport implements OnEachRow, WithHeadingRow
             }
             $fac = Ward::where('name', 'like', $a[0] . '%')
                 ->when($compass_direction, function($query) use($compass_direction){
-                    return $query->where('name', 'like', "%{$compass_direction}%")
+                    return $query->where('name', 'like', "%{$compass_direction}%");
                 })
                 ->first();
             if(!$fac) return;
