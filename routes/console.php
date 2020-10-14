@@ -66,7 +66,7 @@ Artisan::command('surges:export', function () {
 })->describe('Surges export.');
 
 Artisan::command('insert:weekly', function () {
-	\App\Other::create_weeks();
+	\App\Insert::create_weeks();
 })->describe('Add weeks and create rows.');
 
 Artisan::command('insert:periods', function ($year=null) {
