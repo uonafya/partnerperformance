@@ -3,6 +3,8 @@
 namespace App;
 
 use DB;
+use Carbon\Carbon;
+
 
 class Insert
 {
