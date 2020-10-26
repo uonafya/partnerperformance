@@ -302,6 +302,30 @@ class Dispensing
         DB::statement($sql);
     }
 
+    public static function alter_gbv_table()
+    {
+        $table_name = 'd_gender_based_violence';
+        $sql = "ALTER TABLE `{$table_name}` ";
+
+        $modality = SurgeModality::where(['tbl_name' => $table_name])->orderBy('id', 'desc')->first();
+        $ages = SurgeAge::gbv()->get();
+        $genders = SurgeGender::all();
+
+        $column = SurgeColumnView::where(['tbl_name' => $table_name])->orderBy('id', 'desc')->first();
+        session(['previous_column_name' => $column->column_name]);
+
+        foreach ($ages as $age) {
+            Surge::create_surge_column($sql, $modality, $age, $genders, null, true);
+        }
+
+        $sql = substr($sql, 0, -2);
+        $sql .= ';';
+
+        DB::statement($sql);
+
+        // return $sql;
+    }
+
 
 
 

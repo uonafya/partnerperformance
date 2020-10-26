@@ -127,6 +127,13 @@ class Surge
             ['modality' => 'gbv_physical', 'modality_name' => 'GBV - Physical/Emotional Violence', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
             ['modality' => 'pep_number', 'modality_name' => 'Number Receiving PEP', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
         ]);
+
+        // GBV New Modality
+        DB::table($table_name)->insert([
+            ['modality' => 'completed_pep', 'modality_name' => 'Number Completed PEP', 'hts' => 0, 'tbl_name' => 'd_gender_based_violence', 'unknown' => 0, ],
+        ]);
+
+
 	}
 
     public static function age_categories_table()
@@ -331,7 +338,7 @@ class Surge
         DB::statement($sql);
 	}
 
-	public static function create_surge_column(&$sql, $modality, $age, $genders, $h=null)
+	public static function create_surge_column(&$sql, $modality, $age, $genders, $h=null, $alter_table=false)
 	{
         $base = $modality->modality . '_' . $age->age . '_';
         $base2 = $modality->modality_name . ' ' . $age->age_name . ' ';
@@ -359,7 +366,14 @@ class Surge
             $ex = str_replace('/', '', strtolower($ex));
             $ex = str_replace('__', '_', strtolower($ex));
             $ex = str_replace('__', '_', strtolower($ex));
-			$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0, ";
+
+            if($alter_table) $sql .= 'ADD ';
+			$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0 ";
+            if($alter_table){
+                $sql .= ' AFTER `' . session('previous_column_name') . '`';
+                session(['previous_column_name' => $col]);
+            }
+            $sql .= ", ";
             
 			$column->fill([
 				'column_name' => $col,
@@ -514,7 +528,6 @@ class Surge
 
             $paths[] = $path;
         }
-
         // Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
     }
 
