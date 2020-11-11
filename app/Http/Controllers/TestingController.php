@@ -26,7 +26,7 @@ class TestingController extends Controller
 		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
 			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql2)
-			->when(true, $this->target_callback())table($this->my_table)
+			->when(true, $this->target_callback())
 			->whereRaw(Lookup::active_partner_query())
 			->get();
 
