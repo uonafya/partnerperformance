@@ -358,6 +358,7 @@ class IndicatorController extends Controller
 		if($groupby != 12) $date_query = Lookup::year_month_query();
 
 		$data['art'] = DB::table('p_early_indicators_view')
+			->join('periods', 'periods.id', '=', "p_early_indicators_view.period_id")
 			->selectRaw("SUM(current_tx) AS current_tx")
 			->when(true, $this->get_callback())
 			->get();
