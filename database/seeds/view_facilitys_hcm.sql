@@ -5,7 +5,7 @@ CREATE OR REPLACE VIEW  `view_facilitys` AS
  	`facilitys`.`totalartmar`,`facilitys`.`totalartsep17`,`facilitys`.`asofdate`,`facilitys`.`totalartsep15` AS `totalartsep15`,
  	`facilitys`.`smsprinter`,`facilitys`.`Flag`,
 
- 	`facilitys`.`is_viremia`, `facilitys`.`is_dsd`, `facilitys`.`is_otz`, `facilitys`.`is_men_clinic`, `facilitys`.`is_pns`,
+ 	`facilitys`.`is_viremia`, `facilitys`.`is_dsd`, `facilitys`.`is_otz`, `facilitys`.`is_men_clinic`, `facilitys`.`is_pns`, `facilitys`.`is_surge`,
 
  	`facilitys`.`ward_id`, `wards`.`name` AS `wardname`,`wards`.`WardDHISCode`,`wards`.`WardMFLCode`, 
 
@@ -47,7 +47,7 @@ CREATE OR REPLACE VIEW  `view_facilities` AS
  	`facilitys`.`totalartmar`,`facilitys`.`totalartsep17`,`facilitys`.`asofdate`,`facilitys`.`totalartsep15` AS `totalartsep15`,
  	`facilitys`.`smsprinter`,`facilitys`.`Flag`,
 
- 	`facilitys`.`is_viremia`, `facilitys`.`is_dsd`, `facilitys`.`is_otz`, `facilitys`.`is_men_clinic`, `facilitys`.`is_pns`,
+ 	`facilitys`.`is_viremia`, `facilitys`.`is_dsd`, `facilitys`.`is_otz`, `facilitys`.`is_men_clinic`, `facilitys`.`is_pns`, `facilitys`.`is_surge`,
 
  	`facilitys`.`ward_id`, `wards`.`name` AS `wardname`,`wards`.`WardDHISCode`,`wards`.`WardMFLCode`, 
 
