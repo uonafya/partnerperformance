@@ -188,15 +188,17 @@ class GeneralController extends Controller
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
+		$financial_years = Period::selectRaw('distinct financial_year')->get();
 		$facilities = \App\ViewFacility::select('id', 'name')->where('partner', $user->partner_id)->get();
-		return view('forms.nonmer', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner]);
+		return view('forms.nonmer', ['no_header' => true, 'facilities' => $facilities, 'partner' => $partner, 'financial_years' => $financial_years]);
 	}
 
 	public function download_pns()
 	{
 		$user = auth()->user();
 		$partner = session('session_partner');
-		return view('forms.download_pns', ['no_header' => true, 'partner' => $partner]);
+		$financial_years = Period::selectRaw('distinct financial_year')->where('financial_year', '>=', 2018)->get();
+		return view('forms.download_pns', ['no_header' => true, 'partner' => $partner, 'financial_years' => $financial_years]);
 	}
 
 	public function set_surge_facilities()
@@ -222,6 +224,7 @@ class GeneralController extends Controller
 	public function download_dispensing()
 	{
 		$data = Lookup::view_data_surges();
+		$data['financial_years'] = Period::selectRaw('distinct financial_year')->where('financial_year', '>=', 2019)->get();
 		$user = auth()->user();
 		$data['partner'] = session('session_partner');
 		$data['no_header'] = true;
@@ -234,6 +237,7 @@ class GeneralController extends Controller
 		$user = auth()->user();
 		$data['partner'] = session('session_partner');
 		$data['no_header'] = true;
+		$data['financial_years'] = Period::selectRaw('distinct financial_year')->where('financial_year', '>=', 2019)->get();
 		return view('forms.download_tx_curr', $data);
 	}
 

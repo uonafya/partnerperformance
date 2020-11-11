@@ -694,14 +694,13 @@ class SurgeController extends Controller
 
 		$facilities = Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
 		
-		$rows = DB::table('d_surge')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
-			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->where('week_id', $week_id)
 			->where('partner', $partner->id)
 			->when($facilities, function($query) use ($facilities){
-				return $query->whereIn('view_facilitys.id', $facilities);
+				return $query->whereIn('view_facilities.id', $facilities);
 			})
 			->orderBy('name', 'asc')
 			->get();

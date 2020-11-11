@@ -25,33 +25,37 @@ class OtzController extends Controller
 		$select_query = "financial_year, COUNT(DISTINCT t_non_mer.facility) AS total ";
 
 		$viremia = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
 			->when(true, $this->get_callback_no_dates())
+			->whereRaw(Lookup::active_partner_query())
 			->where('viremia_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
 
 		$dsd = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
 			->when(true, $this->get_callback_no_dates())
+			->whereRaw(Lookup::active_partner_query())
 			->where('dsd_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
 
 		$otz = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
 			->when(true, $this->get_callback_no_dates())
+			->whereRaw(Lookup::active_partner_query())
 			->where('otz_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
 
 		$men = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query)
 			->when(true, $this->get_callback_no_dates())
+			->whereRaw(Lookup::active_partner_query())
 			->where('men_clinic_beneficiaries', '>', 0)
 			->where('financial_year', '>', 2017)
 			->get();
@@ -86,27 +90,31 @@ class OtzController extends Controller
 
 		$select_query = "COUNT(id) AS total ";
 
-		$viremia = DB::table('view_facilitys')
+		$viremia = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->where('is_viremia', 1)
 			->first();
 
-		$dsd = DB::table('view_facilitys')
+		$dsd = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->where('is_dsd', 1)
 			->first();
 
-		$otz = DB::table('view_facilitys')
+		$otz = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->where('is_otz', 1)
 			->first();
 
-		$men = DB::table('view_facilitys')
+		$men = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->where('is_men_clinic', 1)
 			->first();
 
@@ -126,7 +134,7 @@ class OtzController extends Controller
 		$data["outcomes"][0]["data"][2] = (int) $otz->total ?? 0;
 		$data["outcomes"][0]["data"][3] = (int) $men->total ?? 0;
 
-		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
+		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilities'])){
 
 			$financial_year = session('filter_financial_year');
 
@@ -158,31 +166,35 @@ class OtzController extends Controller
 	public function beneficiaries()
 	{
 		$viremia = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(viremia_beneficiaries) AS beneficiaries, SUM(viremia_target) AS target ")
 			->when(true, $this->get_callback())
 			->where('financial_year', '>', 2016)
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$dsd = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(dsd_beneficiaries) AS beneficiaries, SUM(dsd_target) AS target ")
 			->when(true, $this->get_callback())
 			->where('financial_year', '>', 2016)
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$otz = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(otz_beneficiaries) AS beneficiaries, SUM(otz_target) AS target ")
 			->when(true, $this->get_callback())
 			->where('financial_year', '>', 2016)
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$men = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year, SUM(men_clinic_beneficiaries) AS beneficiaries, SUM(men_clinic_target) AS target ")
 			->when(true, $this->get_callback())
 			->where('financial_year', '>', 2016)
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$data['div'] = str_random(15);
@@ -208,7 +220,7 @@ class OtzController extends Controller
 		$date_query = Lookup::date_query(true);
 
 		$rows = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw("financial_year,
 			 SUM(viremia_beneficiaries) AS viremia_beneficiaries, SUM(viremia_target) AS viremia_target,
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
@@ -216,6 +228,7 @@ class OtzController extends Controller
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
 			->when(true, $this->get_callback_no_dates())
 			->where('financial_year', '>', 2016)
+			->whereRaw(Lookup::active_partner_query())
 			->get();	
 
 		$data['div'] = str_random(15);
@@ -252,7 +265,7 @@ class OtzController extends Controller
 		if(session('filter_groupby') == 5) $select_query .= ", is_viremia, is_dsd, is_otz, is_men_clinic";
 
 		$data['rows'] = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw($select_query . ",
 			 SUM(viremia_beneficiaries) AS viremia_beneficiaries, SUM(viremia_target) AS viremia_target,
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
@@ -260,6 +273,7 @@ class OtzController extends Controller
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
 			->when(true, $this->get_callback_no_dates())
 			->whereRaw($date_query)
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$data['div'] = str_random(15);
@@ -276,35 +290,39 @@ class OtzController extends Controller
 
 		$select_query = $q['select_query'] . ", count(id) as total ";
 
-		$data['viremia'] = DB::table('view_facilitys')
+		$data['viremia'] = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->where('is_viremia', 1)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
-		$data['otz'] = DB::table('view_facilitys')
+		$data['otz'] = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->where('is_otz', 1)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
-		$data['dsd'] = DB::table('view_facilitys')
+		$data['dsd'] = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->where('is_dsd', 1)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
-		$data['men_clinic'] = DB::table('view_facilitys')
+		$data['men_clinic'] = DB::table('view_facilities')
 			->selectRaw($select_query)
 			->where('is_men_clinic', 1)
 			->whereRaw($divisions_query)
 			->groupBy($q['group_query'])
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
-		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
+		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilities'])){
 
 			$q = Lookup::groupby_query(false);
 
@@ -373,12 +391,13 @@ class OtzController extends Controller
 		$data = Lookup::table_data();
 
 		$data['rows'] = DB::table('t_non_mer')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_non_mer.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_non_mer.facility')
 			->selectRaw("count(*) as facilities,
 			 SUM(dsd_beneficiaries) AS dsd_beneficiaries, SUM(dsd_target) AS dsd_target, 
 			 SUM(men_clinic_beneficiaries) AS men_clinic_beneficiaries, SUM(men_clinic_target) AS men_clinic_target ")
 			->where($col, 1)
 			->when(true, $this->target_callback())
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$date_query = Lookup::year_month_query(6);
@@ -392,8 +411,7 @@ class OtzController extends Controller
 		";	
 
 		$data['art'] = DB::table('m_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->join('periods', 'periods.id', '=', 'm_art.period_id')
+			->when(true, $this->get_joins_callback('m_art'))
 			->selectRaw($sql)
 			->where($col, 1)
 			->whereRaw($date_query)

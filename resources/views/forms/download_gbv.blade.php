@@ -35,7 +35,7 @@
               <select class="col-sm-7 select_tag" required name="period_id">
                 <option></option>
                 @foreach($periods as $period)
-                  <option value="{{ $period->id }} "> FY {{ $period->financial_year }} Month {{ $period->month_name }} </option>
+                  <option value="{{ $period->id }} "> FY {{ $period->yr }} Month {{ $period->month_name }} </option>
                 @endforeach
               </select>
           </div>

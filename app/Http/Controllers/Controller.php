@@ -24,17 +24,23 @@ class Controller extends BaseController
 
     public function get_joins_callback($table_name)
     {
-        return function($query) use($table_name){
-            return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
-                ->join('periods', 'periods.id', '=', "{$table_name}.period_id");
+        $active_partner_query = Lookup::active_partner_query();
+        return function($query) use($table_name, $active_partner_query){
+            // return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
+            return $query->join('view_facilities', 'view_facilities.id', '=', "{$table_name}.facility")
+                ->join('periods', 'periods.id', '=', "{$table_name}.period_id")
+                ->whereRaw($active_partner_query);
         };        
     }
 
     public function get_joins_callback_weeks($table_name)
     {
-        return function($query) use($table_name){
-            return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
-                ->join('weeks', 'weeks.id', '=', "{$table_name}.week_id");
+        $active_partner_query = Lookup::active_partner_query();
+        return function($query) use($table_name, $active_partner_query){
+            // return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
+            return $query->join('view_facilities', 'view_facilities.id', '=', "{$table_name}.facility")
+                ->join('weeks', 'weeks.id', '=', "{$table_name}.week_id")
+                ->whereRaw($active_partner_query);
         };        
     }
 

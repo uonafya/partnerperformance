@@ -151,6 +151,8 @@ class Lookup
 		$subcounties = Subcounty::select('id', 'name')->orderBy('name', 'asc')->get();
 		$wards = Ward::select('id', 'name')->orderBy('name', 'asc')->get();
 
+		$financial_years = Period::selectRaw('distinct financial_year')->get();
+
 		return [
 			'divisions' => $divisions,
 			'agencies' => $agencies,
@@ -158,6 +160,7 @@ class Lookup
 			'counties' => $counties,
 			'subcounties' => $subcounties,
 			'wards' => $wards,
+			'financial_years' => $financial_years,
 			'date_url' => url('filter/date'),
 		];
 	}
@@ -176,6 +179,8 @@ class Lookup
 		$subcounties = Subcounty::select('id', 'name')->orderBy('name', 'asc')->get();
 		$wards = Ward::select('id', 'name')->orderBy('name', 'asc')->get();
 
+		$financial_years = Week::selectRaw('distinct financial_year')->get();
+
 		return [
 			'divisions' => $divisions,
 			'agencies' => $agencies,
@@ -190,6 +195,7 @@ class Lookup
 			'ages' => SurgeAge::surge()->get(),
 
 			'age_categories' => AgeCategory::all(),
+			'financial_years' => $financial_years,
 
 			'date_url' => url('filter/date'),
 		];
@@ -276,6 +282,52 @@ class Lookup
 		return "<a href='javascript:void(0)' class='alert-link'><center><strong>{$name}</strong></center></a>";
 	}
 
+	public static function active_partner_query()
+	{
+        $week = session('filter_week');
+        $financial_year = session('filter_financial_year');
+        $quarter = session('filter_quarter');
+
+        $year = session('filter_year');
+        $month = session('filter_month');
+        $to_year = session('to_year');
+        $to_month = session('to_month');
+
+
+        if($week){
+        	$w = Week::find($w);
+        	$active_date = $w->start_date;
+        }else if($to_year){
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$year}-{$m}-01";
+        }else if($month){
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$y}-{$m}-01";
+        }else if($quarter){
+            if($quarter == 1) $m = '10';
+            else if($quarter == 2) $m = '01';
+            else if($quarter == 3) $m = '04';
+            else if($quarter == 4) $m = '07';
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $active_date = "{$y}-{$m}-01";
+        }else{
+            $y = $financial_year - 1;
+            $active_date = "{$y}-10-01";
+        }
+
+        return self::get_active_partner_query($active_date);
+	}
+
+	public static function get_active_partner_query($active_date)
+	{
+		return "(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+	}
+
 	// Prepension allows us to prepend 'periods.' so it doesn't clash
 	public static function date_query($for_target=false, $prepension = '')
 	{
@@ -296,32 +348,6 @@ class Lookup
 		if($month) $query .= " AND {$prepension}month='{$month}'";
 
 		return $query;
-
-		// if(session('financial') || $for_target){
-		// 	$financial_year = session('filter_financial_year');
-		// 	$quarter = session('filter_quarter');
-		// 	$query = " financial_year='{$financial_year}'";
-
-		// 	if($quarter && !$for_target) $query .= " AND quarter='{$quarter}'";
-		// }else{
-		// 	$default = date('Y');
-		// 	$year = session('filter_year', $default);
-		// 	$month = session('filter_month');
-		// 	$to_year = session('to_year');
-		// 	$to_month = session('to_month');
-
-		// 	$query = '';		
-
-		// 	if(!$to_year){
-		// 		$query .= " year='{$year}' ";
-
-		// 		if($month) $query .= " AND month='{$month}' ";
-		// 	}
-		// 	else{
-		// 		$query = self::date_range_query($year, $to_year, $month, $to_month);
-		// 	}
-		// }
-		// return $query;
 	}
 
 	public static function apidb_date_query_old($for_target=false)
@@ -550,7 +576,7 @@ class Lookup
 		if(session('filter_ward')) $query .= " AND ward_id" . self::set_division_query(session('filter_ward'));
 
 		if($for_ward) return $query;
-		if(session('filter_facility')) $query .= " AND view_facilitys.id" . self::set_division_query(session('filter_facility'));
+		if(session('filter_facility')) $query .= " AND view_facilities.id" . self::set_division_query(session('filter_facility'));
 		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner" . self::set_division_query(session('filter_partner'));
 		if(session('filter_agency')) $query .= " AND funding_agency_id" . self::set_division_query(session('filter_agency'));
 

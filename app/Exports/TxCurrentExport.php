@@ -4,12 +4,15 @@ namespace App\Exports;
 
 use DB;
 
+use App\Lookup;
+
 class TxCurrentExport extends BaseExport
 {
 	protected $month;
 	protected $financial_year;
 	protected $age_category_id;
 	protected $gender_id;
+	protected $active_date;
 
 
 
@@ -21,6 +24,11 @@ class TxCurrentExport extends BaseExport
 		$this->age_category_id = $request->input('age_category_id');
 		$this->gender_id = $request->input('gender_id');
 
+		$y = $this->financial_year;
+		$m = $this->month;
+		if($month > 9) $y--;
+		$this->active_date = "{$y}-{$m}-01";
+
 		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
 		$this->sql = "countyname as County, Subcounty,		
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
@@ -31,11 +39,12 @@ class TxCurrentExport extends BaseExport
     public function headings() : array
     {
 		$row = DB::table('d_tx_curr')
-			->join('view_facilitys', 'view_facilitys.id', '=', "d_tx_curr.facility")
+			->join('view_facilities', 'view_facilities.id', '=', "d_tx_curr.facility")
             ->join('periods', 'periods.id', '=', "d_tx_curr.period_id")
 			->join('surge_columns_view', "d_tx_curr.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
 			->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month, 'modality' => 'tx_curr'])
+			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->first();
 
 		return collect($row)->keys()->all();
@@ -49,7 +58,7 @@ class TxCurrentExport extends BaseExport
     	$age_category_id = $this->age_category_id;
 
 		return DB::table('d_tx_curr')
-			->join('view_facilitys', 'view_facilitys.id', '=', "d_tx_curr.facility")
+			->join('view_facilities', 'view_facilities.id', '=', "d_tx_curr.facility")
             ->join('periods', 'periods.id', '=', "d_tx_curr.period_id")
 			->join('surge_columns_view', "d_tx_curr.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
@@ -60,7 +69,8 @@ class TxCurrentExport extends BaseExport
 			->when($gender_id, function($query) use ($gender_id){
 				return $query->where('gender_id', $gender_id);
 			})
-			->orderBy('view_facilitys.name', 'asc')
+			->whereRaw(Lookup::get_active_partner_query($this->active_date))
+			->orderBy('view_facilities.name', 'asc')
 			->orderBy('column_id', 'asc');
     }
 }

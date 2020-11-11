@@ -10,6 +10,7 @@ use App\Period;
 
 class IndicatorController extends Controller
 {
+	private $my_table = 'm_circumcision';
 
 	public function testing()
 	{
@@ -19,15 +20,13 @@ class IndicatorController extends Controller
 			->get();
 
 		$testing_rows = DB::table('m_testing')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
-			->join('periods', 'periods.id', '=', 'm_testing.period_id')
+			->when(true, $this->get_joins_callback('m_testing'))
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
 
 		$pmtct_rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+			->when(true, $this->get_joins_callback('m_pmtct'))
 			->selectRaw("SUM(tested_pmtct) AS tests, SUM(total_new_positive_pmtct) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -38,9 +37,10 @@ class IndicatorController extends Controller
 		";
 
 		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql2)
 			->when(true, $this->target_callback())
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$groupby = session('filter_groupby', 1);
@@ -106,15 +106,13 @@ class IndicatorController extends Controller
 			->get();
 
 		$testing_rows = DB::table('m_testing')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
-			->join('periods', 'periods.id', '=', 'm_testing.period_id')
+			->when(true, $this->get_joins_callback('m_testing'))
 			->selectRaw("SUM(testing_total) AS tests, SUM(positive_total) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
 
 		$pmtct_rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+			->when(true, $this->get_joins_callback('m_pmtct'))
 			->selectRaw("SUM(tested_pmtct) AS tests, SUM(total_new_positive_pmtct) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -125,9 +123,10 @@ class IndicatorController extends Controller
 		";
 
 		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql2)
 			->when(true, $this->target_callback())
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$groupby = session('filter_groupby', 1);
@@ -192,15 +191,13 @@ class IndicatorController extends Controller
 		";
 
 		$rows = DB::table('m_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->join('periods', 'periods.id', '=', 'm_art.period_id')
+			->when(true, $this->get_joins_callback('m_art'))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
 			->get();
 
 		$rows3 = DB::table('d_regimen_totals')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
-			->join('periods', 'periods.id', '=', 'd_regimen_totals.period_id')
+			->when(true, $this->get_joins_callback('d_regimen_totals'))
 			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
 			->when(true, $this->get_callback())
 			->get();
@@ -211,9 +208,10 @@ class IndicatorController extends Controller
 			->get();
 
 		$target_obj = DB::table('t_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `total`")
 			->when(true, $this->target_callback())
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$groupby = session('filter_groupby', 1);
@@ -278,8 +276,7 @@ class IndicatorController extends Controller
 		";
 
 		$rows = DB::table('m_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->join('periods', 'periods.id', '=', 'm_art.period_id')
+			->when(true, $this->get_joins_callback('m_art'))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('above15'))
 			->get();
@@ -290,9 +287,10 @@ class IndicatorController extends Controller
 			->get();
 
 		$target_obj = DB::table('t_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `total`")
 			->when(true, $this->target_callback())
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$groupby = session('filter_groupby', 1);

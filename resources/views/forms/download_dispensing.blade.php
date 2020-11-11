@@ -34,8 +34,13 @@
               <label class="col-sm-3 control-label">Financial Year</label>
               <select class="col-sm-7 select_tag" name="financial_year">
                 <option></option>
-                <option value="2019">2019</option>
-                <option value="2020" selected>2020</option>
+                @foreach($financial_years as $financial_year)
+                  <option value="{{ $financial_year->financial_year }}" @if($loop->last) selected @endif>{{ $financial_year->yr }}</option>
+                @endforeach
+
+                <!-- <option value="2019">19</option>
+                <option value="2020">20</option>
+                <option value="2021" selected>21</option> -->
               </select>
           </div>
 

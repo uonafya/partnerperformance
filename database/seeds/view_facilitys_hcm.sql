@@ -54,7 +54,8 @@ CREATE OR REPLACE VIEW  `view_facilities` AS
  	`facilitys`.`district`, `facilitys`.`subcounty_id`,`districts`.`name` AS `subcounty`,
  	`districts`.`SubCountyDHISCode`,`districts`.`SubCountyMFLCode`,
 
- 	`facilitys`.`partner`,`partners`.`name` AS `partnername`,`facilitys`.`partner2`,`partners`.`mech_id`,
+ 	`supported_facilities`.`partner_id` AS `partner`, `partners`.`name` AS `partnername`,`facilitys`.`partner2`,`partners`.`mech_id`,
+ 	`supported_facilities`.`start_of_support`, `supported_facilities`.`end_of_support`,
 
  	`partners`.`funding_agency_id`, `funding_agencies`.`name` AS `funding_agency`,
 

@@ -10,6 +10,7 @@ class GBVExport extends BaseExport
 	protected $period_id;
 	protected $gender_id;
 	protected $ages;
+	protected $active_date;
 
     function __construct($request)
     {
@@ -23,6 +24,11 @@ class GBVExport extends BaseExport
 
 		$period = \App\Period::findOrFail($this->period_id);
 		$this->fileName = "{$this->partner->download_name}_gbv_data_FY_{$period->financial_year}_month_{$period->month_name}.xlsx";
+
+		$y = $this->financial_year;
+		$m = $this->month;
+		if($month > 9) $y--;
+		$this->active_date = "{$period->year}-{$period->month}-01";
 
 		if(!$modalities) $modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
     	// $modalities = $this->modalities;
@@ -56,11 +62,12 @@ class GBVExport extends BaseExport
     public function headings() : array
     {
 		$row = DB::table($this->table_name)
-			->join('view_facilitys', 'view_facilitys.id', '=', $this->table_name . '.facility')
+			->join('view_facilities', 'view_facilities.id', '=', $this->table_name . '.facility')
 			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
 			->where('period_id', $this->period_id)
 			->where('partner', $this->partner->id)
+			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->first();
 
 		return collect($row)->keys()->all();
@@ -72,13 +79,14 @@ class GBVExport extends BaseExport
 		// $facilities = \App\Facility::select('id')->where(['is_surge' => 1, 'partner' => $partner->id])->get()->pluck('id')->toArray();
 		
 		return DB::table($this->table_name)
-			->join('view_facilitys', 'view_facilitys.id', '=', $this->table_name . '.facility')
+			->join('view_facilities', 'view_facilities.id', '=', $this->table_name . '.facility')
 			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
 			->where('period_id', $this->period_id)
 			->where('partner', $this->partner->id)
+			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			// ->when($facilities, function($query) use ($facilities){
-			// 	return $query->whereIn('view_facilitys.id', $facilities);
+			// 	return $query->whereIn('view_facilities.id', $facilities);
 			// })
 			->orderBy('name', 'asc');
     }

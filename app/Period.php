@@ -12,6 +12,11 @@ class Period extends BaseModel
 		return Lookup::resolve_month($this->month);
 	}
 
+    public function getYrAttribute()
+    {
+        return substr($this->financial_year, 2, 2);
+    }
+
 
     public function scopeAchievement($query)
     {

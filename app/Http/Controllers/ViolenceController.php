@@ -71,10 +71,11 @@ class ViolenceController extends Controller
 			->first();
 
 		$target_obj = DB::table('t_facility_target')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_facility_target.facility')
 			->selectRaw("SUM(gbv) AS gbv")
 			->whereRaw($divisions_query)
 			->whereRaw(Lookup::date_query(true))
+			->whereRaw(Lookup::active_partner_query())
 			->first();
 
 		$wards_target_obj = DB::table('t_ward_target')
@@ -137,9 +138,10 @@ class ViolenceController extends Controller
 			->get();
 
 		$target_obj = DB::table('t_facility_target')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_facility_target.facility')
 			->selectRaw("SUM(gbv) AS gbv")
 			->when(true, $this->target_callback())
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$wards_target_obj = DB::table('t_ward_target')
@@ -204,9 +206,10 @@ class ViolenceController extends Controller
 			->get();
 
 		$target_obj = DB::table('t_facility_target')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_facility_target.facility')
 			->selectRaw("SUM(gbv) AS gbv")
 			->when(true, $this->target_callback(1))
+			->whereRaw(Lookup::active_partner_query())
 			->get();
 
 		$groupby = 1;

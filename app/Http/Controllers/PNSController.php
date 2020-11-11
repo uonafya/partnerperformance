@@ -12,6 +12,7 @@ use App\ViewFacility;
 
 class PNSController extends Controller
 {
+	private $my_table = 'd_pns';
 
 	public function summary_chart()
 	{
@@ -36,9 +37,8 @@ class PNSController extends Controller
 		}
 		$sql = substr($sql, 0, -2);
 
-		$rows = DB::table('d_pns')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
-			->join('periods', 'periods.id', '=', 'd_pns.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('screened'))
 			->having('screened', '>', 0)
@@ -65,16 +65,14 @@ class PNSController extends Controller
 
 		$data['ages_array'] = $this->ages_array;
 
-		$rows = DB::table('d_pns')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
-			->join('periods', 'periods.id', '=', 'd_pns.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($this->get_table_query('new_pos'))
 			->when(true, $this->get_callback('total'))
 			->get();
 
 		$rows2 = DB::table('m_testing')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_testing.facility')
-			->join('periods', 'periods.id', '=', 'm_testing.period_id')
+			->when(true, $this->get_joins_callback('m_testing'))
 			->selectRaw("SUM(positive_total) AS `pos` ")
 			->when(true, $this->get_callback())
 			->get();
@@ -124,9 +122,8 @@ class PNSController extends Controller
 		$data = Lookup::table_data();
 		$data['ages_array'] = $this->ages_array;
 
-		$data['rows'] = DB::table('d_pns')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
-			->join('periods', 'periods.id', '=', 'd_pns.period_id')
+		$data['rows'] = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($this->get_table_query($item))
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -156,9 +153,8 @@ class PNSController extends Controller
 		}
 		$sql = substr($sql, 0, -2);
 
-		$data['rows'] = DB::table('d_pns')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
-			->join('periods', 'periods.id', '=', 'd_pns.period_id')
+		$data['rows'] = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('contacts_identified'))
 			->having('contacts_identified', '>', 0)
@@ -259,9 +255,8 @@ class PNSController extends Controller
 
 		$filename = str_replace(' ', '_', strtolower($partner->name)) . '_' . $financial_year . '_pns';
 		
-		$rows = DB::table('d_pns')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pns.facility')
-			->join('periods', 'periods.id', '=', 'd_pns.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
 			->when($months, function($query) use ($months){
 				return $query->whereIn('month', $months);

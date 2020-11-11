@@ -161,7 +161,7 @@ class TxCurrentController extends Controller
 			->when($gender_id, function($query) use ($gender_id){
 				return $query->where('gender_id', $gender_id);
 			})
-			->orderBy('view_facilitys.name', 'asc')
+			->orderBy('view_facilities.name', 'asc')
 			->orderBy('column_id', 'asc')
 			->get();
 

@@ -37,11 +37,12 @@ class IndicatorController extends Controller
 		";
 
 		$dhis = DB::table('d_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -53,24 +54,26 @@ class IndicatorController extends Controller
 		";
 
 		$dhis_old = DB::table('d_hiv_counselling_and_testing')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_hiv_counselling_and_testing.facility')
 			->selectRaw($sql2)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
 			->get();
 
 		$prows = DB::table('d_prevention_of_mother-to-child_transmission')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_prevention_of_mother-to-child_transmission.facility')
 			->selectRaw("(SUM(`initial_test_at_anc_hv02-04`) + SUM(`initial_test_at_l&d_hv02-05`) + 	SUM(`initial_test_at_pnc_pnc<=6wks_hv02-06`)) AS `tests`, 
 				(SUM(`total_positive_(add_hv02-10_-_hv02-14)_hv02-15`) - SUM(`known_positive_at_1st_anc_hv02-10`)) AS `pos`
 			 ")
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -79,11 +82,12 @@ class IndicatorController extends Controller
 		$psql = "SUM(`total_tested_(pmtct)`) AS `tests`, SUM(`total_positive_(pmtct)`) AS `pos` ";
 
 		$prows2 = DB::table('d_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_pmtct.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_pmtct.facility')
 			->selectRaw($psql)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -95,10 +99,11 @@ class IndicatorController extends Controller
 		$date_query = Lookup::date_query(true);
 
 		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->first();
 
 		$target = round(($target_obj->tests / 12), 2);
@@ -213,11 +218,12 @@ class IndicatorController extends Controller
 		";
 
 		$dhis = DB::table('d_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_testing_and_prevention_services.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -229,11 +235,12 @@ class IndicatorController extends Controller
 		";
 
 		$dhis_old = DB::table('d_hiv_counselling_and_testing')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_counselling_and_testing.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_hiv_counselling_and_testing.facility')
 			->selectRaw($sql2)
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -242,10 +249,11 @@ class IndicatorController extends Controller
 		$date_query = Lookup::date_query(true);
 
 		$target_obj = DB::table('t_hiv_testing_and_prevention_services')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_testing_and_prevention_services.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_testing_and_prevention_services.facility')
 			->selectRaw($sql)
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->first();
 
 		$target = Lookup::get_percentage($target_obj->pos, $target_obj->tests);
@@ -295,22 +303,24 @@ class IndicatorController extends Controller
 		$divisions_query = Lookup::divisions_query();
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw($this->current_art_query())
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
 			->get();
 
 		$rows2 = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($this->former_age_current_query())
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -318,11 +328,12 @@ class IndicatorController extends Controller
 
 
 		$rows3 = DB::table('d_regimen_totals')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_regimen_totals.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_regimen_totals.facility')
 			->selectRaw("(SUM(d_regimen_totals.art) + SUM(pmtct)) AS total ")
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -335,6 +346,7 @@ class IndicatorController extends Controller
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -342,10 +354,11 @@ class IndicatorController extends Controller
 
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`on_art_total_(sum_hv03-034_to_hv03-043)_hv03-038`) AS `total`")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->first();
 
 		$data['div'] = str_random(15);
@@ -409,22 +422,24 @@ class IndicatorController extends Controller
 		$divisions_query = Lookup::divisions_query();
 
 		$rows = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_hiv_and_tb_treatment.facility')
 			->selectRaw($this->new_art_query())
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
 			->get();
 
 		$rows2 = DB::table('d_care_and_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_care_and_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_care_and_treatment.facility')
 			->selectRaw($this->former_new_art_query())
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -437,6 +452,7 @@ class IndicatorController extends Controller
 			->addSelect('year', 'month')
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->groupBy('year', 'month')
 			->orderBy('year', 'asc')
 			->orderBy('month', 'asc')
@@ -445,10 +461,11 @@ class IndicatorController extends Controller
 
 		$date_query = Lookup::date_query(true);
 		$target = DB::table('t_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_hiv_and_tb_treatment.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_hiv_and_tb_treatment.facility')
 			->selectRaw("SUM(`start_art_total_(sum_hv03-018_to_hv03-029)_hv03-026`) AS `total`")
 			->whereRaw($date_query)
 			->whereRaw($divisions_query)
+			->whereRaw(Lookup::active_partner_query())
 			->first();
 
 		$t = round(($target->total / 12), 2);

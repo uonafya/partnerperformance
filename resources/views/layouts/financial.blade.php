@@ -262,11 +262,17 @@
 
 		<div class="col-md-5">
 			<center>
-				@if(!ends_with(url()->current(), ['violence', 'gbv']))
-				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2018, '{{ $date_url }}')" class="alert-link"> FY 2018 </a>|
+				{{--@if(!ends_with(url()->current(), ['violence', 'gbv']))
+				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2018, '{{ $date_url }}')" class="alert-link"> FY 18 </a>|
 				@endif
-				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2019, '{{ $date_url }}')" class="alert-link"> FY 2019 </a>|
-				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2020, '{{ $date_url }}')" class="alert-link"> FY 2020 </a>|
+				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2019, '{{ $date_url }}')" class="alert-link"> FY 19 </a>|
+				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2020, '{{ $date_url }}')" class="alert-link"> FY 20 </a>|
+				<a href="javascript:void(0)" onclick="date_filter('financial_year', 2021, '{{ $date_url }}')" class="alert-link"> FY 21 </a>|--}}
+				
+
+				@foreach($financial_years as $financial_year)
+					<a href="javascript:void(0)" onclick="date_filter('financial_year', {{ $financial_year->financial_year }}, '{{ $date_url }}')" class="alert-link"> FY {{ $financial_year->yr }} </a>|
+				@endforeach
 				<br />
 
 				<a href="javascript:void(0)" onclick="date_filter('quarter', 1, '{{ $date_url }}')" class="alert-link"> Quarter 1 </a>|

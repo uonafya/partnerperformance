@@ -34,8 +34,9 @@ class GBVController extends Controller
 			->get();
 
 		$target_obj = DB::table('t_facility_target')
-			->join('view_facilitys', 'view_facilitys.id', '=', 't_facility_target.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 't_facility_target.facility')
 			->selectRaw("SUM(gbv) AS gbv")
+			->whereRaw(Lookup::active_partner_query())
 			->when(true, $this->target_callback())
 			->get();
 

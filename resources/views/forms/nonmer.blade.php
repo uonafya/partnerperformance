@@ -27,20 +27,17 @@
 				<form action="{{ url('target/set_target') }}" method="post" class="form-horizontal"> 
 					@csrf
 
-					<div class="form-group">
-					  <label class="col-sm-4 control-label">Financial Year 
-					    <strong><div style='color: #ff0000; display: inline;'>*</div></strong>
-					  </label>
-					  <div class="col-sm-8">
-					    <select class="form-control requirable" required name="financial_year" id="financial_year">
-					    	<option> Select One </option>
-					    	<option value="2017"> 2017 </option>
-					    	<option value="2018"> 2018 </option>
-					    	<option value="2019"> 2019 </option>
-                            <option value="2020"> 2020 </option>
-					    </select>
-					  </div>
-					</div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Financial Year 
+                        <strong><div style='color: #ff0000; display: inline;'>*</div></strong>
+                      </label>
+                      <select class="col-sm-7 select_tag" name="financial_year">
+                        <option></option>
+                        @foreach($financial_years as $financial_year)
+                          <option value="{{ $financial_year->financial_year }}" @if($loop->last) selected @endif>{{ $financial_year->yr }}</option>
+                        @endforeach
+                      </select>
+                    </div>
 
 
 					<div class="form-group">

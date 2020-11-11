@@ -8,12 +8,12 @@ use App\Lookup;
 
 class PmtctController extends Controller
 {
+	private $my_table = 'm_pmtct';
 
 	public function haart()
 	{
-		$rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(haart_total) AS total")
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -36,9 +36,8 @@ class PmtctController extends Controller
 	{
     	$groupby = session('filter_groupby', 1);
 
-		$rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(tested_pmtct) AS tests, SUM(total_new_positive_pmtct) AS pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -74,9 +73,8 @@ class PmtctController extends Controller
 
 	public function starting_point()
 	{
-		$rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(on_haart_anc) AS on_haart_anc, SUM(start_art_anc) AS anc, SUM(start_art_lnd) AS lnd, SUM(start_art_pnc) AS pnc, SUM(start_art_pnc_6m) AS pnc_6m")
 			->when(true, $this->get_callback('anc'))
 			->get();
@@ -110,9 +108,8 @@ class PmtctController extends Controller
 
 	public function discovery_positivity()
 	{
-		$rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(known_pos_anc) AS known_pos_anc, SUM(positives_anc) AS anc, SUM(positives_lnd) AS lnd, SUM(positives_pnc) AS pnc, SUM(positives_pnc6m) AS pnc_6m")
 			->when(true, $this->get_callback('anc'))
 			->get();
@@ -146,9 +143,8 @@ class PmtctController extends Controller
 
 	public function male_testing()
 	{
-		$rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(known_status_before_male) AS known_status_before_male, SUM(initial_male_test_anc) AS anc, SUM(initial_male_test_lnd) AS lnd, SUM(initial_male_test_pnc) AS pnc")
 			->when(true, $this->get_callback('anc'))
 			->get();
@@ -178,9 +174,8 @@ class PmtctController extends Controller
 
 	public function eid()
 	{
-		$rows = DB::table('m_pmtct')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_pmtct.facility')
-			->join('periods', 'periods.id', '=', 'm_pmtct.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(initial_pcr_2m) AS initial_pcr_2m, SUM(initial_pcr_12m) AS initial_pcr_12m")
 			->when(true, $this->get_callback('initial_pcr_2m'))
 			->get();

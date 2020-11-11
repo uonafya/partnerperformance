@@ -17,9 +17,11 @@ class CreateSupportedFacilitiesTable extends Migration
             $table->increments('id');
             $table->integer('partner_id')->unsigned();
             $table->integer('facility_id')->unsigned();
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('start_of_support');
+            $table->date('end_of_support');
             $table->timestamps();
+
+            $table->index(['facility_id', 'partner_id']);
         });
     }
 

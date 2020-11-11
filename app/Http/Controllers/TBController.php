@@ -8,14 +8,14 @@ use App\Lookup;
 
 class TBController extends Controller
 {
+	private $my_table = 'd_hiv_and_tb_treatment';
 
 	public function known_status()
 	{
     	$groupby = session('filter_groupby', 1);
 
-		$rows = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(`tb_cases_known_positive(kps)_hv03-077`) as pos, SUM(`tb_known_status_hv03-079`) AS total ")
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -57,9 +57,8 @@ class TBController extends Controller
 	{
     	$groupby = session('filter_groupby', 1);
 
-		$rows = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw("SUM(`tb_new_hiv_positive_hv03-080`) as pos, SUM(`tb_cases_tested_hiv_hv03-078`) AS total ")
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -109,8 +108,7 @@ class TBController extends Controller
 		 ";
 
 		$data['rows'] = DB::table('m_art')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'm_art.facility')
-			->join('periods', 'periods.id', '=', 'm_art.period_id')
+			->when(true, $this->get_joins_callback('m_art'))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('total'))
 			->get();
@@ -129,9 +127,8 @@ class TBController extends Controller
 			SUM(`start_ipt_total_hv03-065`) AS total
 		 ";
 
-		$data['rows'] = DB::table('d_hiv_and_tb_treatment')
-			->join('view_facilitys', 'view_facilitys.id', '=', 'd_hiv_and_tb_treatment.facility')
-			->join('periods', 'periods.id', '=', 'd_hiv_and_tb_treatment.period_id')
+		$data['rows'] = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('total'))
 			->get();

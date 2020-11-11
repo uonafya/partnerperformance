@@ -4,12 +4,15 @@ namespace App\Exports;
 
 use DB;
 
+use App\Lookup;
+
 class DispensingExport extends BaseExport
 {
 	private $month;
 	private $financial_year;
 	private $age_category_id;
 	private $gender_id;
+	protected $active_date;
 
     function __construct($request)
     {
@@ -18,6 +21,12 @@ class DispensingExport extends BaseExport
 		$this->financial_year = $request->input('financial_year', date('Y'));
 		$this->age_category_id = $request->input('age_category_id');
 		$this->gender_id = $request->input('gender_id');
+		
+		$y = $this->financial_year;
+		$m = $this->month;
+		if($month > 9) $y--;
+		$this->active_date = "{$y}-{$m}-01";
+		
 
 		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_dispensing' . '.xlsx';
 
@@ -35,12 +44,13 @@ class DispensingExport extends BaseExport
     public function headings() : array
     {
 		$row = DB::table('d_dispensing')
-			->join('view_facilitys', 'view_facilitys.id', '=', "d_dispensing.facility")
+			->join('view_facilities', 'view_facilities.id', '=', "d_dispensing.facility")
             ->join('periods', 'periods.id', '=', "d_dispensing.period_id")
 			->join('age_categories', "d_dispensing.age_category_id", '=', 'age_categories.id')
 			->join('surge_genders', "d_dispensing.gender_id", '=', 'surge_genders.id')
 			->selectRaw($this->sql)
 			->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month])
+			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->first();
 
 		return collect($row)->keys()->all();
@@ -54,7 +64,7 @@ class DispensingExport extends BaseExport
     	$age_category_id = $this->age_category_id;
 
 		return DB::table('d_dispensing')
-			->join('view_facilitys', 'view_facilitys.id', '=', "d_dispensing.facility")
+			->join('view_facilities', 'view_facilities.id', '=', "d_dispensing.facility")
             ->join('periods', 'periods.id', '=', "d_dispensing.period_id")
 			->join('age_categories', "d_dispensing.age_category_id", '=', 'age_categories.id')
 			->join('surge_genders', "d_dispensing.gender_id", '=', 'surge_genders.id')
@@ -66,7 +76,8 @@ class DispensingExport extends BaseExport
 			->when($gender_id, function($query) use ($gender_id){
 				return $query->where('gender_id', $gender_id);
 			})
-			->orderBy('view_facilitys.name', 'asc')
+			->whereRaw(Lookup::get_active_partner_query($this->active_date))
+			->orderBy('view_facilities.name', 'asc')
 			->orderBy('age_category_id', 'asc')
 			->orderBy('gender_id', 'asc');
     }

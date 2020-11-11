@@ -7,6 +7,11 @@ use App\BaseModel;
 class Week extends BaseModel
 {
 
+    public function getYrAttribute()
+    {
+        return substr($this->financial_year, 2, 2);
+    }
+
     public function my_date_format($value, $format='d-M-Y')
     {
         if($this->$value) return date($format, strtotime($this->$value));
