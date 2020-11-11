@@ -15,6 +15,7 @@ class IndicatorController extends Controller
 	public function testing()
 	{
 		$rows = DB::table('p_early_indicators_view')
+			->join('periods', 'periods.id', '=', "p_early_indicators_view.period_id")
 			->selectRaw("SUM(tested) as tests, SUM(positive) as pos")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -101,6 +102,7 @@ class IndicatorController extends Controller
 	public function positivity()
 	{
 		$rows = DB::table('p_early_indicators_view')
+			->join('periods', 'periods.id', '=', "p_early_indicators_view.period_id")
 			->selectRaw("SUM(tested) as tests, SUM(positive) as pos, SUM(pmtct_new_pos) as pmtct_new_pos, SUM(pmtct) as pmtct ")
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -282,6 +284,7 @@ class IndicatorController extends Controller
 			->get();
 
 		$early_rows = DB::table('p_early_indicators_view')
+			->join('periods', 'periods.id', '=', "p_early_indicators_view.period_id")
 			->selectRaw("SUM(new_art) as total ")
 			->when(true, $this->get_callback())
 			->get();
@@ -345,6 +348,7 @@ class IndicatorController extends Controller
 		$data = Lookup::table_data();
 
 		$data['rows'] = DB::table('p_early_indicators_view')
+			->join('periods', 'periods.id', '=', "p_early_indicators_view.period_id")
 			->selectRaw("SUM(tested) AS tests, SUM(positive) AS pos, SUM(new_art) AS new_art, SUM(net_new_tx) AS net_new_tx")
 			->when(true, $this->get_callback('tests'))
 			->get();
