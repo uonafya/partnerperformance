@@ -205,6 +205,7 @@ class IndicatorController extends Controller
 			->get();
 
 		$early_rows = DB::table('p_early_indicators_view')
+			->join('periods', 'periods.id', '=', "p_early_indicators_view.period_id")
 			->selectRaw("SUM(current_tx) as total ")
 			->when(true, $this->get_callback())
 			->get();
