@@ -160,6 +160,8 @@ Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('monthly_cases', 'ViolenceController@monthly_cases')->name('monthly_cases');
 	Route::get('pep', 'ViolenceController@pep')->name('pep');
 	Route::get('age_gender', 'ViolenceController@age_gender')->name('age_gender');
+
+	Route::get('new_reporting', 'ViolenceController@new_reporting')->name('new_reporting');
 });
 
 
@@ -182,6 +184,7 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 
 		Route::get('gbv', 'GeneralController@gbv');
 		Route::get('violence', 'GeneralController@violence');
+		Route::get('violence-test', 'GeneralController@violence_test');
 	// Route::get('gbv', 'GeneralController@gbv');
 	
 	Route::get('dispensing', 'GeneralController@dispensing');

@@ -17,6 +17,16 @@ class Period extends BaseModel
         return substr($this->financial_year, 2, 2);
     }
 
+    public function getActiveDateAttribute()
+    {
+        return $this->year . '-' . $this->month . '-01';
+    }
+
+    public function getNameAttribute()
+    {
+        return Lookup::resolve_month($this->month) . ', ' . $this->year;
+    }
+
 
     public function scopeAchievement($query)
     {

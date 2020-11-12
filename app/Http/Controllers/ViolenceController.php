@@ -16,6 +16,47 @@ class ViolenceController extends Controller
 	private $my_table = 'd_gender_based_violence';
 
 
+	public function new_reporting()
+	{
+		$periods = Period::whereRaw(Lookup::date_query())->get();
+
+		$partners = DB::table('partners')->where(['funding_agency_id' => 1, 'flag' => 1])->get();
+
+		$data['div'] = str_random(15);
+		$data['yAxis'] = 'Number of Facilities Reported';
+		$data['suffix'] = '';
+		$data['chart_title'] = "Reporting For {$period->year}, {$period->month_name} " ;
+
+
+		foreach ($periods as $key => $period) {
+			$data['categories'][$key] = $period->name;
+
+			if(!$key){
+				$partners_array = [];
+				foreach ($partners as $partner) {
+					$partners_array[] = $partner->name;
+				}
+				Lookup::bars($data, $partners_array, 'spline');
+			}
+
+			$rows = DB::table($this->my_table)
+			->join('view_facilities', 'view_facilities.id', '=', "{$this->my_table}.facility")
+            ->join('periods', 'periods.id', '=', "{$this->my_table}.period_id")
+			->selectRaw("partner as div_id, COUNT(DISTINCT facility) AS total ")
+			->whereNotNull('dateupdated')
+            ->whereRaw(Lookup::active_partner_query($period->active_date))
+			->where('period_id', $period->id)
+			->groupBy('partner')
+			->get();
+
+			foreach($partners as $partner_key => $partner) {
+				$data["outcomes"][$partner_key]["data"][$key] = (int) ($rows->where('div_id', $partner->id)->first()->total ?? 0);
+			}
+		}
+		return view('charts.line_graph', $data);
+	}
+
+
 	public function reporting()
 	{
 		$period = Period::lastMonth()->first();
