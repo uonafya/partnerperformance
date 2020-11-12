@@ -25,7 +25,7 @@ class ViolenceController extends Controller
 		$data['div'] = str_random(15);
 		$data['yAxis'] = 'Number of Facilities Reported';
 		$data['suffix'] = '';
-		$data['chart_title'] = "Reporting For {$period->year}, {$period->month_name} " ;
+		// $data['chart_title'] = "Reporting For {$period->year}, {$period->month_name} " ;
 
 
 		foreach ($periods as $key => $period) {
