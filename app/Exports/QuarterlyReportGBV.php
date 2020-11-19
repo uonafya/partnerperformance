@@ -77,8 +77,8 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         foreach ($rows as $row) {
         	foreach ($gbv as $column) {
         		$column_name = $column->column_name;
-                $results = (int) ($row->$column_name ?? 0);
-                if(!is_integer($results)) $results = 0;
+                $results = ($row->$column_name ?? 0);
+                // if(!is_integer($results)) $results = 0;
         		$data[] = [
         			date('Y-m-d'),
         			$this->reporting_period,
