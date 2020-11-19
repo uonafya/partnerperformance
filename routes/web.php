@@ -261,7 +261,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::prefix('gbv')->name('gbv')->group(function(){
 		Route::get('download', 'GeneralController@download_gbv');
-		Route::get('download-report', 'GeneralController@download_gbv_report');
+		// Route::get('download-report', 'GeneralController@download_gbv_report');
 	});
 
 
