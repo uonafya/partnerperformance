@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Illuminate\Contracts\Support\Responsable;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -65,7 +66,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
             ->whereRaw(Lookup::get_active_partner_query($this->period->active_date))
             ->whereIn('period_id', $this->periods_array)
         	->selectRaw($sql)
-        	->addSelect('partnername', 'countyname')
+        	->addSelect('partnername', 'mech_id', 'countyname')
         	->groupBy('partner', 'county')
         	->get();
 
@@ -77,7 +78,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
         		$data[] = [
         			date('Y-m-d'),
         			$this->reporting_period,
-        			'',
+        			$row->mech_id,
         			$row->partnername,
         			'Kenya',
         			$row->countyname . ' County',
