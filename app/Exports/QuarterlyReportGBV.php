@@ -36,7 +36,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
 
         $periods = Period::where(['financial_year' => $financial_year, 'quarter' => $quarter])->get();
         $this->period = $periods->first();
-        $this->reporting_period = 'FY ' . $this->period->yr . 'Q' . $quarter;
+        $this->reporting_period = 'FY ' . $this->period->yr . ' Q' . $quarter;
         $this->periods_array = $periods->pluck('id')->toArray();
     }
 
@@ -65,6 +65,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
         	->join('view_facilities', 'view_facilities.id', '=', "{$this->my_table}.facility")
             ->whereRaw(Lookup::get_active_partner_query($this->period->active_date))
             ->whereIn('period_id', $this->periods_array)
+            ->where(['funding_agency_id' => 1])
         	->selectRaw($sql)
         	->addSelect('partnername', 'mech_id', 'countyname')
         	->groupBy('partner', 'county')
