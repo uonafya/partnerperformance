@@ -89,14 +89,14 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         			$column->age_name,
         			\Str::ucfirst($column->gender),
         			$column->modality_name,
-        			$results,
+        			"$results",
                     // $column_name,
                     // json_encode($row),
         			'',
         		];
         	}
         }
-        dd($data);
+        // dd($data);
         return $data;
     }
 }
