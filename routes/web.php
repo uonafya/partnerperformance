@@ -197,6 +197,8 @@ Route::middleware(['signed'])->group(function(){
 	Route::get('reset/password/{user}', 'GeneralController@change_password')->name('reset.password');
 });
 
+Route::get('gbv/download-report', 'GeneralController@download_gbv_report');
+
 
 /*
 	Start of routes that require authentication

@@ -26,6 +26,7 @@ use App\Exports\TxCurrentExport;
 use App\Exports\WeeklyExport;
 use App\Exports\GBVExport;
 use App\Exports\TargetsExport;
+use App\Exports\QuarterlyReportGBV;
 
 class ImportsExportsController extends Controller
 {
@@ -98,6 +99,7 @@ class ImportsExportsController extends Controller
 			'weekly' => WeeklyExport::class,
 			'gbv' => GBVExport::class,
 			'targets' => TargetsExport::class,
+			'quarterly-gbv' => QuarterlyReportGBV::class,
 		];
 
 		$c = $classes[$path];
