@@ -287,7 +287,10 @@
 			    $('#errorAlertDateRange').hide();
 			    $(".js-example-basic-single").select2();
 			    $("#breadcrum").html("{!! $default_breadcrumb ?? '' !!}");
-		    @endif		    
+		    @endif	
+
+
+		    @empty($no_header)
 
 			$("select").change(function(){
 				em = $(this).val();
@@ -313,7 +316,9 @@
 	                    toastr.error("Kindly reload the page.", "Notice!");
 		            });*/
 				});
-			});		    
+			});	
+
+			@endempty	    
 
 		      //Getting the URL dynamically
 			/*var url = $(location).attr('href');
