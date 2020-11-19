@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Illuminate\Contracts\Support\Responsable;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 use App\Http\Controllers\Controller;
 
@@ -16,7 +17,7 @@ use App\Lookup;
 
 use DB;
 
-class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
+class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, ShouldAutoSize
 {
 	use Exportable;
 	// protected $writerType = Excel::CSV;
@@ -86,7 +87,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
         			'Kenya',
         			$row->countyname . ' County',
         			$column->age_name,
-        			$column->gender,
+        			\Str::ucfirst($column->gender),
         			$column->modality_name,
         			$results,
                     // $column_name,
