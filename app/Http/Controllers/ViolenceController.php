@@ -28,7 +28,7 @@ class ViolenceController extends Controller
 
 
 		$sql = "
-			SELECT v.partnername, v.partner, COUNT(s.facility) AS total_reported
+			SELECT v.partnername, v.partner, COUNT(s.facility) AS total_facilities_reported
 			FROM (
 				SELECT facility, {$completed_pep_sql}
 				FROM d_gender_based_violence
