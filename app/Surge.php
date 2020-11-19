@@ -280,7 +280,7 @@ class Surge
 
 
         $sql = "CREATE OR REPLACE VIEW `{$table_name}_view` AS (
-        			SELECT c.*, a.age, a.age_name, ac.age_category, a.age_category_id, a.no_gender, g.gender, m.modality, m.modality_name, m.tbl_name, m.hts, m.target 
+        			SELECT c.*, a.age, a.age_name, ac.age_category, a.age_category_id, a.max_age, a.no_gender, g.gender, m.modality, m.modality_name, m.tbl_name, m.hts, m.target 
 
         			FROM surge_columns c
         			LEFT JOIN surge_ages a on a.id=c.age_id

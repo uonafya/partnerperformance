@@ -57,7 +57,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
 		$sql = '';
 
 		foreach ($gbv as $key => $column) {
-			$sql .= 'SUM(`{$column->column_name}`) AS `{$column->column_name}`, ';
+			$sql .= "SUM(`{$column->column_name}`) AS `{$column->column_name}`, ";
 		}
         $sql = substr($sql, 0, -2);
 
