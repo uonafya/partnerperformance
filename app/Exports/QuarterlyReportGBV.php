@@ -76,6 +76,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
         foreach ($rows as $row) {
         	foreach ($gbv as $column) {
         		$column_name = $column->column_name;
+                $results = $row->$column_name ?? 0;
         		$data[] = [
         			date('Y-m-d'),
         			$this->reporting_period,
@@ -86,10 +87,10 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
         			$column->age_name,
         			$column->gender,
         			$column->modality_name,
-        			($row->$column_name ?? 0),
+        			$results,
                     // $column_name,
-                    json_encode($row),
-        			// '',
+                    // json_encode($row),
+        			'',
         		];
         	}
         }
