@@ -77,7 +77,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         foreach ($rows as $row) {
         	foreach ($gbv as $column) {
         		$column_name = $column->column_name;
-                $results = ($row->$column_name ?? 0);
+                $results = $row->$column_name ?? '0';
                 // if(!is_integer($results)) $results = 0;
         		$data[] = [
         			date('Y-m-d'),
@@ -90,8 +90,6 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         			\Str::ucfirst($column->gender),
         			$column->modality_name,
         			"$results",
-                    // $column_name,
-                    // json_encode($row),
         			'',
         		];
         	}

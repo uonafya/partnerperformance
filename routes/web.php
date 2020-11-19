@@ -162,6 +162,7 @@ Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('age_gender', 'ViolenceController@age_gender')->name('age_gender');
 
 	Route::get('new_reporting', 'ViolenceController@new_reporting')->name('new_reporting');
+	Route::get('modality_reported', 'ViolenceController@modality_reported')->name('modality_reported');
 });
 
 

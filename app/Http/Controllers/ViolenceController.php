@@ -16,6 +16,37 @@ class ViolenceController extends Controller
 	private $my_table = 'd_gender_based_violence';
 
 
+	public function modality_reported()
+	{
+		$period = Period::where(['financial_year' => 2021])->first();
+
+		$completed_pep = SurgeColumnView::where('modality', 'completed_pep')
+			->when(true, $this->surge_columns_callback(false))
+			->get();
+
+		$completed_pep_sql = $this->get_sum($completed_pep, 'completed_pep');
+
+
+		$sql = "
+			SELECT v.partnername, v.partner, COUNT(s.facility) AS total_reported
+			FROM (
+				SELECT facility, {$completed_pep_sql}
+				FROM d_gender_based_violence
+				WHERE period_id >= {$period->id}
+				GROUP BY facility
+				HAVING completed_pep > 0
+			) s
+			JOIN view_facilitys v ON v.id=s.facility
+			WHERE v.funding_agency_id=1
+			GROUP BY v.partner
+		";
+
+		$rows = DB::select($sql);
+
+		dd($rows);
+	}
+
+
 	public function new_reporting()
 	{
 		$periods = Period::whereRaw(Lookup::date_query())->get();
@@ -41,7 +72,7 @@ class ViolenceController extends Controller
 
 			$rows = DB::table($this->my_table)
 			->join('view_facilities', 'view_facilities.id', '=', "{$this->my_table}.facility")
-            ->join('periods', 'periods.id', '=', "{$this->my_table}.period_id")
+            // ->join('periods', 'periods.id', '=', "{$this->my_table}.period_id")
 			->selectRaw("partner as div_id, COUNT(DISTINCT facility) AS total ")
 			->whereNotNull('dateupdated')
             ->whereRaw(Lookup::active_partner_query($period->active_date))
