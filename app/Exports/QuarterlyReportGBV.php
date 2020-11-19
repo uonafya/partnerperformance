@@ -86,7 +86,8 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
         			$column->age_name,
         			$column->gender,
         			$column->modality_name,
-        			$row->$column_name,
+        			// $row->$column_name,
+                    $column_name,
                     json_encode($row),
         			// '',
         		];
