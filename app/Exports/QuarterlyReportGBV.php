@@ -30,19 +30,19 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
 
     public function __construct($request)
     {
-        $this->fileName = 'download.xlsx';
         $financial_year = $request->input('financial_year', date('Y'));
         $quarter = $request->input('quarter', 1);
 
         $periods = Period::where(['financial_year' => $financial_year, 'quarter' => $quarter])->get();
         $this->period = $periods->first();
         $this->reporting_period = 'FY ' . $this->period->yr . ' Q' . $quarter;
+        $this->fileName = $this->reporting_period . ' Quarterly Report.xlsx';
         $this->periods_array = $periods->pluck('id')->toArray();
     }
 
     public function headings() : array
     {
-    	return ['Date', 'Reporting Period (FY & Q)', 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'Violence Type & PEP Completion', 'Target'];
+    	return ['Date', 'Reporting Period (FY & Q)', 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'Violence Type & PEP Completion', 'Results', 'Target'];
     }
 
 
@@ -87,7 +87,8 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings
         			$column->gender,
         			$column->modality_name,
         			$row->$column_name,
-        			'',
+                    json_encode($row),
+        			// '',
         		];
         	}
         }
