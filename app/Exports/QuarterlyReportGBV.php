@@ -96,6 +96,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         		];
         	}
         }
+        dd($data);
         return $data;
     }
 }

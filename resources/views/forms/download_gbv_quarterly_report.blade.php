@@ -38,7 +38,7 @@
           </div>
 
           <div class="form-group">
-              <label class="col-sm-3 control-label">Months</label>
+              <label class="col-sm-3 control-label">Quarter</label>
               <select class="col-sm-7 select_tag" required name="quarter">
                 <option></option>
                 <option value="1">Q1</option>
