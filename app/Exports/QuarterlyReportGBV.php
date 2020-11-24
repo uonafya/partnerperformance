@@ -80,6 +80,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         $ages = $this->ages;
         $gender = $this->gender;
         $partners = $this->partners;
+        $periods_array = $this->periods_array;
 
 		$gbv = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical', 'pep_number', 'completed_pep'])
             ->when($modalities, function($query) use($modalities){
@@ -117,7 +118,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             ->where(['funding_agency_id' => 1])
         	->selectRaw($sql)
         	->addSelect('partnername', 'mech_id', 'countyname')
-            ->when($this->filtered_periods, function($query){
+            ->when($this->filtered_periods, function($query) {
                 return $query->addSelect('period_id')->groupBy('period_id');
             })
         	->groupBy('partner', 'county')
