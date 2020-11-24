@@ -115,12 +115,12 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             ->when($partners, function($query) use($partners){
                 return $query->whereIn('partner', $partners);
             })
-            ->when($this->filtered_periods, function($query){
-                return $query->addSelect('period_id')->groupBy('period_id');
-            })
             ->where(['funding_agency_id' => 1])
         	->selectRaw($sql)
         	->addSelect('partnername', 'mech_id', 'countyname')
+            ->when($this->filtered_periods, function($query){
+                return $query->addSelect('period_id')->groupBy('period_id');
+            })
         	->groupBy('partner', 'county')
         	->get();
 
