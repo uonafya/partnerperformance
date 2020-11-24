@@ -39,7 +39,7 @@
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Quarter</label>
-              <select class="col-sm-7 select_tag" required name="quarter">
+              <select class="col-sm-7 select_tag" name="quarter">
                 <option></option>
                 <option value="1">Q1</option>
                 <option value="2">Q2</option>
@@ -50,7 +50,7 @@
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Months</label>
-              <select class="col-sm-7 select_tag" required name="periods[]" multiple>
+              <select class="col-sm-7 select_tag" name="periods[]" multiple>
                 <option></option>
                 @foreach($periods as $p)
                   <option value="{{ $p->id }}">{{ $p->full_name }}</option>
