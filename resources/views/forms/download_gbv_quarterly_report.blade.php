@@ -48,6 +48,56 @@
               </select>
           </div>
 
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Months</label>
+              <select class="col-sm-7 select_tag" required name="periods[]" multiple>
+                <option></option>
+                @foreach($periods as $p)
+                  <option value="{{ $p->id }}">{{ $p->full_name }}</option>
+                @endforeach
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Partner</label>
+              <select class="col-sm-7 select_tag" name="partners[]" multiple>
+                <option></option>
+                @foreach($partners as $p)
+                  <option value="{{ $p->id }}">{{ $p->name }}</option>
+                @endforeach
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Modality</label>
+              <select class="col-sm-7 select_tag" name="modalities[]" multiple>
+                <option></option>
+                @foreach($modalities as $modality)
+                  <option value="{{ $modality->id }}">{{ $modality->modality_name }}</option>
+                @endforeach
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Age</label>
+              <select class="col-sm-7 select_tag" name="ages[]" multiple>
+                <option></option>
+                @foreach($ages as $age)
+                  <option value="{{ $age->id }}">{{ $age->age_name }}</option>
+                @endforeach
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label class="col-sm-3 control-label">Gender</label>
+              <select class="col-sm-7 select_tag" name="gender">
+                <option></option>
+                @foreach($genders as $gender)
+                  <option value="{{ $gender->id }}">{{ $gender->gender }}</option>
+                @endforeach
+              </select>
+          </div>
+
 
           <div class="col-sm-6 col-sm-offset-6">
               <button class="btn btn-success" type="submit" >Submit</button>

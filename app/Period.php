@@ -27,6 +27,11 @@ class Period extends BaseModel
         return Lookup::resolve_month($this->month) . ', ' . $this->year;
     }
 
+    public function getFullNameAttribute()
+    {
+        return  'FY ' . $this->yr . ', ' Lookup::resolve_month($this->month);
+    }
+
 
     public function scopeAchievement($query)
     {
