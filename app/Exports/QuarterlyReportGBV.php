@@ -97,7 +97,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
 			->get();
 
         if($this->filtered_periods){
-            $actual_periods =  Period::whereIn('id', $this->periods)->get();
+            $actual_periods =  Period::whereIn('id', $this->periods_array)->get();
         }
 
 		$sql = '';
