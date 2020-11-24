@@ -57,7 +57,6 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             $this->fileName = 'GBV Monthly Report.xlsx';
         }
         else{
-
             $periods = Period::where(['financial_year' => $financial_year, 'quarter' => $quarter])->get();
             $this->period = $periods->first();
             $this->reporting_period = 'FY ' . $this->period->yr . ' Q' . $quarter;
