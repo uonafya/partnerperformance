@@ -25,10 +25,12 @@ class GBVExport extends BaseExport
 		$period = \App\Period::findOrFail($this->period_id);
 		$this->fileName = "{$this->partner->download_name}_gbv_data_FY_{$period->financial_year}_month_{$period->month_name}.xlsx";
 
-		$y = $this->financial_year;
+		/*$y = $this->financial_year;
 		$m = $this->month;
 		if($month > 9) $y--;
-		$this->active_date = "{$period->year}-{$period->month}-01";
+		$this->active_date = "{$period->year}-{$period->month}-01";*/
+
+		$this->active_date = $period->active_date;
 
 		if(!$modalities) $modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
     	// $modalities = $this->modalities;
