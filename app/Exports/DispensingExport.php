@@ -24,7 +24,7 @@ class DispensingExport extends BaseExport
 		
 		$y = $this->financial_year;
 		$m = $this->month;
-		if($month > 9) $y--;
+		if($m > 9) $y--;
 		$this->active_date = "{$y}-{$m}-01";
 		
 

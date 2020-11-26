@@ -26,7 +26,7 @@ class TxCurrentExport extends BaseExport
 
 		$y = $this->financial_year;
 		$m = $this->month;
-		if($month > 9) $y--;
+		if($m > 9) $y--;
 		$this->active_date = "{$y}-{$m}-01";
 
 		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
