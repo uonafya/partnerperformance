@@ -61,7 +61,8 @@ class GBVImport implements OnEachRow, WithHeadingRow
 		$update_data = ['dateupdated' => date("Y-m-d")];
 
 		foreach ($row as $key => $value) {
-			if(isset($this->gbv_columns[$key])){
+			if(!\Str::contains($key, ['gbv', 'pep'])) continue;
+			else if(isset($this->gbv_columns[$key])){
 				$update_data[$this->gbv_columns[$key]] = (int) $value;
 			}else{
 				dd($key . " is not found");
