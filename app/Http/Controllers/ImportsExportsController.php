@@ -15,6 +15,7 @@ use App\Imports\TxCurrentImport;
 use App\Imports\WeeklyImport;
 use App\Imports\GBVImport;
 use App\Imports\TargetsImport;
+use App\Imports\AfyaImport;
 
 
 use App\Exports\DispensingExport;
@@ -54,6 +55,7 @@ class ImportsExportsController extends Controller
 			'weekly' => WeeklyImport::class,
 			'gbv' => GBVImport::class,
 			'targets' => TargetsImport::class,
+			'afya' => AfyaImport::class,
 		];
 
 		$c = $classes[$path];
