@@ -7,9 +7,9 @@ use DB;
 class GenExport
 {
 
-	public function csv_save($data, $filename)
+	public function csv_save($data, $file_name)
 	{
-		$fp = fopen($filename, 'w');
+		$fp = fopen($file_name, 'w');
 
 		$first = [];
 
@@ -24,7 +24,7 @@ class GenExport
 		fclose($fp);
 	}
 
-	public static function csv_download($data, $filename='download')
+	public static function csv_download($data, $file_name='download')
 	{
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/csv');
