@@ -44,7 +44,7 @@ class GBVImport implements OnEachRow, WithHeadingRow
 		if(!$fac) return;
 
 		$period = Period::where(['financial_year' => $row->financial_year, 'month' => $row->month])->first();
-		if(auth()->user()->id == 1) $period = Period::where(['year' => $row->calendar_year, 'month' => $row->month])->first();
+		// if(auth()->user()->id == 1) $period = Period::where(['year' => $row->calendar_year, 'month' => $row->month])->first();
 		if(!$period) return;
 
 		$update_data = ['dateupdated' => date("Y-m-d")];
