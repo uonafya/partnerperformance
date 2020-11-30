@@ -41,15 +41,15 @@ class GBVImport implements OnEachRow, WithHeadingRow
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
-		// if(!$fac) dd($row);
-		if(!$fac) return;
+		if(!$fac) dd($row);
+		// if(!$fac) return;
 
 		$month = (int) $row->month;
 
 		$period = Period::where(['financial_year' => $row->financial_year, 'month' => $month])->first();
 		// if(auth()->user()->id == 1) $period = Period::where(['year' => $row->calendar_year, 'month' => $row->month])->first();
-		// if(!$period) dd($row);
-		if(!$period) return;
+		if(!$period) dd($row);
+		// if(!$period) return;
 
 		$update_data = ['dateupdated' => date("Y-m-d")];
 
@@ -65,7 +65,7 @@ class GBVImport implements OnEachRow, WithHeadingRow
 			->where(['facility' => $fac->id, 'period_id' => $period->id, ])
 			->update($update_data);
 
-			// if(!$Updated_rows) dd($row);
+			if(!$Updated_rows) dd($row);
 
 		}
     }
