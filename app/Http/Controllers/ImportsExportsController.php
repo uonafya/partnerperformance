@@ -77,7 +77,8 @@ class ImportsExportsController extends Controller
 		}
 
 		if(session('problem_rows')) {
-			dd(session('problem_rows'));
+			// dd(session('problem_rows'));
+			// $data = 
 			$gen = new GenExport;
 			return $gen->csv_download(session()->pull('problem_rows'));
 		}
