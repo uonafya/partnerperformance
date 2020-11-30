@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use DB;
+use App\Lookup;
 
 class GBVExport extends BaseExport
 {
