@@ -26,6 +26,10 @@ class GenExport
 
 	public static function csv_download($data)
 	{
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/csv');
+		header("Content-Disposition: attachment; filename={$file_name}.csv");
+			
 		$fp = fopen('php://output', 'w');
 
 		$first = [];
