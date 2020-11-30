@@ -73,6 +73,8 @@ class GBVImport implements OnEachRow, WithHeadingRow
 			if(!$Updated_rows){
 				$row->error = "No row updated";
 				$row->update_data = $update_data;
+				$row->period = $period;
+				$row->fac = $fac;
 				dd($row);
 			}
 
