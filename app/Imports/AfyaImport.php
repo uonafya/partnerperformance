@@ -86,7 +86,8 @@ class AfyaImport implements ToCollection, WithHeadingRow
         $data = [];
 
         foreach ($rows as $key => $value) {
-            $data[] = $value->toArray();
+            
+            $data[] = get_object_vars($value);
         }
 
         session(['download_rows' => $data]);
