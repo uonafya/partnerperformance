@@ -57,7 +57,7 @@ class AfyaImport implements ToCollection, WithHeadingRow
         $facility_ids = DB::table('facilitys')->whereIn('facilitycode', $mflcodes)->get()->pluck('id')->toArray();
 
         $afya_facilities = DB::table('view_facilities')
-            ->where("(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))")
+            ->whereRaw("(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))")
             ->where('partner_id', 22)
             ->get()->pluck('id')->toArray();
 
