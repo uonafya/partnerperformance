@@ -29,6 +29,8 @@ use App\Exports\GBVExport;
 use App\Exports\TargetsExport;
 use App\Exports\QuarterlyReportGBV;
 
+use App\Exports\GenExport;
+
 class ImportsExportsController extends Controller
 {
 
@@ -71,6 +73,11 @@ class ImportsExportsController extends Controller
 		}
 		else{
 			Excel::import(new $c, $upload);			
+		}
+
+		if(session('download_rows')) {
+			$gen = new GenExport;
+			return $gen->csv_download(session()->pull('download_rows'));
 		}
 
 		session(['toast_message' => 'The updates have been made.']);

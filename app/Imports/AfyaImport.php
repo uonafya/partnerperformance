@@ -7,6 +7,8 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
+use App\Exports\GenExport;
+
 use App\Lookup;
 use App\SurgeColumnView;
 
@@ -73,15 +75,19 @@ class AfyaImport implements ToCollection, WithHeadingRow
         $rows = DB::table('d_gender_based_violence')
             ->join('facilitys', 'facilitys.id', '=', 'd_gender_based_violence.facility')
             ->join('periods', 'periods.id', '=', 'd_gender_based_violence.period_id')
-            ->selectRaw("facilitys.name, facility, {$gbv_sql}")
+            ->selectRaw("facilitys.name, facilitycode, {$gbv_sql}")
             ->where('financial_year', 2020)
             ->whereIn('facility', $afya_facilities)
             // ->whereNotIn('facility', $facility_ids)
             ->groupBy('facility')
             ->having('gbv', '>', 0)
-            ->get();
+            ->get()->toArray();
 
-        dd($rows);
+        session(['download_rows' => $rows]);
+
+
+
+        // dd($rows);
 
 
 
