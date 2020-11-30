@@ -25,11 +25,18 @@ class FacilitiesImport implements ToCollection, WithHeadingRow
         $partner = $this->partner;
 
         foreach ($collection as $key => $row) {
-            $mflcodes[] = $row['mfl_code'];
+            if(!in_array($row['mfl_code'], $mflcodes)) $mflcodes[] = $row['mfl_code'];
         }
 
+        // madow -> afya ziwani
+        // 
+
         if(env('APP_ENV') != 'testing'){
-            DB::table('facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
+            $facility_ids = DB::table('facilitys')->whereIn('facilitycode', $mflcodes)->get()->pluck('id');
+
+
+            DB::table('supported_facilities')->whereIn('facility_id', $facility_ids)->update(['partner_id' => $partner]);
+
             DB::table('apidb.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
             DB::table('national_db.facilitys')->whereIn('facilitycode', $mflcodes)->update(['partner' => $partner]);
         }
