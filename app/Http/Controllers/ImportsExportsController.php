@@ -45,6 +45,7 @@ class ImportsExportsController extends Controller
 	        session(['toast_error' => 1, 'toast_message' => 'You are not allowed to make an upload.']);
 			return back();			
 		}
+		session()->pull('problem_rows');
 
 		$classes = [
 			'dispensing' => DispensingImport::class,
@@ -76,6 +77,7 @@ class ImportsExportsController extends Controller
 		}
 
 		if(session('problem_rows')) {
+			dd(session('problem_rows'));
 			$gen = new GenExport;
 			return $gen->csv_download(session()->pull('problem_rows'));
 		}

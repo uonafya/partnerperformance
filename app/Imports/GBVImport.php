@@ -40,7 +40,7 @@ class GBVImport implements OnEachRow, WithHeadingRow
     	// dd($row);
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
-    	$problem_rows = session('problem_rows', []);
+    	$problem_rows = session()->pull('problem_rows', []);
 
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		if(!$fac){
