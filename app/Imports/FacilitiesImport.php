@@ -28,6 +28,12 @@ class FacilitiesImport implements ToCollection, WithHeadingRow
             if(!in_array($row['mfl_code'], $mflcodes)) $mflcodes[] = $row['mfl_code'];
         }
 
+        foreach ($mflcodes as $key => $value) {
+            $fac = DB::table('facility')->where('facilitycode', $value)->first();
+            if(!$fac) dd($value);
+        }
+        return;
+
         // madow -> afya ziwani
         // 
 
