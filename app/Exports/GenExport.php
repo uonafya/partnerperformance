@@ -24,12 +24,12 @@ class GenExport
 		fclose($fp);
 	}
 
-	public static function csv_download($data)
+	public static function csv_download($data, $filename='download')
 	{
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/csv');
 		header("Content-Disposition: attachment; filename={$file_name}.csv");
-			
+
 		$fp = fopen('php://output', 'w');
 
 		$first = [];
