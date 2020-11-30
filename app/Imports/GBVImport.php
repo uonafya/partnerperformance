@@ -63,6 +63,8 @@ class GBVImport implements OnEachRow, WithHeadingRow
 		foreach ($row as $key => $value) {
 			if(isset($this->gbv_columns[$key])){
 				$update_data[$this->gbv_columns[$key]] = (int) $value;
+			}else{
+				dd($key . " is not found");
 			}
 		}
 		// dd($update_data);
