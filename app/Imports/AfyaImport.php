@@ -81,9 +81,15 @@ class AfyaImport implements ToCollection, WithHeadingRow
             // ->whereNotIn('facility', $facility_ids)
             ->groupBy('facility')
             ->having('gbv', '>', 0)
-            ->get()->toArray();
+            ->get();
 
-        session(['download_rows' => $rows]);
+        $data = [];
+
+        foreach ($rows as $key => $value) {
+            $data[] = $value->toArray();
+        }
+
+        session(['download_rows' => $data]);
 
 
 
