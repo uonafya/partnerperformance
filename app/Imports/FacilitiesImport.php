@@ -29,7 +29,7 @@ class FacilitiesImport implements ToCollection, WithHeadingRow
         }
 
         foreach ($mflcodes as $key => $value) {
-            $fac = DB::table('facility')->where('facilitycode', $value)->first();
+            $fac = DB::table('facilitys')->where('facilitycode', $value)->first();
             if(!$fac) dd($value);
         }
         return;
