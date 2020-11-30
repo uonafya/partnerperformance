@@ -77,6 +77,7 @@ class AfyaImport implements ToCollection, WithHeadingRow
             ->whereIn('facility', $afya_facilities)
             ->whereNotIn('facility', $facility_ids)
             ->groupBy('facility')
+            ->having('gbv', '>', 0)
             ->get();
 
         dd($rows);
