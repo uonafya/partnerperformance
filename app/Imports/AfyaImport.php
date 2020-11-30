@@ -77,6 +77,7 @@ class AfyaImport implements ToCollection, WithHeadingRow
             ->join('periods', 'periods.id', '=', 'd_gender_based_violence.period_id')
             ->selectRaw("facilitys.name, facilitycode, {$gbv_sql}")
             ->where('financial_year', 2020)
+            ->where('dateupdated', '2020-11-30')
             ->whereIn('facility', $afya_facilities)
             // ->whereNotIn('facility', $facility_ids)
             ->groupBy('facility')
