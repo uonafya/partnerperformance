@@ -69,7 +69,6 @@ class AfyaImport implements ToCollection, WithHeadingRow
 
         $gbv_sql = $this->get_sum($gbv, 'gbv');
 
-        // WHERE period_id >= {$period->id}
 
         $rows = DB::table('d_gender_based_violence')
             ->join('facilitys', 'facilitys.id', '=', 'd_gender_based_violence.facility')
@@ -77,7 +76,7 @@ class AfyaImport implements ToCollection, WithHeadingRow
             ->selectRaw("facilitys.name, facility, {$gbv_sql}")
             ->where('financial_year', 2020)
             ->whereIn('facility', $afya_facilities)
-            ->whereNotIn('facility', $facility_ids)
+            // ->whereNotIn('facility', $facility_ids)
             ->groupBy('facility')
             ->having('gbv', '>', 0)
             ->get();
