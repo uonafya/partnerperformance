@@ -75,9 +75,9 @@ class ImportsExportsController extends Controller
 			Excel::import(new $c, $upload);			
 		}
 
-		if(session('download_rows')) {
+		if(session('problem_rows')) {
 			$gen = new GenExport;
-			return $gen->csv_download(session()->pull('download_rows'));
+			return $gen->csv_download(session()->pull('problem_rows'));
 		}
 
 		session(['toast_message' => 'The updates have been made.']);

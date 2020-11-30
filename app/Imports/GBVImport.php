@@ -40,6 +40,8 @@ class GBVImport implements OnEachRow, WithHeadingRow
     	// dd($row);
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
+    	$problem_rows = session('problem_rows', []);
+
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		if(!$fac){
 			$row->error = 'Facility Not found';
@@ -75,7 +77,9 @@ class GBVImport implements OnEachRow, WithHeadingRow
 				$row->update_data = $update_data;
 				$row->period = $period;
 				$row->fac = $fac;
-				dd($row);
+				$problem_rows[] = get_object_vars($row);
+		    	session(['problem_rows' => $problem_rows]);
+				// dd($row);
 			}
 
 		}
