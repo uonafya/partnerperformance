@@ -276,7 +276,7 @@ class GeneralController extends Controller
 	{
 		$data['financial_years'] = Period::selectRaw('distinct financial_year')->where('financial_year', '>', 2019)->get();
 		$data['periods'] = Period::where('financial_year', '>', 2019)->get();
-		$data['partners'] = \App\Partner::where(['funding_agency_id' => 1]);
+		$data['partners'] = \App\Partner::where(['funding_agency_id' => 1])->get();
 		$data['modalities'] = \App\SurgeModality::whereIn('modality', ['gbv_sexual', 'gbv_physical', 'pep_number', 'completed_pep'])->get();
 		$data['genders'] = \App\SurgeGender::whereIn('gender', ['male', 'female'])->get();
         $data['ages'] = \App\SurgeAge::gbv()->get();
