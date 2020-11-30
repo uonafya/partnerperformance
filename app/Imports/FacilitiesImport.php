@@ -32,7 +32,7 @@ class FacilitiesImport implements ToCollection, WithHeadingRow
             $fac = DB::table('facilitys')->where('facilitycode', $value)->first();
             if(!$fac) dd($value);
         }
-        return;
+        // return;
 
         // madow -> afya ziwani
         // 

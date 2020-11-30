@@ -66,7 +66,7 @@ class AfyaImport implements ToCollection, WithHeadingRow
 
 
         $gbv = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical'])
-            ->when(true, $this->surge_columns_callback(false))
+            // ->when(true, $this->surge_columns_callback(false))
             ->get();
 
         $gbv_sql = $this->get_sum($gbv, 'gbv');
