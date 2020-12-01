@@ -72,14 +72,15 @@ class GBVImport implements OnEachRow, WithHeadingRow
 		}*/
 		// dd($update_data);
 
-		$db_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'period_id' => $period->id])->first();
+		/*$db_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'period_id' => $period->id])->first();
 		foreach ($update_data as $key => $value) {
 			if($db_row->$key != $value){
 				$row->error = "{$key} is not {$value} but " . $db_row->$key;
 				$problem_rows[] = get_object_vars($row);
 		    	session(['problem_rows' => $problem_rows]);
+		    	return;
 			}
-		}
+		}*/
 
 
 
