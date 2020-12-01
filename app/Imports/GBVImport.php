@@ -94,7 +94,7 @@ class GBVImport implements OnEachRow, WithHeadingRow
 		}else{
 			$problem_rows[] = get_object_vars($row);
 	    	session(['problem_rows' => $problem_rows]);
-			
+	    	return;
 		}
 
 
