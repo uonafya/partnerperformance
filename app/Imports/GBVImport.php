@@ -40,7 +40,7 @@ class GBVImport implements OnEachRow, WithHeadingRow
     	// dd($row);
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
-    	// $problem_rows = session()->pull('problem_rows', []);
+    	$problem_rows = session()->pull('problem_rows', []);
 
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		/*if(!$fac){
@@ -71,6 +71,17 @@ class GBVImport implements OnEachRow, WithHeadingRow
 			if(!isset($row->$key)) dd("{$key}  ({$gbv_column}) is not found");
 		}*/
 		// dd($update_data);
+
+		$db_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'period_id' => $period->id])->first();
+		foreach ($update_data as $key => $value) {
+			if($db_row->$key != $value){
+				$row->error = "{$key} is not {$value} but " . $db_row->$key;
+				$problem_rows[] = get_object_vars($row);
+		    	session(['problem_rows' => $problem_rows]);
+			}
+		}
+
+
 
 		if(env('APP_ENV') != 'testing') {
 			$Updated_rows = DB::table($this->table_name)
