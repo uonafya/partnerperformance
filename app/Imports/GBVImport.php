@@ -30,6 +30,8 @@ class GBVImport implements OnEachRow, WithHeadingRow
 			$columns[$value->excel_name] = $value->column_name;
 		}
 
+		session(['updated_rows' => [], 'problem_rows' => []]);
+
         $this->gbv_columns = $columns;
     }
 
@@ -40,7 +42,8 @@ class GBVImport implements OnEachRow, WithHeadingRow
     	// dd($row);
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
-    	$problem_rows = session()->pull('problem_rows', []);
+    	$updated_rows = session('updated_rows');
+    	$problem_rows = session('problem_rows');
 
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		/*if(!$fac){
@@ -84,14 +87,25 @@ class GBVImport implements OnEachRow, WithHeadingRow
 			}
 		}*/
 
+		$db_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'period_id' => $period->id])->first();
+		if(!in_array($db_row->id, $updated_rows)){
+			$updated_rows[] = $db_row->id;
+			session(['updated_rows' => $updated_rows]);
+		}else{
+			$problem_rows[] = get_object_vars($row);
+	    	session(['problem_rows' => $problem_rows]);
+			
+		}
+
+
 
 
 		if(env('APP_ENV') != 'testing') {
-			$Updated_rows = DB::table($this->table_name)
+			$updated = DB::table($this->table_name)
 			->where(['facility' => $fac->id, 'period_id' => $period->id, ])
 			->update($update_data);
 
-			/*if(!$Updated_rows){
+			/*if(!$updated){
 				$row->error = "No row updated";
 				// $row->update_data = $update_data;
 				$row->period = $period->id;
