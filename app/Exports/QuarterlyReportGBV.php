@@ -35,7 +35,6 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
 
 	private $my_table = 'd_gender_based_violence';
 
-
     public function __construct($request)
     {
         $financial_year = $request->input('financial_year', date('Y'));

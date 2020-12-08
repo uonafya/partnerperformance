@@ -17,7 +17,6 @@ class Other
 {
 
 
-
 	public static function reset_email($id)
 	{
 		$user = User::find($id);
