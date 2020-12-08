@@ -34,7 +34,7 @@ class HfrSubmissionImport implements OnEachRow, WithHeadingRow
     public function onRow(Row $row)
     {
     	$row = json_decode(json_encode($row->toArray(null, true)));
-    	dd($row);
+    	// dd($row);
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
     	$updated_rows = session('updated_rows');
@@ -55,6 +55,8 @@ class HfrSubmissionImport implements OnEachRow, WithHeadingRow
 				$update_data[$this->data_columns[$key]] = (int) $value;
 			}
 		}
+
+		dd($update_data);
 
 		if(env('APP_ENV') != 'testing') {
 			$updated = DB::table($this->table_name)

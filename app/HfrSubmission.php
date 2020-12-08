@@ -12,7 +12,7 @@ class HfrSubmission
         'hts_tst', 'hts_tst_pos', 'tx_new', 'vmmc_circ', 'prep_new', 'tx_curr', 'tx_mmd'
     ];
 
-    public static $age_groups = ['<15' => 'below_15', '15+' => 'above_15'];
+    public static $age_groups = ['Less 15' => 'below_15', 'Above 15' => 'above_15'];
     public static $genders = ['Female', 'Male'];
     public static $mmd = ['<3 months' => 'less_3m', '3-5 months' => '3_5m', '6+ months' => 'above_6m'];
 
@@ -75,7 +75,7 @@ class HfrSubmission
 
 	        		$column_name = $hfr_column . '_' . $age_group . '_' . strtolower($gender);
 	        		$excel_name = strtoupper($hfr_column) . ' ' . $age_group_key . ' ' . $gender;
-	        		$alias_name = $excel_name;
+	        		$alias_name = strtolower(preg_replace("/[\s]/", "_", $excel_name) );
 
 	        		$columns[] = compact('excel_name', 'column_name', 'alias_name');
 	        	}
@@ -90,7 +90,8 @@ class HfrSubmission
 
 	        		$column_name = $hfr_column . '_' . $age_group . '_' . strtolower($gender) . '_' . $mmd;
 	        		$excel_name = strtoupper($hfr_column) . ' ' . $age_group_key . ' ' . $gender . ' ' . $mmd_key;
-	        		$alias_name = $excel_name;
+                    $alias_name = strtolower(preg_replace("/[\s-]/", "_", $excel_name) );
+                    $alias_name = strtolower(preg_replace("/[<+]/", "", $alias_name) );
 
 	        		$columns[] = compact('excel_name', 'column_name', 'alias_name');
 	        	}
