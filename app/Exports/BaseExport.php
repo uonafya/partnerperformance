@@ -19,6 +19,7 @@ class BaseExport implements FromQuery, Responsable, WithHeadings
 	protected $writerType = Excel::XLSX;
 	protected $sql;
 	protected $partner;
+    protected $table_name;
 
     public function __construct()
     {

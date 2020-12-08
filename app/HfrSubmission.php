@@ -12,9 +12,9 @@ class HfrSubmission
         'hts_tst', 'hts_tst_pos', 'tx_new', 'vmmc_circ', 'prep_new', 'tx_curr', 'tx_mmd'
     ];
 
-    public static $age_groups = ['Below 15', 'Above 15'];
+    public static $age_groups = ['<15' => 'below_15', '15+' => 'above_15'];
     public static $genders = ['Female', 'Male'];
-    public static $mmd = ['less_3m', '3_5m', 'above_6m'];
+    public static $mmd = ['<3 months' => 'less_3m', '3-5 months' => '3_5m', '6+ months' => 'above_6m'];
 
 
     public static function create_table()
@@ -33,7 +33,7 @@ class HfrSubmission
 	        	foreach (self::$genders as $gender) {
 	        		if($hfr_column == 'vmmc_circ' && $gender == 'Female') continue;
 
-	        		$col = $hfr_column . '_' . strtolower(str_replace(' ', '_', $age_group)) . '_' . strtolower($gender);
+	        		$col = $hfr_column . '_' . $age_group . '_' . strtolower($gender);
 	        		$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0, ";
 	        	}
         	}
@@ -45,7 +45,7 @@ class HfrSubmission
         	foreach (self::$age_groups as $age_group) {
 	        	foreach (self::$genders as $gender) {
 
-	        		$col = $hfr_column . '_' . strtolower(str_replace(' ', '_', $age_group)) . '_' . strtolower($gender) . '_' . $mmd;
+	        		$col = $hfr_column . '_' . $age_group . '_' . strtolower($gender) . '_' . $mmd;
 	        		$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0, ";
 	        	}
         	}
@@ -63,4 +63,42 @@ class HfrSubmission
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
     }
+
+    public static function columns()
+    {
+    	$columns = [];
+        foreach (self::$hfr_columns as $hfr_column) {
+        	if($hfr_column == 'tx_mmd') continue;
+        	foreach (self::$age_groups as $age_group_key => $age_group) {
+	        	foreach (self::$genders as $gender) {
+	        		if($hfr_column == 'vmmc_circ' && $gender == 'Female') continue;
+
+	        		$column_name = $hfr_column . '_' . $age_group . '_' . strtolower($gender);
+	        		$excel_name = strtoupper($hfr_column) . ' ' . $age_group_key . ' ' . $gender;
+	        		$alias_name = $excel_name;
+
+	        		$columns[] = compact('excel_name', 'column_name', 'alias_name');
+	        	}
+        	}
+        }
+
+        $hfr_column = 'tx_mmd';
+
+        foreach (self::$mmd as $mmd_key => $mmd) {
+        	foreach (self::$age_groups as $age_group_key => $age_group) {
+	        	foreach (self::$genders as $gender) {
+
+	        		$column_name = $hfr_column . '_' . $age_group . '_' . strtolower($gender) . '_' . $mmd;
+	        		$excel_name = strtoupper($hfr_column) . ' ' . $age_group_key . ' ' . $gender . ' ' . $mmd_key;
+	        		$alias_name = $excel_name;
+
+	        		$columns[] = compact('excel_name', 'column_name', 'alias_name');
+	        	}
+        	}
+        }
+        return $columns;
+    }
+
+
+
 }
