@@ -34,7 +34,7 @@ class Insert
 
         foreach ($tables as $key => $row) {
             $table_name = $row->Tables_in_hcm;
-            if($table_name != 'd_hfr_submission') continue;
+            // if($table_name != 'd_hfr_submission') continue;
             if(!\Str::startsWith($table_name, ['d_', 'm_']) || in_array($table_name, ['d_tx_curr', 'd_dispensing'])) continue;
 
             $columns = collect(DB::select("show columns from `" . $table_name . '`'));
@@ -65,7 +65,7 @@ class Insert
 
 			echo "Completed entry for {$table_name} for {$year} at " . date('Y-m-d H:i:s') . "\n";
         }
-        return;
+        // return;
         self::insert_dispensing_rows($year);
         self::insert_tx_curr_rows($year);
         self::partner_indicators_insert($year);
