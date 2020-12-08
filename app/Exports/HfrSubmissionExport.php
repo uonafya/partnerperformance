@@ -50,12 +50,12 @@ class HfrSubmissionExport extends BaseExport
     public function query()
     {		
 		return DB::table($this->table_name)
-        	->join('view_facilities', 'view_facilities.id', '=', "{$this->my_table}.facility")
+        	->join('view_facilities', 'view_facilities.id', '=', "{$this->table_name}.facility")
 			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
             ->whereRaw(Lookup::get_active_partner_query($this->period->active_date))
 			->selectRaw($this->sql)
 			->where(['partner' => $this->partner->id, 'period_id' => $this->period->id])
 			->orderBy('name', 'asc')
-			->orderBy("{$this->my_table}.id", 'asc');
+			->orderBy("{$this->table_name}.id", 'asc');
     }
 }

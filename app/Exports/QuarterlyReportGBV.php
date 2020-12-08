@@ -33,10 +33,10 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
     protected $gender;
     protected $partners;
 
-	private $my_table = 'd_gender_based_violence';
 
     public function __construct($request)
     {
+        $this->table_name = 'd_gender_based_violence';
         $financial_year = $request->input('financial_year', date('Y'));
         $quarter = $request->input('quarter', 1);
         $filtered_periods = $request->input('periods');
@@ -107,8 +107,8 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
 		}
         $sql = substr($sql, 0, -2);
 
-        $rows = DB::table($this->my_table)
-        	->join('view_facilities', 'view_facilities.id', '=', "{$this->my_table}.facility")
+        $rows = DB::table($this->table_name)
+        	->join('view_facilities', 'view_facilities.id', '=', "{$this->table_name}.facility")
             ->whereRaw(Lookup::get_active_partner_query($this->period->active_date))
             ->whereIn('period_id', $this->periods_array)
             ->when($partners, function($query) use($partners){
