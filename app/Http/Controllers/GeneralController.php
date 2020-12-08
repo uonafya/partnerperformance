@@ -272,6 +272,15 @@ class GeneralController extends Controller
 		return view('forms.download_gbv', $data);
 	}
 
+	public function download_hfr()
+	{
+		$data['periods'] = \App\Period::where('year', '>', 2019)->get();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_hfr_submission', $data);
+	}
+
 	public function download_gbv_report()
 	{
 		$data['financial_years'] = Period::selectRaw('distinct financial_year')->where('financial_year', '>', 2019)->get();

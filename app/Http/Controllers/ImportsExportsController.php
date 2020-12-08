@@ -16,6 +16,7 @@ use App\Imports\WeeklyImport;
 use App\Imports\GBVImport;
 use App\Imports\TargetsImport;
 use App\Imports\AfyaImport;
+use App\Imports\HfrSubmissionImport;
 
 
 use App\Exports\DispensingExport;
@@ -28,6 +29,7 @@ use App\Exports\WeeklyExport;
 use App\Exports\GBVExport;
 use App\Exports\TargetsExport;
 use App\Exports\QuarterlyReportGBV;
+use App\Exports\HfrSubmissionExport;
 
 use App\Exports\GenExport;
 
@@ -59,6 +61,7 @@ class ImportsExportsController extends Controller
 			'gbv' => GBVImport::class,
 			'targets' => TargetsImport::class,
 			'afya' => AfyaImport::class,
+			'hfr' => HfrSubmissionImport::class,
 		];
 
 		$c = $classes[$path];
@@ -112,6 +115,7 @@ class ImportsExportsController extends Controller
 			'gbv' => GBVExport::class,
 			'targets' => TargetsExport::class,
 			'quarterly-gbv' => QuarterlyReportGBV::class,
+			'hfr' => HfrSubmissionExport::class,
 		];
 
 		$c = $classes[$path];

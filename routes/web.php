@@ -265,6 +265,10 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 		// Route::get('download-report', 'GeneralController@download_gbv_report');
 	});
 
+	Route::prefix('hfr')->name('hfr')->group(function(){
+		Route::get('download', 'GeneralController@download_hfr');
+	});
+
 
 	// Upload any Data
 	Route::get('upload/facilities', 'GeneralController@upload_facilities');
