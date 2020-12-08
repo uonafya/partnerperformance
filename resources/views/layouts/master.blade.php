@@ -115,6 +115,7 @@
 									<li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
 									<li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
+									<li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
 								</ul>
 							</li>
 
@@ -130,6 +131,7 @@
 									<li><a href="{{ url('/upload/tx_curr') }}">Upload TX Current</a></li>
 									<li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>
 									<li><a href="{{ url('/upload/gbv') }}">Upload GBV</a></li>
+									<li><a href="{{ url('/upload/hfr') }}">Upload HFR</a></li>
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
 									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
 									<li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>

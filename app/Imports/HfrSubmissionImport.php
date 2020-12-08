@@ -37,9 +37,6 @@ class HfrSubmissionImport implements OnEachRow, WithHeadingRow
     	// dd($row);
     	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
-    	$updated_rows = session('updated_rows');
-    	$problem_rows = session('problem_rows');
-
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		if(!$fac) return;
 
@@ -56,7 +53,7 @@ class HfrSubmissionImport implements OnEachRow, WithHeadingRow
 			}
 		}
 
-		dd($update_data);
+		// dd($update_data);
 
 		if(env('APP_ENV') != 'testing') {
 			$updated = DB::table($this->table_name)
