@@ -56,8 +56,8 @@ class HfrSubmission
 	        		dateupdated date DEFAULT NULL,
 					PRIMARY KEY (`id`),
                     KEY `facility` (`facility`),
-                    KEY `period_id` (`period_id`),
-					KEY `identifier`(`facility`, `period_id`)
+                    KEY `week_id` (`week_id`),
+					KEY `identifier`(`facility`, `week_id`)
                 );
         ";
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
