@@ -305,6 +305,6 @@ class Insert
         self::insert_weekly_column_rows($financial_year, 'd_weeklies');
         self::insert_weekly_column_rows($financial_year, 'd_prep_new');
         self::insert_weekly_column_rows($financial_year, 'd_vmmc_circ');*/
-        self::insert_weekly_column_rows($financial_year, 'd_hfr_submission');
+        self::insert_weekly_rows($financial_year, 'd_hfr_submission');
     }
 }
