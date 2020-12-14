@@ -30,9 +30,9 @@ class HfrSubmissionExport extends BaseExport
 
 		$excel_headings = ['County', 'Subcounty', 'MFL Code', 'Facility', 'Financial Year', 'Calendar Year', 'Month', 'Month Name'];*/
 
-		$sql = "start_date, name, facility_uid, mech_id, country, countyname, financial_year, week_number ";
+		$sql = "start_date, name, facility_uid, mech_id, country, countyname, financial_year, week_number, facilitycode ";
 
-		$excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'OU', 'PSNU', 'Financial Year', 'Week Number'];
+		$excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'OU', 'PSNU', 'Financial Year', 'Week Number', 'MFL Code'];
 
 		$columns = HfrSubmission::columns();
 
