@@ -15,7 +15,8 @@ use App\Imports\TxCurrentImport;
 use App\Imports\WeeklyImport;
 use App\Imports\GBVImport;
 use App\Imports\TargetsImport;
-use App\Imports\AfyaImport;
+// use App\Imports\AfyaImport;
+use App\Imports\FacilityEditImport;
 use App\Imports\HfrSubmissionImport;
 
 
@@ -60,7 +61,8 @@ class ImportsExportsController extends Controller
 			'weekly' => WeeklyImport::class,
 			'gbv' => GBVImport::class,
 			'targets' => TargetsImport::class,
-			'afya' => AfyaImport::class,
+			// 'afya' => AfyaImport::class,
+			'facility-edit' => FacilityEditImport::class,
 			'hfr' => HfrSubmissionImport::class,
 		];
 
