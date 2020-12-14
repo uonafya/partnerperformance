@@ -300,10 +300,11 @@ class Insert
             $financial_year = date('Y');
             if(date('m') > 9) $financial_year++;
         }
-        self::insert_weeks($financial_year);
+        /*self::insert_weeks($financial_year);
         self::insert_weekly_rows($financial_year, 'd_surge');
         self::insert_weekly_column_rows($financial_year, 'd_weeklies');
         self::insert_weekly_column_rows($financial_year, 'd_prep_new');
-        self::insert_weekly_column_rows($financial_year, 'd_vmmc_circ');
+        self::insert_weekly_column_rows($financial_year, 'd_vmmc_circ');*/
+        self::insert_weekly_column_rows($financial_year, 'd_hfr_submission');
     }
 }

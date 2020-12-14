@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Facility;
-use App\Period;
+use App\Week;
 use App\HfrSubmission;
 use App\Lookup;
 use DB;
@@ -40,10 +40,8 @@ class HfrSubmissionImport implements OnEachRow, WithHeadingRow
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		if(!$fac) return;
 
-		$month = (int) $row->month;
-
-		$period = Period::where(['financial_year' => $row->financial_year, 'month' => $month])->first();
-		if(!$period) return;
+		$week = Week::where(['financial_year' => $row->financial_year, 'week_number' => $row->week_number])->first();
+		if(!$week) return;
 
 		$update_data = ['dateupdated' => date("Y-m-d")];
 
@@ -57,7 +55,7 @@ class HfrSubmissionImport implements OnEachRow, WithHeadingRow
 
 		if(env('APP_ENV') != 'testing') {
 			$updated = DB::table($this->table_name)
-			->where(['facility' => $fac->id, 'period_id' => $period->id, ])
+			->where(['facility' => $fac->id, 'week_id' => $week->id, ])
 			->update($update_data);
 		}
     }

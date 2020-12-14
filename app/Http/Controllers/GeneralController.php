@@ -274,7 +274,7 @@ class GeneralController extends Controller
 
 	public function download_hfr()
 	{
-		$data['periods'] = \App\Period::where('year', '>', 2019)->get();
+		$data['periods'] = \App\Week::where('financial_year', '>', 2020)->get();
 		$user = auth()->user();
 		$data['partner'] = session('session_partner');
 		$data['no_header'] = true;

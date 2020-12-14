@@ -28,11 +28,11 @@
 
 
           <div class="form-group">
-              <label class="col-sm-3 control-label">Months</label>
-              <select class="col-sm-7 select_tag" name="period_id" required>
+              <label class="col-sm-3 control-label">Week</label>
+              <select class="col-sm-7 select_tag" name="week_id" required>
                 <option></option>
-                @foreach($periods as $p)
-                  <option value="{{ $p->id }}">{{ $p->full_name }}</option>
+                @foreach($weeks as $w)
+                  <option value="{{ $w->id }}">{{ $w->name }}</option>
                 @endforeach
               </select>
           </div>

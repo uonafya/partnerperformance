@@ -56,7 +56,7 @@ CREATE OR REPLACE VIEW  `view_facilities` AS
  	`supported_facilities`.`partner_id` AS `partner`, `partners`.`name` AS `partnername`,`facilitys`.`partner2`,`partners`.`mech_id`,
  	`supported_facilities`.`start_of_support`, `supported_facilities`.`end_of_support`,
 
- 	`partners`.`funding_agency_id`, `funding_agencies`.`name` AS `funding_agency`,
+ 	`partners`.`funding_agency_id`, `funding_agencies`.`name` AS `funding_agency`,`partners`.`country`,
 
  	`districts`.`county`,`countys`.`name` AS `countyname`,`countys`.`CountyDHISCode`,`countys`.`CountyMFLCode`,
  	`districts`.`province` AS `province`
