@@ -43,9 +43,8 @@ CREATE OR REPLACE VIEW  `view_facilitys` AS
 
 CREATE OR REPLACE VIEW  `view_facilities` AS
  (select `facilitys`.`id`,`facilitys`.`originalID`,`facilitys`.`longitude`,`facilitys`.`latitude`,
- 	`facilitys`.`DHIScode`,`facilitys`.`facilitycode`,`facilitys`.`name`,`facilitys`.`new_name`,`facilitys`.`burden`,
- 	`facilitys`.`totalartmar`,`facilitys`.`totalartsep17`,`facilitys`.`asofdate`,`facilitys`.`totalartsep15` AS `totalartsep15`,
- 	`facilitys`.`smsprinter`,`facilitys`.`Flag`,
+ 	`facilitys`.`DHIScode`,`facilitys`.`facilitycode`,`facilitys`.`facility_uid`,
+ 	`facilitys`.`name`,`facilitys`.`new_name`,`facilitys`.`Flag`,
 
  	`facilitys`.`is_viremia`, `facilitys`.`is_dsd`, `facilitys`.`is_otz`, `facilitys`.`is_men_clinic`, `facilitys`.`is_pns`, `facilitys`.`is_surge`,
 
