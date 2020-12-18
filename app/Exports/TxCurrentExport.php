@@ -15,21 +15,27 @@ class TxCurrentExport extends BaseExport
 	protected $active_date;
 
 
-
     function __construct($request)
     {
     	parent::__construct();
-		$this->month = $request->input('month', date('m')-1);
-		$this->financial_year = $request->input('financial_year', date('Y'));
-		$this->age_category_id = $request->input('age_category_id');
-		$this->gender_id = $request->input('gender_id');
+    	if(is_array($request)){
+			$this->month = $request['month'] ?? (date('m')-1);
+			$this->financial_year = $request['financial_year'] ?? date('Y');
+			$this->age_category_id = $request['age_category_id'] ?? null;
+			$this->gender_id = $request['gender_id'] ?? null;
+    	}else{
+			$this->month = $request->input('month', date('m')-1);
+			$this->financial_year = $request->input('financial_year', date('Y'));
+			$this->age_category_id = $request->input('age_category_id');
+			$this->gender_id = $request->input('gender_id');
+		}
 
 		$y = $this->financial_year;
 		$m = $this->month;
 		if($m > 9) $y--;
 		$this->active_date = "{$y}-{$m}-01";
 
-		$this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
+		$this->fileName = ($this->partner->download_name ?? 'National') . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
 		$this->sql = "countyname as County, Subcounty,		
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
 		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, facilitycode AS `MFL Code`, 
@@ -62,7 +68,8 @@ class TxCurrentExport extends BaseExport
             ->join('periods', 'periods.id', '=', "d_tx_curr.period_id")
 			->join('surge_columns_view', "d_tx_curr.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
-			->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month, 'modality' => 'tx_curr'])
+			// ->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month, 'modality' => 'tx_curr'])
+			->where(['financial_year' => $this->financial_year, 'modality' => 'tx_curr'])
 			->when($age_category_id, function($query) use ($age_category_id){
 				return $query->where('age_category_id', $age_category_id);
 			})
