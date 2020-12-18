@@ -24,7 +24,7 @@ class BaseExport implements FromQuery, Responsable, WithHeadings
     public function __construct()
     {
         $this->fileName = 'download.xlsx';
-        $this->partner = auth()->user()->partner;
+        $this->partner = auth()->user()->partner ?? null;
     }
 
     public function headings() : array
