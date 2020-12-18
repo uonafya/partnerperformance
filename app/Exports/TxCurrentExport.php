@@ -6,7 +6,14 @@ use DB;
 
 use App\Lookup;
 
-class TxCurrentExport extends BaseExport
+use Maatwebsite\Excel\Excel;
+use Illuminate\Contracts\Support\Responsable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
+// class TxCurrentExport extends BaseExport
+class TxCurrentExport implements FromQuery, WithHeadings
 {
 	protected $month;
 	protected $financial_year;
@@ -17,7 +24,7 @@ class TxCurrentExport extends BaseExport
 
     function __construct($request)
     {
-    	parent::__construct();
+    	// parent::__construct();
     	if(is_array($request)){
 			$this->month = $request['month'] ?? (date('m')-1);
 			$this->financial_year = $request['financial_year'] ?? date('Y');
@@ -35,7 +42,7 @@ class TxCurrentExport extends BaseExport
 		if($m > 9) $y--;
 		$this->active_date = "{$y}-{$m}-01";
 
-		$this->fileName = ($this->partner->download_name ?? 'National') . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
+		$this->fileName = ($this->partner->download_name ?? 'National') . '_FY_' . $this->financial_year . '_' . Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
 		$this->sql = "countyname as County, Subcounty, partnername AS Partner,		
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
 		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, facilitycode AS `MFL Code`, 
