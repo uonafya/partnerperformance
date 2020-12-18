@@ -60,7 +60,6 @@ class TxCurrentOtherExport extends BaseExport
     }
 
 
-
     public function query()
     {
     	$gender_id = $this->gender_id;
