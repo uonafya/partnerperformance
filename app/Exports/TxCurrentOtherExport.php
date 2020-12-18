@@ -71,7 +71,7 @@ class TxCurrentOtherExport extends BaseExport
 			->join('surge_columns_view', "d_tx_curr.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
 			// ->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month, 'modality' => 'tx_curr'])
-			->where(['financial_year' => $this->financial_year, 'funding_agency_id' => 1, 'month' => $this->month, 'modality' => 'tx_curr'])
+			->where(['financial_year' => $this->financial_year, 'funding_agency_id' => 1, 'modality' => 'tx_curr'])
 			->when($age_category_id, function($query) use ($age_category_id){
 				return $query->where('age_category_id', $age_category_id);
 			})
@@ -81,6 +81,6 @@ class TxCurrentOtherExport extends BaseExport
 			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->groupBy('d_tx_curr.facility')
 			->orderBy('view_facilities.name', 'asc')
-			->orderBy('column_id', 'asc');
+			->orderBy('periods.id', 'asc');
     }
 }
