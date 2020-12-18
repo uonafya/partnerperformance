@@ -32,7 +32,7 @@ class TxCurrentExport extends BaseExport
 
 		$y = $this->financial_year;
 		$m = $this->month;
-		if($m > 9) $y--;
+		// if($m > 9) $y--;
 		$this->active_date = "{$y}-{$m}-01";
 
 		$this->fileName = ($this->partner->download_name ?? 'National') . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
@@ -70,7 +70,7 @@ class TxCurrentExport extends BaseExport
 			->join('surge_columns_view', "d_tx_curr.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
 			// ->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month, 'modality' => 'tx_curr'])
-			->where(['financial_year' => $this->financial_year, 'funding_agency_id' => 1, 'modality' => 'tx_curr'])
+			->where(['financial_year' => $this->financial_year, 'funding_agency_id' => 1, 'month' => $this->month, 'modality' => 'tx_curr'])
 			->when($age_category_id, function($query) use ($age_category_id){
 				return $query->where('age_category_id', $age_category_id);
 			})
