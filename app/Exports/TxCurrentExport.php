@@ -36,7 +36,7 @@ class TxCurrentExport extends BaseExport
 		$this->active_date = "{$y}-{$m}-01";
 
 		$this->fileName = ($this->partner->download_name ?? 'National') . '_FY_' . $this->financial_year . '_' . \App\Lookup::resolve_month($this->month) . '_tx_curr' . '.xlsx';
-		$this->sql = "countyname as County, Subcounty,		
+		$this->sql = "countyname as County, Subcounty, partnername AS Partner,		
 		financial_year AS `Financial Year`, year AS `Calendar Year`, month AS `Month`, 
 		MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name`, facilitycode AS `MFL Code`, 
 		name AS `Facility`, alias_name AS `Column Name`, value AS `Value`";
@@ -49,7 +49,8 @@ class TxCurrentExport extends BaseExport
             ->join('periods', 'periods.id', '=', "d_tx_curr.period_id")
 			->join('surge_columns_view', "d_tx_curr.column_id", '=', 'surge_columns_view.id')
 			->selectRaw($this->sql)
-			->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month, 'modality' => 'tx_curr'])
+			// ->where(['partner' => $this->partner->id, 'financial_year' => $this->financial_year, 'month' => $this->month, 'modality' => 'tx_curr'])
+			->where(['financial_year' => $this->financial_year, 'modality' => 'tx_curr'])
 			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->first();
 
