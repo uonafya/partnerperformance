@@ -31,7 +31,7 @@ class OtherSurgeExport extends BaseExport
     {
     	parent::__construct();
 
-		$this->fileName = 'USAID_surge_data_for_' . $this->week->start_date . '_to_' . $this->week->end_date . '.xlsx';
+		// $this->fileName = 'USAID_surge_data_for_' . $this->week->start_date . '_to_' . $this->week->end_date . '.xlsx';
 
 		$hts = SurgeColumnView::where(['hts' => 1])->get();
 		$tx_new = SurgeColumnView::where(['modality' => 'tx_new'])->get();

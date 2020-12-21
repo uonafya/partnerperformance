@@ -465,7 +465,7 @@ class Surge
     }*/
 
 
-    public static function surge_export()
+    /*public static function surge_export()
     {
         ini_set('memory_limit', -1);
         $partners = \App\Partner::where(['funding_agency_id' => 1, 'flag' => 1])->get();
@@ -529,6 +529,13 @@ class Surge
             $paths[] = $path;
         }
         // Mail::to(['joelkith@gmail.com'])->send(new TestMail($paths, 'Surge Data'));
+    }*/
+
+
+    public static function surge_export()
+    {
+        ini_set('memory_limit', -1);
+        \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\OtherSurgeExport, 'usaid_surge_fy_20.xlsx');
     }
 
 
