@@ -84,8 +84,7 @@ class SurgeExport extends BaseExport
 			->join('view_facilities', 'view_facilities.id', '=', 'd_surge.facility')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->selectRaw($this->sql)
-			->where('week_id', $this->week->id)
-			->where('partner', $this->partner->id)
+			->where(['week_id' => $this->week->id, 'partner' => $this->partner->id])
 			->when($facilities, function($query) use ($facilities){
 				return $query->whereIn('view_facilities.id', $facilities);
 			})
