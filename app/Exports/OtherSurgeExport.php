@@ -23,7 +23,7 @@ class OtherSurgeExport extends BaseExport
             $sql .= "SUM(`{$column->column_name}`) + ";
         }
         $sql = substr($sql, 0, -3);
-        $sql .= ") AS {$name} ";
+        $sql .= ") AS `{$name}` ";
         return $sql;
     }
 
