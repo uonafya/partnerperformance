@@ -535,7 +535,19 @@ class Surge
     public static function surge_export()
     {
         ini_set('memory_limit', -1);
-        \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\OtherSurgeExport, 'usaid_surge_weekly_fy_20.xlsx');
+        $zip = new \ZipArchive();
+
+        if ($zip->open(storage_path('app/surge.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
+            die ("Could not open archive");
+        }
+
+        $weeks = Week::where('financial_year', 2020)->get();
+        foreach ($weeks as $key => $week) {
+            $filename = 'usaid_surge_' . $week->start_date . '_to_' . $week->end_date . '.csv';
+            \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\OtherSurgeExport($week), $filename);
+            $zip->addFile(storage_path('app/' . $filename));
+        }
+        $zip->close(); 
     }
 
 

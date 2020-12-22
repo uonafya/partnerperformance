@@ -27,9 +27,11 @@ class OtherSurgeExport extends BaseExport
         return $sql;
     }
 
-    function __construct()
+    function __construct($week)
     {
     	parent::__construct();
+
+    	$this->week = $week;
 
 		// $this->fileName = 'USAID_surge_data_for_' . $this->week->start_date . '_to_' . $this->week->end_date . '.xlsx';
 
@@ -66,12 +68,10 @@ class OtherSurgeExport extends BaseExport
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->selectRaw($this->sql)
 			// ->where(['financial_year' => 2020, ])
-			->where(['financial_year' => 2020, 'funding_agency_id' => 1, 'is_surge' => 1 ])
+			->where(['financial_year' => 2020, 'funding_agency_id' => 1, 'is_surge' => 1, 'week_id' => $this->week->id ])
 			// ->whereRaw(Lookup::get_active_partner_query('2020-01-01'))
 			->groupBy('d_surge.facility')
-			->groupBy('weeks.id')
 			// ->orderBy('name', 'asc');
-			->orderBy('weeks.id', 'asc')
 			->orderBy('d_surge.facility', 'asc');
     }
 }
