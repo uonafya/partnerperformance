@@ -55,7 +55,7 @@ class OtherSurgeExport extends BaseExport
 
 		return collect($row)->keys()->all();*/
 
-		return ['County', 'Subcounty', 'MFL Code', 'Partner', 'Facility', 'Financial Year', 'HTS Tested', 'HTS Positive', 'TX NEW', 'PMTCT']
+		return ['County', 'Subcounty', 'MFL Code', 'Partner', 'Facility', 'Financial Year', 'HTS Tested', 'HTS Positive', 'TX NEW', 'PMTCT'];
     }
 
 
