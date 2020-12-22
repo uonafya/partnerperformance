@@ -535,7 +535,7 @@ class Surge
     public static function surge_export()
     {
         ini_set('memory_limit', -1);
-        \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\OtherSurgeExport, 'usaid_surge_fy_20.csv');
+        \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\OtherSurgeExport, 'usaid_surge_fy_20.xlsx');
     }
 
 
