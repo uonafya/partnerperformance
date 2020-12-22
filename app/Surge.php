@@ -559,14 +559,14 @@ class Surge
         $pmtct = SurgeColumnView::whereIn('modality', ['pmtct_anc1', 'pmtct_post_anc'])->get();
 
         // $sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, partnername AS Partner, name AS `Facility`, financial_year AS `Financial Year`, " . $this->get_sum($tested, 'HTS_Tested') . ', ' . $this->get_sum($pos, 'HTS_Positive') . ', ' . $this->get_sum($tx_new, 'tx_new') . ', ' . $this->get_sum($pmtct, 'pmtct');
-        $this->sql = "facility, financial_year AS `Financial Year`, " . $this->get_sum($tested, 'HTS_Tested');
+        $sql = "facility, " . $this->get_sum($tested, 'HTS_Tested');
 
         $rows = DB::table('d_surge')
             // ->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
             ->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
             ->selectRaw($sql)
-            // ->where(['financial_year' => 2020, ])
-            ->where(['financial_year' => 2020, 'funding_agency_id' => 1, ])
+            ->where(['financial_year' => 2020, ])
+            // ->where(['financial_year' => 2020, 'funding_agency_id' => 1, ])
             // ->whereRaw(Lookup::get_active_partner_query('2020-01-01'))
             ->groupBy('d_surge.facility')
             // ->orderBy('name', 'asc')
