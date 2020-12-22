@@ -62,11 +62,11 @@ class OtherSurgeExport extends BaseExport
     public function query()
     {
 		return DB::table('d_surge')
-			// ->join('view_facilities', 'view_facilities.id', '=', 'd_surge.facility')
+			->join('view_facilities', 'view_facilities.id', '=', 'd_surge.facility')
 			->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
 			->selectRaw($this->sql)
-			->where(['financial_year' => 2020, ])
-			// ->where(['financial_year' => 2020, 'funding_agency_id' => 1, ])
+			// ->where(['financial_year' => 2020, ])
+			->where(['financial_year' => 2020, 'funding_agency_id' => 1, 'is_surge' => 1 ])
 			// ->whereRaw(Lookup::get_active_partner_query('2020-01-01'))
 			->groupBy('d_surge.facility')
 			// ->orderBy('name', 'asc');
