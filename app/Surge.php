@@ -562,12 +562,12 @@ class Surge
         // $this->sql = "facility, financial_year AS `Financial Year`, " . $this->get_sum($tested, 'HTS_Tested') . ', ' . $this->get_sum($pos, 'HTS_Positive') . ', ' . $this->get_sum($tx_new, 'tx_new') . ', ' . $this->get_sum($pmtct, 'pmtct');
 
         $rows = DB::table('d_surge')
-            ->join('view_facilities', 'view_facilities.id', '=', 'd_surge.facility')
+            ->join('view_facilitys', 'view_facilitys.id', '=', 'd_surge.facility')
             ->join('weeks', 'weeks.id', '=', 'd_surge.week_id')
             ->selectRaw($sql)
             // ->where(['financial_year' => 2020, ])
             ->where(['financial_year' => 2020, 'funding_agency_id' => 1, ])
-            ->whereRaw(Lookup::get_active_partner_query('2020-01-01'))
+            // ->whereRaw(Lookup::get_active_partner_query('2020-01-01'))
             ->groupBy('d_surge.facility')
             ->orderBy('name', 'asc')
             // ->orderBy('d_surge.facility', 'asc')
