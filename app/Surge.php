@@ -572,6 +572,7 @@ class Surge
             ->orderBy('name', 'asc')
             // ->orderBy('d_surge.facility', 'asc')
             ->get();
+        dd($rows);
     }
 
 
