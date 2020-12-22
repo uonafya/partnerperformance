@@ -68,7 +68,7 @@ class OtherSurgeExport extends BaseExport
 			->where(['financial_year' => 2020, ])
 			// ->where(['financial_year' => 2020, 'funding_agency_id' => 1, ])
 			// ->whereRaw(Lookup::get_active_partner_query('2020-01-01'))
-			->groupBy('d_surge.facility')
-			->orderBy('name', 'asc');
+			->groupBy('d_surge.facility');
+			// ->orderBy('name', 'asc');
     }
 }
