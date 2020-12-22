@@ -39,7 +39,7 @@ class OtherSurgeExport extends BaseExport
 		$pmtct = SurgeColumnView::whereIn('modality', ['pmtct_anc1', 'pmtct_post_anc'])->get();
 
 		// $this->sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, partnername AS Partner, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, " . $this->get_sum($hts, 'hts') . ', ' . $this->get_sum($tx_new, 'tx_new') . ', ' . $this->get_sum($pmtct, 'pmtct');
-		$this->sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, partnername AS Partner, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, " . $this->get_sum($tested, 'HTS Tested') . ', ' . $this->get_sum($pos, 'HTS Positive') . ', ' . $this->get_sum($tx_new, 'tx_new') . ', ' . $this->get_sum($pmtct, 'pmtct');
+		$this->sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, partnername AS Partner, name AS `Facility`, financial_year AS `Financial Year`, " . $this->get_sum($tested, 'HTS_Tested') . ', ' . $this->get_sum($pos, 'HTS_Positive') . ', ' . $this->get_sum($tx_new, 'tx_new') . ', ' . $this->get_sum($pmtct, 'pmtct');
 
     }
 
