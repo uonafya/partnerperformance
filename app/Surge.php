@@ -575,5 +575,4 @@ class Surge
         dd($rows);
     }
 
-
 }
