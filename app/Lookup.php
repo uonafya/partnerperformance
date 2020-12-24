@@ -769,6 +769,13 @@ class Lookup
 		}
 	}
 
+	public static function yAxis(&$data, $start, $finish, $axis=1)
+	{
+		for ($i=$start; $i <= $finish; $i++) { 
+			$data['outcomes'][$i]['yAxis'] = $axis;
+		}
+	}
+
     public static function send_report(){
     	$mail_array = ['joelkith@gmail.com', 'tngugi@gmail.com', 'baksajoshua09@gmail.com'];
     	Mail::to($mail_array)->send(new Duplicate());

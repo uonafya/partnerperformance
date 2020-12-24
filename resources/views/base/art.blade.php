@@ -7,10 +7,6 @@
 		width: 130px;
 		display: inline;
 	}
-	.display_date {
-		width: 130px;
-		display: inline;
-	}
 </style>
 
 

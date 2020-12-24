@@ -14,21 +14,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    On Maternal HAART  <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="haart">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Testing PMTCT <div class="display_date"></div>
+			    HTS Testing & Yield <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="testing">
 				<center><div class="loader"></div></center>
@@ -37,13 +23,14 @@
 	</div>
 </div>
 
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Point Of Starting ART <div class="display_date"></div>
+			    Linkage (HTS POS & TX NEW) <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="starting_point">
+			<div class="panel-body" id="linkage">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -54,9 +41,9 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Point of Identification of Positivity <div class="display_date"></div>
+			    TX CURR <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="discovery_positivity">
+			<div class="panel-body" id="tx_curr">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -67,9 +54,9 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Initial PCR Test <div class="display_date"></div>
+			    TX MMD <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="eid">
+			<div class="panel-body" id="tx_mmd">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -80,9 +67,22 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Male Testing <div class="display_date"></div>
+			    PrEP NEW <div class="display_date"></div>
 		    </div>
-			<div class="panel-body" id="male_testing">
+			<div class="panel-body" id="prep_new">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    VMMC CIRC <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="vmmc_circ">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -98,26 +98,25 @@
 
 	function reload_page()
 	{
-		$("#haart").html("<center><div class='loader'></div></center>");		
 		$("#testing").html("<center><div class='loader'></div></center>");
-		$("#starting_point").html("<center><div class='loader'></div></center>");
-		$("#discovery_positivity").html("<center><div class='loader'></div></center>");
-		$("#eid").html("<center><div class='loader'></div></center>");
-		$("#male_testing").html("<center><div class='loader'></div></center>");
+		$("#linkage").html("<center><div class='loader'></div></center>");
+		$("#tx_curr").html("<center><div class='loader'></div></center>");
+		$("#tx_mmd").html("<center><div class='loader'></div></center>");
+		$("#prep_new").html("<center><div class='loader'></div></center>");
+		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
 
-
-		$("#haart").load("{{ url('pmtct/haart') }}");
-		$("#testing").load("{{ url('pmtct/testing') }}");
-		$("#starting_point").load("{{ url('pmtct/starting_point') }}");
-		$("#discovery_positivity").load("{{ url('pmtct/discovery_positivity') }}");
-		$("#eid").load("{{ url('pmtct/eid') }}");
-		$("#male_testing").load("{{ url('pmtct/male_testing') }}");
+		$("#testing").load("{{ url('hfr/testing') }}");
+		$("#linkage").load("{{ url('hfr/linkage') }}");
+		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
+		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
+		$("#prep_new").load("{{ url('hfr/prep_new') }}");
+		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
 	}
 
 
 	$().ready(function(){
 		
-		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
+		date_filter('financial_year', 2021, '{{ $date_url }}');
 
 	});
 

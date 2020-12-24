@@ -64,13 +64,25 @@ class HfrSubmission
         DB::statement($sql);
     }
 
-    public static function columns()
+    public static function columns($use_session=false, $filter_column=null, $filter_age_category=null, $filter_gender=null)
     {
+        if($use_session && !$filter_age_category) $filter_age_category = session('filter_age_category_id');
+        if($use_session && !$filter_gender) $filter_gender = session('filter_gender');
+        
     	$columns = [];
         foreach (self::$hfr_columns as $hfr_column) {
+            if($filter_column && $filter_column != $hfr_column) continue;
         	if($hfr_column == 'tx_mmd') continue;
         	foreach (self::$age_groups as $age_group_key => $age_group) {
+                if($filter_age_category){
+                    if($filter_age_category == 2 && $age_group != 'below_15') continue;
+                    if($filter_age_category == 3 && $age_group != 'above_15') continue;
+                }
 	        	foreach (self::$genders as $gender) {
+                    if($filter_gender){
+                        if($filter_gender == 2 && $gender != 'below_15') continue;
+                        if($filter_gender == 3 && $gender != 'above_15') continue;
+                    }
 	        		if($hfr_column == 'vmmc_circ' && $gender == 'Female') continue;
 
 	        		$column_name = $hfr_column . '_' . $age_group . '_' . strtolower($gender);
@@ -85,8 +97,17 @@ class HfrSubmission
         $hfr_column = 'tx_mmd';
 
         foreach (self::$mmd as $mmd_key => $mmd) {
+            if($filter_column && $filter_column != $hfr_column && $filter_column != $mmd) continue;
         	foreach (self::$age_groups as $age_group_key => $age_group) {
+                if($filter_age_category){
+                    if($filter_age_category == 2 && $age_group != 'below_15') continue;
+                    if($filter_age_category == 3 && $age_group != 'above_15') continue;
+                }
 	        	foreach (self::$genders as $gender) {
+                    if($filter_gender){
+                        if($filter_gender == 2 && $gender != 'below_15') continue;
+                        if($filter_gender == 3 && $gender != 'above_15') continue;
+                    }
 
 	        		$column_name = $hfr_column . '_' . $age_group . '_' . strtolower($gender) . '_' . $mmd;
 	        		$excel_name = strtoupper($hfr_column) . ' ' . $age_group_key . ' ' . $gender . ' ' . $mmd_key;

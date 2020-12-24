@@ -165,6 +165,15 @@ Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('modality_reported', 'ViolenceController@modality_reported')->name('modality_reported');
 });
 
+Route::prefix('hfr')->name('hfr.')->group(function(){
+	Route::get('testing', 'HfrController@testing')->name('testing');
+	Route::get('linkage', 'HfrController@linkage')->name('linkage');
+	Route::get('tx_curr', 'HfrController@tx_curr')->name('tx_curr');
+	Route::get('tx_mmd', 'HfrController@tx_mmd')->name('tx_mmd');
+	Route::get('prep_new', 'HfrController@prep_new')->name('prep_new');
+	Route::get('vmmc_circ', 'HfrController@vmmc_circ')->name('vmmc_circ');
+});
+
 
 Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('/', 'GeneralController@dupli_home');
@@ -181,6 +190,7 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('pns', 'GeneralController@pns');
 	Route::get('indicators', 'GeneralController@indicators');
 	Route::get('surge', 'GeneralController@surge');
+	Route::get('hfr', 'GeneralController@hfr');
 
 
 		Route::get('gbv', 'GeneralController@gbv');
