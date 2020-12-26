@@ -27,7 +27,7 @@ class FacilityEditImport implements OnEachRow, WithHeadingRow
 		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
 		if(!$fac) return;
 
-		$fac->facility_uid = $row->facility_uid;
+		$fac->facility_uid = $row->facility_uid ?? $row->facility_or_community_uid;
 		$fac->save();
     }
 
