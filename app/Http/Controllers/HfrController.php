@@ -158,7 +158,7 @@ class HfrController extends Controller
 		$less_3m = HfrSubmission::columns(true, 'less_3m');
 		$less_5m = HfrSubmission::columns(true, '3_5m');
 		$above_6m = HfrSubmission::columns(true, 'above_6m');
-		$sql = $this->get_hfr_sum($less_3m, 'less_3m') . ', ' . $this->get_hfr_sum($less_5m, 'less_5m') . ', '$this->get_hfr_sum($above_6m, 'above_6m');
+		$sql = $this->get_hfr_sum($less_3m, 'less_3m') . ', ' . $this->get_hfr_sum($less_5m, 'less_5m') . ', ' . $this->get_hfr_sum($above_6m, 'above_6m');
 
     	$divisions_query = Lookup::divisions_query();
         $date_query = Lookup::date_query();
