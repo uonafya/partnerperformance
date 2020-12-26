@@ -50,12 +50,16 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 			if(isset($this->data_columns[$key])){
 				$update_data[$this->data_columns[$key]] = (int) $value;
 			}
-		}*/
+		}*/ 
 
+		$missing_columns = [];
 		foreach ($this->data_columns as $excel_column => $db_column) {
-			if(!isset($row->$excel_column)) dd('Excel column ' . $excel_column . ' is missing');
+			// if(!isset($row->$excel_column)) dd('Excel column ' . $excel_column . ' is missing');
+			if(!isset($row->$excel_column)) $missing_columns[] = [$excel_column => $db_column];
 			$update_data[$db_column] = (int) $row->$excel_column;
 		}
+
+		if($missing_columns) dd($missing_columns);
 
 		// dd($update_data);
 
