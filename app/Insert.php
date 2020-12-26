@@ -184,10 +184,12 @@ class Insert
         $dt = Carbon::createFromDate($year, 10, 1);
         $week = 1;
 
-        if($dt->dayOfWeek != 0){
+        // if($dt->dayOfWeek != 0){
+        if($dt->dayOfWeekIso != 1){
 
             while(true){
-                if($dt->dayOfWeek == 0) break;
+                // if($dt->dayOfWeek == 0) break;
+                if($dt->dayOfWeekIso == 1) break;
                 $dt->subDay();
             }
 
@@ -223,7 +225,7 @@ class Insert
             if($w->financial_year != $financial_year) break;
             $w->save();
         }
-        DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 31 and financial_year = 2019;");
+        // DB::connection('mysql_wr')->statement("DELETE FROM weeks where week_number < 31 and financial_year = 2019;");
     }
 
 
@@ -300,11 +302,11 @@ class Insert
             $financial_year = date('Y');
             if(date('m') > 9) $financial_year++;
         }
-        /*self::insert_weeks($financial_year);
+        self::insert_weeks($financial_year);
         self::insert_weekly_rows($financial_year, 'd_surge');
         self::insert_weekly_column_rows($financial_year, 'd_weeklies');
         self::insert_weekly_column_rows($financial_year, 'd_prep_new');
-        self::insert_weekly_column_rows($financial_year, 'd_vmmc_circ');*/
+        self::insert_weekly_column_rows($financial_year, 'd_vmmc_circ');
         self::insert_weekly_rows($financial_year, 'd_hfr_submission');
     }
 }

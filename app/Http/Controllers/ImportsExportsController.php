@@ -18,6 +18,7 @@ use App\Imports\TargetsImport;
 // use App\Imports\AfyaImport;
 use App\Imports\FacilityEditImport;
 use App\Imports\HfrSubmissionImport;
+use App\Imports\HfrUsaidSubmissionImport;
 
 
 use App\Exports\DispensingExport;
@@ -64,6 +65,7 @@ class ImportsExportsController extends Controller
 			// 'afya' => AfyaImport::class,
 			'facility-edit' => FacilityEditImport::class,
 			'hfr' => HfrSubmissionImport::class,
+			'hfr-usaid' => HfrUsaidSubmissionImport::class,
 		];
 
 		$c = $classes[$path];
