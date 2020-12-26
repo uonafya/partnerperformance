@@ -34,6 +34,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
     public function onRow(Row $row)
     {
+    	$original_row = $row->toArray();
     	$row = json_decode(json_encode($row->toArray(null, true)));
     	// dd($row);
     	// if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
@@ -69,12 +70,13 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
 		$updated_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $week->id, ])->first();
 		if(!$updated_row) dd("Row is not in the DB.");
+		$original_row['db_row'] = $updated_row;
 
 		$updated = DB::table($this->table_name)
 		// ->where('id', $updated_row->id)
 		->where(['facility' => $fac->id, 'week_id' => $week->id, ])
 		->update($update_data);
-		if(!$updated) dd($updated_row);
+		if(!$updated) dd($original_row);
     }
 
 }
