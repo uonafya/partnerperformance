@@ -89,7 +89,7 @@ class HfrSubmission
 	        		$excel_name = strtoupper($hfr_column) . ' ' . $age_group_key . ' ' . $gender;
 	        		$alias_name = strtolower(preg_replace("/[\s]/", "_", $excel_name) );
 
-                    $usaid_name = $hfr_column . '.' . ($age_group == 'below_15' ? 'u15' : 'o15') . '.' . ($gender == 'Male' ? 'm' : 'f');
+                    $usaid_name = $hfr_column . ($age_group == 'below_15' ? 'u15' : 'o15') . ($gender == 'Male' ? 'm' : 'f');
 
 	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name');
 	        	}
@@ -116,7 +116,7 @@ class HfrSubmission
                     $alias_name = strtolower(preg_replace("/[\s-]/", "_", $excel_name) );
                     $alias_name = strtolower(preg_replace("/[<+]/", "", $alias_name) );
 
-                    $usaid_name = $hfr_column . '.' . ($age_group == 'below_15' ? 'u15' : 'o15') . '.' . ($gender == 'Male' ? 'm' : 'f') . '.';
+                    $usaid_name = $hfr_column . ($age_group == 'below_15' ? 'u15' : 'o15') . ($gender == 'Male' ? 'm' : 'f');
                     if($mmd == 'less_3m') $usaid_name .= 'u3mo';
                     else if($mmd == '3_5m') $usaid_name .= '35mo';
                     else if($mmd == 'above_6m') $usaid_name .= 'o6mo';

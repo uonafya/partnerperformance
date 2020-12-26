@@ -46,10 +46,15 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
 		$update_data = ['dateupdated' => date("Y-m-d")];
 
-		foreach ($row as $key => $value) {
+		/*foreach ($row as $key => $value) {
 			if(isset($this->data_columns[$key])){
 				$update_data[$this->data_columns[$key]] = (int) $value;
 			}
+		}*/
+
+		foreach ($this->data_columns as $excel_column => $db_column) {
+			if(!isset($row->$excel_column)) dd('Excel column ' . $excel_column . ' is missing');
+			$update_data[$db_column] = (int) $row->$excel_column;
 		}
 
 		// dd($update_data);
