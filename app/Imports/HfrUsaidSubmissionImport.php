@@ -39,7 +39,10 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
     	// dd($row);
     	// if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
-		$fac = Facility::where('facility_uid', $row->orgunituid)->first();
+    	$fac = null;
+
+		if($row->orgunituid) $fac = Facility::where('facility_uid', $row->orgunituid)->first();
+		if(!$fac) $fac = Facility::where('name', $row->orgunit)->first();
 		if(!$fac) return;
 		if(!$fac) dd("facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
 
