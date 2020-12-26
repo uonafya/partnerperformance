@@ -61,16 +61,19 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
 		// if($missing_columns) dd($missing_columns);
 
-		$update_data['week'] = $week;
+		/*$update_data['week'] = $week;
 		$update_data['facility'] = $fac;
 
-		dd($update_data);
+		dd($update_data);*/
 
 		if(env('APP_ENV') != 'testing') {
+			$updated_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $week->id, ])->first();
+			if(!$updated_row) dd("Row is not in the DB.");
+
 			$updated = DB::table($this->table_name)
 			->where(['facility' => $fac->id, 'week_id' => $week->id, ])
 			->update($update_data);
-			if(!$updated) dd($row);
+			if(!$updated) dd($updated_row);
 		}
     }
 
