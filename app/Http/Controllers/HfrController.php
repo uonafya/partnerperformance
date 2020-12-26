@@ -67,6 +67,7 @@ class HfrController extends Controller
 			->get();
 
 		$data['div'] = str_random(15);
+		$data['yAxis2'] = "Linkage (%)";
 
 		Lookup::bars($data, ["TX New", "Not Linked", "Linkage"], "column");
 		Lookup::splines($data, [2]);
@@ -80,6 +81,10 @@ class HfrController extends Controller
 			$data["outcomes"][0]["data"][$key] = (int) $row->tx_new;
 			$data["outcomes"][1]["data"][$key] = (int) ($row->pos - $row->tx_new);
 			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->tx_new, $row->pos);
+			if($data["outcomes"][1]["data"][$key] < 0) {
+				$data["outcomes"][1]["data"][$key] = (int) $row->tx_new;
+				$data["outcomes"][2]["data"][$key] = 0;
+			}
 		}	
 		return view('charts.dual_axis', $data);
 	}

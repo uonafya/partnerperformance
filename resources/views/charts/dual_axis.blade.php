@@ -21,7 +21,7 @@
             yAxis: [{ // Primary yAxis
                 labels: {
                     formatter: function() {
-                        return this.value + "{{ $suffix ?? '' }}";
+                        return this.value + "{{ $suffix ?? '%' }}";
                     },
                     style: {
                         
