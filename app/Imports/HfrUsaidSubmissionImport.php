@@ -39,7 +39,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
     	// if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
 
 		$fac = Facility::where('facility_uid', $row->orgunituid)->first();
-		if(!$fac) continue;
+		if(!$fac) return;
 		if(!$fac) dd("facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
 
 		$week = Week::where(['start_date' => Carbon::createFromFormat('m/d/Y', $row->date)->toDateString()])->first();
