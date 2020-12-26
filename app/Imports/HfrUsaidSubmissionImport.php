@@ -59,7 +59,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 			$update_data[$db_column] = (int) $row->$excel_column;
 		}
 
-		if($missing_columns) dd($missing_columns);
+		// if($missing_columns) dd($missing_columns);
 
 		// dd($update_data);
 
