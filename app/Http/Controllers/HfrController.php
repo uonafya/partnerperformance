@@ -163,12 +163,12 @@ class HfrController extends Controller
     	$divisions_query = Lookup::divisions_query();
         $date_query = Lookup::date_query();
 
-		$rows = DB::table($this->my_table)
+		$row = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->whereRaw($divisions_query)
             ->whereRaw($date_query)
-			->get();
+			->first();
 
 		$data['div'] = str_random(15);
 
