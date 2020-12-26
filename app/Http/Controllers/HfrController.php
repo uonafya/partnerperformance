@@ -36,7 +36,6 @@ class HfrController extends Controller
 			->when(true, $this->get_callback('tests'))
 			->get();
 
-
 		$data['div'] = str_random(15);
 		$data['yAxis2'] = "Yield (%)";
 
