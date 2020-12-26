@@ -61,6 +61,9 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
 		// if($missing_columns) dd($missing_columns);
 
+		$update_data['week'] = $week;
+		$update_data['facility'] = $fac;
+
 		dd($update_data);
 
 		if(env('APP_ENV') != 'testing') {
