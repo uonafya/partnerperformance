@@ -38,6 +38,7 @@ class HfrController extends Controller
 
 
 		$data['div'] = str_random(15);
+		$data['yAxis2'] = "Yield (%)";
 
 		Lookup::bars($data, ["Positive", "Negative", "Yield"], "column");
 		Lookup::splines($data, [2]);
