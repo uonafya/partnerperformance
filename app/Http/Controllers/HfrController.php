@@ -37,7 +37,10 @@ class HfrController extends Controller
 			->get();
 
 		$data['div'] = str_random(15);
+		$data['yAxis'] = "Total Number Tested";
 		$data['yAxis2'] = "Yield (%)";
+		$data['data_labels'] = true;
+		$data['no_column_label'] = true;
 
 		Lookup::bars($data, ["Positive", "Negative", "Yield"], "column");
 		Lookup::splines($data, [2]);
@@ -67,7 +70,10 @@ class HfrController extends Controller
 			->get();
 
 		$data['div'] = str_random(15);
+		$data['yAxis'] = '';
 		$data['yAxis2'] = "Linkage (%)";
+		$data['data_labels'] = true;
+		$data['no_column_label'] = true;
 
 		Lookup::bars($data, ["TX New", "Not Linked", "Linkage"], "column");
 		Lookup::splines($data, [2]);
@@ -176,8 +182,15 @@ class HfrController extends Controller
 			->first();
 
 		$data['div'] = str_random(15);
+		$data['yAxis'] = '';
+		$data['data_labels'] = true;
+		$data['no_column_label'] = true;
 
-		Lookup::bars($data, ["TX MMD"], "column");
+		Lookup::bars($data, ["TX MMD", '% of TX_CURR'], "column");
+		Lookup::splines($data, [1]);
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
+		Lookup::yAxis($data, 0, 0);
+
 
 		$data['categories'][0] = 'TX Curr &lt;3 months of ARVs dispensed';
 		$data['categories'][1] = 'TX Curr 3-5 months of ARVs dispensed';
@@ -186,8 +199,14 @@ class HfrController extends Controller
 		$data["outcomes"][0]["data"][0] = (int) $row->less_3m;
 		$data["outcomes"][0]["data"][1] = (int) $row->less_5m;
 		$data["outcomes"][0]["data"][2] = (int) $row->above_6m;
+
+		$total = $row->less_3m + $row->less_5m + $row->above_6m; Lookup::get_percentage($row->tx_new, $row->pos)
+
+		$data["outcomes"][1]["data"][0] = Lookup::get_percentage($row->less_3m, $total);
+		$data["outcomes"][1]["data"][1] = Lookup::get_percentage($row->less_5m, $total);
+		$data["outcomes"][1]["data"][2] = Lookup::get_percentage($row->above_6m, $total);
 		
-		return view('charts.line_graph', $data);
+		return view('charts.dual_axis', $data);
 	}
 
 

@@ -99,16 +99,20 @@
             @if(isset($data_labels))
                 plotOptions: {
                     column: {
+                        @empty($no_column_label)
                         dataLabels: {
                             enabled: true,
                         },
+                        @endempty
                         stacking: 'normal'
                     },
                     spline: {
+                        @empty($no_spline_label)
                         dataLabels: {
                             enabled: true,
                             format: '{point.y}{{ $suffix2 ?? "" }}'
                         },
+                         @endempty
                     },
                 },
             @else
