@@ -190,7 +190,7 @@ class HfrController extends Controller
 		$data['suffix'] = '%';
 
 		Lookup::bars($data, ["TX MMD", '% of TX_CURR'], "column");
-		Lookup::splines($data, [1]);
+		Lookup::splines($data, [1], 1);
 		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 0);
 
