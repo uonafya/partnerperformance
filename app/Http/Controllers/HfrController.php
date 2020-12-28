@@ -200,7 +200,7 @@ class HfrController extends Controller
 		$data["outcomes"][0]["data"][1] = (int) $row->less_5m;
 		$data["outcomes"][0]["data"][2] = (int) $row->above_6m;
 
-		$total = $row->less_3m + $row->less_5m + $row->above_6m; Lookup::get_percentage($row->tx_new, $row->pos)
+		$total = $row->less_3m + $row->less_5m + $row->above_6m;
 
 		$data["outcomes"][1]["data"][0] = Lookup::get_percentage($row->less_3m, $total);
 		$data["outcomes"][1]["data"][1] = Lookup::get_percentage($row->less_5m, $total);
