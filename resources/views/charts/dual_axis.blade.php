@@ -110,9 +110,9 @@
                         @empty($no_spline_label)
                         dataLabels: {
                             enabled: true,
-                            format: '{point.y}{{ $suffix2 ?? "" }}'
+                            format: '{point.y}{{ $suffix ?? "" }}'
                         },
-                         @endempty
+                        @endempty
                     },
                 },
             @else

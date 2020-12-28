@@ -41,6 +41,7 @@ class HfrController extends Controller
 		$data['yAxis2'] = "Yield (%)";
 		$data['data_labels'] = true;
 		$data['no_column_label'] = true;
+		$data['suffix'] = '%';
 
 		Lookup::bars($data, ["Positive", "Negative", "Yield"], "column");
 		Lookup::splines($data, [2]);
@@ -74,6 +75,7 @@ class HfrController extends Controller
 		$data['yAxis2'] = "Linkage (%)";
 		$data['data_labels'] = true;
 		$data['no_column_label'] = true;
+		$data['suffix'] = '%';
 
 		Lookup::bars($data, ["TX New", "Not Linked", "Linkage"], "column");
 		Lookup::splines($data, [2]);
@@ -185,6 +187,7 @@ class HfrController extends Controller
 		$data['yAxis'] = '';
 		$data['data_labels'] = true;
 		$data['no_column_label'] = true;
+		$data['suffix'] = '%';
 
 		Lookup::bars($data, ["TX MMD", '% of TX_CURR'], "column");
 		Lookup::splines($data, [1]);
