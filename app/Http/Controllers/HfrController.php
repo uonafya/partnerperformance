@@ -77,7 +77,7 @@ class HfrController extends Controller
 		$data['no_column_label'] = true;
 		$data['suffix'] = '%';
 
-		Lookup::bars($data, ["TX New", "Not Linked", "Linkage"], "column");
+		Lookup::bars($data, ["Not Linked", "TX New", "Linkage"], "column");
 		Lookup::splines($data, [2]);
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 1);
@@ -86,11 +86,11 @@ class HfrController extends Controller
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
-			$data["outcomes"][0]["data"][$key] = (int) $row->tx_new;
-			$data["outcomes"][1]["data"][$key] = (int) ($row->pos - $row->tx_new);
+			$data["outcomes"][0]["data"][$key] = (int) ($row->pos - $row->tx_new);
+			$data["outcomes"][1]["data"][$key] = (int) $row->tx_new;
 			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->tx_new, $row->pos);
-			if($data["outcomes"][1]["data"][$key] < 0) {
-				$data["outcomes"][1]["data"][$key] = (int) $row->tx_new;
+			if($data["outcomes"][0]["data"][$key] < 0) {
+				$data["outcomes"][0]["data"][$key] = (int) $row->tx_new;
 				$data["outcomes"][2]["data"][$key] = 0;
 			}
 		}	
