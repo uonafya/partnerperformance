@@ -511,6 +511,7 @@ class SurgeController extends Controller
 		$tx_sv_array2 = ['tx_btc_t'];
 
 		$week_id = Lookup::get_tx_week();
+		if(!$week_id) abort(400);
 
 		$tx_sv_modalities = SurgeModality::whereIn('modality', $tx_sv_array)->orderBy('id', 'asc')->get();
 		$tx_sv_modalities2 = SurgeModality::whereIn('modality', $tx_sv_array2)->orderBy('id', 'asc')->get();

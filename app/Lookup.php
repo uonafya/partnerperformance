@@ -537,7 +537,7 @@ class Lookup
 				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
 			}
 		}
-		return $week->id;
+		return ($week->id ?? null);
 	}
 
 	public static function year_month_name()
