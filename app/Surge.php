@@ -555,16 +555,19 @@ class Surge
         ini_set('memory_limit', -1);
         $zip = new \ZipArchive();
 
-        if ($zip->open(storage_path('app/surge.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
+        if ($zip->open(storage_path('app/surge_full.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
             die ("Could not open archive");
         }
 
         $weeks = Week::where('financial_year', 2020)->get();
-        $modalities = SurgeModality::where()
-        foreach ($weeks as $key => $week) {
-            $filename = 'usaid_surge_' . $week->start_date . '_to_' . $week->end_date . '.csv';
-            \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\SurgeFullExport($week), $filename);
-            $zip->addFile(storage_path('app/' . $filename));
+        $modalities = SurgeModality::where(['tbl_name' => 'd_surge'])->get();
+        foreach ($weeks as $week) {
+            foreach ($modalities as $modality) {
+                $m = str_replace(' ', '_', $modality->modality_name);
+                $filename = 'usaid_surge_' . $m . '_' . $week->start_date . '_to_' . $week->end_date . '.csv';
+                \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\SurgeFullExport($week, $modality), $filename);
+                $zip->addFile(storage_path('app/' . $filename));
+            }
         }
         $zip->close(); 
     }
