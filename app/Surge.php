@@ -550,6 +550,25 @@ class Surge
         $zip->close(); 
     }
 
+    public static function full_surge_export()
+    {
+        ini_set('memory_limit', -1);
+        $zip = new \ZipArchive();
+
+        if ($zip->open(storage_path('app/surge.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
+            die ("Could not open archive");
+        }
+
+        $weeks = Week::where('financial_year', 2020)->get();
+        $modalities = SurgeModality::where()
+        foreach ($weeks as $key => $week) {
+            $filename = 'usaid_surge_' . $week->start_date . '_to_' . $week->end_date . '.csv';
+            \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\SurgeFullExport($week), $filename);
+            $zip->addFile(storage_path('app/' . $filename));
+        }
+        $zip->close(); 
+    }
+
 
     public function get_sum($columns, $name)
     {

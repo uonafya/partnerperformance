@@ -65,6 +65,10 @@ Artisan::command('surges:export', function () {
 	\App\Surge::surge_export();
 })->describe('Surges export.');
 
+Artisan::command('surges:full-export', function () {
+	\App\Surge::full_surge_export();
+})->describe('Surges export full.');
+
 Artisan::command('surges:data', function () {
 	$s = new \App\Surge;
 	$s->surge_data();
