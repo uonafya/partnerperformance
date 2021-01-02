@@ -44,16 +44,20 @@ class CountyTargetsImport implements ToCollection
         foreach ($collection as $key => $value) {
             if($value[0] == 'mech_code') continue;
 
-            $p = Partner::where('mech_id', $value[0])->first();
-            $c = County::where('name', 'like', (explode(' ', $value[1])[0] ?? 'notfound') . '%')->first();
+            $county_name = explode(' ', $value[1])[0];
+            $county_name = explode('-', $county_name)[0];
+
+
+            $p = Partner::where('mech_id', ((int) $value[0]))->first();
+            $c = County::where('name', 'like', $county_name . '%')->first();
 
             if(!$p){
-                $value[] = 'Partner Not Found';
+                $value[10] = 'Partner Not Found';
                 dd($value);
             }
 
             if(!$c){
-                $value[] = 'County Not Found';
+                $value[10] = 'County Not Found';
                 dd($value);
             }
 
