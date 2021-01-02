@@ -83,6 +83,7 @@ class CountyTargetsImport implements ToCollection
             if(Str::contains($value[3], ['1-', '5-', '10', '<01'])) $age = 'below_15';
 
             foreach ($modalities as $modality_key => $modality) {
+                if($gender == 'female' && $modality == 'vmmc_circ') continue;
                 $data["{$modality}_{$age}_{$gender}"] += (int) $value[4 + $modality_key]; 
             }
         }
