@@ -138,7 +138,7 @@ class HfrSubmission
         	}
         }
 
-        if(!$not_mmd) return $columns;
+        if($not_mmd) return $columns;
 
         $hfr_column = 'tx_mmd';
 
