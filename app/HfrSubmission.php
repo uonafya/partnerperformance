@@ -172,30 +172,4 @@ class HfrSubmission
         return $columns;
     }
 
-    public function create_target_table()
-    {
-        $sql = "CREATE TABLE `t_county_target` (
-            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-            `county_id` TINYINT unsigned DEFAULT '0',
-            `financial_year` smallint(4) unsigned DEFAULT '0',
-            `gbv` int(10) unsigned DEFAULT NULL,
-            `pep` int(10) unsigned DEFAULT NULL,
-            `physical_emotional_violence` int(10) unsigned DEFAULT NULL,
-            `sexual_violence_post_rape_care` int(10) unsigned DEFAULT NULL,
-            `total_gender_gbv` int(10) unsigned DEFAULT NULL,
-            `hts_tst` int(10) unsigned DEFAULT NULL,
-            `hts_tst_pos` int(10) unsigned DEFAULT NULL,
-            `tx_new` int(10) unsigned DEFAULT NULL,
-            `vmmc_circ` int(10) unsigned DEFAULT NULL,
-            `prep_new` int(10) unsigned DEFAULT NULL,
-            `tx_curr` int(10) unsigned DEFAULT NULL,
-            PRIMARY KEY (`id`),
-            KEY `identifier` (`county_id`,`financial_year`),
-            KEY `county_id` (`county_id`)
-            ) ENGINE=INNODB DEFAULT CHARSET=latin1";
-
-    }
-
-
-
 }
