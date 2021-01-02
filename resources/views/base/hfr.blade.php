@@ -104,6 +104,13 @@
 		$("#tx_mmd").html("<center><div class='loader'></div></center>");
 		$("#prep_new").html("<center><div class='loader'></div></center>");
 		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
+		
+		$("#target_donut_hts").html("<center><div class='loader'></div></center>");
+		$("#target_donut_pos").html("<center><div class='loader'></div></center>");
+		$("#target_donut_tx_new").html("<center><div class='loader'></div></center>");
+		$("#target_donut_vmmc_circ").html("<center><div class='loader'></div></center>");
+		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
+		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
 
 		$("#testing").load("{{ url('hfr/testing') }}");
 		$("#linkage").load("{{ url('hfr/linkage') }}");
