@@ -47,7 +47,17 @@ class CountyTargetsImport implements ToCollection
             $p = Partner::where('mech_id', $value[0])->first();
             $c = County::where('name', 'like', (explode(' ', $value[1])[0] ?? 'notfound') . '%')->first();
 
-            if($p != $partner && $c != $county){
+            if(!$p){
+                $value[] = 'Partner Not Found';
+                dd($value);
+            }
+
+            if(!$c){
+                $value[] = 'County Not Found';
+                dd($value);
+            }
+
+            if($p != $partner || $c != $county){
 
                 if($partner){
                     $row = DB::table($this->table)->where($locator)->first();
@@ -57,6 +67,9 @@ class CountyTargetsImport implements ToCollection
                         DB::table($this->table)->insert($data);
                     }
                 }
+
+                $partner = $p;
+                $county = $c;
 
                 $locator = $data = ['county_id' => $county->id, 'partner_id' => $partner->id, 'financial_year' => 2021];
 
@@ -73,7 +86,7 @@ class CountyTargetsImport implements ToCollection
                 $data["{$modality}_{$age}_{$gender}"] += (int) $value[4 + $modality_key]; 
             }
         }
-        
+
         $row = DB::table($this->table)->where($locator)->first();
         if($row){
             DB::table($this->table)->where('id', $row->id)->update($data);
