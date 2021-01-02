@@ -94,7 +94,7 @@ class HfrSubmission
                     PRIMARY KEY (`id`),
                     KEY `identifier` (`financial_year`,`partner_id`),
                     KEY `county_id` (`county_id`),
-                    KEY `partner_id` (`partner_id`),
+                    KEY `partner_id` (`partner_id`)
                     ) ENGINE=INNODB DEFAULT CHARSET=latin1
                 ;
         ";
