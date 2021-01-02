@@ -172,6 +172,8 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('tx_mmd', 'HfrController@tx_mmd')->name('tx_mmd');
 	Route::get('prep_new', 'HfrController@prep_new')->name('prep_new');
 	Route::get('vmmc_circ', 'HfrController@vmmc_circ')->name('vmmc_circ');
+
+	Route::get('target_donut/{modality}', 'HfrController@target_donut')->name('target_donut');
 });
 
 

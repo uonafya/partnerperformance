@@ -10,6 +10,7 @@ use App\HfrSubmission;
 class HfrController extends Controller
 {
 	private $my_table = 'd_hfr_submission';
+	private $my_target_table = 't_county_target';
 
 
     public function get_hfr_sum($columns, $name)
@@ -210,6 +211,36 @@ class HfrController extends Controller
 		$data["outcomes"][1]["data"][2] = Lookup::get_percentage($row->above_6m, $total);
 		
 		return view('charts.dual_axis', $data);
+	}
+
+	/*
+		Targets
+	*/
+
+	public function target_donut($modality = 'hts_tst')
+	{
+		$tests = HfrSubmission::columns(true, $modality); 
+		$sql = $this->get_hfr_sum($tests, 'val');
+
+		$results = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->whereRaw(Lookup::date_query())
+			->whereRaw(Lookup::divisions_query())
+			->first();
+
+		$target = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->whereRaw(Lookup::county_target_query())
+			->first();
+
+		$data = Lookup::target_donut();
+
+		$data['outcomes']['data'][0]['y'] = (int) $results->val;
+		$data['outcomes']['data'][1]['y'] = (int) $target->val;
+
+		return view('charts.pie_chart', $data);
 	}
 
 

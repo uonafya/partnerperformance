@@ -111,6 +111,13 @@
 		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
+
+		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
+		$("#target_donut_pos").load("{{ url('hfr/target_donut/hts_tst_pos') }}");
+		$("#target_donut_tx_new").load("{{ url('hfr/target_donut/tx_new') }}");
+		$("#target_donut_vmmc_circ").load("{{ url('hfr/target_donut/vmmc_circ') }}");
+		$("#target_donut_prep_new").load("{{ url('hfr/target_donut/prep_new') }}");
+		$("#target_donut_tx_curr").load("{{ url('hfr/target_donut/tx_curr') }}");
 	}
 
 

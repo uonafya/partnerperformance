@@ -586,6 +586,14 @@ class Lookup
 		return $query;
 	}
 
+	public static function county_target_query()
+	{
+		$query = " 1 ";
+		if(session('filter_county')) $query .= " AND county" . self::set_division_query(session('filter_county'));
+		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner" . self::set_division_query(session('filter_partner'));
+		return $query;		
+	}
+
 	public static function set_division_query($param, $quote=false)
 	{
 		if(is_array($param)){
@@ -750,6 +758,23 @@ class Lookup
 			}
 			$data['outcomes'][$spline]['type'] = "spline";
 		}
+	}
+
+	public static function target_donut()
+	{
+		$data = \Str::random(15);
+		$data['outcomes']['name'] = "";
+		$data['outcomes']['colorByPoint'] = true;
+
+		$data['outcomes']['innerSize'] = '50%';
+
+		$data['outcomes']['data'][0]['name'] = "Results";
+		$data['outcomes']['data'][1]['name'] = "Gap";
+
+		$data['outcomes']['data'][0]['color'] = "#00ff00";
+		$data['outcomes']['data'][1]['color'] = "#ff0000";
+
+		return $data;
 	}
 
 	public static function bars(&$data, $categories=[], $type='column', $colours=[])
