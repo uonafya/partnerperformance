@@ -60,11 +60,11 @@ class CountyTargetsImport implements ToCollection
             if($p != $partner || $c != $county){
 
                 if($partner){
-                    $row = DB::table($this->table)->where($locator)->first();
+                    $row = DB::table($this->table_name)->where($locator)->first();
                     if($row){
-                        DB::table($this->table)->where('id', $row->id)->update($data);
+                        DB::table($this->table_name)->where('id', $row->id)->update($data);
                     }else{
-                        DB::table($this->table)->insert($data);
+                        DB::table($this->table_name)->insert($data);
                     }
                 }
 
@@ -88,11 +88,11 @@ class CountyTargetsImport implements ToCollection
             }
         }
 
-        $row = DB::table($this->table)->where($locator)->first();
+        $row = DB::table($this->table_name)->where($locator)->first();
         if($row){
-            DB::table($this->table)->where('id', $row->id)->update($data);
+            DB::table($this->table_name)->where('id', $row->id)->update($data);
         }else{
-            DB::table($this->table)->insert($data);
+            DB::table($this->table_name)->insert($data);
         }
     }
 }
