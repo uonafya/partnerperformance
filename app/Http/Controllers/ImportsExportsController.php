@@ -19,6 +19,7 @@ use App\Imports\TargetsImport;
 use App\Imports\FacilityEditImport;
 use App\Imports\HfrSubmissionImport;
 use App\Imports\HfrUsaidSubmissionImport;
+use App\Imports\CountyTargetsImport;
 
 
 use App\Exports\DispensingExport;
@@ -66,6 +67,7 @@ class ImportsExportsController extends Controller
 			'facility-edit' => FacilityEditImport::class,
 			'hfr' => HfrSubmissionImport::class,
 			'hfr-usaid' => HfrUsaidSubmissionImport::class,
+			'county-target' => CountyTargetsImport::class,
 		];
 
 		$c = $classes[$path];

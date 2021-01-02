@@ -64,7 +64,49 @@ class HfrSubmission
         DB::statement($sql);
     }
 
-    public static function columns($use_session=false, $filter_column=null, $filter_age_category=null, $filter_gender=null)
+    public static function create_target_table()
+    {       
+        $table_name = 't_county_target';
+        $sql = "CREATE TABLE `{$table_name}` (
+                    id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `county_id` TINYINT unsigned DEFAULT '0',
+                    `partner_id` int(10) unsigned DEFAULT '0',
+                    `financial_year` smallint(4) unsigned DEFAULT '0',
+                    `gbv` int(10) unsigned DEFAULT NULL,
+                    `pep` int(10) unsigned DEFAULT NULL,
+                    `physical_emotional_violence` int(10) unsigned DEFAULT NULL,
+                    `sexual_violence_post_rape_care` int(10) unsigned DEFAULT NULL,
+                    ";
+
+        foreach (self::$hfr_columns as $hfr_column) {
+            if($hfr_column == 'tx_mmd') continue;
+            foreach (self::$age_groups as $age_group) {
+                foreach (self::$genders as $gender) {
+                    if($hfr_column == 'vmmc_circ' && $gender == 'Female') continue;
+
+                    $col = $hfr_column . '_' . $age_group . '_' . strtolower($gender);
+                    $sql .= " `{$col}` int(10) UNSIGNED DEFAULT 0, ";
+                }
+            }
+        }
+
+        $sql .= "                    
+                    PRIMARY KEY (`id`),
+                    KEY `identifier` (`financial_year`,`partner_id`),
+                    KEY `county_id` (`county_id`),
+                    KEY `partner_id` (`partner_id`),
+                    ) ENGINE=INNODB DEFAULT CHARSET=latin1
+                ;
+        ";
+
+
+        DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
+        DB::statement($sql);
+    }
+
+
+
+    public static function columns($use_session=false, $filter_column=null, $filter_age_category=null, $filter_gender=null, $not_mmd=false)
     {
         if($use_session && !$filter_age_category) $filter_age_category = session('filter_age_category_id');
         if($use_session && !$filter_gender) $filter_gender = session('filter_gender');
@@ -96,6 +138,8 @@ class HfrSubmission
         	}
         }
 
+        if(!$not_mmd) return $columns;
+
         $hfr_column = 'tx_mmd';
 
         foreach (self::$mmd as $mmd_key => $mmd) {
@@ -126,6 +170,30 @@ class HfrSubmission
         	}
         }
         return $columns;
+    }
+
+    public function create_target_table()
+    {
+        $sql = "CREATE TABLE `t_county_target` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `county_id` TINYINT unsigned DEFAULT '0',
+            `financial_year` smallint(4) unsigned DEFAULT '0',
+            `gbv` int(10) unsigned DEFAULT NULL,
+            `pep` int(10) unsigned DEFAULT NULL,
+            `physical_emotional_violence` int(10) unsigned DEFAULT NULL,
+            `sexual_violence_post_rape_care` int(10) unsigned DEFAULT NULL,
+            `total_gender_gbv` int(10) unsigned DEFAULT NULL,
+            `hts_tst` int(10) unsigned DEFAULT NULL,
+            `hts_tst_pos` int(10) unsigned DEFAULT NULL,
+            `tx_new` int(10) unsigned DEFAULT NULL,
+            `vmmc_circ` int(10) unsigned DEFAULT NULL,
+            `prep_new` int(10) unsigned DEFAULT NULL,
+            `tx_curr` int(10) unsigned DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            KEY `identifier` (`county_id`,`financial_year`),
+            KEY `county_id` (`county_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=latin1";
+
     }
 
 
