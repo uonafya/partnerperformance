@@ -10,7 +10,7 @@ class UsaidGBVExport extends BaseExport
 	protected $table_name;
 	protected $active_date;
 
-    function __construct($request)
+    function __construct()
     {
     	parent::__construct();
     	$this->table_name = 'd_gender_based_violence';
