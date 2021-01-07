@@ -221,6 +221,8 @@ Route::post('download-gbv/{path}', 'ImportsExportsController@export_any');
 */
 Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
+	Route::get('download/{path}', 'ImportsExportsController@export_any');
+
 	Route::prefix('target')->name('target')->group(function(){
 		Route::post('get_data', 'OtzController@get_data')->name('get_data');
 		Route::post('set_target', 'OtzController@set_target')->name('set_target');
