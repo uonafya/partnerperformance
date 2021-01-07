@@ -33,6 +33,7 @@ use App\Exports\GBVExport;
 use App\Exports\TargetsExport;
 use App\Exports\QuarterlyReportGBV;
 use App\Exports\HfrSubmissionExport;
+use App\Exports\UsaidGBVExport;
 
 use App\Exports\GenExport;
 
@@ -122,6 +123,7 @@ class ImportsExportsController extends Controller
 			'targets' => TargetsExport::class,
 			'quarterly-gbv' => QuarterlyReportGBV::class,
 			'hfr' => HfrSubmissionExport::class,
+			'usaid-gbv' => UsaidGBVExport::class,
 		];
 
 		$c = $classes[$path];

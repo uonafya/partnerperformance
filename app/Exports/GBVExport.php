@@ -68,8 +68,7 @@ class GBVExport extends BaseExport
 			->join('view_facilities', 'view_facilities.id', '=', $this->table_name . '.facility')
 			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
-			->where('period_id', $this->period_id)
-			->where('partner', $this->partner->id)
+			->where(['period_id' => $this->period_id, 'partner' => $this->partner->id])
 			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->first();
 
@@ -85,8 +84,7 @@ class GBVExport extends BaseExport
 			->join('view_facilities', 'view_facilities.id', '=', $this->table_name . '.facility')
 			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
-			->where('period_id', $this->period_id)
-			->where('partner', $this->partner->id)
+			->where(['period_id' => $this->period_id, 'partner' => $this->partner->id])
 			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			// ->when($facilities, function($query) use ($facilities){
 			// 	return $query->whereIn('view_facilities.id', $facilities);
