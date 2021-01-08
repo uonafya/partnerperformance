@@ -572,6 +572,24 @@ class Surge
         $zip->close(); 
     }
 
+    public static function full_gbv_export()
+    {
+        ini_set('memory_limit', -1);
+        $zip = new \ZipArchive();
+
+        if ($zip->open(storage_path('app/gbv_fy_2020.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
+            die ("Could not open archive");
+        }
+
+        $periods = Period::where('financial_year', 2020)->get();
+        foreach ($periods as $period) {
+            $filename = 'usaid_gbv_fy_20_' . $period->month_name . '.csv';
+            \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\UsaidGBVExport($period), $filename);
+            $zip->addFile(storage_path('app/' . $filename));
+        }
+        $zip->close(); 
+    }
+
 
     public function get_sum($columns, $name)
     {

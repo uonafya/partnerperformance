@@ -57,6 +57,10 @@ Artisan::command('notify', function () {
 	\App\Other::send_pns();
 })->describe('Send emails to all partners.');
 
+Artisan::command('gbv:full-export', function () {
+	\App\Surge::full_gbv_export();
+})->describe('Surges export full.');
+
 Artisan::command('surges', function () {
 	\App\Surge::surges();
 })->describe('Surges.');
