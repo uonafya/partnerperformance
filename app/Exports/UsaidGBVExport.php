@@ -9,6 +9,7 @@ class UsaidGBVExport extends BaseExport
 {
 	protected $table_name;
 	protected $active_date;
+	protected $period;
 
     function __construct($period)
     {
@@ -17,6 +18,7 @@ class UsaidGBVExport extends BaseExport
 		$this->fileName = "USAID_GBV_data_FY_2020.xlsx";
 
 		// $this->active_date = '2019-10-01';
+		$this->period = $period;
 		$this->active_date = $period->active_date;
 
 		$modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
@@ -45,7 +47,7 @@ class UsaidGBVExport extends BaseExport
 			->join('view_facilities', 'view_facilities.id', '=', $this->table_name . '.facility')
 			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
-			->where(['period_id' => $this->period_id, ])
+			->where(['period_id' => $this->period->id, ])
 			->whereNotNull('dateupdated')
 			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->first();
@@ -60,7 +62,7 @@ class UsaidGBVExport extends BaseExport
 			->join('view_facilities', 'view_facilities.id', '=', $this->table_name . '.facility')
 			->join('periods', 'periods.id', '=', $this->table_name . '.period_id')
 			->selectRaw($this->sql)
-			->where(['period_id' => $this->period_id, ])
+			->where(['period_id' => $this->period->id, ])
 			->whereNotNull('dateupdated')
 			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->orderBy('period_id', 'asc')
