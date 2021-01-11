@@ -67,7 +67,8 @@ class UsaidIndicatorExport extends BaseExport implements WithMapping
 			->selectRaw($this->sql)
 			->where(['funding_agency_id' => 1, 'period_id' => $this->period->id])
 			->whereIn('county', $this->counties_array)		
-			->orderBy('name', 'asc')
+			->orderBy('partners.name', 'asc')
+			->orderBy('countys.name', 'asc')
 			->orderBy('p_early_indicators.id', 'asc');
     }
 }
