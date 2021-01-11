@@ -59,7 +59,11 @@ Artisan::command('notify', function () {
 
 Artisan::command('gbv:full-export', function () {
 	\App\Surge::full_gbv_export();
-})->describe('Surges export full.');
+})->describe('GBV export full.');
+
+Artisan::command('indicator:full-export', function () {
+	\App\Surge::full_indicator_export();
+})->describe('Indicator export full.');
 
 Artisan::command('surges', function () {
 	\App\Surge::surges();
