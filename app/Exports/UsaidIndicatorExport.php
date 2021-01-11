@@ -60,8 +60,6 @@ class UsaidIndicatorExport extends BaseExport implements WithMapping
 
     public function query()
     {		
-    	$financial_year = $this->financial_year;
-
 		return DB::table('p_early_indicators')
 			->join('countys', 'countys.id', '=', 'p_early_indicators.county')
 			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
