@@ -16,6 +16,7 @@ class UsaidIndicatorExport extends BaseExport implements WithMapping
     function __construct($period)
     {
     	parent::__construct();
+    	$this->period = $period;
 		// $this->fileName = $this->partner->download_name . '_FY_' . $this->financial_year . '_early_warning_indicators' . '.xlsx';
 
 		$this->counties_array = DB::table('view_facilitys')->select('county')->groupBy('county')->get()->pluck(['county'])->toArray();
@@ -42,7 +43,7 @@ class UsaidIndicatorExport extends BaseExport implements WithMapping
 			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
 			->join('periods', 'periods.id', '=', 'p_early_indicators.period_id')
 			->selectRaw($this->sql)
-			->where(['funding_agency_id' => 1, 'period_id' => $period->id])
+			->where(['funding_agency_id' => 1, 'period_id' => $this->period->id])
 			->whereIn('county', $this->counties_array)
 			->first();
 
@@ -66,7 +67,7 @@ class UsaidIndicatorExport extends BaseExport implements WithMapping
 			->join('partners', 'partners.id', '=', 'p_early_indicators.partner')
 			->join('periods', 'periods.id', '=', 'p_early_indicators.period_id')
 			->selectRaw($this->sql)
-			->where(['funding_agency_id' => 1, 'period_id' => $period->id])
+			->where(['funding_agency_id' => 1, 'period_id' => $this->period->id])
 			->whereIn('county', $this->counties_array)		
 			->orderBy('name', 'asc')
 			->orderBy('p_early_indicators.id', 'asc');
