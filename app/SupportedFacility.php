@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class SupportedFacility extends BaseModel
 {
+	protected $dates = ['start_of_support', 'end_of_support'];
 
 	public function partner()
 	{
-		return $this->hasMany('App\Partner');
+		return $this->belongsTo('App\Partner');
 	}
 
 	public function facility()
 	{
-		return $this->hasMany('App\Facility');
+		return $this->belongsTo('App\Facility');
 	}
 
 	public function fill_original()
