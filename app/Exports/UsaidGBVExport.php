@@ -33,12 +33,13 @@ class UsaidGBVExport extends BaseExport
 			->orderBy('id', 'asc')
 			->get();
 
-		$sql = "countyname as County, Subcounty, partnername AS Partner, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`,  year AS `Calendar Year`, month AS `Month`, MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name` ";
+		$this->sql = "countyname as County, Subcounty, partnername AS Partner, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`,  year AS `Calendar Year`, month AS `Month`, MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name` ";
 
 		foreach ($columns as $column) {
-			$sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
+			$alias = $column->alias_name,
+			$alias = str_replace('GBV - ', '', $alias);
+			$this->sql .= ", `{$column->column_name}` AS `{$alias}`";
 		}
-		$this->sql = $sql;
     }
 
     public function headings() : array
