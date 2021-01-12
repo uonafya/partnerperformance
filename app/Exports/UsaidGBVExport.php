@@ -11,7 +11,7 @@ class UsaidGBVExport extends BaseExport
 	protected $active_date;
 	protected $period;
 
-    function __construct($period)
+    function __construct($period, $modality=null)
     {
     	parent::__construct();
     	$this->table_name = 'd_gender_based_violence';
@@ -21,7 +21,9 @@ class UsaidGBVExport extends BaseExport
 		$this->period = $period;
 		$this->active_date = $period->active_date;
 
-		$modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
+		$modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->when($modality, function($query) use($modality){
+			return $query->where('id', $modality->id);
+		})->get()->pluck('id')->toArray();
 
 		$columns = \App\SurgeColumn::when($modalities, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
