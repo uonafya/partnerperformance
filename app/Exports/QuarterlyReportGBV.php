@@ -104,8 +104,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
 
 		foreach ($gbv as $key => $column) {
             $alias = $column->column_name;
-            $alias = str_replace('gbv_', '', $alias);
-            // $this->sql .= ", `{$column->column_name}` AS `{$alias}`";
+            // $alias = str_replace('gbv_', '', $alias);
 			$sql .= "SUM(`{$column->column_name}`) AS `{$alias}`, ";
 		}
         $sql = substr($sql, 0, -2);
