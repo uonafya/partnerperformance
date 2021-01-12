@@ -73,7 +73,7 @@ class ViolenceController extends Controller
 		Lookup::bars($data, ['Started PEP', 'Completed PEP']);
 
 		foreach ($rows as $key => $row) {
-			$data['categories'][$key] = Lookup::get_category($row);
+			$data['categories'][$key] = $row->name;
 			$data["outcomes"][0]["data"][$key] = (int) $row->pep_number;
 			$data["outcomes"][1]["data"][$key] = (int) $row->completed_pep;
 		}

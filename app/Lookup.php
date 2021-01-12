@@ -39,9 +39,10 @@ class Lookup
 		return [3186, 3317, 3350, 5273, 6817, 7236, 7238, 13038, 13040, 13040, 13041, 1418, 5272, 5595, 2386, 3433, 5539, 3465, 7239, 7237, 3490, 1275, 3515, 7143, 1816, ];
 	}
 
-	public static function get_category($row)
+	public static function get_category($row, $force_filter=null)
 	{
 		$groupby = session('filter_groupby', 1);
+		if($force_filter) $groupby = $force_filter;
 		if($groupby > 9){
 			if($groupby == 10) return 'Calendar Year ' . $row->year;
 			if($groupby == 11) return 'FY ' . $row->financial_year;
