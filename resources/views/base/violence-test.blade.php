@@ -36,6 +36,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    PEP Reported
+		    </div>
+			<div class="panel-body" id="modality_reported">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 @endsection
 
@@ -48,9 +61,11 @@
 	{
 		$("#new_reporting").html("<center><div class='loader'></div></center>");
 		$("#modality_reported").html("<center><div class='loader'></div></center>");
+		$("#pep_reported").html("<center><div class='loader'></div></center>");
 
 		$("#new_reporting").load("{{ url('violence/new_reporting') }}");
 		$("#modality_reported").load("{{ url('violence/modality_reported') }}");
+		$("#pep_reported").load("{{ url('violence/pep_reported') }}");
 	}
 
 

@@ -46,6 +46,41 @@ class ViolenceController extends Controller
 		dd($rows);
 	}
 
+	public function pep_reported()
+	{
+		$pep_number = SurgeColumnView::where('modality', 'pep_number')
+			->when(true, $this->surge_columns_callback(false))
+			->get();
+
+		$completed_pep = SurgeColumnView::where('modality', 'completed_pep')
+			->when(true, $this->surge_columns_callback(false))
+			->get();
+
+		$sql = $this->get_sum($pep_number, 'pep_number') . ', ' . $this->get_sum($completed_pep, 'completed_pep');
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_callback('sexual', null, '', 1))
+			->get();
+
+
+		$data['div'] = \Str::random(15);
+		$data['suffix'] = '';
+		$data['yAxis'] = 'PEP Numbers';
+		// $data['stacking'] = true;
+		// $data['point_percentage'] = true;
+		Lookup::bars($data, ['Started PEP', 'Completed PEP']);
+
+		foreach ($rows as $key => $row) {
+			$data['categories'][$key] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$key] = (int) $row->pep_number;
+			$data["outcomes"][1]["data"][$key] = (int) $row->completed_pep;
+		}
+		return view('charts.line_graph', $data);
+
+	} 
+
 
 	public function new_reporting()
 	{
@@ -53,7 +88,7 @@ class ViolenceController extends Controller
 
 		$partners = DB::table('partners')->where(['funding_agency_id' => 1, 'flag' => 1])->get();
 
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 		$data['yAxis'] = 'Number of Facilities Reported';
 		$data['suffix'] = '';
 		// $data['chart_title'] = "Reporting For {$period->year}, {$period->month_name} " ;
@@ -102,7 +137,7 @@ class ViolenceController extends Controller
 
 		$partners = DB::table('partners')->where(['funding_agency_id' => 1, 'flag' => 1])->get();
 
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 		$data['yAxis'] = 'Number of Facilities Reported';
 		$data['suffix'] = '';
 		$data['chart_title'] = "Reporting For {$period->year}, {$period->month_name} " ;
@@ -163,7 +198,7 @@ class ViolenceController extends Controller
 		if($time_percentage > 100) $time_percentage = 100;
 		$data['chart_title'] = "Cumulative Achievement at {$time_percentage}% of time";
 
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 
 		$data['outcomes']['name'] = "";
 		$data['outcomes']['colorByPoint'] = true;
@@ -231,7 +266,7 @@ class ViolenceController extends Controller
 		}
 
 
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['stacking'] = true;
@@ -293,7 +328,7 @@ class ViolenceController extends Controller
 		if($time_percentage > 100) $time_percentage = 100;
 		$data['chart_title'] = "Performance at {$time_percentage}% of time";
 
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 		$data['suffix'] = '%';
 		$data['yAxis'] = 'Gender Based Violence Cases';
 		$data['yAxis2'] = 'Achievement Percentage';
@@ -348,7 +383,7 @@ class ViolenceController extends Controller
 			->when(true, $this->get_callback('sexual'))
 			->get();
 
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 		$data['div_class'] = 'col-md-6';
 		$data['suffix'] = '';
 		$data['yAxis'] = 'Gender Based Violence Cases';
@@ -383,7 +418,7 @@ class ViolenceController extends Controller
 		$view_data = view('charts.line_graph', $data)->render() . ' ';
 
 		Lookup::bars($data, ['Sexual Violence', 'Physical/Emotional Violence'], 'column');
-		$data['div'] = str_random(15);	
+		$data['div'] = \Str::random(15);	
 		unset($data['stacking']);
 		$data['suffix'] = '%';
 		$data['stacking_percent'] = true;
@@ -412,7 +447,7 @@ class ViolenceController extends Controller
 			->when(true, $this->get_callback('sexual'))
 			->get();
 
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 		$data['data_labels'] = true;
 		$data['suffix'] = '%';
 		$data['yAxis'] = 'PEP';
@@ -453,7 +488,7 @@ class ViolenceController extends Controller
 	public function age_gender()
 	{
 		$groupby = session('filter_groupby', 1);
-		$data['div'] = str_random(15);
+		$data['div'] = \Str::random(15);
 		$data['yAxis'] = "Gender Based Violence By Age";
 		$data['suffix'] = '%';
 		$data['stacking_percent'] = true;

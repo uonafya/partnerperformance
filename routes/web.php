@@ -153,6 +153,7 @@ Route::prefix('gbv')->name('gbv.')->group(function(){
 });
 
 Route::prefix('violence')->name('violence.')->group(function(){
+	Route::get('pep_reported', 'ViolenceController@pep_reported')->name('pep_reported');
 	Route::get('reporting', 'ViolenceController@reporting')->name('reporting');
 	Route::get('cumulative_pie', 'ViolenceController@cumulative_pie')->name('cumulative_pie');
 	Route::get('monthly_achievement', 'ViolenceController@monthly_achievement')->name('monthly_achievement');
