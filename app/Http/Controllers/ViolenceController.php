@@ -61,7 +61,7 @@ class ViolenceController extends Controller
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback($this->my_table))
 			->selectRaw($sql)
-			->when(true, $this->get_callback('sexual', null, '', 1))
+			->when(true, $this->get_callback('pep_number', null, '', 1))
 			->get();
 
 
