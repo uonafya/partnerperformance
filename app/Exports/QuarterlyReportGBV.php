@@ -137,6 +137,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         	foreach ($gbv as $column) {
         		$column_name = $column->column_name;
                 $results = $row->$column_name ?? '0';
+                $modality_name = str_replace('GBV - ', '', $column->modality_name);
                 // if(!is_integer($results)) $results = 0;
         		$data[] = [
         			date('Y-m-d'),
@@ -147,7 +148,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         			$row->countyname . ' County',
         			$column->age_name,
         			\Str::ucfirst($column->gender),
-        			$column->modality_name,
+        			$modality_name,
         			"$results",
         			'',
         		];
