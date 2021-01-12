@@ -577,7 +577,7 @@ class Surge
         ini_set('memory_limit', -1);
         $zip = new \ZipArchive();
 
-        if ($zip->open(storage_path('app/gbv_fy_2020.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
+        if ($zip->open(storage_path('app/gbv_fy_2020_2.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
             die ("Could not open archive");
         }
 
