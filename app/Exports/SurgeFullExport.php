@@ -26,7 +26,7 @@ class SurgeFullExport extends BaseExport
 		$this->sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, partnername AS Partner, name AS `Facility`, start_date, end_date";
 
 		foreach ($columns as $column) {
-			$alias = $column->alias_name,
+			$alias = $column->alias_name;
 			$alias = str_replace('GBV - ', '', $alias);
 			$this->sql .= ", `{$column->column_name}` AS `{$alias}`";
 		}
