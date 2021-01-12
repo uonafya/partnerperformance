@@ -42,7 +42,7 @@
 		    <div class="panel-heading">
 			    PEP Reported
 		    </div>
-			<div class="panel-body" id="modality_reported">
+			<div class="panel-body" id="pep_reported">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
