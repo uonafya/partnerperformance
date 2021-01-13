@@ -37,13 +37,13 @@ Artisan::command('truncate:tables', function () {
 	\App\Synch::truncate_tables();
 })->describe('Truncate tables.');
 
-Artisan::command('insert:rows {year?}', function ($year=null) {
+/*Artisan::command('insert:rows {year?}', function ($year=null) {
 	\App\Insert::insert_rows($year);
 
-	/*\App\Synch::insert_rows($year);
-	\App\Merger::insert_rows($year);
-	\App\Other::partner_indicators_insert($year);*/
-})->describe('Insert rows for data tables.');
+	// \App\Synch::insert_rows($year);
+	// \App\Merger::insert_rows($year);
+	// \App\Other::partner_indicators_insert($year);
+})->describe('Insert rows for data tables.');*/
 
 Artisan::command('populate {year?}', function ($year=null) {
 	\App\Synch::populate($year);

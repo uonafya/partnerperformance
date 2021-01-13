@@ -8,6 +8,8 @@ class SupportedFacility extends BaseModel
 {
 	protected $dates = ['start_of_support', 'end_of_support'];
 
+    public $timestamps = true;
+
 	public function partner()
 	{
 		return $this->belongsTo('App\Partner');

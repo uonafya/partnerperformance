@@ -22,9 +22,10 @@ class FacilityEditImport implements OnEachRow, WithHeadingRow
     {
     	$row = json_decode(json_encode($row->toArray(null, true)));
     	// dd($row);
-    	if(!is_numeric($row->mfl_code) || (is_numeric($row->mfl_code) && $row->mfl_code < 10000)) return;
+        $mfl_code = preg_replace("/[^<0-9.]/", "", $row->mfl_code);
+    	if(!is_numeric($mfl_code) || (is_numeric($mfl_code) && $mfl_code < 10000)) return;
 
-		$fac = Facility::where('facilitycode', $row->mfl_code)->first();
+		$fac = Facility::where('facilitycode', $mfl_code)->first();
 		if(!$fac) return;
 
 		$fac->facility_uid = $row->facility_uid ?? $row->facility_or_community_uid;
