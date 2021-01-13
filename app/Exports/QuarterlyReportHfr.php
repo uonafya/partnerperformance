@@ -69,7 +69,8 @@ class QuarterlyReportHfr implements FromArray, Responsable, WithHeadings, Should
     {
         $a = 'Reporting Period (FY & Q)';
         if($this->filtered_weeks) $a = 'Reporting Period (FY & Week)';
-    	return ['Date', $a, 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'Violence Type & PEP Completion', 'Results', 'Target'];
+    	// return ['Date', $a, 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'HFR', 'Results', 'Target'];
+        return ['HFR Month/Week Start Date', 'Facility or Community Name', 'Facility or Community UID',  'Mechanism ID', 'Mechanism or Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'HFR', 'Results', 'Target'];
     }
 
 
@@ -105,11 +106,12 @@ class QuarterlyReportHfr implements FromArray, Responsable, WithHeadings, Should
             })
             ->where(['funding_agency_id' => 1])
         	->selectRaw($sql)
-        	->addSelect('partnername', 'mech_id', 'countyname')
+        	->addSelect('partnername', 'mech_id', 'countyname', 'name', 'facility_uid')
             ->when($this->filtered_weeks, function($query) {
                 return $query->addSelect('week_id')->groupBy('week_id');
             })
-        	->groupBy('partner', 'county')
+        	// ->groupBy('partner', 'county')
+            ->groupBy("{$this->table_name}.facility")
         	->get();
 
         $data = [];
@@ -129,8 +131,10 @@ class QuarterlyReportHfr implements FromArray, Responsable, WithHeadings, Should
         		$data[] = [
         			// date('Y-m-d'),
         			$start_date,
-                    $reporting_week,
-        			$row->mech_id,
+                    // $reporting_week,
+        			$row->name,
+                    $row->facility_uid,
+                    $row->mech_id,
         			$row->partnername,
         			'Kenya',
         			$row->countyname . ' County',
