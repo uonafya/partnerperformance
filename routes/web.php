@@ -215,6 +215,9 @@ Route::get('gbv/download-report', 'GeneralController@download_gbv_report');
 // Route::get('gbv/download-report', 'GeneralController@download_gbv_report');
 Route::post('download-gbv/{path}', 'ImportsExportsController@export_any');
 
+Route::get('hfr/download-report', 'GeneralController@download_hfr_report');
+Route::post('download-hfr/{path}', 'ImportsExportsController@export_any');
+
 
 
 /*

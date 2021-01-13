@@ -304,6 +304,17 @@ class GeneralController extends Controller
 		return view('forms.download_gbv_quarterly_report', $data);
 	}
 
+	public function download_hfr_report()
+	{
+		$data['financial_years'] = Period::selectRaw('distinct financial_year')->where('financial_year', '>', 2020)->get();
+		$data['weeks'] = Week::where('financial_year', '>', 2020)->get();
+		$data['partners'] = \App\Partner::where(['funding_agency_id' => 1])->get();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_hfr_quarterly_report', $data);
+	}
+
 	public function upload_any($path, $modality=null)
 	{
 		$user = auth()->user();

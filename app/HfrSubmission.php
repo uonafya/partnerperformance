@@ -133,7 +133,9 @@ class HfrSubmission
 
                     $usaid_name = $hfr_column . ($age_group == 'below_15' ? 'u15' : 'o15') . ($gender == 'Male' ? 'm' : 'f');
 
-	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name');
+                    $modality = $hfr_column;
+
+	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name', 'gender', 'age_group', 'modality');
 	        	}
         	}
         }
@@ -165,7 +167,9 @@ class HfrSubmission
                     else if($mmd == '3_5m') $usaid_name .= '35mo';
                     else if($mmd == 'above_6m') $usaid_name .= 'o6mo';
 
-	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name');
+                    $modality = $hfr_column . ' ' . $mmd;
+
+	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name', 'gender', 'age_group', 'modality');
 	        	}
         	}
         }
