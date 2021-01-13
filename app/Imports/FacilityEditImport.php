@@ -14,7 +14,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class FacilityEditImport implements OnEachRow, WithHeadingRow
 {
-
     private $data_columns;
     private $table_name;
 
