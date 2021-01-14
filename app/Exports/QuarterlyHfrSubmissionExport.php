@@ -60,7 +60,7 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
         else{
             $weeks = Week::where(['financial_year' => $financial_year, 'quarter' => $quarter])->get();
             // $this->week = $weeks->first();
-            $this->week = Week::where(['financial_year' => $financial_year, 'quarter' => $quarter])->orderBy('')->first();
+            $this->week = Week::where(['financial_year' => $financial_year, 'quarter' => $quarter])->orderBy('start_date', 'desc')->first();
             $this->reporting_week = 'FY ' . $this->week->yr . ' Q' . $quarter;
             $this->fileName = $this->reporting_week . ' HFR Quarterly Report.xlsx';
             $this->weeks_array = $weeks->pluck('id')->toArray();
