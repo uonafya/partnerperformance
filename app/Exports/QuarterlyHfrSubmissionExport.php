@@ -135,6 +135,8 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
                 $start_date = $actual_weeks->where('id', $row->week_id)->first()->start_date ?? $start_date;
             }
 
+            $row = collect($row);
+
             $arr = $row->toArray();
 
             if($this->filtered_weeks) array_pop($arr);
