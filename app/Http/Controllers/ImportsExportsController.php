@@ -33,6 +33,7 @@ use App\Exports\GBVExport;
 use App\Exports\TargetsExport;
 use App\Exports\QuarterlyReportGBV;
 use App\Exports\QuarterlyReportHfr;
+use App\Exports\QuarterlyHfrSubmissionExport;
 use App\Exports\HfrSubmissionExport;
 use App\Exports\UsaidGBVExport;
 
@@ -123,7 +124,7 @@ class ImportsExportsController extends Controller
 			'gbv' => GBVExport::class,
 			'targets' => TargetsExport::class,
 			'quarterly-gbv' => QuarterlyReportGBV::class,
-			'quarterly-hfr' => QuarterlyReportHfr::class,
+			'quarterly-hfr' => QuarterlyHfrSubmissionExport::class,
 			'hfr' => HfrSubmissionExport::class,
 			'usaid-gbv' => UsaidGBVExport::class,
 		];
