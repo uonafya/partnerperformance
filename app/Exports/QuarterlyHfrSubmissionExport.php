@@ -9,15 +9,15 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-use App\Http\Controllers\Controller;
-
 use App\HfrSubmission;
 use App\Week;
 use App\Lookup;
 
 use DB;
 
-class QuarterlyReportHfr implements FromArray, Responsable, WithHeadings, ShouldAutoSize
+
+// class QuarterlyHfrSubmissionExport extends BaseExport
+class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadings, ShouldAutoSize
 {
 	use Exportable;
 	// protected $writerType = Excel::CSV;
@@ -28,13 +28,15 @@ class QuarterlyReportHfr implements FromArray, Responsable, WithHeadings, Should
 	protected $weeks_array;
     protected $filtered_weeks;
 
+    protected $sql;
+    protected $excel_headings;
     protected $modalities;
     protected $ages;
     protected $gender;
     protected $partners;
 
 
-    public function __construct($request)
+    function __construct($request)
     {
         $this->table_name = 'd_hfr_submission';
         $financial_year = $request->input('financial_year', date('Y'));
@@ -57,21 +59,35 @@ class QuarterlyReportHfr implements FromArray, Responsable, WithHeadings, Should
         }
         else{
             $weeks = Week::where(['financial_year' => $financial_year, 'quarter' => $quarter])->get();
-            $this->week = $weeks->first();
+            // $this->week = $weeks->first();
+            $this->week = Week::where(['financial_year' => $financial_year, 'quarter' => $quarter])->orderBy('')->first();
             $this->reporting_week = 'FY ' . $this->week->yr . ' Q' . $quarter;
             $this->fileName = $this->reporting_week . ' HFR Quarterly Report.xlsx';
             $this->weeks_array = $weeks->pluck('id')->toArray();
 
         }
+
+		$sql = "week_id, name, facility_uid, mech_id, country, countyname ";
+
+		$excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'OU', 'PSNU', ];
+
+		$columns = HfrSubmission::columns();
+
+		foreach ($columns as $key => $column) {
+			$sql .= ', ' . $column['column_name'];
+			$excel_headings[] = $column['quarterly_name'];
+		}
+
+		$this->sql = $sql;
+		$this->excel_headings = $excel_headings;
     }
 
     public function headings() : array
     {
-        $a = 'Reporting Period (FY & Q)';
-        if($this->filtered_weeks) $a = 'Reporting Period (FY & Week)';
-    	// return ['Date', $a, 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'HFR', 'Results', 'Target'];
-        return ['HFR Month/Week Start Date', 'Facility or Community Name', 'Facility or Community UID',  'Mechanism ID', 'Mechanism or Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'HFR', 'Results', 'Target'];
+    	return $this->excel_headings;
     }
+
+
 
 
     public function  array(): array
@@ -124,29 +140,20 @@ class QuarterlyReportHfr implements FromArray, Responsable, WithHeadings, Should
                 $start_date = $actual_weeks->where('id', $row->week_id)->first()->start_date ?? $start_date;
             }
 
-        	foreach ($columns as $column) {
-        		$column_name = $column['column_name'];
-                $results = $row->$column_name ?? '0';
-
-        		$data[] = [
-        			// date('Y-m-d'),
-        			$start_date,
-                    // $reporting_week,
-        			$row->name,
-                    $row->facility_uid,
-                    $row->mech_id,
-        			$row->partnername,
-        			'Kenya',
-        			$row->countyname . ' County',
-        			$column['age_group'],
-        			\Str::ucfirst($column['gender']),
-        			$column['modality'],
-        			"$results",
-        			'',
-        		];
-        	}
+            $data[] = $row->toArray();
         }
-        // dd($data);
         return $data;
+    }
+
+    public function query()
+    {		
+		return DB::table($this->table_name)
+        	->join('view_facilities', 'view_facilities.id', '=', "{$this->table_name}.facility")
+			->join('weeks', 'weeks.id', '=', $this->table_name . '.week_id')
+            ->whereRaw(Lookup::get_active_partner_query($this->week->start_date))
+			->selectRaw($this->sql)
+			->where(['partner' => $this->partner->id, 'week_id' => $this->week->id])
+			->orderBy('name', 'asc')
+			->orderBy("{$this->table_name}.id", 'asc');
     }
 }

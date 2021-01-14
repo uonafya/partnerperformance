@@ -135,7 +135,10 @@ class HfrSubmission
 
                     $modality = $hfr_column;
 
-	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name', 'gender', 'age_group', 'modality');
+                    $quarterly_name = strtoupper($hfr_column) . ' ' . ($age_group == 'below_15' ? '<15' : '+15') . ' ' . $gender;
+                    $quarterly_name = str_replace('PREP', 'PrEP', $quarterly_name);
+
+	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name', 'gender', 'age_group', 'modality', 'quarterly_name');
 	        	}
         	}
         }
@@ -169,7 +172,9 @@ class HfrSubmission
 
                     $modality = $hfr_column . ' ' . $mmd;
 
-	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name', 'gender', 'age_group', 'modality');
+                    $quarterly_name = strtoupper($hfr_column) . ' ' . ($age_group == 'below_15' ? '<15' : '+15') . ' ' . $gender . ' ' . $mmd_key;
+
+	        		$columns[] = compact('excel_name', 'column_name', 'alias_name', 'usaid_name', 'gender', 'age_group', 'modality', 'quarterly_name');
 	        	}
         	}
         }
