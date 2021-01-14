@@ -67,16 +67,19 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
 
         }
 
-		$sql = "week_id, name, facility_uid, mech_id, country, countyname ";
+		$sql = "name, facility_uid, mech_id, country, countyname, ";
 
 		$excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'OU', 'PSNU', ];
 
 		$columns = HfrSubmission::columns();
 
 		foreach ($columns as $key => $column) {
-			$sql .= ', ' . $column['column_name'];
+
+			$sql .= "SUM(`{$column['column_name']}`) AS `{$column['column_name']}`, ";
+			// $sql .= ', ' . $column['column_name'];
 			$excel_headings[] = $column['quarterly_name'];
 		}
+        $sql = substr($sql, 0, -2);
 
 		$this->sql = $sql;
 		$this->excel_headings = $excel_headings;
@@ -105,14 +108,6 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
             $actual_weeks =  Week::whereIn('id', $this->weeks_array)->get();
         }
 
-		$sql = '';
-
-		foreach ($columns as $key => $column) {
-            $alias = $column['column_name'];
-			$sql .= "SUM(`{$column['column_name']}`) AS `{$alias}`, ";
-		}
-        $sql = substr($sql, 0, -2);
-
         $rows = DB::table($this->table_name)
         	->join('view_facilities', 'view_facilities.id', '=', "{$this->table_name}.facility")
             ->whereRaw(Lookup::get_active_partner_query($this->week->start_date))
@@ -121,8 +116,8 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
                 return $query->whereIn('partner', $partners);
             })
             ->where(['funding_agency_id' => 1])
-        	->selectRaw($sql)
-        	->addSelect('partnername', 'mech_id', 'countyname', 'name', 'facility_uid')
+        	->selectRaw($this->sql)
+        	// ->addSelect('partnername', 'mech_id', 'countyname', 'name', 'facility_uid')
             ->when($this->filtered_weeks, function($query) {
                 return $query->addSelect('week_id')->groupBy('week_id');
             })
@@ -140,7 +135,12 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
                 $start_date = $actual_weeks->where('id', $row->week_id)->first()->start_date ?? $start_date;
             }
 
-            $data[] = $row->toArray();
+            $arr = $row->toArray();
+
+            if($this->filtered_weeks) array_pop($arr);
+            array_unshift($arr, $start_date);
+
+            $data[] = $arr;
         }
         return $data;
     }
