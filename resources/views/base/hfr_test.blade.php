@@ -14,33 +14,6 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    HTS Testing & Yield <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="testing">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Linkage (HTS POS & TX NEW) <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="linkage">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
 			    TX CURR <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_curr">
@@ -63,31 +36,6 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    PrEP NEW <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="prep_new">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    VMMC CIRC <div class="display_date"></div>
-		    </div>
-			<div class="panel-body" id="vmmc_circ">
-				<center><div class="loader"></div></center>
-			</div>
-		</div>
-	</div>
-</div>
 
 @endsection
 

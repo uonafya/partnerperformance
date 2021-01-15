@@ -341,7 +341,7 @@ class HfrController extends Controller
 			$above_6m += $row->above_6m;
 			$i++;
 		}
-		$total = $less_3m + $less6m + $above_6m;
+		$total = $less_3m + $less_5m + $above_6m;
 
 		$stacks[] = '% of TX_CURR';
 		$data["outcomes"][$i]["data"][0] = Lookup::get_percentage($less_3m, $total);
