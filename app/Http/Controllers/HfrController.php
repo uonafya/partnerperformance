@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 use App\HfrSubmission;
+use App\Period;
+use App\Week;
 
 class HfrController extends Controller
 {
@@ -98,6 +100,7 @@ class HfrController extends Controller
 		return view('charts.dual_axis', $data);
 	}
 
+
 	public function tx_curr()
 	{
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
@@ -118,6 +121,71 @@ class HfrController extends Controller
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->tx_curr;
 		}	
+		return view('charts.line_graph', $data);
+	}
+
+	public function tx_curr_two()
+	{
+		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+
+		$data['div'] = str_random(15);
+
+		Lookup::bars($data, ["TX Curr"], "column");
+
+		$groupby = session('filter_groupby');
+
+		if($groupby < 10 || $groupby == 14){
+
+			$week_id = Lookup::get_tx_week();
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_callback('tx_curr'))
+				->when(($groupby < 10), function($query) use($week_id) {
+					return $query->where(['week_id' => $week_id]);
+				})
+				->get();
+		}
+		else{
+			$periods = [];
+			// Group By month
+			if($groupby == 12){
+				$periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'month')
+				->get();
+			}
+			// Group By quarter
+			else if($groupby == 13){
+				$periods = Period::select('financial_year', 'quarter')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'quarter')
+				->get();				
+			}
+			if(!$periods) return null;
+
+			$week_ids = [];
+
+			foreach ($periods as $period) {
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				if($w) $week_ids[] = $w->id;
+			}
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_callback('tx_curr'))
+				->whereIn('week_id', $week_ids)
+				->get();
+		}
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$key] = (int) $row->tx_curr;
+		}	
+
 		return view('charts.line_graph', $data);
 	}
 
@@ -183,6 +251,54 @@ class HfrController extends Controller
 			->whereRaw($divisions_query)
             ->whereRaw($date_query)
 			->first();
+
+		$data['div'] = str_random(15);
+		$data['yAxis'] = '';
+		$data['data_labels'] = true;
+		$data['no_column_label'] = true;
+		$data['suffix'] = '%';
+
+		Lookup::bars($data, ["TX MMD", '% of TX_CURR'], "column");
+		Lookup::splines($data, [1], 1);
+		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
+		Lookup::yAxis($data, 0, 0);
+
+
+		$data['categories'][0] = 'TX Curr &lt;3 months of ARVs dispensed';
+		$data['categories'][1] = 'TX Curr 3-5 months of ARVs dispensed';
+		$data['categories'][2] = 'TX Curr 6+ months of ARVs dispensed';
+
+		$data["outcomes"][0]["data"][0] = (int) $row->less_3m;
+		$data["outcomes"][0]["data"][1] = (int) $row->less_5m;
+		$data["outcomes"][0]["data"][2] = (int) $row->above_6m;
+
+		$total = $row->less_3m + $row->less_5m + $row->above_6m;
+
+		$data["outcomes"][1]["data"][0] = Lookup::get_percentage($row->less_3m, $total);
+		$data["outcomes"][1]["data"][1] = Lookup::get_percentage($row->less_5m, $total);
+		$data["outcomes"][1]["data"][2] = Lookup::get_percentage($row->above_6m, $total);
+		
+		return view('charts.dual_axis', $data);
+	}
+
+	public function tx_mmd_two()
+	{
+		$less_3m = HfrSubmission::columns(true, 'less_3m');
+		$less_5m = HfrSubmission::columns(true, '3_5m');
+		$above_6m = HfrSubmission::columns(true, 'above_6m');
+		$sql = $this->get_hfr_sum($less_3m, 'less_3m') . ', ' . $this->get_hfr_sum($less_5m, 'less_5m') . ', ' . $this->get_hfr_sum($above_6m, 'above_6m');
+
+    	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::date_query();
+
+		$row = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_callback('less_3m'))
+			// ->whereRaw($divisions_query)
+            // ->whereRaw($date_query)
+            ->limit(12)
+			->get();
 
 		$data['div'] = str_random(15);
 		$data['yAxis'] = '';

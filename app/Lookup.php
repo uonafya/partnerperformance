@@ -61,7 +61,7 @@ class Lookup
 		return substr($m, 0, 3) . ', ' . $year;
 	}
 
-	public static function get_percentage($num, $den, $roundby=2)
+	public static function get_percentage($num, $den, $roundby=1)
 	{
 		if(!$den){
 			$val = 0;
