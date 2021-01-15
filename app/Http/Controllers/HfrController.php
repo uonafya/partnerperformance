@@ -166,12 +166,16 @@ class HfrController extends Controller
 			}
 			if(!$periods) return null;
 
-			$week_ids = [];
+			// dd($)
+
+			$weeks = $week_ids = [];
 
 			foreach ($periods as $period) {
 				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
-				if($w) $week_ids[] = $w->id;
+				if($w) $week_ids[] = $w->id; $weeks[] = $w;
 			}
+
+			dd($weeks);
 
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
