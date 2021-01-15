@@ -291,7 +291,7 @@ class HfrController extends Controller
     	$divisions_query = Lookup::divisions_query();
         $date_query = Lookup::date_query();
 
-		$row = DB::table($this->my_table)
+		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('less_3m'))
@@ -306,17 +306,17 @@ class HfrController extends Controller
 		$data['no_column_label'] = true;
 		$data['suffix'] = '%';
 
-		Lookup::bars($data, ["TX MMD", '% of TX_CURR'], "column");
-		Lookup::splines($data, [1], 1);
-		$data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
-		Lookup::yAxis($data, 0, 0);
+		// Lookup::bars($data, ["TX MMD", '% of TX_CURR'], "column");
+		// Lookup::splines($data, [1], 1);
+		// $data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
+		// Lookup::yAxis($data, 0, 0);
 
 
 		$data['categories'][0] = 'TX Curr &lt;3 months of ARVs dispensed';
 		$data['categories'][1] = 'TX Curr 3-5 months of ARVs dispensed';
 		$data['categories'][2] = 'TX Curr 6+ months of ARVs dispensed';
 
-		$data["outcomes"][0]["data"][0] = (int) $row->less_3m;
+		/*$data["outcomes"][0]["data"][0] = (int) $row->less_3m;
 		$data["outcomes"][0]["data"][1] = (int) $row->less_5m;
 		$data["outcomes"][0]["data"][2] = (int) $row->above_6m;
 
@@ -324,7 +324,37 @@ class HfrController extends Controller
 
 		$data["outcomes"][1]["data"][0] = Lookup::get_percentage($row->less_3m, $total);
 		$data["outcomes"][1]["data"][1] = Lookup::get_percentage($row->less_5m, $total);
-		$data["outcomes"][1]["data"][2] = Lookup::get_percentage($row->above_6m, $total);
+		$data["outcomes"][1]["data"][2] = Lookup::get_percentage($row->above_6m, $total);*/
+
+		$i = $total = $less_3m = $less_5m = $above_6m = 0;
+		$stacks = [];
+
+		foreach ($rows as $key => $row) {
+			$stacks[] = Lookup::get_category($row);
+
+			$data["outcomes"][$key]["data"][0] = (int) $row->less_3m;
+			$data["outcomes"][$key]["data"][1] = (int) $row->less_5m;
+			$data["outcomes"][$key]["data"][2] = (int) $row->above_6m;
+
+			$less_3m += $row->less_3m;
+			$less_5m += $row->less_5m;
+			$above_6m += $row->above_6m;
+			$i++;
+		}
+		$total = $less_3m + $less6m + $above_6m;
+
+		$stacks[] = '% of TX_CURR';
+		$data["outcomes"][$i]["data"][0] = Lookup::get_percentage($less_3m, $total);
+		$data["outcomes"][$i]["data"][1] = Lookup::get_percentage($less_5m, $total);
+		$data["outcomes"][$i]["data"][2] = Lookup::get_percentage($above_6m, $total);
+
+
+		Lookup::bars($data, $stacks, "column");
+		Lookup::splines($data, [$i], 1);
+		$data['outcomes'][$i]['tooltip'] = array("valueSuffix" => ' %');
+		Lookup::yAxis($data, 0, $i-1);
+
+
 		
 		return view('charts.dual_axis', $data);
 	}

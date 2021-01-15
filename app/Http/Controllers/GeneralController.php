@@ -165,6 +165,15 @@ class GeneralController extends Controller
 		session(['filter_agency' => 1, 'filter_groupby' => 12]);
 		return view('base.hfr', $data);
 	}
+
+	public function hfr_test()
+	{
+		$data = Lookup::view_data_surges();
+		$data['weeks'] = \App\Week::where('financial_year', '>', 2020)->get();
+		$financial_year = session('filter_financial_year');
+		session(['filter_agency' => 1, 'filter_groupby' => 12]);
+		return view('base.hfr_test', $data);
+	}
 	
 
 

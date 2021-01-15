@@ -174,6 +174,9 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('prep_new', 'HfrController@prep_new')->name('prep_new');
 	Route::get('vmmc_circ', 'HfrController@vmmc_circ')->name('vmmc_circ');
 
+	Route::get('tx_curr_two', 'HfrController@tx_curr_two')->name('tx_curr_two');
+	Route::get('tx_mmd_two', 'HfrController@tx_mmd_two')->name('tx_mmd_two');
+
 	Route::get('target_donut/{modality}', 'HfrController@target_donut')->name('target_donut');
 });
 
@@ -194,6 +197,7 @@ Route::middleware(['clear_session', 'check_nascop'])->group(function(){
 	Route::get('indicators', 'GeneralController@indicators');
 	Route::get('surge', 'GeneralController@surge');
 	Route::get('hfr', 'GeneralController@hfr');
+	Route::get('hfr-test', 'GeneralController@hfr_test');
 
 
 		Route::get('gbv', 'GeneralController@gbv');
