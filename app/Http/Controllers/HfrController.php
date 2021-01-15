@@ -175,7 +175,7 @@ class HfrController extends Controller
 				if($w) $week_ids[] = $w->id; $weeks[] = $w;
 			}
 
-			dd($weeks);
+			// dd($weeks);
 
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
