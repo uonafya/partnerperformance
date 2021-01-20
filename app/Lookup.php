@@ -763,7 +763,7 @@ class Lookup
 
 	public static function target_donut()
 	{
-		$data = \Str::random(15);
+		$data['div'] = \Str::random(15);
 		$data['outcomes']['name'] = "";
 		$data['outcomes']['colorByPoint'] = true;
 
