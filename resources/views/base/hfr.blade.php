@@ -11,7 +11,17 @@
 
 
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="col-md-3 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Testing Target <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="target_donut_hts">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    HTS Testing & Yield <div class="display_date"></div>
@@ -25,7 +35,17 @@
 
 
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="col-md-3 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Positives Target <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="target_donut_pos">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    Linkage (HTS POS & TX NEW) <div class="display_date"></div>
@@ -64,7 +84,17 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="col-md-3 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    PrEP New Target <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="target_donut_prep_new">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    PrEP NEW <div class="display_date"></div>
@@ -77,7 +107,17 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="col-md-3 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    VMMC Target <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="target_donut_vmmc_circ">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    VMMC CIRC <div class="display_date"></div>
