@@ -366,7 +366,6 @@ class HfrController extends Controller
 	/*
 		Targets
 	*/
-
 	public function target_donut($modality = 'hts_tst')
 	{
 		$tests = HfrSubmission::columns(true, $modality); 
