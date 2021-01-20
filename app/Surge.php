@@ -595,16 +595,27 @@ class Surge
         ini_set('memory_limit', -1);
         $zip = new \ZipArchive();
 
-        if ($zip->open(storage_path('app/indicator_fy_2020.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
+        if ($zip->open(storage_path('app/early_warning_indicator_fy_2020.zip'), \ZIPARCHIVE::CREATE) != TRUE) {
             die ("Could not open archive");
         }
 
         $periods = Period::where('financial_year', 2020)->get();
-        foreach ($periods as $period) {
+
+
+        $columns = ["tested AS `Tested`", "positive AS `Positives`", "new_art AS `New On ART`", "linkage AS `Linkage Percentage`", "current_tx AS `Current On ART`", "net_new_tx AS `Net New On ART`", "vl_total AS `VL Total`", "eligible_for_vl AS `Eligible For VL`", "pmtct AS `PMTCT`", "pmtct_stat AS `PMTCT STAT`", "pmtct_new_pos AS `PMTCT New Positives`", "pmtct_known_pos AS `PMTCT Known Positives`", "pmtct_total_pos AS `PMTCT Total Positives`", "art_pmtct AS `ART PMTCT`", "art_uptake_pmtct AS `ART Uptake PMTCT`", "eid_lt_2m AS `EID Less 2 Months`", "eid_lt_12m AS `EID Less 12 Months`", "eid_total AS `EID Total`", "eid_pos AS `EID Positives`"];
+
+        foreach ($columns as $column) {
+            $col_array = explode(' AS ', $column);
+            $filename = 'usaid_indicator_fy_20_' . $col_array[0] . '.csv';
+            \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\UsaidIndicatorExport(null, $col_array[0], $col_array[1]), $filename);
+            $zip->addFile(storage_path('app/' . $filename));
+        }
+
+        /*foreach ($periods as $period) {
             $filename = 'usaid_indicator_fy_20_' . $period->month_name . '.csv';
             \Maatwebsite\Excel\Facades\Excel::store(new \App\Exports\UsaidIndicatorExport($period), $filename);
             $zip->addFile(storage_path('app/' . $filename));
-        }
+        }*/
         $zip->close(); 
     }
 
