@@ -52,7 +52,7 @@ class Lookup
 			if($groupby == 14){
 				$start_date = Carbon::create($row->start_date);
 				$end_date = Carbon::create($row->end_date);
-				return $start_date->year . ', ' . $start_date->shortEnglishMonth . ' ' . $start_date->day . '-' . $end_date->day;
+				return $start_date->year . ', ' . $start_date->shortEnglishMonth . ' ' . $start_date->day . '-' . $end_date->shortEnglishMonth . ' ' . $end_date->day;
 				// return "{$row->start_date}-{$row->end_date}";
 			}
 		}
