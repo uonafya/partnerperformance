@@ -133,7 +133,7 @@ class Controller extends BaseController
     public function week_callback($divisions_query, $date_query)
     {
         return function($query) use($divisions_query, $date_query){
-            return $query->addSelect('financial_year', 'week_number')
+            return $query->addSelect('financial_year', 'week_number', 'start_date', 'end_date')
                 ->whereRaw($divisions_query)
                 ->whereRaw($date_query)
                 ->groupBy('financial_year', 'week_number')
