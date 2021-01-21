@@ -180,13 +180,13 @@ class HfrController extends Controller
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
-				->when(true, $this->get_callback('tx_curr'))
+				->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->whereIn('week_id', $week_ids)
 				->get();
 		}
 
 		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
+			$data['categories'][$key] = Lookup::get_category($row, 14);
 			$data["outcomes"][0]["data"][$key] = (int) $row->tx_curr;
 		}	
 
