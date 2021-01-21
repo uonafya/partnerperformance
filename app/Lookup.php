@@ -50,7 +50,10 @@ class Lookup
 			if($groupby == 13) return "FY {$row->financial_year} Q {$row->quarter}";
 			// if($groupby == 14) return "FY {$row->financial_year} W {$row->week_number}";
 			if($groupby == 14){
-				return "{$row->start_date}-{$row->end_date}";
+				$start_date = Carbon::create($row->start_date);
+				$end_date = Carbon::create($row->end_date);
+				return $start_date->year . ', ' . $start_date->shortEnglishMonth . ' ' . $start_date->day . '-' . $end_date->day;
+				// return "{$row->start_date}-{$row->end_date}";
 			}
 		}
 		else{
