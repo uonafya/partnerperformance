@@ -537,8 +537,11 @@ class Lookup
 
 			$days = date('w') + (7 * $param);
 			if($year == $current_financial_year){				
-				$start_date = date('Y-m-d', strtotime("-{$days} days"));
-				$week = \App\Week::where('start_date', $start_date)->first();	
+				/*$start_date = date('Y-m-d', strtotime("-{$days} days"));
+				$week = \App\Week::where('start_date', $start_date)->first();*/
+
+				$m = date('m', strtotime('-1 month'));	
+				$week = Week::where(['financial_year' => $year, 'month' => $m])->orderBy('start_date', 'desc')->first();
 			}
 			else{
 				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
