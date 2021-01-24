@@ -187,7 +187,11 @@ class HfrController extends Controller
 		}
 
 		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row, 14);
+
+			if($groupby > 9) $data['categories'][$key] = Lookup::get_category($row, 14);
+			else{
+				$data['categories'][$key] = Lookup::get_category($row);
+			}
 			$data["outcomes"][0]["data"][$key] = (int) $row->tx_curr;
 		}	
 
