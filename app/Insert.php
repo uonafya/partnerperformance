@@ -317,7 +317,7 @@ class Insert
             $dt = Carbon::create($week->start_date);
             $week->year = $dt->year;
             $week->month = $dt->month;
-            $week->fill(Synch::get_financial_year_quarter($week->year, $week->month))
+            $week->fill(Synch::get_financial_year_quarter($week->year, $week->month));
             $week->save();
         }
 
