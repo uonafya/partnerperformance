@@ -57,6 +57,7 @@ class CountyTargetsImport implements ToCollection
 
             if(!$p){
                 $value[10] = 'Partner Not Found';
+                $value[11] = $key;
                 $unidentified[] = $value;
                 continue;
                 dd($value);
