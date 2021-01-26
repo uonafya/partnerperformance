@@ -274,7 +274,7 @@ class HfrController extends Controller
 			$data['categories'][$key] = Lookup::get_category($row);
 
 			$data["outcomes"][0]["data"][$key] = (int) $row->less_3m;
-			$data["outcomes"][1]["data"][$key] = (int) $row->3_5m;
+			$data["outcomes"][1]["data"][$key] = (int) $row->less_5m;
 			$data["outcomes"][2]["data"][$key] = (int) $row->above_6m;
 		}
 		
