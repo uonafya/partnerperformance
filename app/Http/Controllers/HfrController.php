@@ -269,7 +269,6 @@ class HfrController extends Controller
 		// $data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
 		// Lookup::yAxis($data, 0, 0);
 
-
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
 
