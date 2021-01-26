@@ -144,7 +144,7 @@ class OtzController extends Controller
 		$data["outcomes"][0]["data"][2] = (int) $otz->total ?? 0;
 		$data["outcomes"][0]["data"][3] = (int) $men->total ?? 0;
 
-		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
+		if(!\Str::contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
 
 			$financial_year = session('filter_financial_year');
 
@@ -373,7 +373,7 @@ class OtzController extends Controller
 			->groupBy($q['group_query'])
 			->get();
 
-		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
+		if(!\Str::contains($divisions_query, ['county', 'ward_id', 'view_facilitys'])){
 
 			$q = Lookup::groupby_query(false);
 

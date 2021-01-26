@@ -134,7 +134,7 @@ class OtzController extends Controller
 		$data["outcomes"][0]["data"][2] = (int) $otz->total ?? 0;
 		$data["outcomes"][0]["data"][3] = (int) $men->total ?? 0;
 
-		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilities'])){
+		if(!\Str::contains($divisions_query, ['county', 'ward_id', 'view_facilities'])){
 
 			$financial_year = session('filter_financial_year');
 
@@ -322,7 +322,7 @@ class OtzController extends Controller
 			->whereRaw(Lookup::active_partner_query())
 			->get();
 
-		if(!str_contains($divisions_query, ['county', 'ward_id', 'view_facilities'])){
+		if(!\Str::contains($divisions_query, ['county', 'ward_id', 'view_facilities'])){
 
 			$q = Lookup::groupby_query(false);
 
