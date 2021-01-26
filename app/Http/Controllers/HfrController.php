@@ -422,7 +422,8 @@ class HfrController extends Controller
 			->first();
 
 		$target = DB::table($this->my_target_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
 			->selectRaw($sql)
 			->whereRaw(Lookup::county_target_query())
 			->first();
