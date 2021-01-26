@@ -18,10 +18,12 @@ class CountyTargetsImport implements ToCollection
 {
 
     private $table_name;
+    private $inserted_rows;
 
     function __construct()
     {
     	$this->table_name = 't_county_target';
+        $this->inserted_rows = [];
     }
 
 
@@ -41,8 +43,8 @@ class CountyTargetsImport implements ToCollection
             'hts_tst', 'hts_tst_pos', 'prep_new', 'tx_curr', 'tx_new', 'vmmc_circ'
         ];
 
-        $unidentified = $inserted_rows = [];
-        DB::enableQueryLog();
+        $unidentified = [];
+        // DB::enableQueryLog();
 
         foreach ($collection as $key => $value) {
             if($value[0] == 'mech_code') continue;
@@ -97,7 +99,11 @@ class CountyTargetsImport implements ToCollection
         }
         $this->insertRow($locator, $data);
 
-        dd(DB::getQueryLog());
+        DB::table($this->table_name)->insert($data);   
+        
+        dd(json_encode($this->inserted_rows));     
+
+        // dd(DB::getQueryLog());
 
         // if($unidentified) dd($unidentified);
     }
@@ -112,8 +118,9 @@ class CountyTargetsImport implements ToCollection
             // $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
             // dd("updated is {$updated} ");
         }else{
-            $inserted = DB::table($this->table_name)->insertGetId($data);
+            // $inserted = DB::table($this->table_name)->insertGetId($data);
             // dd("inserted is {$inserted} " . json_encode($data));
+            $this->inserted_rows[] = $data;
         }
     }
 }
