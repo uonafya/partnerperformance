@@ -421,7 +421,7 @@ class HfrController extends Controller
 			->whereRaw(Lookup::divisions_query())
 			->first();
 
-		$target = DB::table($this->my_table)
+		$target = DB::table($this->my_target_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->whereRaw(Lookup::county_target_query())
