@@ -104,5 +104,7 @@ class CountyTargetsImport implements ToCollection
         }else{
             DB::table($this->table_name)->insert($data);
         }
+
+        dd($unidentified);
     }
 }
