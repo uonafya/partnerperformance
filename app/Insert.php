@@ -190,34 +190,33 @@ class Insert
             while(true){
                 // if($dt->dayOfWeek == 0) break;
                 if($dt->dayOfWeekIso == 1) break;
-                $dt->subDay();
+                $dt->addDay();
             }
 
             $data = [
                 'week_number' => $week++,
                 'start_date' => $dt->toDateString(),
-                'end_date' => $dt->addDays(6)->toDateString(),
                 'year' => $dt->year,
                 'month' => $dt->month,
+                'end_date' => $dt->addDays(6)->toDateString(),
             ];
 
-            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+            $data = array_merge($data, Synch::get_financial_year_quarter($data['year'], $data['month']));
             $dt->addDay();
 
             $w = Week::create($data);
-
         }
 
         while(true) {
             $data = [
                 'week_number' => $week++,
                 'start_date' => $dt->toDateString(),
-                'end_date' => $dt->addDays(6)->toDateString(),
                 'year' => $dt->year,
                 'month' => $dt->month,
+                'end_date' => $dt->addDays(6)->toDateString(),
             ];
 
-            $data = array_merge($data, Synch::get_financial_year_quarter($dt->year, $dt->month));
+            $data = array_merge($data, Synch::get_financial_year_quarter($data['year'], $data['month']));
             $dt->addDay();
 
             $w = new Week;
@@ -308,5 +307,27 @@ class Insert
         self::insert_weekly_column_rows($financial_year, 'd_prep_new');
         self::insert_weekly_column_rows($financial_year, 'd_vmmc_circ');
         self::insert_weekly_rows($financial_year, 'd_hfr_submission');
+    }
+
+
+    public static function fix_weeks()
+    {
+        $weeks = Week::all();
+        foreach ($weeks as $key => $week) {
+            $dt = Carbon::create($week->start_date);
+            $week->year = $dt->year;
+            $week->month = $dt->month;
+            $week->fill(Synch::get_financial_year_quarter($week->year, $week->month))
+            $week->save();
+        }
+
+        $financial_years = Week::selectRaw("distinct financial_year")->get();
+        foreach ($financial_years as $financial_year) {
+            $weeks = Week::where(['financial_year' => $financial_year->financial_year])->orderBy('start_date', 'ASC')->get();
+            foreach ($weeks as $key => $week) {
+                $week->week_number = $key+1;
+                $week->save();
+            }
+        }
     }
 }

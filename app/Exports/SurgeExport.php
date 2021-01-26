@@ -53,7 +53,7 @@ class SurgeExport extends BaseExport
 			->orderBy('id', 'asc')
 			->get();
 
-		$sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`";
+		$sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`, week_number as `Week Number`, start_date AS `Start Date`";
 
 		foreach ($columns as $column) {
 			$sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";

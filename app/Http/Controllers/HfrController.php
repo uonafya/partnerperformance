@@ -46,7 +46,8 @@ class HfrController extends Controller
 		$data['no_column_label'] = true;
 		$data['suffix'] = '%';
 
-		Lookup::bars($data, ["Positive", "Negative", "Yield"], "column");
+
+		Lookup::bars($data, ["Positive", "Negative", "Yield"], "column", ["#ff0000", "#00ff00", "#3023ea"]);
 		Lookup::splines($data, [2]);
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 1);
@@ -80,7 +81,7 @@ class HfrController extends Controller
 		$data['no_column_label'] = true;
 		$data['suffix'] = '%';
 
-		Lookup::bars($data, ["Not Linked", "TX New", "Linkage"], "column");
+		Lookup::bars($data, ["Not Linked", "TX New", "Linkage"], "column", ["#ff0000", "#00ff00", "#3023ea"]);
 		Lookup::splines($data, [2]);
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 1);
@@ -254,6 +255,42 @@ class HfrController extends Controller
     	$divisions_query = Lookup::divisions_query();
         $date_query = Lookup::date_query();
 
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_callback('3_5m'))
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['data_labels'] = true;
+
+		Lookup::bars($data, ['TX Curr &lt;3 months', 'TX Curr 3-5 months', 'TX Curr 6+ months'], "column");
+		// Lookup::splines($data, [1], 1);
+		// $data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
+		// Lookup::yAxis($data, 0, 0);
+
+
+		foreach ($rows as $key => $row){
+			$data['categories'][$key] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$key] = (int) $row->less_3m;
+			$data["outcomes"][1]["data"][$key] = (int) $row->3_5m;
+			$data["outcomes"][2]["data"][$key] = (int) $row->above_6m;
+		}
+		
+		return view('charts.line_graph', $data);
+	}
+
+	/*public function tx_mmd_old()
+	{
+		$less_3m = HfrSubmission::columns(true, 'less_3m');
+		$less_5m = HfrSubmission::columns(true, '3_5m');
+		$above_6m = HfrSubmission::columns(true, 'above_6m');
+		$sql = $this->get_hfr_sum($less_3m, 'less_3m') . ', ' . $this->get_hfr_sum($less_5m, 'less_5m') . ', ' . $this->get_hfr_sum($above_6m, 'above_6m');
+
+    	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::date_query();
+
 		$row = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
@@ -288,7 +325,7 @@ class HfrController extends Controller
 		$data["outcomes"][1]["data"][2] = Lookup::get_percentage($row->above_6m, $total);
 		
 		return view('charts.dual_axis', $data);
-	}
+	}*/
 
 	public function tx_mmd_two()
 	{

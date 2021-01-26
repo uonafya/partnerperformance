@@ -28,7 +28,7 @@ class WeeklyExport extends BaseExport
 		$this->fileName = $this->partner->download_name . '_' . $modality . '_for_' . $this->week->start_date . '_to_' . $this->week->end_date . '.xlsx';
 
 		$this->sql = "countyname as County, Subcounty,
-		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`, 
+		financial_year AS `Financial Year`, year AS `Calendar Year`, week_number as `Week Number`, start_date AS `Start Date`,
 		facilitycode AS `MFL Code`, name AS `Facility`,
 		alias_name AS `Column Name`, value AS `Value`";
     }
