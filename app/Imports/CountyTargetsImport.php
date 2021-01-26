@@ -41,6 +41,8 @@ class CountyTargetsImport implements ToCollection
             'hts_tst', 'hts_tst_pos', 'prep_new', 'tx_curr', 'tx_new', 'vmmc_circ'
         ];
 
+        $unidentified = [];
+
         foreach ($collection as $key => $value) {
             if($value[0] == 'mech_code') continue;
 
@@ -55,7 +57,8 @@ class CountyTargetsImport implements ToCollection
 
             if(!$p){
                 $value[10] = 'Partner Not Found';
-                // continue;
+                $unidentified[] = $value;
+                continue;
                 dd($value);
             }
 
