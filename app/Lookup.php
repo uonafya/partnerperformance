@@ -323,6 +323,7 @@ class Lookup
             if($month > 9) $y--;
             $active_date = "{$y}-{$m}-01";
         }else{
+        	$y = $financial_year;
             if(date('m') > 9) $y = $financial_year - 1;
             $active_date = "{$y}-10-01";
         }
