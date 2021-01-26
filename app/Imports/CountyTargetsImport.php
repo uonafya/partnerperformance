@@ -59,6 +59,7 @@ class CountyTargetsImport implements ToCollection
                 $value[10] = 'Partner Not Found';
                 $value[11] = $key;
                 $unidentified[] = $value;
+                if($partner) $this->insertRow($locator, $data);
                 continue;
                 dd($value);
             }
@@ -71,12 +72,7 @@ class CountyTargetsImport implements ToCollection
             if($p != $partner || $c != $county){
 
                 if($partner){
-                    $row = DB::table($this->table_name)->where($locator)->first();
-                    if($row){
-                        DB::table($this->table_name)->where('id', $row->id)->update($data);
-                    }else{
-                        DB::table($this->table_name)->insert($data);
-                    }
+                    $this->insertRow($locator, $data);
                 }
 
                 $partner = $p;
@@ -98,14 +94,21 @@ class CountyTargetsImport implements ToCollection
                 $data["{$modality}_{$age}_{$gender}"] += (int) $value[4 + $modality_key]; 
             }
         }
-
-        $row = DB::table($this->table_name)->where($locator)->first();
-        if($row){
-            DB::table($this->table_name)->where('id', $row->id)->update($data);
-        }else{
-            DB::table($this->table_name)->insert($data);
-        }
+        $this->insertRow($locator, $data);
 
         if($unidentified) dd($unidentified);
+    }
+
+
+    public function insertRow($locator, $data)
+    {
+        $row = DB::table($this->table_name)->where($locator)->first();
+        if($row){
+            $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
+            dd("updated is {$updated} ");
+        }else{
+            $inserted = DB::table($this->table_name)->insert($data);
+            dd("inserted is {$inserted} ");
+        }
     }
 }
