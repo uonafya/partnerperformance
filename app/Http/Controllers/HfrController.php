@@ -102,7 +102,7 @@ class HfrController extends Controller
 	}
 
 
-	public function tx_curr()
+	public function tx_curr_old()
 	{
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
@@ -168,8 +168,6 @@ class HfrController extends Controller
 			}
 			if(!$periods) return null;
 
-			// dd($)
-
 			$weeks = $week_ids = [];
 
 			foreach ($periods as $period) {
@@ -182,17 +180,19 @@ class HfrController extends Controller
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
-				->when(true, $this->get_callback('tx_curr', null, '', 14))
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				->when(true, $this->get_callback('tx_curr'))
 				->whereIn('week_id', $week_ids)
 				->get();
 		}
 
 		foreach ($rows as $key => $row){
 
-			if($groupby > 9) $data['categories'][$key] = Lookup::get_category($row, 14);
+			/*if($groupby > 9) $data['categories'][$key] = Lookup::get_category($row, 14);
 			else{
 				$data['categories'][$key] = Lookup::get_category($row);
-			}
+			}*/
+			$data['categories'][$key] = Lookup::get_category($row);
 			$data["outcomes"][0]["data"][$key] = (int) $row->tx_curr;
 		}	
 

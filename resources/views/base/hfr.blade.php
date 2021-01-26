@@ -155,7 +155,7 @@
 		$("#testing").load("{{ url('hfr/testing') }}");
 		$("#linkage").load("{{ url('hfr/linkage') }}");
 		$("#tx_curr").load("{{ url('hfr/tx_curr_two') }}");
-		$("#tx_mmd").load("{{ url('hfr/tx_mmd_two') }}");
+		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
 
