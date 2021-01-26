@@ -50,7 +50,7 @@ class CountyTargetsImport implements ToCollection
             $county_name = explode('-', $county_name)[0];
 
             $mech_id = ((int) $value[0]);
-            if($mech_id == 84476) $mech_id = 84475;
+            // if($mech_id == 84476) $mech_id = 84475;
 
             $p = Partner::where('mech_id', $mech_id)->first();
             $c = County::where('name', 'like', $county_name . '%')->first();
@@ -105,6 +105,6 @@ class CountyTargetsImport implements ToCollection
             DB::table($this->table_name)->insert($data);
         }
 
-        dd($unidentified);
+        if($unidentified) dd($unidentified);
     }
 }
