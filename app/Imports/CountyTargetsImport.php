@@ -107,10 +107,10 @@ class CountyTargetsImport implements ToCollection
 
         if($row){
             $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
-            dd("updated is {$updated} ");
+            // dd("updated is {$updated} ");
         }else{
             $inserted = DB::table($this->table_name)->insert($data);
-            dd("inserted is {$inserted} ");
+            // dd("inserted is {$inserted} ");
         }
     }
 }
