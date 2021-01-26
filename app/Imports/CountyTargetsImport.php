@@ -42,6 +42,7 @@ class CountyTargetsImport implements ToCollection
         ];
 
         $unidentified = $inserted_rows = [];
+        DB::enableQueryLog();
 
         foreach ($collection as $key => $value) {
             if($value[0] == 'mech_code') continue;
@@ -96,7 +97,9 @@ class CountyTargetsImport implements ToCollection
         }
         $this->insertRow($locator, $data);
 
-        if($unidentified) dd($unidentified);
+        dd(DB::getQueryLog());
+
+        // if($unidentified) dd($unidentified);
     }
 
 
@@ -106,11 +109,11 @@ class CountyTargetsImport implements ToCollection
         // if(!$row) dd($data);
 
         if($row){
-            $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
+            // $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
             // dd("updated is {$updated} ");
         }else{
             $inserted = DB::table($this->table_name)->insertGetId($data);
-            dd("inserted is {$inserted} " . json_encode($data));
+            // dd("inserted is {$inserted} " . json_encode($data));
         }
     }
 }
