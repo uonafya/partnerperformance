@@ -23,7 +23,7 @@ class CountyTargetsImport implements ToCollection
     function __construct()
     {
     	$this->table_name = 't_county_target';
-        $this->inserted_rows = []; get_o
+        $this->inserted_rows = [];
     }
 
 
