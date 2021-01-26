@@ -263,6 +263,7 @@ class HfrController extends Controller
 
 		$data['div'] = str_random(15);
 		$data['data_labels'] = true;
+		$data['stacking'] = true;
 
 		Lookup::bars($data, ['TX Curr &lt;3 months', 'TX Curr 3-5 months', 'TX Curr 6+ months'], "column");
 		// Lookup::splines($data, [1], 1);
