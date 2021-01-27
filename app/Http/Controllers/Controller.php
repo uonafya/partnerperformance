@@ -149,7 +149,7 @@ class Controller extends BaseController
 
     	if($order_by){
 	    	return function($query) use($divisions_query, $date_query, $var, $groupby, $raw, $unshowable, $order_by, $having_null){
-                if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
+                if($groupby == 5) $query->whereNotIn('view_facilities.id', $unshowable);
                 if($groupby == 1) $query->where('partner', '!=', 69);
 
                 if($having_null){
@@ -169,7 +169,7 @@ class Controller extends BaseController
     	}
     	else{
 	    	return function($query) use($divisions_query, $date_query, $var, $groupby, $raw, $unshowable){
-                if($groupby == 5) $query->whereNotIn('view_facilitys.id', $unshowable);
+                if($groupby == 5) $query->whereNotIn('view_facilities.id', $unshowable);
                 if($groupby == 1) $query->where('partner', '!=', 69);
                 
 	    		return $query->addSelect($raw)

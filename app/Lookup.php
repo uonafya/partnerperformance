@@ -660,8 +660,8 @@ class Lookup
 				$group_query = "ward_id";
 				break;
 			case 5:
-				$select_query = "view_facilitys.id as div_id, name, new_name, DHIScode as dhis_code, facilitycode as mfl_code";
-				$group_query = "view_facilitys.id";
+				$select_query = "view_facilities.id as div_id, name, new_name, DHIScode as dhis_code, facilitycode as mfl_code";
+				$group_query = "view_facilities.id";
 				break;
 			case 6:
 				$select_query = "funding_agency_id as div_id";
