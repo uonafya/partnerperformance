@@ -74,7 +74,7 @@
             headerFormat: '<table class="tip"><caption>{point.key}</caption>'+'<tbody>',
             pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}' 
                 @if(isset($extra_tooltip))
-                    + '</td><td>{point.z}'
+                    + '</td><td>&nbsp;{point.z}'
                 @endif
                 @if(isset($point_percentage))
                     + '</td><td>&nbsp; Contribution <b>({point.percentage:.1f}%)</b>'

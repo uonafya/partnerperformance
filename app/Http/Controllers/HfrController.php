@@ -264,7 +264,8 @@ class HfrController extends Controller
 		$data['div'] = str_random(15);
 		$data['data_labels'] = true;
 		$data['stacking'] = true;
-		$data['point_percentage'] = true;
+		// $data['point_percentage'] = true;
+		$data['extra_tooltip'] = true;
 
 		Lookup::bars($data, ['TX Curr &lt;3 months', 'TX Curr 3-5 months', 'TX Curr 6+ months'], "column");
 		// Lookup::splines($data, [1], 1);
@@ -273,10 +274,19 @@ class HfrController extends Controller
 
 		foreach ($rows as $key => $row){
 			$data['categories'][$key] = Lookup::get_category($row);
+			$total = $row->less_3m + $row->less_5m + $row->above_6m;
 
-			$data["outcomes"][0]["data"][$key] = (int) $row->less_3m;
+			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->less_3m, $total);
+			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->less_5m, $total);
+			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->above_6m, $total);
+
+			/*$data["outcomes"][0]["data"][$key] = (int) $row->less_3m;
 			$data["outcomes"][1]["data"][$key] = (int) $row->less_5m;
-			$data["outcomes"][2]["data"][$key] = (int) $row->above_6m;
+			$data["outcomes"][2]["data"][$key] = (int) $row->above_6m;*/
+
+			$data["outcomes"][0]["data"][$key]['z'] = 'Patients - ' number_format($row->less_3m);
+			$data["outcomes"][1]["data"][$key]['z'] = 'Patients - ' number_format($row->less_5m);
+			$data["outcomes"][2]["data"][$key]['z'] = 'Patients - ' number_format($row->above_6m);
 		}
 		
 		return view('charts.line_graph', $data);
