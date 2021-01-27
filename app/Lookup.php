@@ -600,8 +600,8 @@ class Lookup
 	public static function county_target_query()
 	{
 		$query = " 1 ";
-		if(session('filter_county')) $query .= " AND county" . self::set_division_query(session('filter_county'));
-		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner" . self::set_division_query(session('filter_partner'));
+		if(session('filter_county')) $query .= " AND county_id" . self::set_division_query(session('filter_county'));
+		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner_id" . self::set_division_query(session('filter_partner'));
 		return $query;		
 	}
 
