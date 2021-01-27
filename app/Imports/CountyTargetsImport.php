@@ -98,12 +98,13 @@ class CountyTargetsImport implements ToCollection
             }
         }
         $this->insertRow($locator, $data);
+        DB::enableQueryLog();
 
         DB::table($this->table_name)->insert($this->inserted_rows);   
         
-        dd(json_encode($this->inserted_rows));     
+        // dd(json_encode($this->inserted_rows));     
 
-        // dd(DB::getQueryLog());
+        dd(DB::getQueryLog());
 
         // if($unidentified) dd($unidentified);
     }
