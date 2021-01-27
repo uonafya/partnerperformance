@@ -99,7 +99,7 @@ class CountyTargetsImport implements ToCollection
         }
         $this->insertRow($locator, $data);
 
-        DB::table($this->table_name)->insert($data);   
+        DB::table($this->table_name)->insert($this->inserted_rows);   
         
         dd(json_encode($this->inserted_rows));     
 
