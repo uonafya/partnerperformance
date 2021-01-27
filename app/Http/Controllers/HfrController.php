@@ -276,9 +276,9 @@ class HfrController extends Controller
 			$data['categories'][$key] = Lookup::get_category($row);
 			$total = $row->less_3m + $row->less_5m + $row->above_6m;
 
-			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->less_3m, $total);
-			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->less_5m, $total);
-			$data["outcomes"][0]["data"][$key] = Lookup::get_percentage($row->above_6m, $total);
+			$data["outcomes"][0]["data"][$key]['y'] = Lookup::get_percentage($row->less_3m, $total);
+			$data["outcomes"][0]["data"][$key]['y'] = Lookup::get_percentage($row->less_5m, $total);
+			$data["outcomes"][0]["data"][$key]['y'] = Lookup::get_percentage($row->above_6m, $total);
 
 			/*$data["outcomes"][0]["data"][$key] = (int) $row->less_3m;
 			$data["outcomes"][1]["data"][$key] = (int) $row->less_5m;
