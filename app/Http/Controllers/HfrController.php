@@ -447,5 +447,4 @@ class HfrController extends Controller
 		return view('charts.pie_chart', $data);
 	}
 
-
 }
