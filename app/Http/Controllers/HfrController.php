@@ -258,7 +258,7 @@ class HfrController extends Controller
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
-			->when(true, $this->get_callback('3_5m'))
+			->when(true, $this->get_callback('less_5m'))
 			->get();
 
 		$data['div'] = str_random(15);
