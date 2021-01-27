@@ -72,7 +72,7 @@
             yDecimals: 0,
             valueDecimale: 0,
             headerFormat: '<table class="tip"><caption>{point.key}</caption>'+'<tbody>',
-            pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}' 
+            pointFormat: '<tr><th style="color:{series.color}">{series.name}:</th>'+'<td style="text-align:right">{point.y}{{ $suffix ?? '' }} ' 
                 @if(isset($extra_tooltip))
                     + '</td><td>&nbsp;{point.z}'
                 @endif
