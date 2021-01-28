@@ -91,12 +91,12 @@ class CountyTargetsImport implements ToCollection
 
             $gender = strtolower($value[2]);
             $age = 'above_15';
-            if(Str::contains($value[3], ['1-', '5-', '10', '<01'])) $age = 'below_15';
+            if(Str::contains($value[3], ['1-', '5-9', '10', '<01'])) $age = 'below_15';
 
             foreach ($modalities as $modality_key => $modality) {
                 if($gender == 'female' && $modality == 'vmmc_circ') continue;
                 $data["{$modality}_{$age}_{$gender}"] += (int) $value[4 + $modality_key]; 
-                dd("{$modality}_{$age}_{$gender} is " . ((int) $value[4 + $modality_key]));
+                // dd("{$modality}_{$age}_{$gender} is " . ((int) $value[4 + $modality_key]));
             }
         }
         // $this->insertRow($locator, $data);
