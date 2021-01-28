@@ -289,7 +289,6 @@ class HfrController extends Controller
 			$data["outcomes"][1]["data"][$key]['z'] = 'Patients - ' . number_format($row->less_5m);
 			$data["outcomes"][2]["data"][$key]['z'] = 'Patients - ' . number_format($row->less_3m);
 		}
-		
 		return view('charts.line_graph', $data);
 	}
 
