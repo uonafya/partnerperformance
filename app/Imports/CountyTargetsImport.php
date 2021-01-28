@@ -122,7 +122,7 @@ class CountyTargetsImport implements ToCollection
             // dd("updated is {$updated} ");
         }else{
             $inserted = DB::table($this->table_name)->insert($data);
-            $inserted = DB::table($this->table_name)->insertGetId($data);
+            // $inserted = DB::table($this->table_name)->insertGetId($data);
             // dd("inserted is {$inserted} " . json_encode($data));
             $this->inserted_rows[] = $data;
         }
