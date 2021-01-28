@@ -3,6 +3,7 @@
 namespace App;
 
 use App\BaseModel;
+use Carbon\Carbon;
 
 class Facility extends BaseModel
 {
@@ -42,7 +43,7 @@ class Facility extends BaseModel
 
     	$prevSupportedFacility = $this->supportedFacility()->whereNull('end_of_support')->where('start_of_support', '!=', $start_of_support)->first();
     	if(!$prevSupportedFacility) return;
-    	$prevSupportedFacility->end_of_support = $newSupportedFacility->start_of_support->subDay()->toDateString();
+    	$prevSupportedFacility->end_of_support = Carbon::create($newSupportedFacility->start_of_support)->subDay()->toDateString();
     	$prevSupportedFacility->save();
     }
 }
