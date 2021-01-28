@@ -268,7 +268,7 @@ class HfrController extends Controller
 		// $data['point_percentage'] = true;
 		$data['extra_tooltip'] = true;
 
-		Lookup::bars($data, ['TX Curr &lt;3 months', 'TX Curr 3-5 months', 'TX Curr 6+ months'], "column");
+		Lookup::bars($data, ['TX Curr 6+ months', 'TX Curr 3-5 months', 'TX Curr &lt;3 months', ], "column");
 		// Lookup::splines($data, [1], 1);
 		// $data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
 		// Lookup::yAxis($data, 0, 0);
@@ -281,13 +281,13 @@ class HfrController extends Controller
 			$data["outcomes"][2]["data"][$key] = (int) $row->above_6m;*/
 
 			$total = $row->less_3m + $row->less_5m + $row->above_6m;
-			$data["outcomes"][0]["data"][$key]['y'] = Lookup::get_percentage($row->less_3m, $total);
+			$data["outcomes"][0]["data"][$key]['y'] = Lookup::get_percentage($row->above_6m, $total);
 			$data["outcomes"][1]["data"][$key]['y'] = Lookup::get_percentage($row->less_5m, $total);
-			$data["outcomes"][2]["data"][$key]['y'] = Lookup::get_percentage($row->above_6m, $total);
+			$data["outcomes"][2]["data"][$key]['y'] = Lookup::get_percentage($row->less_3m, $total);
 
-			$data["outcomes"][0]["data"][$key]['z'] = 'Patients - ' . number_format($row->less_3m);
+			$data["outcomes"][0]["data"][$key]['z'] = 'Patients - ' . number_format($row->above_6m);
 			$data["outcomes"][1]["data"][$key]['z'] = 'Patients - ' . number_format($row->less_5m);
-			$data["outcomes"][2]["data"][$key]['z'] = 'Patients - ' . number_format($row->above_6m);
+			$data["outcomes"][2]["data"][$key]['z'] = 'Patients - ' . number_format($row->less_3m);
 		}
 		
 		return view('charts.line_graph', $data);
