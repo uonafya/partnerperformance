@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class ViewFacility extends Model
 {
@@ -28,8 +27,11 @@ class ViewFacility extends Model
 	{
 		return $this->hasMany('App\SupportedFacility', 'facility_id');
 	}
+
     public function changePartner($partner_id, $start_of_support)
     {
+        $existing = $this->supportedFacility()->where('start_of_support', $start_of_support)->delete();
+        
     	$newSupportedFacility = SupportedFacility::create([
     		'facility_id' => $this->id,
     		'partner_id' => $partner_id,
@@ -38,7 +40,7 @@ class ViewFacility extends Model
 
     	$prevSupportedFacility = $this->supportedFacility()->whereNull('end_of_support')->where('start_of_support', '!=', $start_of_support)->first();
     	if(!$prevSupportedFacility) return;
-        $prevSupportedFacility->end_of_support = Carbon::create($newSupportedFacility->start_of_support)->subDay()->toDateString();
+        $prevSupportedFacility->end_of_support = $newSupportedFacility->start_of_support->subDay()->toDateString();
     	$prevSupportedFacility->save();
     }
 }
