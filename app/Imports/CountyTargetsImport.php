@@ -81,8 +81,8 @@ class CountyTargetsImport implements ToCollection
                 $partner = $p;
                 $county = $c;
 
-                $locator = $data = ['county' => $county->name, 'partner' => $partner->name,
-                    'county_id' => $county->id, 'partner_id' => $partner->id, 'financial_year' => 2021];
+                // $locator = $data = ['county' => $county->name, 'partner' => $partner->name,
+                $locator = $data = ['county_id' => $county->id, 'partner_id' => $partner->id, 'financial_year' => 2021];
 
                 foreach ($hfr_columns as $hfr_column) {
                     $data[$hfr_column['column_name']] = 0;
@@ -114,9 +114,9 @@ class CountyTargetsImport implements ToCollection
 
     public function insertRow($locator, $data)
     {
-        // $row = DB::table($this->table_name)->where($locator)->first();
+        $row = DB::table($this->table_name)->where($locator)->first();
         // if(!$row) dd($data);
-        $row = null;
+        // $row = null;
 
         if($row){
             $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
