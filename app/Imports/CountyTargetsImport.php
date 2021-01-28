@@ -81,7 +81,8 @@ class CountyTargetsImport implements ToCollection
                 $partner = $p;
                 $county = $c;
 
-                $locator = $data = ['county_id' => $county->id, 'partner_id' => $partner->id, 'financial_year' => 2021];
+                $locator = $data = ['county' => $county->name, 'partner' => $partner->name,
+                    'county_id' => $county->id, 'partner_id' => $partner->id, 'financial_year' => 2021];
 
                 foreach ($hfr_columns as $hfr_column) {
                     $data[$hfr_column['column_name']] = 0;
@@ -97,14 +98,14 @@ class CountyTargetsImport implements ToCollection
                 $data["{$modality}_{$age}_{$gender}"] += (int) $value[4 + $modality_key]; 
             }
         }
-        $this->insertRow($locator, $data);
-        DB::enableQueryLog();
+        // $this->insertRow($locator, $data);
+        // DB::enableQueryLog();
 
-        DB::table($this->table_name)->insert($this->inserted_rows);   
+        // DB::table($this->table_name)->insert($this->inserted_rows);   
         
         // dd(json_encode($this->inserted_rows));     
 
-        dd(DB::getQueryLog());
+        // dd(DB::getQueryLog());
 
         // if($unidentified) dd($unidentified);
     }
@@ -112,11 +113,12 @@ class CountyTargetsImport implements ToCollection
 
     public function insertRow($locator, $data)
     {
-        $row = DB::table($this->table_name)->where($locator)->first();
+        // $row = DB::table($this->table_name)->where($locator)->first();
         // if(!$row) dd($data);
+        $row = null;
 
         if($row){
-            // $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
+            $updated = DB::table($this->table_name)->where('id', $row->id)->update($data);
             // dd("updated is {$updated} ");
         }else{
             // $inserted = DB::table($this->table_name)->insertGetId($data);
