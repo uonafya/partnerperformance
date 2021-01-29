@@ -251,7 +251,7 @@ class Insert
                         $data_array[$i] = ['week_id' => $week->id, 'facility' => $fac->id, 'column_id' => $column->id];
                         $i++;
 
-                        if ($i == 200) {
+                        if ($i == 30) {
                             DB::table($table_name)->insert($data_array);
                             $data_array=null;
                             $i=0;
@@ -282,7 +282,7 @@ class Insert
         foreach ($weeks as $week) {
             $row = DB::table($table_name)->where(['week_id' => $week->id])->first();
             if($row) continue;
-            
+
             foreach ($facilities as $fac) {
 
                 $data_array[$i] = ['week_id' => $week->id, 'facility' => $fac->id];
