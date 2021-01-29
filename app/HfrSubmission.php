@@ -203,7 +203,7 @@ class HfrSubmission
         foreach ($rows as $row) {
             $data = [];
             foreach ($columns as $column) {
-                $sql_column = $column['column_name'];
+                $column_name = $column['column_name'];
                 $data[$column_name] = $row->$column_name;
             }
             DB::table($table_name)->where(['facility' => $row->facility, 'week_id' => $to_week_id])->update($data);
