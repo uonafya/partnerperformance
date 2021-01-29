@@ -281,7 +281,10 @@ class Insert
         $facilities = Facility::select('id')->get();
         foreach ($facilities as $fac) {
             foreach ($weeks as $week) {
-                $data_array[$i] = array('week_id' => $week->id, 'facility' => $fac->id);
+                $row = DB::table($table_name)->where(['week_id' => $week->id])->first();
+                if($row) continue;
+                
+                $data_array[$i] = ['week_id' => $week->id, 'facility' => $fac->id];
                 $i++;
 
                 if ($i == 200) {
