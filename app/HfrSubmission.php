@@ -181,4 +181,14 @@ class HfrSubmission
         return $columns;
     }
 
+
+    public static function copy_tx_curr_data($partner_id, $week_id, $to_week_id)
+    {
+        $columns = HfrSubmission::columns(false, 'tx_curr');
+        $week = Week::find($week_id);
+
+        
+
+    }
+
 }
