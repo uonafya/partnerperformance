@@ -180,6 +180,7 @@ class HfrSubmission
         }
         return $columns;
     }
+    
 
 
     public static function copy_tx_curr_data($partner_id=22, $week_id, $to_week_id)
