@@ -440,8 +440,15 @@ class HfrController extends Controller
 
 		$data = Lookup::target_donut();
 
-		$data['outcomes']['data'][0]['y'] = (int) $results->val;
-		$data['outcomes']['data'][1]['y'] = (int) $target->val;
+		// 
+
+		$results = (int) $results->val;
+		$target = (int) $target->val;
+		$gap = $target - $results;
+		if($gap < 0) $gap = 0;
+
+		$data['outcomes']['data'][0]['y'] = $results;
+		$data['outcomes']['data'][1]['y'] = $gap;
 
 		return view('charts.pie_chart', $data);
 	}
