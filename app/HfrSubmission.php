@@ -187,7 +187,15 @@ class HfrSubmission
         $columns = HfrSubmission::columns(false, 'tx_curr');
         $week = Week::find($week_id);
 
-        
+
+        $table_name = 'd_hfr_submission';
+
+        $rows = DB::table($table_name)
+            ->select($table_name . '.*')
+            ->join('view_facilities', 'view_facilities.id', '=', "{$table_name}.facility")
+            ->whereRaw(Lookup::get_active_partner_query($week->start_date))
+            ->where(['partner' => $partner_id, 'week_id' => $week_id])
+            ->get();
 
     }
 
