@@ -182,7 +182,7 @@ class HfrSubmission
     }
 
 
-    public static function copy_tx_curr_data($partner_id, $week_id, $to_week_id)
+    public static function copy_tx_curr_data($partner_id=22, $week_id, $to_week_id)
     {
         $columns = HfrSubmission::columns(false, 'tx_curr');
         $week = Week::find($week_id);
@@ -197,6 +197,17 @@ class HfrSubmission
             ->where(['partner' => $partner_id, 'week_id' => $week_id])
             ->get();
 
+        DB::beginTransaction();
+
+        foreach ($rows as $row) {
+            $data = [];
+            foreach ($columns as $column) {
+                $sql_column = $column['column_name'];
+                $data[$column_name] = $row->$column_name;
+            }
+            DB::table($table_name)->where(['facility' => $row->facility, 'week_id' => $to_week_id])->update($data);
+        }
+        DB::commit();
     }
 
 }
