@@ -19,9 +19,11 @@
 				plotShadow: false,
 				type: 'pie'
 			},
+			@isset($chart_title)
 			title: {
 			    text: "{{ $chart_title ?? '' }}"
 			},
+			@endisset
 			tooltip: {
 			    pointFormat: '{series.name}:  <b> {point.y} ({point.percentage:.1f}%)</b>'
 			},
