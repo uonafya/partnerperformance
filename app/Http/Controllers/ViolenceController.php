@@ -264,11 +264,18 @@ class ViolenceController extends Controller
 			->when(true, $this->target_callback(null, true))
 			->get();
 
+		$county_target_obj = DB::table('t_county_target')
+			->join('countys', 'countys.id', '=', 't_county_target.county_id')
+			->join('partners', 'partners.id', '=', 't_county_target.partner_id')
+			->selectRaw("(SUM(sexual_violence) + SUM(physical_emotional_violence)) AS gbv")
+			->when(true, $this->target_callback(null, false, true))
+			->get();
+
 		$groupby = session('filter_groupby', 1);
 		$divisor = Lookup::get_target_divisor();
 
 		if($groupby > 9){
-			$t = $target_obj->first()->gbv + $wards_target_obj->first()->gbv;
+			$t = ($target_obj->first()->gbv ?? 0) + ($wards_target_obj->first()->gbv ?? 0) + ($county_target_obj->first()->gbv ?? 0);
 			$target = round(($t / $divisor), 0);
 		}
 

@@ -180,10 +180,11 @@ class Controller extends BaseController
     	}
     }
 
-    public function target_callback($force_filter=null,$for_ward=false)
+    public function target_callback($force_filter=null,$for_ward=false,$for_county=false)
     {    	
 		$groupby = session('filter_groupby', 1);
         if(in_array($groupby, [1,5]) && $for_ward) $force_filter = 2;
+        if(in_array($groupby, [3,4,5]) && $for_county) $force_filter = 2;
         if($force_filter) $groupby = $force_filter;
 		$date_query = Lookup::date_query(true);
 		$divisions_query = Lookup::divisions_query($for_ward);
@@ -201,6 +202,12 @@ class Controller extends BaseController
             if(in_array($groupby, [1,5]) && $for_ward){
                 return function($query){
                     return $query->where('ward_id', '<', 0);
+                };  
+            }
+
+            if(in_array($groupby, [3,4,5]) && $for_county){
+                return function($query){
+                    return $query->where('county_id', '<', 0);
                 };  
             }
 
