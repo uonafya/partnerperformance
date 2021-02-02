@@ -68,7 +68,7 @@ class CountyGBVTargetsImport implements ToCollection
             if(Str::contains($value[3], 'Sexual')){
                 $data['sexual_violence'] = $value[4];
             }else if(Str::contains($value[3], 'Physical')){
-                $data['sexual_violence'] = $value[4];
+                $data['physical_emotional_violence'] = $value[4];
             }
 
             $this->insertRow($locator, $data);
