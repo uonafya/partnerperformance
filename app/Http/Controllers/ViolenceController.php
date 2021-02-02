@@ -162,7 +162,6 @@ class ViolenceController extends Controller
 	{
 		$date_query = Lookup::date_query();
 		$divisions_query = Lookup::divisions_query();
-		$wards_divisions_query = Lookup::divisions_query(true);
 
 		$violence = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical'])
 			->when(true, $this->surge_columns_callback(false))
@@ -188,7 +187,15 @@ class ViolenceController extends Controller
 		$wards_target_obj = DB::table('t_ward_target')
 			->join('view_wards', 'view_wards.id', '=', 't_ward_target.ward_id')
 			->selectRaw("SUM(gbv) AS gbv")
-			->whereRaw($wards_divisions_query)
+			->whereRaw(Lookup::divisions_query(true))
+			->whereRaw(Lookup::date_query(true))
+			->first();
+
+		$county_target_obj = DB::table('t_county_target')
+			->join('countys', 'countys.id', '=', 't_county_target.county_id')
+			->join('partners', 'partners.id', '=', 't_county_target.partner_id')
+			->selectRaw("SUM(sexual_violence) AS sexual_violence, SUM(physical_emotional_violence) AS physical_emotional_violence")
+			->whereRaw(Lookup::county_target_query())
 			->whereRaw(Lookup::date_query(true))
 			->first();
 
@@ -211,7 +218,7 @@ class ViolenceController extends Controller
 		$data['outcomes']['data'][0]['color'] = "#00ff00";
 		$data['outcomes']['data'][1]['color'] = "#ff0000";
 
-		$gap = $target_obj->gbv + $wards_target_obj->gbv - $row->violence;
+		$gap = ($target_obj->gbv + $wards_target_obj->gbv + $county_target_obj->sexual_violence + $county_target_obj->physical_emotional_violence) - $row->violence;
 		if($gap < 0) $gap = 0;
 
 		$data['outcomes']['data'][0]['y'] = (int) $row->violence;
