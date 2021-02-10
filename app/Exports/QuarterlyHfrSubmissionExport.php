@@ -125,14 +125,36 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
             ->groupBy("{$this->table_name}.facility")
         	->get();
 
-        $data = [];
+        if(!$this->filtered_weeks){
 
-        foreach ($rows as $row) {
+            $tx_curr_rows = DB::table($this->table_name)
+                ->join('view_facilities', 'view_facilities.id', '=', "{$this->table_name}.facility")
+                ->whereRaw(Lookup::get_active_partner_query($this->week->start_date))
+                ->when($partners, function($query) use($partners){
+                    return $query->whereIn('partner', $partners);
+                })
+                ->where(['funding_agency_id' => 1, 'week_id' => $this->week->id])
+                ->selectRaw($this->sql)
+                ->groupBy("{$this->table_name}.facility")
+                ->get();
+        }
+
+        $data = [];
+        $columns = HfrSubmission::columns(false, 'tx_curr');
+
+        foreach ($rows as $key => $row) {
             $reporting_week = $this->reporting_week;
 
             if($this->filtered_weeks){
                 $reporting_week = $actual_weeks->where('id', $row->week_id)->first()->name ?? ' Period ';
                 $start_date = $actual_weeks->where('id', $row->week_id)->first()->start_date ?? $start_date;
+            }
+
+            if(!$this->filtered_weeks){
+                foreach ($columns as $column) {
+                    $column_name = $column['column_name'];
+                    $row->$column_name = $tx_curr_rows[$key]->$column_name;
+                }
             }
 
             $row = collect($row);

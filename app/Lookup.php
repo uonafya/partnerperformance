@@ -522,7 +522,7 @@ class Lookup
 	}
 
 
-	public static function get_tx_week($param=1)
+	public static function get_tx_week($param=1, $hfr=false)
 	{
 		$year = session('filter_financial_year');
 		if(session('filter_week')) return session('filter_week');
@@ -541,8 +541,13 @@ class Lookup
 				/*$start_date = date('Y-m-d', strtotime("-{$days} days"));
 				$week = \App\Week::where('start_date', $start_date)->first();*/
 
-				$m = date('m', strtotime('-1 month'));	
-				$week = Week::where(['financial_year' => $year, 'month' => $m])->orderBy('start_date', 'desc')->first();
+				$m = date('m', strtotime('-1 month'));
+				$y = date('Y', strtotime('-1 month'));
+				if($hfr && date('d') < 14){
+					$m = date('m', strtotime('-2 months'));
+					$y = date('Y', strtotime('-2 months'));					
+				}	
+				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->first();
 			}
 			else{
 				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
