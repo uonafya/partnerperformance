@@ -125,7 +125,7 @@ class HfrController extends Controller
 		return view('charts.line_graph', $data);
 	}
 
-	public function tx_curr_two()
+	public function tx_curr()
 	{
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
@@ -420,6 +420,43 @@ class HfrController extends Controller
 		Targets
 	*/
 	public function target_donut($modality = 'hts_tst')
+	{
+		$tests = HfrSubmission::columns(true, $modality); 
+		$sql = $this->get_hfr_sum($tests, 'val');
+
+		$results = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->whereRaw(Lookup::date_query())
+			->whereRaw(Lookup::divisions_query())
+			->first();
+
+		$target = DB::table($this->my_target_table)
+			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+			->selectRaw($sql)
+			->whereRaw(Lookup::county_target_query())
+			->first();
+
+		$data = Lookup::target_donut();
+
+		// 
+
+		$results = (int) $results->val;
+		$target = (int) $target->val;
+		$gap = $target - $results;
+		if($gap < 0) $gap = 0;
+
+		$data['outcomes']['data'][0]['y'] = $results;
+		$data['outcomes']['data'][1]['y'] = $gap;
+
+		return view('charts.pie_chart', $data);
+	}
+
+	/*
+		Targets
+	*/
+	public function tx_curr_target_donut($modality = 'hts_tst')
 	{
 		$tests = HfrSubmission::columns(true, $modality); 
 		$sql = $this->get_hfr_sum($tests, 'val');

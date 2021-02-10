@@ -10,7 +10,7 @@
 </style>
 
 
-<div class="row">
+<!-- <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -51,6 +51,67 @@
 			    Linkage (HTS POS & TX NEW) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="linkage">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div> -->
+
+
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    HTS Testing & Yield <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="testing">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Linkage (HTS POS & TX NEW) <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="linkage">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Testing Target <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="target_donut_hts">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Positives Target <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="target_donut_pos">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    TX New Target <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="target_donut_tx_new">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -164,7 +225,7 @@
 
 		$("#testing").load("{{ url('hfr/testing') }}");
 		$("#linkage").load("{{ url('hfr/linkage') }}");
-		$("#tx_curr").load("{{ url('hfr/tx_curr_two') }}");
+		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
 		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
