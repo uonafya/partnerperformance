@@ -65,7 +65,7 @@ class Insert
 
 			echo "Completed entry for {$table_name} for {$year} at " . date('Y-m-d H:i:s') . "\n";
         }
-        // return;
+        return;
         self::insert_dispensing_rows($year);
         self::insert_tx_curr_rows($year);
         self::partner_indicators_insert($year);
