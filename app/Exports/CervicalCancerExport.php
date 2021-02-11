@@ -27,14 +27,17 @@ class CervicalCancerExport extends BaseExport
 		$this->modalities = $modalities;
 		$this->fileName = "{$this->partner->download_name}_cervical_cancer_data_for_FY_{$period->yr}_month_{$period->month_name}.xlsx";
 
-		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
+		$columns = \App\SurgeColumnView::when($modalities, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
 				return $query->where('modality_id', $modalities);
 			})
+			->where(['tbl_name' => $this->table_name])
 			// ->orderBy('modality_id', 'asc')
 			// ->orderBy('age_id', 'asc')
 			->orderBy('id', 'asc')
 			->get();
+
+
 
 		$sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`,  year AS `Calendar Year`, month AS `Month`, MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name` ";
 
