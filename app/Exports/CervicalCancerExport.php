@@ -19,11 +19,12 @@ class CervicalCancerExport extends BaseExport
     {
     	parent::__construct();
     	$this->table_name = 'd_cervical_cancer';
-		$this->modalities = $request->input('modalities');
-    	$period_id = $this->period_id;
+		$modalities = $request->input('modalities');
+		$this->period_id = $request->input('period_id');
 
 		$period = \App\Period::findOrFail($request->input('period_id'));
 		$this->active_date = $period->active_date;
+		$this->modalities = $modalities;
 		$this->fileName = "{$this->partner->download_name}_cervical_cancer_data_for_FY_{$period->yr}_month_{$period->month_name}.xlsx";
 
 		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
