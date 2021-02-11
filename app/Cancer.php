@@ -21,9 +21,9 @@ class Cancer
 
 	public static function cancer_modalities()
 	{
-        DB::statement("ALTER TABLE `surge_modalities` ADD COLUMN `parent_modality_id` tinyint(3) UNSIGNED DEFAULT 0 after `id`;");
-        DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality` varchar(255) DEFAULT NULL;");
-        DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality_name` varchar(255) DEFAULT NULL;");
+        // DB::statement("ALTER TABLE `surge_modalities` ADD COLUMN `parent_modality_id` tinyint(3) UNSIGNED DEFAULT 0 after `id`;");
+        DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality` `modality` varchar(255) DEFAULT NULL;");
+        DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality_name` `modality_name` varchar(255) DEFAULT NULL;");
 
         $submodalities = [
         	['modality' => 'first_time_screening', 'modality_name' => 'First Time screening'],
