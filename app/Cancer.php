@@ -129,5 +129,19 @@ class Cancer
         }
     }
 
+    public static function fix_column_names()
+    {
+        $table_name = 'd_cervical_cancer';
+        $columns = \App\SurgeColumnView::where(['tbl_name' => $table_name])->where('excel_name', 'like', '%(%')->get();
+
+        foreach ($columns as $key => $column) {
+            $excel_name = str_replace('(', '', strtolower($column->excel_name));
+            $excel_name = str_replace(')', '', strtolower($excel_name));
+
+            \App\SurgeColumn::where(['id' => $column->id])->update(['excel_name' => $excel_name]);
+        }
+
+    }
+
 
 }
