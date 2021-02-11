@@ -24,12 +24,6 @@ class CervicalCancerExport extends BaseExport
 		$this->period = \App\Period::findOrFail($request->input('period_id'));
 		$this->fileName = "{$this->partner->download_name}_cervical_cancer_data_for_FY_{$period->yr}_month_{$period->month_name}.xlsx";
 
-
-    	$modalities = $this->modalities;
-    	$gender_id = $this->gender_id;
-    	$ages = $this->ages;
-    	$partner = $this->partner;
-
 		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
 				return $query->where('modality_id', $modalities);
