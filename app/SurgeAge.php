@@ -43,4 +43,9 @@ class SurgeAge extends BaseModel
     {
         return $query->where(['for_gbv' => 1])->orderBy('max_age', 'asc');
     }
+    
+    public function scopeCervicalCancer($query)
+    {
+        return $query->where(['for_cervical_cancer' => 1])->orderBy('max_age', 'asc');
+    }
 }
