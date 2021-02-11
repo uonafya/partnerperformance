@@ -22,8 +22,8 @@ class Cancer
 	public static function cancer_modalities()
 	{
         // DB::statement("ALTER TABLE `surge_modalities` ADD COLUMN `parent_modality_id` tinyint(3) UNSIGNED DEFAULT 0 after `id`;");
-        DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality` `modality` varchar(255) DEFAULT NULL;");
-        DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality_name` `modality_name` varchar(255) DEFAULT NULL;");
+        // DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality` `modality` varchar(255) DEFAULT NULL;");
+        // DB::statement("ALTER TABLE `surge_modalities` CHANGE `modality_name` `modality_name` varchar(255) DEFAULT NULL;");
 
         $submodalities = [
         	['modality' => 'first_time_screening', 'modality_name' => 'First Time screening'],
@@ -39,7 +39,7 @@ class Cancer
         	['modality' => 'number_treated', 'modality_name' => 'Number treated (CXCA_TX)'],
         ];
 
-        $other_data = ['tbl_name' => $this->table_name, 'male' => 0, 'female' => 1, 'unknown' => 0, 'hts' => 0, 'target' => 0];
+        $other_data = ['tbl_name' => self::$table_name, 'male' => 0, 'female' => 1, 'unknown' => 0, 'hts' => 0, 'target' => 0];
 
 
         foreach ($parent_modalities as $mod) {
@@ -55,7 +55,7 @@ class Cancer
 
 	public static function cancer_columns()
 	{
-        $table_name = $this->table_name;
+        $table_name = self::$table_name;
         $sql = "CREATE TABLE `{$table_name}` (
                     id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                     facility int(10) UNSIGNED DEFAULT 0,
