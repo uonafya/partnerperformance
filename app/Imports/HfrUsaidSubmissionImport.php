@@ -50,8 +50,8 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 		if(!$fac) return;
 		if(!$fac) dd("facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
 
-		$date_format = 'm/d/Y';
-		// $date_format = 'm/d/y';
+		// $date_format = 'm/d/Y';
+		$date_format = 'm/d/y';
 
 		$week = Week::where(['start_date' => Carbon::createFromFormat($date_format, $row->date)->toDateString()])->first();
 		if(!$week) dd("Week starting on " . $row->date . " facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
