@@ -5,6 +5,9 @@ namespace App;
 use DB;
 use Str;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\HfrUsaidSubmissionImport;
+
 class HfrSubmission 
 {
 
@@ -209,6 +212,11 @@ class HfrSubmission
             DB::table($table_name)->where(['facility' => $row->facility, 'week_id' => $to_week_id])->update($data);
         }
         DB::commit();
+    }
+
+    public static function upload_data($upload)
+    {
+        Excel::import(new HfrUsaidSubmissionImport, $upload);
     }
 
 }
