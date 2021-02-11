@@ -222,12 +222,6 @@ Route::middleware(['signed'])->group(function(){
 	Start of routes that require authentication
 */
 Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
-	
-	Route::get('gbv/download-report', 'GeneralController@download_gbv_report');
-	Route::post('download-gbv/{path}', 'ImportsExportsController@export_any');
-
-	Route::get('hfr/download-report', 'GeneralController@download_hfr_report');
-	Route::post('download-hfr/{path}', 'ImportsExportsController@export_any');
 
 	Route::get('download/{path}', 'ImportsExportsController@export_any');
 
@@ -284,11 +278,16 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 
 	Route::prefix('gbv')->name('gbv')->group(function(){
 		Route::get('download', 'GeneralController@download_gbv');
-		// Route::get('download-report', 'GeneralController@download_gbv_report');
+		Route::get('download-report', 'GeneralController@download_gbv_report');
 	});
 
 	Route::prefix('hfr')->name('hfr')->group(function(){
 		Route::get('download', 'GeneralController@download_hfr');
+		Route::get('download-report', 'GeneralController@download_hfr_report');
+	});
+
+	Route::prefix('cervical_cancer')->name('cervical_cancer')->group(function(){
+		Route::get('download', 'GeneralController@download_cervical_cancer');
 	});
 
 
