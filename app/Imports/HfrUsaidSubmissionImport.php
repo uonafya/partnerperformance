@@ -13,9 +13,12 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+// use Maatwebsite\Excel\Concerns\RemembersRowNumber;
 
 class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkReading
 {
+
+	// use RemembersRowNumber;
 
     private $data_columns;
     private $table_name;
@@ -30,7 +33,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 			$this->data_columns[$column['usaid_name']] = $column['column_name'];
 		}
 
-		session(['updated_rows' => [], 'problem_rows' => []]);
+		session(['updated_rows' => [], 'problem_rows' => [], 'row_number' => 0]);
     }
 
     public function onRow(Row $row)
@@ -84,6 +87,10 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 		->where(['facility' => $fac->id, 'week_id' => $week->id, ])
 		->update($update_data);
 		if(!$updated) dd($original_row);
+
+		$row_number = session('row_number');
+		$row_number++;
+		session(['toast_message' => 'Row Number ' . $row_number, 'row_number' => $row_number]);
     }
 
     public function chunkSize(): int
