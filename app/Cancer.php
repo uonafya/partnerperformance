@@ -64,7 +64,7 @@ class Cancer
 
 
         $modalities = SurgeModality::where(['tbl_name' => $table_name, 'parent_modality_id' => 0])->get();
-        $ages = SurgeAge::cervical_cancer()->get();
+        $ages = SurgeAge::cervicalCancer()->get();
         $gender = SurgeGender::where('gender', 'female')->first();
 
 
