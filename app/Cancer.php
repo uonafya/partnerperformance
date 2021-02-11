@@ -118,6 +118,7 @@ class Cancer
 
     public static function fix_columns()
     {
+        $table_name = 'd_cervical_cancer';
         $modalities = SurgeModality::where(['tbl_name' => $table_name, 'parent_modality_id' => 0])->get();
         foreach ($modalities as $key => $modality) {
             $submodalities = $modality->submodalities;
