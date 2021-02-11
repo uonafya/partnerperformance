@@ -63,7 +63,7 @@ class Cancer
                     period_id smallint(5) UNSIGNED DEFAULT 0, ";
 
 
-        $modalities = SurgeModality::where(['tbl_name' => $table_name, 'parent_modality_id' => 0])->get();
+        /*$modalities = SurgeModality::where(['tbl_name' => $table_name, 'parent_modality_id' => 0])->get();
         $ages = SurgeAge::cervicalCancer()->get();
         $gender = SurgeGender::where('gender', 'female')->first();
 
@@ -84,7 +84,7 @@ class Cancer
 		            $ex = str_replace('__', '_', strtolower($ex));
 		            $ex = str_replace('__', '_', strtolower($ex));
 
-					$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0 ";
+					$sql .= " `{$col}` smallint(5) UNSIGNED DEFAULT 0, ";
 
 					$column->fill([
 						'column_name' => $col,
@@ -98,6 +98,11 @@ class Cancer
 
         		}
         	}
+        }*/
+
+        $columns = SurgeColumnView::where('tbl_name', $table_name)->get();
+        foreach ($columns as $key => $column) {
+			$sql .= " `{$column->column_name}` smallint(5) UNSIGNED DEFAULT 0, ";
         }
 
         $sql .= "        
