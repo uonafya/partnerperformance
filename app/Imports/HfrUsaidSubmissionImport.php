@@ -83,10 +83,14 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 		$original_row['db_row'] = $updated_row;
 
 		$updated = DB::table($this->table_name)
-		// ->where('id', $updated_row->id)
-		->where(['facility' => $fac->id, 'week_id' => $week->id, ])
+		->where('id', $updated_row->id)
+		// ->where(['facility' => $fac->id, 'week_id' => $week->id, ])
 		->update($update_data);
-		if(!$updated) dd($original_row);
+		if(!$updated) {
+			$original_row['reason'] = 'Updated is ' . $updated;
+			$original_row['update_date'] = $update_data;
+			dd($original_row);
+		}
 
 		// $row_number = session('row_number');
 		// $row_number++;
