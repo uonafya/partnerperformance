@@ -30,7 +30,7 @@
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Modality</label>
-              <select class="col-sm-7 select_tag" name="modalities" multiple>
+              <select class="col-sm-7 select_tag" name="modalities[]" multiple="multiple">
                 <option></option>
                 @foreach($modalities as $modality)
                   <optgroup label="{{ $modality->modality_name }}">
