@@ -123,7 +123,7 @@ class Cancer
             $submodalities = $modality->submodalities;
 
             foreach ($submodalities as $submodality) {
-                $modality->surge_column()->where('column_name', 'like', $submodality->modality)->update(['modality_id' => $submodality->id]);
+                $modality->surge_column()->where('column_name', 'like', "%{$submodality->modality}%")->update(['modality_id' => $submodality->id]);
             }
         }
     }
