@@ -2,11 +2,12 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use DB;
 
 use App\Lookup;
 
-class CervicalCancerExport extends BaseExport
+class CervicalCancerExport extends BaseExport implements ShouldAutoSize
 {
 	protected $table_name;
 	protected $period_id;
@@ -36,6 +37,8 @@ class CervicalCancerExport extends BaseExport
 			// ->orderBy('age_id', 'asc')
 			->orderBy('id', 'asc')
 			->get();
+
+		dd($columns);
 
 
 
