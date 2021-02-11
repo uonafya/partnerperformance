@@ -92,7 +92,7 @@ class Cancer
 						'excel_name' => $ex,
 						'age_id' => $age->id,
 						'gender_id' => $gender->id,
-						'modality_id' => $modality->id,
+						'modality_id' => $submodality->id,
 					]);
 		            $column->save();
 
@@ -115,6 +115,18 @@ class Cancer
         DB::statement("DROP TABLE IF EXISTS `{$table_name}`;");
         DB::statement($sql);
 	}
+
+    public static function fix_columns()
+    {
+        $modalities = SurgeModality::where(['tbl_name' => $table_name, 'parent_modality_id' => 0])->get();
+        foreach ($modalities as $key => $modality) {
+            $submodalities = $modality->submodalities;
+
+            foreach ($submodalities as $submodality) {
+                $modality->surge_column()->where('column_name', 'like', $submodality->modality)->update(['modality_id' => $submodality->id]);
+            }
+        }
+    }
 
 
 }

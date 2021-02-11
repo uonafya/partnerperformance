@@ -38,10 +38,6 @@ class CervicalCancerExport extends BaseExport implements ShouldAutoSize
 			->orderBy('id', 'asc')
 			->get();
 
-		dd($columns);
-
-
-
 		$sql = "countyname as County, Subcounty, facilitycode AS `MFL Code`, name AS `Facility`, financial_year AS `Financial Year`,  year AS `Calendar Year`, month AS `Month`, MONTHNAME(concat(year, '-', month, '-01')) AS `Month Name` ";
 
 		foreach ($columns as $column) {
