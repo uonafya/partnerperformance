@@ -12,8 +12,9 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
+class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkReading
 {
 
     private $data_columns;
@@ -83,6 +84,11 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 		->where(['facility' => $fac->id, 'week_id' => $week->id, ])
 		->update($update_data);
 		if(!$updated) dd($original_row);
+    }
+
+    public function chunkSize(): int
+    {
+        return 50;
     }
 
 }
