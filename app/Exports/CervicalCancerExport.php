@@ -12,6 +12,7 @@ class CervicalCancerExport extends BaseExport
 	protected $period_id;
 	protected $period;
 	protected $modalities;
+	protected $active_date;
 
 
     function __construct($request)
@@ -21,7 +22,8 @@ class CervicalCancerExport extends BaseExport
 		$this->modalities = $request->input('modalities');
     	$period_id = $this->period_id;
 
-		$this->period = \App\Period::findOrFail($request->input('period_id'));
+		$period = \App\Period::findOrFail($request->input('period_id'));
+		$this->active_date = $period->active_date;
 		$this->fileName = "{$this->partner->download_name}_cervical_cancer_data_for_FY_{$period->yr}_month_{$period->month_name}.xlsx";
 
 		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
