@@ -31,6 +31,7 @@ use App\Exports\SurgeExport;
 use App\Exports\TxCurrentExport;
 use App\Exports\WeeklyExport;
 use App\Exports\GBVExport;
+use App\Exports\CervicalCancerExport;
 use App\Exports\TargetsExport;
 use App\Exports\QuarterlyReportGBV;
 use App\Exports\QuarterlyReportHfr;
@@ -124,6 +125,7 @@ class ImportsExportsController extends Controller
 			'tx_curr' => TxCurrentExport::class,
 			'weekly' => WeeklyExport::class,
 			'gbv' => GBVExport::class,
+			'cervical-cancer' => CervicalCancerExport::class,
 			'targets' => TargetsExport::class,
 			'quarterly-gbv' => QuarterlyReportGBV::class,
 			'quarterly-hfr' => QuarterlyHfrSubmissionExport::class,

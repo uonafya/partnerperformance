@@ -215,12 +215,6 @@ Route::middleware(['signed'])->group(function(){
 	Route::get('reset/password/{user}', 'GeneralController@change_password')->name('reset.password');
 });
 
-Route::get('gbv/download-report', 'GeneralController@download_gbv_report');
-// Route::get('gbv/download-report', 'GeneralController@download_gbv_report');
-Route::post('download-gbv/{path}', 'ImportsExportsController@export_any');
-
-Route::get('hfr/download-report', 'GeneralController@download_hfr_report');
-Route::post('download-hfr/{path}', 'ImportsExportsController@export_any');
 
 
 
@@ -228,6 +222,12 @@ Route::post('download-hfr/{path}', 'ImportsExportsController@export_any');
 	Start of routes that require authentication
 */
 Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
+	
+	Route::get('gbv/download-report', 'GeneralController@download_gbv_report');
+	Route::post('download-gbv/{path}', 'ImportsExportsController@export_any');
+
+	Route::get('hfr/download-report', 'GeneralController@download_hfr_report');
+	Route::post('download-hfr/{path}', 'ImportsExportsController@export_any');
 
 	Route::get('download/{path}', 'ImportsExportsController@export_any');
 

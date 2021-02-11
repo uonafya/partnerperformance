@@ -290,6 +290,16 @@ class GeneralController extends Controller
 		return view('forms.download_gbv', $data);
 	}
 
+	public function download_cervical_cancer()
+	{
+		$data['modalities'] = \App\SurgeModality::where(['tbl_name' => 'd_cervical_cancer'])->get();
+		$data['periods'] = \App\Period::where('financial_year', '>', 2020)->get();
+		$user = auth()->user();
+		$data['partner'] = session('session_partner');
+		$data['no_header'] = true;
+		return view('forms.download_cervical_cancer', $data);
+	}
+
 	public function download_hfr()
 	{
 		$data['weeks'] = \App\Week::where('financial_year', '>', 2020)->get();

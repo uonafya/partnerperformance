@@ -67,7 +67,8 @@
 								<li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
 								<li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
 							</ul>
-						</li>		
+						</li>	
+						<li><a href="{{ url('hfr') }}">HFR</a></li>		
 						<!-- 
 						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
 						<li><a href="{{ url('tx_curr') }}">MMD</a></li>	
@@ -116,6 +117,10 @@
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
 									<li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
 									<li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
+									@if(auth()->user()->user_type_id < 3)
+										<li><a href="{{ url('/gbv/download-report') }}">Download GBV Report</a></li>
+										<li><a href="{{ url('/hfr/download-report') }}">Download HFR Report</a></li>
+									@endif
 								</ul>
 							</li>
 

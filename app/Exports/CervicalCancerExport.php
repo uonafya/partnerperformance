@@ -3,54 +3,39 @@
 namespace App\Exports;
 
 use DB;
+
 use App\Lookup;
 
-class GBVExport extends BaseExport
+class CervicalCancerExport extends BaseExport
 {
 	protected $table_name;
 	protected $period_id;
-	protected $gender_id;
-	protected $ages;
-	protected $active_date;
+	protected $period;
+	protected $modalities;
+
 
     function __construct($request)
     {
     	parent::__construct();
-    	$this->table_name = 'd_gender_based_violence';
-		$this->period_id = $request->input('period_id');
-		$modalities = $request->input('modalities');
-		$this->gender_id = $request->input('gender_id');
-		$ages = $request->input('ages');
-
-
-		$period = \App\Period::findOrFail($this->period_id);
-		$this->fileName = "{$this->partner->download_name}_gbv_data_FY_{$period->yr}_month_{$period->month_name}.xlsx";
-
-		/*$y = $this->financial_year;
-		$m = $this->month;
-		if($month > 9) $y--;
-		$this->active_date = "{$period->year}-{$period->month}-01";*/
-
-		$this->active_date = $period->active_date;
-
-		if(!$modalities) $modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])->get()->pluck('id')->toArray();
-    	// $modalities = $this->modalities;
-    	$gender_id = $this->gender_id;
-    	$partner = $this->partner;
+    	$this->table_name = 'd_cervical_cancer';
+		$this->modalities = $request->input('modalities');
     	$period_id = $this->period_id;
 
-		$columns = \App\SurgeColumn::when($modalities, function($query) use ($modalities){
+		$this->period = \App\Period::findOrFail($request->input('period_id'));
+		$this->fileName = "{$this->partner->download_name}_cervical_cancer_data_for_FY_{$period->yr}_month_{$period->month_name}.xlsx";
+
+
+    	$modalities = $this->modalities;
+    	$gender_id = $this->gender_id;
+    	$ages = $this->ages;
+    	$partner = $this->partner;
+
+		$columns = \App\SurgeColumn::when(true, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
 				return $query->where('modality_id', $modalities);
-			})->when($gender_id, function($query) use ($gender_id){
-				return $query->where('gender_id', $gender_id);
-			})->when($ages, function($query) use ($ages){
-				if(is_array($ages)) return $query->whereIn('age_id', $ages);
-				return $query->where('age_id', $ages);
 			})
-			->orderBy('modality_id', 'asc')
-			->orderBy('gender_id', 'asc')
-			->orderBy('age_id', 'asc')
+			// ->orderBy('modality_id', 'asc')
+			// ->orderBy('age_id', 'asc')
 			->orderBy('id', 'asc')
 			->get();
 
@@ -86,4 +71,5 @@ class GBVExport extends BaseExport
 			->whereRaw(Lookup::get_active_partner_query($this->active_date))
 			->orderBy('name', 'asc');
     }
+
 }
