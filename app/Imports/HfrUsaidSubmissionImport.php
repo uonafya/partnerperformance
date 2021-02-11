@@ -47,7 +47,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 
 		if($row->orgunituid) $fac = Facility::where('facility_uid', $row->orgunituid)->first();
 		if(!$fac) $fac = Facility::where('name', $row->orgunit)->first();
-		if(!$fac) return;
+		// if(!$fac) return;
 		if(!$fac) dd("facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
 
 		// $date_format = 'm/d/Y';
