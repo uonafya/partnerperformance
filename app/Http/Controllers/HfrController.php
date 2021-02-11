@@ -430,10 +430,10 @@ class HfrController extends Controller
 		$results = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
-			->when($modality != 'tx_curr', function() use($date_query){
+			->when($modality != 'tx_curr', function($query) use($date_query){
 				return $query->whereRaw($date_query);
 			})
-			->when(($modality != 'tx_curr'), function($query) use($week_id) {
+			->when(($modality == 'tx_curr'), function($query) use($week_id) {
 				return $query->where(['week_id' => $week_id]);
 			})
 			->whereRaw(Lookup::divisions_query())
