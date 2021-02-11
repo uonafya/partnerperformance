@@ -292,7 +292,7 @@ class GeneralController extends Controller
 
 	public function download_cervical_cancer()
 	{
-		$data['modalities'] = \App\SurgeModality::where(['tbl_name' => 'd_cervical_cancer'])->get();
+		$data['modalities'] = \App\SurgeModality::where(['tbl_name' => 'd_cervical_cancer', 'parent_modality_id' => 0])->get();
 		$data['periods'] = \App\Period::where('financial_year', '>', 2020)->get();
 		$user = auth()->user();
 		$data['partner'] = session('session_partner');

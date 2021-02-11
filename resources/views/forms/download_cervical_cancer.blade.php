@@ -2,18 +2,6 @@
 
 @section('content')
 
-<style type="text/css">
-	.display_date {
-		width: 130px;
-		display: inline;
-	}
-	.display_date {
-		width: 130px;
-		display: inline;
-	}
-</style>
-
-
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -45,7 +33,11 @@
               <select class="col-sm-7 select_tag" name="modalities">
                 <option></option>
                 @foreach($modalities as $modality)
-                  <option value="{{ $modality->id }} "> {{ $modality->modality_name }} </option>
+                  <optgroup label="{{ $modality->modality_name }}">
+                    @foreach($modality->submodalities as $submodality)
+                      <option value="{{ $submodality->id }} "> {{ $submodality->modality_name }} </option>
+                    @endforeach
+                  </optgroup>
                 @endforeach
               </select>
           </div>
