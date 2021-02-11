@@ -14,6 +14,7 @@ use App\Imports\SurgeImport;
 use App\Imports\TxCurrentImport;
 use App\Imports\WeeklyImport;
 use App\Imports\GBVImport;
+use App\Imports\CervicalCancerImport;
 use App\Imports\TargetsImport;
 // use App\Imports\AfyaImport;
 use App\Imports\FacilityEditImport;
@@ -67,6 +68,7 @@ class ImportsExportsController extends Controller
 			'tx_curr' => TxCurrentImport::class,
 			'weekly' => WeeklyImport::class,
 			'gbv' => GBVImport::class,
+			'cervical-cancer' => CervicalCancerImport::class,
 			'targets' => TargetsImport::class,
 			// 'afya' => AfyaImport::class,
 			'facility-edit' => FacilityEditImport::class,
