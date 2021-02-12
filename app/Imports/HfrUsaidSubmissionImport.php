@@ -57,7 +57,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 		}
 
 		$date_format = 'm/d/Y';
-		if(strlen($row->date) < 10) $date_format = 'm/d/y';
+		if(strlen($row->date) < 9) $date_format = 'm/d/y';
 		
 
 		$week = Week::where(['start_date' => Carbon::createFromFormat($date_format, $row->date)->toDateString()])->first();
