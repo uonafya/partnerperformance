@@ -110,7 +110,7 @@ Artisan::command('resend_link {id}', function ($id) {
 
 Artisan::command('hfr', function () {
 	\App\HfrSubmission::upload_data();
-})->describe('Upload HFR data.');
+})->describe('Upload HFR data from disk.');
 
 Artisan::command('report', function () {
 	\App\Lookup::send_report();
