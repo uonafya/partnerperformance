@@ -215,7 +215,7 @@ class HfrSubmission
         DB::commit();
     }
 
-    public static function upload_data($upload)
+    public static function upload_data()
     {
         session(['missing_facilities' => []]);
         $files = [
