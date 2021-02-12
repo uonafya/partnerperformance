@@ -7,6 +7,7 @@ use Str;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\HfrUsaidSubmissionImport;
+use App\Exports\GenExport;
 
 class HfrSubmission 
 {
@@ -216,7 +217,17 @@ class HfrSubmission
 
     public static function upload_data($upload)
     {
-        Excel::import(new HfrUsaidSubmissionImport, $upload);
+        session(['missing_facilities' => []]);
+        $files = [
+            public_path('hfr_oct_2020.csv'),
+            public_path('hfr_nov_2020.csv'),
+            public_path('hfr_dec_2020.csv'),
+        ];
+        foreach ($files as $upload) {
+            Excel::import(new HfrUsaidSubmissionImport, $upload);
+        }
+        $exp = new GenExport;
+        $exp->csv_save(session('missing_facilities'), public_path('missing-uids.csv'));
     }
 
 }

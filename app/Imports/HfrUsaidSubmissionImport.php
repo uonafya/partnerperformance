@@ -33,7 +33,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 			$this->data_columns[$column['usaid_name']] = $column['column_name'];
 		}
 
-		session(['updated_rows' => [], 'problem_rows' => [], 'row_number' => 0]);
+		session(['updated_rows' => [], 'problem_rows' => []]);
     }
 
     public function onRow(Row $row)
@@ -48,10 +48,17 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 		if($row->orgunituid) $fac = Facility::where('facility_uid', $row->orgunituid)->first();
 		if(!$fac) $fac = Facility::where('name', $row->orgunit)->first();
 		// if(!$fac) return;
-		if(!$fac) dd("facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
+		if(!$fac){
+			$facilities = session('missing_facilities');
+			$facilities[] = ['Facility UID' => $row->orgunituid, 'Facility Name' => $row->orgunit];
+			session(['missing_facilities' => $facilities]);
+			return;
+			// dd("facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
+		}
 
-		// $date_format = 'm/d/Y';
-		$date_format = 'm/d/y';
+		$date_format = 'm/d/Y';
+		if(strlen($row->date) < 10) $date_format = 'm/d/y';
+		
 
 		$week = Week::where(['start_date' => Carbon::createFromFormat($date_format, $row->date)->toDateString()])->first();
 		if(!$week) dd("Week starting on " . $row->date . " facility " . $row->orgunit . ' uid ' . $row->orgunituid . ' not found');
