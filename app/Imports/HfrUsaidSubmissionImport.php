@@ -8,6 +8,7 @@ use App\HfrSubmission;
 use App\Lookup;
 use DB;
 use Carbon\Carbon;
+use Str;
 
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
@@ -58,6 +59,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 
 		$date_format = 'm/d/Y';
 		if(strlen($row->date) < 9) $date_format = 'm/d/y';
+		if(Str::startsWith($row->date, '2020/')) $date_format = 'Y/m/d';
 		
 
 		$week = Week::where(['start_date' => Carbon::createFromFormat($date_format, $row->date)->toDateString()])->first();

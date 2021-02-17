@@ -228,7 +228,7 @@ class HfrSubmission
             Excel::import(new HfrUsaidSubmissionImport, $upload);
         }
         $exp = new GenExport;
-        $exp->csv_save(session('missing_facilities'), public_path('missing-uids.csv'));
+        $exp->csv_save(session('missing_facilities'), public_path('final-missing-uids.csv'));
     }
 
 }
