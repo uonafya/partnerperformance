@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 // use Maatwebsite\Excel\Concerns\RemembersRowNumber;
 
-class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkReading
+class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 {
 
 	// use RemembersRowNumber;
@@ -109,9 +109,9 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 		// session(['toast_message' => 'Row Number ' . $row_number, 'row_number' => $row_number]);
     }
 
-    public function chunkSize(): int
+    /*public function chunkSize(): int
     {
         return 50;
-    }
+    }*/
 
 }
