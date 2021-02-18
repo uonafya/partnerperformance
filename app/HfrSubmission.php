@@ -231,6 +231,20 @@ class HfrSubmission
         $exp->csv_save(session('missing_facilities'), public_path('final-missing-uids.csv'));
     }
 
-    public static function find_misasigned(){}
+    public static function find_misasigned()
+    {
+        $active_partner_query = Lookup::active_partner_query('2020-10-01');
+        $tests = HfrSubmission::columns(true, 'hts_tst'); 
+        $table_name = 'd_hfr_submission';
+
+        $rows = DB::table($table_name)
+            ->join('view_facilities', 'view_facilities.id', '=', "{$table_name}.facility")
+            ->join('weeks', 'weeks.id', '=', "{$table_name}.week_id")
+            ->whereRaw($active_partner_query)
+            ->selectRaw($sql)
+            ->when(true, $this->get_callback('tests'))
+            ->get();
+
+    }
 
 }
