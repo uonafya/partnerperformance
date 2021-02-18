@@ -229,6 +229,7 @@ class HfrSubmission
         }
         $exp = new GenExport;
         $exp->csv_save(session('missing_facilities'), public_path('final-missing-uids.csv'));
+        $exp->csv_save(session('duplicate_rows'), public_path('duplicate-hfr-rows.csv'));
     }
 
     public static function find_misasigned()

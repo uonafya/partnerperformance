@@ -96,23 +96,13 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 		if($updated_row->dateupdated){
 			$duplicate_rows = session()->pull('duplicate_rows');
 
-			$dup = [
-				'Month' => date('M', strtotime($week->start_date)),
-				'Facility UID' => $fac->facility_uid,
-				'MFL Code' => $fac->facilitycode,				
-			];
+			$dup = ['Month' => date('M', strtotime($week->start_date)), 'Facility UID' => $fac->facility_uid, 'MFL Code' => $fac->facilitycode,	 'Week Start Date' => $week->start_date, ];
 
-			foreach ($update_data as $key => $value) {
-				$dup['original ' . $key] = $updated_row->$key;
-			}
+			foreach ($update_data as $key => $value) { $dup['original ' . $key] = $updated_row->$key; }
 
-			foreach ($update_data as $key => $value) {
-				$dup['duplicate ' . $key] = $value;
-			}
+			foreach ($update_data as $key => $value) { $dup['duplicate ' . $key] = $value; }
 
-			$duplicate_rows[] = $dup;
-			session(['duplicate_rows' => $duplicate_rows]);
-			return;
+			$duplicate_rows[] = $dup; session(['duplicate_rows' => $duplicate_rows]); return;
 		}
 
 		$original_row['db_row'] = $updated_row;
