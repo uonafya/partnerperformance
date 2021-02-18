@@ -200,6 +200,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Faciliities With HFR Data that are not assigned to USAID Partners <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="misassigned_facilities">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection
 
 
@@ -230,6 +243,7 @@
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
 
+
 		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
 		$("#target_donut_pos").load("{{ url('hfr/target_donut/hts_tst_pos') }}");
 		$("#target_donut_tx_new").load("{{ url('hfr/target_donut/tx_new') }}");
@@ -240,6 +254,9 @@
 
 
 	$().ready(function(){
+
+		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
+		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
 		
 		date_filter('financial_year', 2021, '{{ $date_url }}');
 

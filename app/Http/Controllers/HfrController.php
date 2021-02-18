@@ -27,6 +27,27 @@ class HfrController extends Controller
         return $sql;
     }
 
+	public function misassigned_facilities()
+	{
+		$tests = HfrSubmission::columns(true, 'hts_tst'); 
+		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
+		$tx_new = HfrSubmission::columns(true, 'tx_new');
+		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+            ->addSelect(DB::raw("view_facilities.id as div_id, name, new_name, DHIScode as dhis_code, facilitycode as mfl_code, facility_uid, subcounty, countyname, partnername "))
+            ->where('funding_agency_id', '!=', 1)
+            ->groupBy('view_facilities.id')
+            ->having('tests', '>', 0)
+			->get();
+
+		$data['div'] = str_random(15);
+
+		return view('tables.misassigned_facilities', $data);
+	}
+
 	public function testing()
 	{
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 

@@ -236,6 +236,9 @@ class HfrSubmission
     {
         $active_partner_query = Lookup::active_partner_query('2020-10-01');
         $tests = HfrSubmission::columns(true, 'hts_tst'); 
+        $sql = self::get_hfr_sum($tests, 'tests');
+        $var = Lookup::groupby_query(true, 5);
+
         $table_name = 'd_hfr_submission';
 
         $rows = DB::table($table_name)
@@ -243,8 +246,14 @@ class HfrSubmission
             ->join('weeks', 'weeks.id', '=', "{$table_name}.week_id")
             ->whereRaw($active_partner_query)
             ->selectRaw($sql)
-            ->when(true, $this->get_callback('tests'))
+            ->addSelect(DB::raw("view_facilities.id as div_id, name, new_name, DHIScode as dhis_code, facilitycode as mfl_code, "))
+            ->groupBy('view_facilities.id')
             ->get();
+
+
+        foreach ($rows as $key => $row) {
+
+        }
 
     }
 
