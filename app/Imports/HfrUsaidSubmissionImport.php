@@ -26,7 +26,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
     function __construct()
     {
-    	$this->table_name = 'd_hfr_submission';
+    	$this->table_name = 'd_hfr_submission_test';
 
 		$columns = HfrSubmission::columns();
 

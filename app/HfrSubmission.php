@@ -23,7 +23,7 @@ class HfrSubmission
 
     public static function create_table()
     {    	
-        $table_name = 'd_hfr_submission';
+        $table_name = 'd_hfr_submission_test';
         $sql = "CREATE TABLE `{$table_name}` (
                     id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 
