@@ -69,7 +69,9 @@
 						<option value='null' selected='true'>All Funding Agencies</option>
 
 						@foreach($agencies as $agency)
-							<option value="{{ $agency->id }}"> {{ $agency->name }} </option>
+							<option value="{{ $agency->id }}"
+								@if(session('filter_agency') == $agency->id) selected @endif
+								> {{ $agency->name }} </option>
 						@endforeach
 					</select>		
 				</div>		
