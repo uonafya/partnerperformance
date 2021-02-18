@@ -26,7 +26,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
     function __construct()
     {
-    	$this->table_name = 'd_hfr_submission_test';
+    	$this->table_name = 'd_hfr_submission';
 
 		$columns = HfrSubmission::columns();
 
@@ -83,15 +83,38 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
 		// if($missing_columns) dd($missing_columns);
 
-		$update_data['week'] = $week;
+		/*$update_data['week'] = $week;
 		$update_data['facility'] = $fac;
 
-		dd($update_data);
+		dd($update_data);*/
 
 
 
 		$updated_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $week->id, ])->first();
 		if(!$updated_row) dd("Row is not in the DB.");
+
+		if($updated_row->dateupdated){
+			$duplicate_rows = session()->pull('duplicate_rows');
+
+			$dup = [
+				'Month' => date('M', strtotime($week->start_date)),
+				'Facility UID' => $fac->facility_uid,
+				'MFL Code' => $fac->facilitycode,				
+			];
+
+			foreach ($update_data as $key => $value) {
+				$dup['original ' . $key] = $updated_row->$key;
+			}
+
+			foreach ($update_data as $key => $value) {
+				$dup['duplicate ' . $key] = $value;
+			}
+
+			$duplicate_rows[] = $dup;
+			session(['duplicate_rows' => $duplicate_rows]);
+			return;
+		}
+
 		$original_row['db_row'] = $updated_row;
 
 		$updated = DB::table($this->table_name)

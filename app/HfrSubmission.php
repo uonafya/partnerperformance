@@ -23,7 +23,7 @@ class HfrSubmission
 
     public static function create_table()
     {    	
-        $table_name = 'd_hfr_submission_test';
+        $table_name = 'd_hfr_submission';
         $sql = "CREATE TABLE `{$table_name}` (
                     id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 
@@ -217,7 +217,7 @@ class HfrSubmission
 
     public static function upload_data()
     {
-        session(['missing_facilities' => []]);
+        session(['missing_facilities' => [], 'duplicate_rows' => []]);
         $files = [
             public_path('hfr_oct_2020.csv'),
             public_path('hfr_nov_2020.csv'),

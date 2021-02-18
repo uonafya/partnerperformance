@@ -11,7 +11,7 @@ use App\Week;
 
 class HfrController extends Controller
 {
-	private $my_table = 'd_hfr_submission_test';
+	private $my_table = 'd_hfr_submission';
 	private $my_target_table = 't_county_target';
 
 
