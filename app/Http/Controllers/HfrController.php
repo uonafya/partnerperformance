@@ -52,12 +52,16 @@ class HfrController extends Controller
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 1);
 
+		$i=0;
 		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
+			if(!$row->tests) continue;
 
-			$data["outcomes"][0]["data"][$key] = (int) $row->pos;
-			$data["outcomes"][1]["data"][$key] = (int) ($row->tests - $row->pos);
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->pos, $row->tests);
+			$data['categories'][$i] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$i] = (int) $row->pos;
+			$data["outcomes"][1]["data"][$i] = (int) ($row->tests - $row->pos);
+			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->pos, $row->tests);
+			$i++;
 		}	
 		return view('charts.dual_axis', $data);
 	}
@@ -87,16 +91,20 @@ class HfrController extends Controller
 		Lookup::yAxis($data, 0, 1);
 
 
+		$i=0;
 		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
+			if(!$row->pos) continue;
 
-			$data["outcomes"][0]["data"][$key] = (int) ($row->pos - $row->tx_new);
-			$data["outcomes"][1]["data"][$key] = (int) $row->tx_new;
-			$data["outcomes"][2]["data"][$key] = Lookup::get_percentage($row->tx_new, $row->pos);
-			if($data["outcomes"][0]["data"][$key] < 0) {
-				$data["outcomes"][0]["data"][$key] = (int) $row->tx_new;
-				$data["outcomes"][2]["data"][$key] = 0;
+			$data['categories'][$i] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$i] = (int) ($row->pos - $row->tx_new);
+			$data["outcomes"][1]["data"][$i] = (int) $row->tx_new;
+			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->tx_new, $row->pos);
+			if($data["outcomes"][0]["data"][$i] < 0) {
+				$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
+				$data["outcomes"][2]["data"][$i] = 0;
 			}
+			$i++;
 		}	
 		return view('charts.dual_axis', $data);
 	}
@@ -186,14 +194,17 @@ class HfrController extends Controller
 				->get();
 		}
 
+		$i = 0;
 		foreach ($rows as $key => $row){
 
 			/*if($groupby > 9) $data['categories'][$key] = Lookup::get_category($row, 14);
 			else{
 				$data['categories'][$key] = Lookup::get_category($row);
 			}*/
-			$data['categories'][$key] = Lookup::get_category($row);
-			$data["outcomes"][0]["data"][$key] = (int) $row->tx_curr;
+			if(!$row->tx_curr) continue;
+			$data['categories'][$i] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$i] = (int) $row->tx_curr;
+			$i++;
 		}	
 
 		return view('charts.line_graph', $data);
@@ -214,10 +225,13 @@ class HfrController extends Controller
 
 		Lookup::bars($data, ["PrEP New"], "column");
 
+		$i=0;
 		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
+			if(!$row->prep_new) continue;
+			$data['categories'][$i] = Lookup::get_category($row);
 
-			$data["outcomes"][0]["data"][$key] = (int) $row->prep_new;
+			$data["outcomes"][0]["data"][$i] = (int) $row->prep_new;
+			$i++;
 		}	
 		return view('charts.line_graph', $data);
 	}
@@ -237,10 +251,13 @@ class HfrController extends Controller
 
 		Lookup::bars($data, ["VMMC Circ"], "column");
 
+		$i=0;
 		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
+			if(!$row->vmmc_circ) continue;
+			$data['categories'][$i] = Lookup::get_category($row);
 
-			$data["outcomes"][0]["data"][$key] = (int) $row->vmmc_circ;
+			$data["outcomes"][0]["data"][$i] = (int) $row->vmmc_circ;
+			$i++;
 		}	
 		return view('charts.line_graph', $data);
 	}
@@ -273,21 +290,25 @@ class HfrController extends Controller
 		// $data['outcomes'][1]['tooltip'] = array("valueSuffix" => ' %');
 		// Lookup::yAxis($data, 0, 0);
 
+		$i=0;
 		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
+			$total = $row->less_3m + $row->less_5m + $row->above_6m;
+			if(!$total) continue;
+
+			$data['categories'][$i] = Lookup::get_category($row);
 
 			/*$data["outcomes"][0]["data"][$key] = (int) $row->less_3m;
 			$data["outcomes"][1]["data"][$key] = (int) $row->less_5m;
 			$data["outcomes"][2]["data"][$key] = (int) $row->above_6m;*/
 
-			$total = $row->less_3m + $row->less_5m + $row->above_6m;
-			$data["outcomes"][0]["data"][$key]['y'] = Lookup::get_percentage($row->above_6m, $total);
-			$data["outcomes"][1]["data"][$key]['y'] = Lookup::get_percentage($row->less_5m, $total);
-			$data["outcomes"][2]["data"][$key]['y'] = Lookup::get_percentage($row->less_3m, $total);
+			$data["outcomes"][0]["data"][$i]['y'] = Lookup::get_percentage($row->above_6m, $total);
+			$data["outcomes"][1]["data"][$i]['y'] = Lookup::get_percentage($row->less_5m, $total);
+			$data["outcomes"][2]["data"][$i]['y'] = Lookup::get_percentage($row->less_3m, $total);
 
-			$data["outcomes"][0]["data"][$key]['z'] = 'Patients - ' . number_format($row->above_6m);
-			$data["outcomes"][1]["data"][$key]['z'] = 'Patients - ' . number_format($row->less_5m);
-			$data["outcomes"][2]["data"][$key]['z'] = 'Patients - ' . number_format($row->less_3m);
+			$data["outcomes"][0]["data"][$i]['z'] = 'Patients - ' . number_format($row->above_6m);
+			$data["outcomes"][1]["data"][$i]['z'] = 'Patients - ' . number_format($row->less_5m);
+			$data["outcomes"][2]["data"][$i]['z'] = 'Patients - ' . number_format($row->less_3m);
+			$i++;
 		}
 		return view('charts.line_graph', $data);
 	}
