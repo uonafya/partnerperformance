@@ -83,10 +83,12 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow, WithChunkRe
 
 		// if($missing_columns) dd($missing_columns);
 
-		/*$update_data['week'] = $week;
+		$update_data['week'] = $week;
 		$update_data['facility'] = $fac;
 
-		dd($update_data);*/
+		dd($update_data);
+
+
 
 		$updated_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $week->id, ])->first();
 		if(!$updated_row) dd("Row is not in the DB.");
