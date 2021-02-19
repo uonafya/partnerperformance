@@ -257,4 +257,16 @@ class HfrSubmission
 
     }
 
+    public static function delete_extra_supported_facilities()
+    {
+        $duplicates = \App\SupportedFacility::selectRaw("facility_id, start_of_support, end_of_support, partner_id, COUNT(id) AS repeats ")->groupBy('facility_id', 'start_of_support', 'end_of_support', 'partner_id')->having('repeats', '>', 1)->get();
+
+        $duplicates = \App\SupportedFacility::selectRaw("facility_id, COUNT(id) AS repeats ")->whereRaw("(start_of_support <= '2020-10-01' AND (end_of_support >= '2020-10-01' OR end_of_support IS NULL))")->groupBy('facility_id')->having('repeats', '>', 1)->get();
+
+        foreach ($duplicates as $duplicate) {
+            $dup_rows = \App\SupportedFacility::where($duplicate->only(['facility_id', 'start_of_support']))->get();
+            foreach ($dup_rows as $key => $dup_row) { if(!$key){ continue; } $dup_row->delete(); }
+        }
+    }
+
 }
