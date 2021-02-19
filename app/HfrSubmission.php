@@ -228,8 +228,8 @@ class HfrSubmission
             Excel::import(new HfrUsaidSubmissionImport, $upload);
         }
         $exp = new GenExport;
-        $exp->csv_save(session('missing_facilities'), public_path('final-missing-uids.csv'));
-        $exp->csv_save(session('duplicate_rows'), public_path('duplicate-hfr-rows.csv'));
+        $exp->csv_save(session('missing_facilities'), public_path('final-missing-uids-2.csv'));
+        $exp->csv_save(session('duplicate_rows'), public_path('duplicate-hfr-rows-2.csv'));
     }
 
     public static function find_misasigned()
