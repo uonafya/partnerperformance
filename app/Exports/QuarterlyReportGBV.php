@@ -100,7 +100,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             ->get();
 
         foreach ($columns as $column) {
-            $sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
+            $sql .= ", SUM(`{$column->column_name}`) AS `{$column->alias_name}`";
             $excel_headings[] = $column->alias_name;
         }
         $this->sql = $sql;
@@ -143,7 +143,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             ->when($this->filtered_periods, function($query) {
                 return $query->addSelect('period_id')->groupBy('period_id');
             })
-        	->groupBy('partner', 'county')
+        	->groupBy('view_facilities.id')
         	->get();
 
         $data = [];
