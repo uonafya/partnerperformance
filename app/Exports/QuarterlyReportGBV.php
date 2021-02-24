@@ -27,6 +27,8 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
 	protected $period;
 	protected $periods_array;
     protected $filtered_periods;
+
+    protected $sql;
     protected $excel_headings;
 
     protected $modalities;
@@ -127,14 +129,6 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             $actual_periods =  Period::whereIn('id', $this->periods_array)->get();
         }
 
-		$sql = '';
-
-		foreach ($gbv as $key => $column) {
-            $alias = $column->column_name;
-            // $alias = str_replace('gbv_', '', $alias);
-			$sql .= "SUM(`{$column->column_name}`) AS `{$alias}`, ";
-		}
-        $sql = substr($sql, 0, -2);
 
         $rows = DB::table($this->table_name)
         	->join('view_facilities', 'view_facilities.id', '=', "{$this->table_name}.facility")
@@ -144,8 +138,8 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
                 return $query->whereIn('partner', $partners);
             })
             ->where(['funding_agency_id' => 1])
-        	->selectRaw($sql)
-        	->addSelect('partnername', 'mech_id', 'countyname')
+        	->selectRaw($this->sql)
+        	// ->addSelect('partnername', 'mech_id', 'countyname')
             ->when($this->filtered_periods, function($query) {
                 return $query->addSelect('period_id')->groupBy('period_id');
             })
