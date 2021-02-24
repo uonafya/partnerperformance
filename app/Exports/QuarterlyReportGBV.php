@@ -99,8 +99,8 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         foreach ($columns as $column) {
             $sql .= ", SUM(`{$column->column_name}`) AS `{$column->alias_name}`";
 
-            if($column->modality == 'gbv_sexual') $modality = 'Violence Service Type: Physical and/or Emotional Violence';
-            else if($column->modality == 'gbv_physical') $modality = 'Violence Service Type: ';
+            if($column->modality == 'gbv_sexual') $modality = 'Violence Service Type: Sexual Violence';
+            else if($column->modality == 'gbv_physical') $modality = 'Violence Service Type: Physical and/or Emotional Violence';
             else if($column->modality == 'pep_number') $modality = 'PEP: Taking PEP';
             else if($column->modality == 'completed_pep') $modality = 'PEP: Completed PEP';
 
