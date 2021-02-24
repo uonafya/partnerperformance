@@ -118,8 +118,8 @@
 									<li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
 									<li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
 									@if(auth()->user()->user_type_id < 3)
-										<li><a href="{{ url('/gbv/download-report') }}">Download GBV Report</a></li>
-										<li><a href="{{ url('/hfr/download-report') }}">Download HFR Report</a></li>
+										<li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
+										<li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
 									@endif
 								</ul>
 							</li>

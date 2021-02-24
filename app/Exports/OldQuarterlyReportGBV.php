@@ -17,7 +17,7 @@ use App\Lookup;
 
 use DB;
 
-class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, ShouldAutoSize
+class OldQuarterlyReportGBV implements FromArray, Responsable, WithHeadings, ShouldAutoSize
 {
 	use Exportable;
 	// protected $writerType = Excel::CSV;
@@ -27,7 +27,6 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
 	protected $period;
 	protected $periods_array;
     protected $filtered_periods;
-    protected $excel_headings;
 
     protected $modalities;
     protected $ages;
@@ -42,9 +41,9 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         $quarter = $request->input('quarter', 1);
         $filtered_periods = $request->input('periods');
 
-        $modalities = $request->input('modalities');
-        $ages = $request->input('ages');
-        $gender_id = $request->input('gender');
+        $this->modalities = $request->input('modalities');
+        $this->ages = $request->input('ages');
+        $this->gender = $request->input('gender');
         $this->partners = $request->input('partners');
 
         $this->filtered_periods=false;
@@ -64,54 +63,13 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             $this->periods_array = $periods->pluck('id')->toArray();
 
         }
-
-        
-        $a = 'CIRG Reporting Period (FY & Q)';
-        if($this->filtered_periods) $a = 'CIRG Reporting Period (FY & Month)';
-
-        $sql = "name, facility_uid, mech_id, partnername, country, countyname, ";
-
-        // $excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'Mechanism or Partner Name', 'OU', 'PSNU', ];
-
-        $excel_headings = ['Date', $a, 'ORG UNIT NAME (facility site, community site, or SNU)', 'ORG UNIT UID', 'MECHANISM ID', 'MECHANISM OR PARTNER NAME', 'OU', 'PSNU', ];
-
-        if(!$modalities){
-            $modalities = \App\SurgeModality::where(['tbl_name' => $this->table_name])
-            ->where('modality', '!=', 'pep_number')
-            ->get()->pluck('id')->toArray();
-        }
-
-        $columns = SurgeColumnView::
-            when($modalities, function($query) use ($modalities){
-                if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
-                return $query->where('modality_id', $modalities);
-            })->when($gender_id, function($query) use ($gender_id){
-                return $query->where('gender_id', $gender_id);
-            })->when($ages, function($query) use ($ages){
-                if(is_array($ages)) return $query->whereIn('age_id', $ages);
-                return $query->where('age_id', $ages);
-            })
-            ->orderBy('modality_id', 'desc')
-            ->orderBy('age_id', 'asc')
-            ->orderBy('gender_id', 'asc')
-            ->orderBy('id', 'asc')
-            ->get();
-
-        foreach ($columns as $column) {
-            $sql .= ", `{$column->column_name}` AS `{$column->alias_name}`";
-            $excel_headings[] = $column->alias_name;
-        }
-        $this->sql = $sql;
-        $this->excel_headings = $excel_headings;
-
     }
 
     public function headings() : array
     {
-        return $this->excel_headings;
-        /*$a = 'CIRG Reporting Period (FY & Q)';
-        if($this->filtered_periods) $a = 'CIRG Reporting Period (FY & Month)';
-    	return ['Date', $a, 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'Violence Type & PEP Completion', 'Results', 'Target'];*/
+        $a = 'Reporting Period (FY & Q)';
+        if($this->filtered_periods) $a = 'Reporting Period (FY & Month)';
+    	return ['Date', $a, 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'Violence Type & PEP Completion', 'Results', 'Target'];
     }
 
 
@@ -122,6 +80,21 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         $gender = $this->gender;
         $partners = $this->partners;
         $periods_array = $this->periods_array;
+
+		$gbv = SurgeColumnView::whereIn('modality', ['gbv_sexual', 'gbv_physical', 'pep_number', 'completed_pep'])
+            ->when($modalities, function($query) use($modalities){
+                return $query->whereIn('modality_id', $modalities);
+            })
+            ->when($ages, function($query) use($ages){
+                return $query->whereIn('age_id', $ages);
+            })
+            ->when($gender, function($query) use($gender){
+                return $query->where('gender_id', $gender);
+            })
+            ->orderBy('modality_id', 'ASC')
+            ->orderBy('gender_id', 'DESC')
+            ->orderBy('max_age', 'ASC')
+			->get();
 
         if($this->filtered_periods){
             $actual_periods =  Period::whereIn('id', $this->periods_array)->get();
@@ -161,17 +134,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
                 $reporting_period = $actual_periods->where('id', $row->period_id)->first()->full_name ?? ' Period ';
             }
 
-            $row = [date('Y-m-d'), $reporting_period];
-
-            $row = collect($row);
-            $arr = $row->toArray();
-            if($this->filtered_weeks) array_pop($arr);
-            array_unshift($arr, $reporting_period);
-            array_unshift($arr, date('Y-m-d'));
-
-            $data[] = $arr;
-
-        	/*foreach ($gbv as $column) {
+        	foreach ($gbv as $column) {
         		$column_name = $column->column_name;
                 $results = $row->$column_name ?? '0';
                 $modality_name = str_replace('GBV - ', '', $column->modality_name);
@@ -189,7 +152,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         			"$results",
         			'',
         		];
-        	}*/
+        	}
         }
         // dd($data);
         return $data;

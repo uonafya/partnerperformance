@@ -50,7 +50,7 @@ class GBVExport extends BaseExport
 			})
 			->orderBy('modality_id', 'asc')
 			->orderBy('gender_id', 'asc')
-			->orderBy('age_id', 'asc')
+			->orderBy('max_age', 'asc')
 			->orderBy('id', 'asc')
 			->get();
 
