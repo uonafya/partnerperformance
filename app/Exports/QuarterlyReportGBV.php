@@ -64,16 +64,13 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             $this->reporting_period = 'FY ' . $this->period->yr . ' Q' . $quarter;
             $this->fileName = $this->reporting_period . ' Quarterly Report.xlsx';
             $this->periods_array = $periods->pluck('id')->toArray();
-
         }
-
         
         $a = 'CIRG Reporting Period (FY & Q)';
         if($this->filtered_periods) $a = 'CIRG Reporting Period (FY & Month)';
 
         $sql = "name, facility_uid, mech_id, partnername, country, countyname";
 
-        // $excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'Mechanism or Partner Name', 'OU', 'PSNU', ];
 
         $excel_headings = ['Date', $a, 'ORG UNIT NAME (facility site, community site, or SNU)', 'ORG UNIT UID', 'MECHANISM ID', 'MECHANISM OR PARTNER NAME', 'OU', 'PSNU', ];
 
@@ -94,41 +91,40 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
                 return $query->where('age_id', $ages);
             })
             ->orderBy('modality_id', 'desc')
-            ->orderBy('age_id', 'asc')
+            ->orderBy('age_name', 'asc')
             ->orderBy('gender_id', 'asc')
             ->orderBy('id', 'asc')
             ->get();
 
         foreach ($columns as $column) {
             $sql .= ", SUM(`{$column->column_name}`) AS `{$column->alias_name}`";
-            $excel_headings[] = $column->alias_name;
+
+            if($column->modality == 'gbv_sexual') $modality = 'Violence Service Type: Physical and/or Emotional Violence';
+            else if($column->modality == 'gbv_physical') $modality = 'Violence Service Type: ';
+            else if($column->modality == 'pep_number') $modality = 'PEP: Taking PEP';
+            else if($column->modality == 'completed_pep') $modality = 'PEP: Completed PEP';
+
+            if($column->age == 'unknown') $age = 'Unknown Age';
+            else if($column->age == 'above_50') $age = '50+';
+            else{
+                $age = $column->age_name;
+            }
+
+            $excel_headings[] = "GEND_GBV {$age} " . \Str::ucfirst($column->gender) . " {$modality} ";
         }
         $this->sql = $sql;
         $this->excel_headings = $excel_headings;
-
     }
 
     public function headings() : array
     {
         return $this->excel_headings;
-        /*$a = 'CIRG Reporting Period (FY & Q)';
-        if($this->filtered_periods) $a = 'CIRG Reporting Period (FY & Month)';
-    	return ['Date', $a, 'Mechanism ID', 'Partner Name', 'OU', 'SNU', 'Age Band', 'Sex', 'Violence Type & PEP Completion', 'Results', 'Target'];*/
     }
-
 
     public function  array(): array
     {
-        $modalities = $this->modalities;
-        $ages = $this->ages;
-        $gender = $this->gender;
         $partners = $this->partners;
-        $periods_array = $this->periods_array;
-
-        if($this->filtered_periods){
-            $actual_periods =  Period::whereIn('id', $this->periods_array)->get();
-        }
-
+        if($this->filtered_periods) $actual_periods =  Period::whereIn('id', $this->periods_array)->get();
 
         $rows = DB::table($this->table_name)
         	->join('view_facilities', 'view_facilities.id', '=', "{$this->table_name}.facility")
@@ -139,7 +135,6 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             })
             ->where(['funding_agency_id' => 1])
         	->selectRaw($this->sql)
-        	// ->addSelect('partnername', 'mech_id', 'countyname')
             ->when($this->filtered_periods, function($query) {
                 return $query->addSelect('period_id')->groupBy('period_id');
             })
@@ -155,8 +150,6 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
                 $reporting_period = $actual_periods->where('id', $row->period_id)->first()->full_name ?? ' Period ';
             }
 
-            // $row = [date('Y-m-d'), $reporting_period];
-
             $row = collect($row);
             $arr = $row->toArray();
             if($this->filtered_periods) array_pop($arr);
@@ -164,28 +157,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             array_unshift($arr, date('Y-m-d'));
 
             $data[] = $arr;
-
-        	/*foreach ($gbv as $column) {
-        		$column_name = $column->column_name;
-                $results = $row->$column_name ?? '0';
-                $modality_name = str_replace('GBV - ', '', $column->modality_name);
-                // if(!is_integer($results)) $results = 0;
-        		$data[] = [
-        			date('Y-m-d'),
-        			$reporting_period,
-        			$row->mech_id,
-        			$row->partnername,
-        			'Kenya',
-        			$row->countyname . ' County',
-        			$column->age_name,
-        			\Str::ucfirst($column->gender),
-        			$modality_name,
-        			"$results",
-        			'',
-        		];
-        	}*/
         }
-        // dd($data);
         return $data;
     }
 }
