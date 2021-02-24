@@ -155,7 +155,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
                 $reporting_period = $actual_periods->where('id', $row->period_id)->first()->full_name ?? ' Period ';
             }
 
-            $row = [date('Y-m-d'), $reporting_period];
+            // $row = [date('Y-m-d'), $reporting_period];
 
             $row = collect($row);
             $arr = $row->toArray();
