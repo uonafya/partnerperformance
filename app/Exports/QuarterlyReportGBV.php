@@ -71,7 +71,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
         $a = 'CIRG Reporting Period (FY & Q)';
         if($this->filtered_periods) $a = 'CIRG Reporting Period (FY & Month)';
 
-        $sql = "name, facility_uid, mech_id, partnername, country, countyname, ";
+        $sql = "name, facility_uid, mech_id, partnername, country, countyname";
 
         // $excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'Mechanism or Partner Name', 'OU', 'PSNU', ];
 
