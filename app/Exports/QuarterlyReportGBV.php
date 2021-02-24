@@ -159,7 +159,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
 
             $row = collect($row);
             $arr = $row->toArray();
-            if($this->filtered_weeks) array_pop($arr);
+            if($this->filtered_periods) array_pop($arr);
             array_unshift($arr, $reporting_period);
             array_unshift($arr, date('Y-m-d'));
 
