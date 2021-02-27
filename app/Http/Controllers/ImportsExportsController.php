@@ -22,6 +22,7 @@ use App\Imports\HfrSubmissionImport;
 use App\Imports\HfrUsaidSubmissionImport;
 use App\Imports\CountyTargetsImport;
 use App\Imports\CountyGBVTargetsImport;
+use App\Imports\FacilityPartnerEditImport;
 
 
 use App\Exports\DispensingExport;
@@ -72,6 +73,7 @@ class ImportsExportsController extends Controller
 			'targets' => TargetsImport::class,
 			// 'afya' => AfyaImport::class,
 			'facility-edit' => FacilityEditImport::class,
+			'facility-partner-edit' => FacilityPartnerEditImport::class,
 			'hfr' => HfrSubmissionImport::class,
 			'hfr-usaid' => HfrUsaidSubmissionImport::class,
 			'county-target' => CountyTargetsImport::class,

@@ -32,7 +32,7 @@ class ViewFacility extends Model
     {
         $existing = $this->supportedFacility()->where('start_of_support', $start_of_support)->delete();
         
-    	$newSupportedFacility = SupportedFacility::create([
+    	$newSupportedFacility = SupportedFacility::firstOrCreate([
     		'facility_id' => $this->id,
     		'partner_id' => $partner_id,
     		'start_of_support' => $start_of_support,
