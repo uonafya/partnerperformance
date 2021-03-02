@@ -467,7 +467,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($tests, 'val');
 
 		$date_query = Lookup::date_query();
-		$week_id = Lookup::get_tx_week();
+		$week_id = Lookup::get_tx_week(1, true);
 
 		$results = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
