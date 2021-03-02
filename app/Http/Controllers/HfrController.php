@@ -167,7 +167,7 @@ class HfrController extends Controller
 
 		if($groupby < 10 || $groupby == 14){
 
-			$week_id = Lookup::get_tx_week();
+			$week_id = Lookup::get_tx_week(1, false);
 			// $data['chart_title'] = Week::find($week_id)->name;
 
 			$rows = DB::table($this->my_table)
