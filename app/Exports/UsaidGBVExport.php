@@ -30,7 +30,7 @@ class UsaidGBVExport extends BaseExport
 				return $query->where('modality_id', $modalities);
 			})
 			->orderBy('modality_id', 'asc')
-			->orderBy('gender_id', 'asc')
+			->orderBy('gender_id', 'desc')
 			->orderBy('age_id', 'asc')
 			->orderBy('id', 'asc')
 			->get();
