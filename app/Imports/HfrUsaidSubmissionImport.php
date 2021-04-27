@@ -88,8 +88,6 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
 		dd($update_data);*/
 
-
-
 		$updated_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $week->id, ])->first();
 		if(!$updated_row) dd("Row is not in the DB.");
 
