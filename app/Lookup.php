@@ -327,7 +327,7 @@ class Lookup
             $active_date = "{$y}-10-01";
 			
         }
-			$DD($active_date);
+			//$DD($active_date);
         return self::get_active_partner_query($active_date);
 	}
 
