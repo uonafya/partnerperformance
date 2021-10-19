@@ -299,6 +299,12 @@ class GeneralController extends Controller
 		$data['no_header'] = true;
 		return view('forms.download_cervical_cancer', $data);
 	}
+	public function cervical_cancer_dashboard()
+	{
+		$data = [];
+		return view('base.cervical_dashboard', $data);
+	}
+	
 
 	public function download_hfr()
 	{
