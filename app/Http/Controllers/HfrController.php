@@ -156,10 +156,11 @@ class HfrController extends Controller
 
 	public function tx_curr()
 	{
+		// DB::enableQueryLog();
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
 
-		$data['div'] = str_random(15);
+		$data['div'] = str_random(15); 
 
 		Lookup::bars($data, ["TX Curr"], "column");
 
