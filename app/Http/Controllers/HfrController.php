@@ -8,6 +8,7 @@ use App\Lookup;
 use App\HfrSubmission;
 use App\Period;
 use App\Week;
+use Dotenv\Regex\Result;
 
 class HfrController extends Controller
 {
@@ -118,7 +119,7 @@ class HfrController extends Controller
 
 			$data['categories'][$i] = Lookup::get_category($row);
 
-			$data["outcomes"][0]["data"][$i] = (int) ($row->pos - $row->tx_new);
+			$data["outcomes"][0]["data"][$i] = (int) ($row->pos - $row->tx_new); 
 			$data["outcomes"][1]["data"][$i] = (int) $row->tx_new;
 			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->tx_new, $row->pos);
 			if($data["outcomes"][0]["data"][$i] < 0) {
@@ -231,11 +232,162 @@ class HfrController extends Controller
 		return view('charts.line_graph', $data);
 	}
 
+	public function net_new()
+	{
+		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+
+		$data['div'] = str_random(15);
+
+		Lookup::bars($data, ["TX Net New"], "column");
+
+		$groupby = session('filter_groupby');
+	
+		if($groupby < 10 || $groupby == 14){
+			
+
+			$week_id = Lookup::get_tx_week();
+			// $data['chart_title'] = Week::find($week_id)->name;
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_callback('tx_curr'))
+				->when(($groupby < 10), function($query) use($week_id) {
+					return $query->where(['week_id' => $week_id]);
+				})
+				->get();
+		}
+		else{
+			$periods = [];
+			// Group By month
+			if($groupby == 12){
+				$periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'month')
+				->get();
+			}
+			// Group By quarter
+			else if($groupby == 13){
+				$periods = Period::select('financial_year', 'quarter')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'quarter')
+				->get();				
+			}
+			if(!$periods) return null;
+
+			$weeks = $week_ids = [];
+
+			foreach ($periods as $period) {
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+			}
+
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				->when(true, $this->get_callback('tx_curr'))
+				->whereIn('week_id', $week_ids)
+				->get();
+		}
+		$i = 0;
+		foreach ($rows as $key => $row){			
+			if(!$row->tx_curr) continue;
+			$data['categories'][$i] = Lookup::get_category($row);
+			$data["outcomes"][0]["data"][$i] = (int) ($row->tx_curr - 100000);
+			$i++;
+		}	
+
+		return view('charts.line_graph', $data);
+	}
+
+	public function tx_crude()
+	{
+		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+		$tx_new = HfrSubmission::columns(true, 'tx_new'); 
+		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr'). ', ' . $this->get_hfr_sum($tx_new, 'tx_new');;
+
+		$data['div'] = str_random(15);
+		$data['yAxis'] = 'Percentage';
+
+		// Lookup::bars($data, [" Crude Retention "], "column");
+		$data['outcomes'][0]['name'] = "Targeted Crude Retention";
+		$data['outcomes'][1]['name'] = " Crude Retention";
+
+		$groupby = session('filter_groupby');
+	
+		if($groupby < 10 || $groupby == 14){
+			
+
+			$week_id = Lookup::get_tx_week();
+			// $data['chart_title'] = Week::find($week_id)->name;
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_callback('tx_curr'))
+				->when(($groupby < 10), function($query) use($week_id) {
+					return $query->where(['week_id' => $week_id]);
+				})
+				->get();
+		}
+		else{
+			$periods = [];
+			// Group By month
+			if($groupby == 12){
+				$periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'month')
+				->get();
+			}
+			// Group By quarter
+			else if($groupby == 13){
+				$periods = Period::select('financial_year', 'quarter')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'quarter')
+				->get();				
+			}
+			if(!$periods) return null;
+
+			$weeks = $week_ids = [];
+
+			foreach ($periods as $period) {
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+			}
+
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				->when(true, $this->get_callback('tx_curr'))
+				->whereIn('week_id', $week_ids)
+				->get();
+		}
+		$i = 0;
+		foreach ($rows as $key => $row){			
+			if(!$row->tx_curr) continue;
+			$data['categories'][$i] = Lookup::get_category($row);
+			$results = ($row->tx_curr);
+			$results_2 = (($row->tx_new + 400000));
+			// dd($results_2);
+			$target = 90;
+			$data["outcomes"][0]["data"][$key] =  $target;
+			$data["outcomes"][1]["data"][$i] = Lookup::get_percentage($results,$results_2);
+			$i++;
+		}	
+
+		return view('charts.line_graph', $data);
+	}
+
+
 	public function prep_new()
 	{
 		$prep_new = HfrSubmission::columns(true, 'prep_new');
 		$sql = $this->get_hfr_sum($prep_new, 'prep_new');
-
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
