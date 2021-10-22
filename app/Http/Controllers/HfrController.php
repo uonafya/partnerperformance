@@ -49,6 +49,7 @@ class HfrController extends Controller
 		return view('tables.misassigned_facilities', $data);
 	}
 
+
 	public function testing()
 	{
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 
@@ -409,7 +410,22 @@ class HfrController extends Controller
 		return view('charts.line_graph', $data);
 	}
 
-	public function vmmc_circ()
+    public function prep_new_last_rpt_period()
+    {
+        $prep_new = HfrSubmission::columns(true, 'prep_new');
+        $sql = $this->get_hfr_sum($prep_new, 'prep_new');
+        $rows = DB::table($this->my_table)
+            ->when(true, $this->get_joins_callback_weeks($this->my_table))
+            ->selectRaw($sql)
+            ->when(true, $this->get_callback('prep_new'))
+            ->get();
+
+        $data['div'] = str_random(15);
+
+        return view('tables.prep_new_last_rpt_period', $data);
+    }
+
+    public function vmmc_circ()
 	{
 		$vmmc_circ = HfrSubmission::columns(true, 'vmmc_circ');
 		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');

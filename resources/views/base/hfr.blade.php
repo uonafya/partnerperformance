@@ -197,6 +197,18 @@
 			<div class="panel-body" id="prep_new">
 				<center><div class="loader"></div></center>
 			</div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Prep New <div class="display_date"></div>
+                        </div>
+                        <div class="panel-body" id="prep_new_last_rpt_period">
+                            <center><div class="loader"></div></center>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
 	</div>
 </div>
@@ -227,8 +239,7 @@
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Faciliities With HFR Data that are not assigned to USAID Partners <div class="display_date"></div>
+		    <div class="panel-heading">Facilities With HFR Data that are not assigned to USAID Partners <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="misassigned_facilities">
 				<center><div class="loader"></div></center>
@@ -285,6 +296,10 @@
 
 		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
 		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
+
+        $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
+        $("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
+
 		
 		date_filter('financial_year', 2021, '{{ $date_url }}');
 
