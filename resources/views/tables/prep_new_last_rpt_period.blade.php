@@ -17,7 +17,6 @@
         @endforeach
         </tbody>
     </table>
-    {{$rows}}
 </div>
 
 

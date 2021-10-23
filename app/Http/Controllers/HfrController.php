@@ -417,7 +417,7 @@ class HfrController extends Controller
         $rows = DB::table($this->my_table)
             ->when(true, $this->get_joins_callback_weeks($this->my_table))
             ->selectRaw($sql)
-            ->when(true, $this->get_groupby_callback('prep_new',null,'',1))
+            ->when(true, $this->get_predefined_groupby_callback('prep_new'))
             ->get();
 
         $data['div'] = str_random(15);
