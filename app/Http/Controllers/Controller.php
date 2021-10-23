@@ -66,6 +66,14 @@ class Controller extends BaseController
     	}
     }
 
+    public function get_groupby_callback($order_by=null, $having_null=null, $prepension='', $groupby)
+    {
+    	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::date_query(false, $prepension);
+        $var = Lookup::predefined_groupby_query($groupby); //$groupby = 1,2...;
+        return $this->divisions_callback($divisions_query, $date_query, $var, $groupby, $order_by, $having_null);
+    }
+
     public function get_callback_no_dates($order_by=null, $having_null=null)
     {
         $groupby = session('filter_groupby', 1);

@@ -409,7 +409,7 @@ class HfrController extends Controller
 		}	
 		return view('charts.line_graph', $data);
 	}
-
+    //TODO Make this function take a groupby parameter from ui
     public function prep_new_last_rpt_period()
     {
         $prep_new = HfrSubmission::columns(true, 'prep_new');
@@ -417,10 +417,11 @@ class HfrController extends Controller
         $rows = DB::table($this->my_table)
             ->when(true, $this->get_joins_callback_weeks($this->my_table))
             ->selectRaw($sql)
-            ->when(true, $this->get_callback('prep_new'))
+            ->when(true, $this->get_groupby_callback('prep_new',null,'',1))
             ->get();
 
         $data['div'] = str_random(15);
+        $data['rows'] = $rows;
 
         return view('tables.prep_new_last_rpt_period', $data);
     }

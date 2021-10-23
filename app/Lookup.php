@@ -698,6 +698,22 @@ class Lookup
 		return compact('select_query', 'group_query', 'group_array');
 		// return ['select_query' => $select_query, 'group_query' => $group_query];
 	}
+    public static function predefined_groupby_query($groupby)
+    {
+        switch ($groupby) {
+            case 1:
+                $select_query = "partner as div_id";
+                $select_query .= ", partnername as name";
+                $group_query = "partner";
+                break;
+            case 2:
+                $select_query = "county as div_id, countyname as name, CountyDHISCode as dhis_code, CountyMFLCode as mfl_code";
+                $group_query = "county";
+                break;
+        }
+        if(!isset($group_array)) $group_array = [$group_query];
+        return compact('select_query', 'group_query', 'group_array');
+    }
 
 	public static function duplicate_parameters($row)
 	{
