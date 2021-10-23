@@ -9,6 +9,15 @@
 	}
 </style>
 
+<div class="row">
+	<div class="panel-heading">
+	<!-- <a href="{{ route('pdfview',['download'=>'pdf']) }}">Download PDF</a> -->
+	<a href="javascript:demoFromHTML()" class="button" id="cmd">Download PDF</a>
+	</div>		
+</div>
+
+<div class="content-body" id="body">
+
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -139,7 +148,7 @@
 		</div>
 	</div>
 </div>
-
+</div>
 @endsection
 
 
@@ -186,6 +195,34 @@
 	});
 
 </script>
+<script type="text/javascript">
+    function demoFromHTML() {
+		var HTML_Width = $(".content-body").width();
+    var HTML_Height = $(".content-body").height();
+    var top_left_margin = 15;
+    var PDF_Width = HTML_Width + (top_left_margin * 2);
+    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    var canvas_image_width = HTML_Width;
+    var canvas_image_height = HTML_Height;
+
+    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+    html2canvas($(".content-body")[0]).then(function (canvas) {
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+        pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+        for (var i = 1; i <= totalPDFPages; i++) { 
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+        }
+        pdf.save("Your_PDF_Name.pdf");
+        $(".content-body").hide();
+    });
+		
+    }
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
 @endsection
 
