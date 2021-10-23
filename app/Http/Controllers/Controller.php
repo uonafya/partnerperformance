@@ -73,6 +73,8 @@ class Controller extends BaseController
             $groupby = 1;
         }elseif (session('filter_groupby',1) == 2){
             $groupby = 2;
+        }else{
+            $groupby = 1;
         }
 
     	$divisions_query = Lookup::divisions_query();

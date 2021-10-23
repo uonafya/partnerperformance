@@ -703,7 +703,7 @@ class Lookup
         switch ($groupby) {
             case 1:
                 $select_query = "partner as div_id";
-                $select_query .= ", partnername as name";
+                $select_query .= ", partnername as name, partnername as dhis_code, partnername as mfl_code";
                 $group_query = "partner";
                 break;
             case 2:
