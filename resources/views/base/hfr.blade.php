@@ -140,6 +140,30 @@
 		</div>
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    TX_Curr Crude Retention <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_crude">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			Net New <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="net_new">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -226,6 +250,8 @@
 		$("#linkage").html("<center><div class='loader'></div></center>");
 		$("#tx_curr").html("<center><div class='loader'></div></center>");
 		$("#tx_mmd").html("<center><div class='loader'></div></center>");
+		$("#tx_crude").html("<center><div class='loader'></div></center>");
+		$("#net_new").html("<center><div class='loader'></div></center>");
 		$("#prep_new").html("<center><div class='loader'></div></center>");
 		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
 		
@@ -236,6 +262,8 @@
 		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
 		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
 
+		$("#net_new").load("{{ url('hfr/net_new') }}");
+		$("#tx_crude").load("{{ url('hfr/tx_crude') }}");
 		$("#testing").load("{{ url('hfr/testing') }}");
 		$("#linkage").load("{{ url('hfr/linkage') }}");
 		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
