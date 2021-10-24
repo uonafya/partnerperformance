@@ -206,8 +206,6 @@ class HfrController extends Controller
 				if($w) $week_ids[] = $w->id; $weeks[] = $w;
 			}
 
-			// dd($weeks);
-
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
@@ -440,7 +438,6 @@ class HfrController extends Controller
 			$data['categories'][$i] = Lookup::get_category($row);
 			$results = ($row->tx_curr);
 			$results_2 = (($row->tx_new + 400000));
-			// dd($results_2);
 			$target = 90;
 			$data["outcomes"][0]["data"][$key] =  $target;
 			$data["outcomes"][1]["data"][$i] = Lookup::get_percentage($results,$results_2);
@@ -594,7 +591,6 @@ class HfrController extends Controller
 		$data['div'] = str_random(15);
 		$data['rows'] = $rows;
 		$data['groupby'] = $group_by;
-		// dd($data);
 		return view('tables.tx_mmd_detail', $data);
 	}
 
