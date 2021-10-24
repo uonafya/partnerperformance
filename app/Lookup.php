@@ -333,8 +333,8 @@ class Lookup
 
 	public static function get_active_partner_query($active_date)
 	{
-		// return "(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
-		return "end_of_support IS NULL";
+		//return "(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+		return "( end_of_support IS NULL)";
 	}
 
 	// Prepension allows us to prepend 'periods.' so it doesn't clash
