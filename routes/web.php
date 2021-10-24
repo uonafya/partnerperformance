@@ -179,6 +179,10 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	
 	Route::get('misassigned_facilities', 'HfrController@misassigned_facilities')->name('misassigned_facilities');
 	Route::get('prep_new_last_rpt_period', 'HfrController@prep_new_last_rpt_period')->name('prep_new_last_rpt_period');
+	Route::get('testing_dis', 'HfrController@testing_dis')->name('testing_dis');
+	Route::get('tx_curr_details', 'HfrController@tx_curr_details')->name('tx_curr_details');
+	Route::get('vmmc_circ_details', 'HfrController@vmmc_circ_details')->name('vmmc_circ_details');
+	Route::get('linkage_dis', 'HfrController@linkage_dis')->name('linkage_dis');
 	
 	Route::get('tx_mmd_detail', 'HfrController@tx_mmd_detail')->name('tx_mmd_detail');
 

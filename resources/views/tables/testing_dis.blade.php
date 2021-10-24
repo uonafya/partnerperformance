@@ -2,11 +2,15 @@
 	<table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
 		<thead>
 			<tr class="colhead">
-                <!-- <th>No. <th> -->
-				<th>Partner</th>
-				<th>Positive</th>
-				<th>Negative</th>
-				<th>Yield</th>
+                <th>#</th>
+                    @if (session('filter_partner') == null)
+                     <th>Partner</th>
+                    @else
+                     <th>County</th>
+                    @endif
+                    <th>Not Linked</th>
+                    <th>TX New</th>
+                    <th>Linkage</th>
 
 			</tr>
 		</thead>
@@ -28,10 +32,10 @@
                             
 
 				<tr>
-					<!-- <td> {{ $key - $i }} </td> -->
+					<td> {{ $key +1 }} </td>
 					<td> {{ $row->name ?? '' }} </td>
-					<td> {{ $row->pos ?? '' }} </td>
-					<td> {{ ($row->tests - $row->pos) ?? '' }} </td>
+					<td> {{ (int) $row->pos ?? '' }} </td>
+					<td> {{ (int) ($row->tests - $row->pos) ?? '' }} </td>
 					<td> {{ $calc_percentage($row->pos, $row->tests) ?? '' }} </td>
 
 				</tr>
