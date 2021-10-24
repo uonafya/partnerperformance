@@ -699,7 +699,8 @@ class Lookup
 		// return ['select_query' => $select_query, 'group_query' => $group_query];
 	}
     public static function predefined_groupby_query($groupby)
-    {
+    {	
+		
         switch ($groupby) {
             case 1:
                 $select_query = "partner as div_id";

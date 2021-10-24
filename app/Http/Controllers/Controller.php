@@ -71,12 +71,12 @@ class Controller extends BaseController
         $groupby = 1; //default filter
         if($force_filter) {
             $groupby = 1;
-        }elseif (session('filter_groupby',1) == 2){
+        }elseif (session('filter_partner') != null){
             $groupby = 2;
         }else{
             $groupby = 1;
         }
-
+        // dd($force_filter,session('filter_partner'));
     	$divisions_query = Lookup::divisions_query();
         $date_query = Lookup::date_query(false, $prepension);
         $var = Lookup::predefined_groupby_query($groupby); //$groupby = 1,2...;

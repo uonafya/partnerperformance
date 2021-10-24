@@ -1,13 +1,14 @@
 <div class="col-md-12">
-    <h4>Group by: {{ $groupby }}</h4>
     <div class="table-responsive">
         <table id="{{ $div }}"  cellspacing="1" cellpadding="3" class="tablehead table table-striped table-bordered">
             <thead>
             <tr class="colhead">
                 <th>#</th>
+                @if (session('filter_partner') == null))
                 <th>Partner</th>
-                <th>MFL</th>
-                <th>DHIS</th>
+                @else(session('filter_partner') != null))
+                <th>County</th>
+                @endif
                 <th>PrEP New</th>
             </tr>
             </thead>
@@ -16,8 +17,6 @@
             <tr>
                 <td> {{ $key+1 }} </td>
                 <td> {{ $row->name ?? '' }} </td>
-                <td> {{ $row->mfl_code ?? '' }} </td>
-                <td> {{ $row->dhis_code ?? '' }} </td>
                 <td> {{ $row->prep_new ?? '' }} </td>
             </tr>
             @endforeach

@@ -265,6 +265,8 @@
 		$("#net_new").html("<center><div class='loader'></div></center>");
 		$("#prep_new").html("<center><div class='loader'></div></center>");
 		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
+        $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
+       
 		
 		$("#target_donut_hts").html("<center><div class='loader'></div></center>");
 		$("#target_donut_pos").html("<center><div class='loader'></div></center>");
@@ -273,6 +275,7 @@
 		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
 		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
 
+		$("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
 		$("#net_new").load("{{ url('hfr/net_new') }}");
 		$("#tx_crude").load("{{ url('hfr/tx_crude') }}");
 		$("#testing").load("{{ url('hfr/testing') }}");
@@ -281,6 +284,7 @@
 		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
+		// $("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
 
 
 		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
@@ -297,8 +301,6 @@
 		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
 		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
 
-        $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
-        $("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
 
 		
 		date_filter('financial_year', 2021, '{{ $date_url }}');
