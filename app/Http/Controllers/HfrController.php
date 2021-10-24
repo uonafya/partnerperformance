@@ -257,7 +257,7 @@ class HfrController extends Controller
 					return $query->where(['week_id' => $week_id]);
 				})
 				->get();
-			dd($rows);
+			// dd($rows);
 			
 
 		}
