@@ -303,6 +303,72 @@ class HfrController extends Controller
 
 		return view('charts.line_graph', $data);
 	}
+	public function net_new_detail()
+	{
+		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		$group_by = session('filter_groupby');
+
+		$data['div'] = str_random(15);
+		$data['groupby'] = $group_by;
+
+		$groupby = session('filter_groupby');
+	
+		if($groupby < 10 || $groupby == 14){
+			
+
+			$week_id = Lookup::get_tx_week();
+			// $data['chart_title'] = Week::find($week_id)->name;
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->when(($groupby < 10), function($query) use($week_id) {
+					return $query->where(['week_id' => $week_id]);
+				})
+				->get();
+
+			$data['rows'] = $rows;
+		}
+		else{
+			$periods = [];
+			// Group By month
+			if($groupby == 12){
+				$periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'month')
+				->get();
+			}
+			// Group By quarter
+			else if($groupby == 13){
+				$periods = Period::select('financial_year', 'quarter')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'quarter')
+				->get();				
+			}
+			if(!$periods) return null;
+
+			$weeks = $week_ids = [];
+
+			foreach ($periods as $period) {
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+			}
+
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereIn('week_id', $week_ids)
+				->get();
+
+			$data['rows'] = $rows;
+		}
+		return view('tables.net_new_detail', $data);
+	}
 
 	public function tx_crude()
 	{
@@ -508,9 +574,12 @@ class HfrController extends Controller
 	public function tx_mmd_detail()
 	{
 		$group_by = session('filter_groupby');
+		
+		
 		$less_3m = HfrSubmission::columns(true, 'less_3m');
 		$less_5m = HfrSubmission::columns(true, '3_5m');
 		$above_6m = HfrSubmission::columns(true, 'above_6m');
+		
 		$sql = $this->get_hfr_sum($less_3m, 'less_3m') . ', ' . $this->get_hfr_sum($less_5m, 'less_5m') . ', ' . $this->get_hfr_sum($above_6m, 'above_6m');
 
     	$divisions_query = Lookup::divisions_query();
@@ -525,7 +594,7 @@ class HfrController extends Controller
 		$data['div'] = str_random(15);
 		$data['rows'] = $rows;
 		$data['groupby'] = $group_by;
-
+		// dd($data);
 		return view('tables.tx_mmd_detail', $data);
 	}
 

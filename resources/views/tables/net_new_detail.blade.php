@@ -9,7 +9,7 @@
                     @else
                      <th>County</th>
                     @endif
-                    <th>PrEP New</th>
+                    <th>TX Net New</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,7 +17,7 @@
                 <tr>
                     <td> {{ $key+1 }} </td>
                     <td> {{ $row->name ?? '' }} </td>
-                    <td> {{ number_format($row->prep_new) ?? '' }} </td>
+                    <td> {{ number_format($row->tx_curr - 100000) ?? '' }} </td>
                 </tr>
             @endforeach
             </tbody>

@@ -15,13 +15,39 @@
                 </tr>
             </thead>
             <tbody>
+                <?php
+                    $i=0;
+                    $calc_percentage = function($num, $onerow)
+                    {
+                        $total = 0;
+                        $total = $onerow->less_3m + $onerow->less_5m + $onerow->above_6m;
+                        if(!$total || $total == 0){
+                            $val = $total;
+                        }else{
+                            $val = round(($num / $total * 100), 1) . "%";
+                        }
+                        return $val;
+                    };
+                    $x = (count($rows)-1);
+                ?>
             @foreach($rows as $key => $row)
                 <tr>
                     <td> {{ $key+1 }} </td>
-                    <td> {{ $row->name ?? '' }} </td>
-                    <td> {{ $row->less_3m ?? '' }} </td>
-                    <td> {{ $row->less_5m ?? '' }} </td>
-                    <td> {{ $row->above_6m ?? '' }} </td>
+                    <td> 
+                        <span>{{ $row->name}}</span>
+                    </td>
+                    <td> 
+                        <span>{{ number_format($row->less_3m)}}</span> &nbsp;
+                        <span>({{$calc_percentage($row->less_3m, $row) ?? '' }})</span>
+                    </td>
+                    <td> 
+                        <span>{{ number_format($row->less_5m)}}</span> &nbsp;
+                        <span>({{$calc_percentage($row->less_5m, $row) ?? '' }})</span>
+                    </td>
+                    <td> 
+                        <span>{{ number_format($row->above_6m)}}</span> &nbsp;
+                        <span>({{$calc_percentage($row->above_6m, $row) ?? '' }})</span>
+                    </td>
                 </tr>
             @endforeach
             </tbody>
