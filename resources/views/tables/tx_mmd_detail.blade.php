@@ -9,7 +9,9 @@
                     @else
                      <th>County</th>
                     @endif
-                    <th>PrEP New</th>
+                    <th>TX Curr < 3 months</th>
+                    <th>TX Curr 3 - 5 months</th>
+                    <th>TX Curr 6+ months</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,7 +19,9 @@
                 <tr>
                     <td> {{ $key+1 }} </td>
                     <td> {{ $row->name ?? '' }} </td>
-                    <td> {{ $row->prep_new ?? '' }} </td>
+                    <td> {{ $row->less_3m ?? '' }} </td>
+                    <td> {{ $row->less_5m ?? '' }} </td>
+                    <td> {{ $row->above_6m ?? '' }} </td>
                 </tr>
             @endforeach
             </tbody>

@@ -178,6 +178,8 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	
 	Route::get('misassigned_facilities', 'HfrController@misassigned_facilities')->name('misassigned_facilities');
 	Route::get('prep_new_last_rpt_period', 'HfrController@prep_new_last_rpt_period')->name('prep_new_last_rpt_period');
+	
+	Route::get('tx_mmd_detail', 'HfrController@tx_mmd_detail')->name('tx_mmd_detail');
 
 	// Route::get('tx_curr_two', 'HfrController@tx_curr_two')->name('tx_curr_two');
 	// Route::get('tx_mmd_two', 'HfrController@tx_mmd_two')->name('tx_mmd_two');

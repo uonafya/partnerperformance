@@ -176,6 +176,16 @@
 			</div>
 		</div>
 	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    TX MMD Detail <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_mmd_detail">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="row">
@@ -261,13 +271,13 @@
 		$("#linkage").html("<center><div class='loader'></div></center>");
 		$("#tx_curr").html("<center><div class='loader'></div></center>");
 		$("#tx_mmd").html("<center><div class='loader'></div></center>");
+		$("#tx_mmd_detail").html("<center><div class='loader'></div></center>");
 		$("#tx_crude").html("<center><div class='loader'></div></center>");
 		$("#net_new").html("<center><div class='loader'></div></center>");
 		$("#prep_new").html("<center><div class='loader'></div></center>");
 		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
         $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
        
-		
 		$("#target_donut_hts").html("<center><div class='loader'></div></center>");
 		$("#target_donut_pos").html("<center><div class='loader'></div></center>");
 		$("#target_donut_tx_new").html("<center><div class='loader'></div></center>");
@@ -282,9 +292,9 @@
 		$("#linkage").load("{{ url('hfr/linkage') }}");
 		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
 		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
+		$("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
-		// $("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
 
 
 		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");

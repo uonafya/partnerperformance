@@ -505,6 +505,30 @@ class HfrController extends Controller
 		return view('charts.line_graph', $data);
 	}
 
+	public function tx_mmd_detail()
+	{
+		$group_by = session('filter_groupby');
+		$less_3m = HfrSubmission::columns(true, 'less_3m');
+		$less_5m = HfrSubmission::columns(true, '3_5m');
+		$above_6m = HfrSubmission::columns(true, 'above_6m');
+		$sql = $this->get_hfr_sum($less_3m, 'less_3m') . ', ' . $this->get_hfr_sum($less_5m, 'less_5m') . ', ' . $this->get_hfr_sum($above_6m, 'above_6m');
+
+    	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::date_query();
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('less_5m'))
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['rows'] = $rows;
+		$data['groupby'] = $group_by;
+
+		return view('tables.tx_mmd_detail', $data);
+	}
+
 	/*public function tx_mmd_old()
 	{
 		$less_3m = HfrSubmission::columns(true, 'less_3m');
