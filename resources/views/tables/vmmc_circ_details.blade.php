@@ -9,7 +9,7 @@
                     @else
                      <th>County</th>
                     @endif
-                    <th>TX CURR</th>
+                    <th>VMMC Circ</th>
                 </tr>
             </thead>
             <tbody>

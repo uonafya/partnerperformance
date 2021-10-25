@@ -330,10 +330,61 @@ class Lookup
 			//$DD($active_date);
         return self::get_active_partner_query($active_date);
 	}
+	public static function predefined_active_partner_query()
+	{
+        $week = session('filter_week');
+        $financial_year = session('filter_financial_year');
+        $quarter = session('filter_quarter');
+
+        $year = session('filter_year');
+        $month = session('filter_month');
+		
+        $to_year = session('to_year');
+        $to_month = session('to_month');
+		if($month == null){
+			$month = date('m')-1;
+			// dd($month);
+
+		}
+
+	
+        if($week){
+        	$w = Week::find($w);
+        	$active_date = $w->start_date;
+        }else if($to_year){
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$year}-{$m}-01";
+        }else if($month){
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$y}-{$m}-01";
+        }else if($quarter){
+            if($quarter == 1) $m = '10';
+            else if($quarter == 2) $m = '01';
+            else if($quarter == 3) $m = '04';
+            else if($quarter == 4) $m = '07';
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $active_date = "{$y}-{$m}-01";
+        }else{
+			$y = $financial_year ;
+			$month = date('m') -1;
+			$m = '0'.$month;
+			// $y = date('y');
+            $active_date = "{$y}-{$m}-01";
+			
+        }
+			//$DD($active_date);
+        return self::get_active_partner_query($active_date);
+	}
 
 	public static function get_active_partner_query($active_date)
 	{
-		return "(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+		// return "(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+		return "(end_of_support IS NULL)";
 	}
 
 	// Prepension allows us to prepend 'periods.' so it doesn't clash
@@ -354,6 +405,29 @@ class Lookup
 		$query = " financial_year='{$financial_year}'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
 		if($month) $query .= " AND {$prepension}month='{$month}'";
+
+		return $query;
+	}
+	public static function predefined_date_query($for_target=false, $prepension = '')
+	{
+		$financial_year = session('filter_financial_year');
+		$quarter = session('filter_quarter');
+
+		$year = session('filter_year');
+		$month = session('filter_month');
+		if ($month == null){
+			 $month = date('m')-1;
+		}
+		$to_year = session('to_year');
+		$to_month = session('to_month');
+
+		if($for_target) return " financial_year='{$financial_year}'";
+
+		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month, $prepension);
+
+		$query = " {$prepension}month='{$month}'";
+		if($quarter) $query .= " AND quarter='{$quarter}'";
+		// if($month) $query .= " AND {$prepension}month='{$month}'";
 
 		return $query;
 	}

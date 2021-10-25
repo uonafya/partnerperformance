@@ -90,13 +90,13 @@ class HfrController extends Controller
 	}
 	
 	public function testing_dis()
-	{
+	{	//DB::enableQueryLog();
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 
 		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
 		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_predefined_groupby_callback('tests'))
 			->get();
@@ -105,7 +105,7 @@ class HfrController extends Controller
 		$data['rows'] = $rows;
 		
 
-			
+		// return DB::getQueryLog();
 		return view('tables.testing_dis', $data);
 	}
 

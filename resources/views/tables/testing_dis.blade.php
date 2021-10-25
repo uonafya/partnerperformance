@@ -8,9 +8,9 @@
                     @else
                      <th>County</th>
                     @endif
-                    <th>Not Linked</th>
-                    <th>TX New</th>
-                    <th>Linkage</th>
+                    <th>Positive</th>
+                    <th>Negative</th>
+                    <th>Yield</th>
 
 			</tr>
 		</thead>
