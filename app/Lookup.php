@@ -386,7 +386,7 @@ class Lookup
 
 		//return "(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
 		return "( end_of_support IS NULL)";
-r
+
 	}
 
 	// Prepension allows us to prepend 'periods.' so it doesn't clash
