@@ -49,6 +49,7 @@ class HfrController extends Controller
 		return view('tables.misassigned_facilities', $data);
 	}
 
+
 	public function testing()
 	{
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 
@@ -86,6 +87,26 @@ class HfrController extends Controller
 			$i++;
 		}	
 		return view('charts.dual_axis', $data);
+	}
+	
+	public function testing_dis()
+	{	//DB::enableQueryLog();
+		$tests = HfrSubmission::columns(true, 'hts_tst'); 
+		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
+		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('tests'))
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['rows'] = $rows;
+		
+
+		// return DB::getQueryLog();
+		return view('tables.testing_dis', $data);
 	}
 
 	public function linkage()
@@ -129,6 +150,41 @@ class HfrController extends Controller
 			$i++;
 		}	
 		return view('charts.dual_axis', $data);
+	}
+
+	public function linkage_dis()
+	{
+		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
+		$tx_new = HfrSubmission::columns(true, 'tx_new');
+		$sql = $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('pos'))
+			->get();
+
+		$data['div'] = str_random(15);
+		
+		$data['rows'] = $rows;
+
+
+		// $i=0;
+		// foreach ($rows as $key => $row){
+		// 	if(!$row->pos) continue;
+
+		// 	$data['categories'][$i] = Lookup::get_category($row);
+
+		// 	$data["outcomes"][0]["data"][$i] = (int) ($row->pos - $row->tx_new); 
+		// 	$data["outcomes"][1]["data"][$i] = (int) $row->tx_new;
+		// 	$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->tx_new, $row->pos);
+		// 	if($data["outcomes"][0]["data"][$i] < 0) {
+		// 		$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
+		// 		$data["outcomes"][2]["data"][$i] = 0;
+		// 	}
+		// 	$i++;
+		// }	
+		return view('tables.linkage_dis', $data);
 	}
 
 
@@ -206,8 +262,6 @@ class HfrController extends Controller
 				if($w) $week_ids[] = $w->id; $weeks[] = $w;
 			}
 
-			// dd($weeks);
-
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
@@ -231,6 +285,80 @@ class HfrController extends Controller
 		}	
 
 		return view('charts.line_graph', $data);
+	}
+	public function tx_curr_details()
+	{
+		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+
+		$data['div'] = str_random(15);
+
+
+		$groupby = session('filter_groupby');
+
+		if($groupby < 10 || $groupby == 14){
+
+			$week_id = Lookup::get_tx_week();
+			// $data['chart_title'] = Week::find($week_id)->name;
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->when(($groupby < 10), function($query) use($week_id) {
+					return $query->where(['week_id' => $week_id]);
+				})
+				->get();
+		}
+		else{
+			$periods = [];
+			// Group By month
+			if($groupby == 12){
+				$periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'month')
+				->get();
+			}
+			// Group By quarter
+			else if($groupby == 13){
+				$periods = Period::select('financial_year', 'quarter')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'quarter')
+				->get();				
+			}
+			if(!$periods) return null;
+
+			$weeks = $week_ids = [];
+
+			foreach ($periods as $period) {
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+			}
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereIn('week_id', $week_ids)
+				->get();
+		}
+
+		// $i = 0;
+		// foreach ($rows as $key => $row){
+
+		// 	/*if($groupby > 9) $data['categories'][$key] = Lookup::get_category($row, 14);
+		// 	else{
+		// 		$data['categories'][$key] = Lookup::get_category($row);
+		// 	}*/
+		// 	if(!$row->tx_curr) continue;
+		// 	$data['categories'][$i] = Lookup::get_category($row);
+		// 	$data["outcomes"][0]["data"][$i] = (int) $row->tx_curr;
+		// 	$i++;
+		// }	
+		$data['rows'] = $rows;
+
+		return view('tables.tx_curr_details', $data);
 	}
 
 	public function net_new()
@@ -322,6 +450,72 @@ class HfrController extends Controller
 	
 
 		return view('charts.line_graph', $data);
+	}
+	public function net_new_detail()
+	{
+		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		$group_by = session('filter_groupby');
+
+		$data['div'] = str_random(15);
+		$data['groupby'] = $group_by;
+
+		$groupby = session('filter_groupby');
+	
+		if($groupby < 10 || $groupby == 14){
+			
+
+			$week_id = Lookup::get_tx_week();
+			// $data['chart_title'] = Week::find($week_id)->name;
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->when(($groupby < 10), function($query) use($week_id) {
+					return $query->where(['week_id' => $week_id]);
+				})
+				->get();
+
+			$data['rows'] = $rows;
+		}
+		else{
+			$periods = [];
+			// Group By month
+			if($groupby == 12){
+				$periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'month')
+				->get();
+			}
+			// Group By quarter
+			else if($groupby == 13){
+				$periods = Period::select('financial_year', 'quarter')
+				->whereRaw(Lookup::date_query())
+				->groupBy('financial_year', 'quarter')
+				->get();				
+			}
+			if(!$periods) return null;
+
+			$weeks = $week_ids = [];
+
+			foreach ($periods as $period) {
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+			}
+
+
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereIn('week_id', $week_ids)
+				->get();
+
+			$data['rows'] = $rows;
+		}
+		return view('tables.net_new_detail', $data);
 	}
 
 	public function tx_crude()
@@ -455,8 +649,26 @@ class HfrController extends Controller
 		}	
 		return view('charts.line_graph', $data);
 	}
+    //TODO Make this function take a groupby parameter from ui
+    public function prep_new_last_rpt_period()
+    {
+		$group_by = session('filter_groupby');
+        $prep_new = HfrSubmission::columns(true, 'prep_new');
+        $sql = $this->get_hfr_sum($prep_new, 'prep_new');
+        $rows = DB::table($this->my_table)
+            ->when(true, $this->get_joins_callback_weeks($this->my_table))
+            ->selectRaw($sql)
+            ->when(true, $this->get_predefined_groupby_callback('prep_new'))
+            ->get();
 
-	public function vmmc_circ()
+        $data['div'] = str_random(15);
+        $data['rows'] = $rows;
+		$data['groupby'] = $group_by;
+
+        return view('tables.prep_new_last_rpt_period', $data);
+    }
+
+    public function vmmc_circ()
 	{
 		$vmmc_circ = HfrSubmission::columns(true, 'vmmc_circ');
 		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');
@@ -480,6 +692,23 @@ class HfrController extends Controller
 			$i++;
 		}	
 		return view('charts.line_graph', $data);
+	}
+	public function vmmc_circ_details()
+	{
+		$vmmc_circ = HfrSubmission::columns(true, 'vmmc_circ');
+		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('vmmc_circ'))
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['rows'] = $rows;		
+			
+		return view('tables.vmmc_circ_details', $data);
+
 	}
 
 	public function tx_mmd()
@@ -531,6 +760,32 @@ class HfrController extends Controller
 			$i++;
 		}
 		return view('charts.line_graph', $data);
+	}
+
+	public function tx_mmd_detail()
+	{
+		$group_by = session('filter_groupby');
+		
+		
+		$less_3m = HfrSubmission::columns(true, 'less_3m');
+		$less_5m = HfrSubmission::columns(true, '3_5m');
+		$above_6m = HfrSubmission::columns(true, 'above_6m');
+		
+		$sql = $this->get_hfr_sum($less_3m, 'less_3m') . ', ' . $this->get_hfr_sum($less_5m, 'less_5m') . ', ' . $this->get_hfr_sum($above_6m, 'above_6m');
+
+    	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::date_query();
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('less_5m'))
+			->get();
+
+		$data['div'] = str_random(15);
+		$data['rows'] = $rows;
+		$data['groupby'] = $group_by;
+		return view('tables.tx_mmd_detail', $data);
 	}
 
 	/*public function tx_mmd_old()

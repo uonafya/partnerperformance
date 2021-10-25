@@ -43,6 +43,16 @@ class Controller extends BaseController
                 ->whereRaw($active_partner_query);
         };        
     }
+    public function get_predefined_joins_callback_weeks($table_name)
+    {
+        $active_partner_query = Lookup::predefined_active_partner_query();
+        return function($query) use($table_name, $active_partner_query){
+            // return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
+            return $query->join('view_facilities', 'view_facilities.id', '=', "{$table_name}.facility")
+                ->join('weeks', 'weeks.id', '=', "{$table_name}.week_id")
+                ->whereRaw($active_partner_query);
+        };        
+    }
 
     // Add Divisions Query Here
     // Also Add Date Query Here
@@ -64,6 +74,25 @@ class Controller extends BaseController
     		$var = Lookup::groupby_query(true, $force_filter);
     		return $this->divisions_callback($divisions_query, $date_query, $var, $groupby, $order_by, $having_null);
     	}
+    }
+
+    public function get_predefined_groupby_callback($order_by=null, $having_null=null, $prepension='', $force_filter=null)
+    {
+        $groupby = 1; //default filter
+        if($force_filter) {
+            $groupby = 1;
+        }elseif (session('filter_partner') != null){
+            $groupby = 2;
+        }else{
+            $groupby = 1;
+        }
+        // dd($force_filter,session('filter_partner'));
+    	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::predefined_date_query(false, $prepension);
+        
+        $var = Lookup::predefined_groupby_query($groupby); //$groupby = 1,2...;
+        // dd($date_query);
+        return $this->divisions_callback($divisions_query, $date_query, $var, $groupby, $order_by, $having_null);
     }
 
     public function get_callback_no_dates($order_by=null, $having_null=null)

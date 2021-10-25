@@ -28,6 +28,19 @@
 		</div>
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    HTS Testing & Yield Details <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="testing_dis">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -36,6 +49,19 @@
 			    Linkage (HTS POS & TX NEW) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="linkage">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Linkage (HTS POS & TX NEW) Details <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="linkage_dis">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -98,6 +124,18 @@
 	</div>
 </div>
 <div class="row">
+<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    TX CURR Detail <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_curr_details">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>	
+<div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -120,6 +158,16 @@
 			</div>
 		</div>
 	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			Net New Detail <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="net_new_detail">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="row">
@@ -129,6 +177,16 @@
 			    TX MMD <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_mmd">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    TX MMD Detail <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_mmd_detail">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -152,6 +210,20 @@
 			    PrEP NEW <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="prep_new">
+				<center><div class="loader"></div></center>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Prep New Details <div class="display_date"></div>
+			</div>
+			<div class="panel-body" id="prep_new_last_rpt_period">
 				<center><div class="loader"></div></center>
 			</div>
 		</div>
@@ -182,10 +254,23 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Faciliities With HFR Data that are not assigned to USAID Partners <div class="display_date"></div>
+			    VMMC CIRC Details<div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="vmmc_circ_details">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">Facilities With HFR Data that are not assigned to USAID Partners <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="misassigned_facilities">
 				<center><div class="loader"></div></center>
@@ -204,14 +289,23 @@
 	function reload_page()
 	{
 		$("#testing").html("<center><div class='loader'></div></center>");
+		$("#testing_dis").html("<center><div class='loader'></div></center>");
 		$("#linkage").html("<center><div class='loader'></div></center>");
+		$("#linkage_dis").html("<center><div class='loader'></div></center>");
 		$("#tx_curr").html("<center><div class='loader'></div></center>");
 		$("#tx_mmd").html("<center><div class='loader'></div></center>");
+		$("#tx_mmd_detail").html("<center><div class='loader'></div></center>");
 		$("#tx_crude").html("<center><div class='loader'></div></center>");
 		$("#net_new").html("<center><div class='loader'></div></center>");
+		$("#net_new_detail").html("<center><div class='loader'></div></center>");
 		$("#prep_new").html("<center><div class='loader'></div></center>");
 		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
+        $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
+		$("#tx_curr_details").html("<center><div class='loader'></div></center>");
+		$("#vmmc_circ_details").html("<center><div class='loader'></div></center>");
 		
+		
+       
 		$("#target_donut_hts").html("<center><div class='loader'></div></center>");
 		$("#target_donut_pos").html("<center><div class='loader'></div></center>");
 		$("#target_donut_tx_new").html("<center><div class='loader'></div></center>");
@@ -219,12 +313,19 @@
 		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
 		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
 
+		$("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
+		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
+		$("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
+		$("#tx_curr_details").load("{{ url('hfr/tx_curr_details') }}");
 		$("#net_new").load("{{ url('hfr/net_new') }}");
+		$("#net_new_detail").load("{{ url('hfr/net_new_detail') }}");
 		$("#tx_crude").load("{{ url('hfr/tx_crude') }}");
 		$("#testing").load("{{ url('hfr/testing') }}");
 		$("#linkage").load("{{ url('hfr/linkage') }}");
+		$("#linkage_dis").load("{{ url('hfr/linkage_dis') }}");
 		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
 		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
+		$("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
 
@@ -242,6 +343,8 @@
 
 		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
 		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
+
+
 		
 		date_filter('financial_year', 2021, '{{ $date_url }}');
 
