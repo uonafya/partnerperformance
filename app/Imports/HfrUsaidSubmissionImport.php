@@ -46,8 +46,9 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
     	$fac = null;
 
-		if($row->orgunituid) $fac = Facility::where('name', $row->orgunit)->first();
-		if(!$fac) $fac = Facility::where('facility_uid', 'like', "%{$row->orgunituid}%")->first();
+		
+		if($row->orgunituid) $fac = Facility::where('facility_uid', $row->orgunituid)->first();
+		if(!$fac) $fac = Facility::where('name','like', $row->orgunit)->first();
 		
 		// if(!$fac) return;
 		if(!$fac){

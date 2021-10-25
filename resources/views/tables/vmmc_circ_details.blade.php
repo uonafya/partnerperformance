@@ -32,6 +32,7 @@
         $('#{{ $div }}').DataTable({
             dom: '<"btn"B>lTfgtip',
             // responsive: true,
+            paging:false,
             buttons : [
                 {
                     text:  'Export to CSV',

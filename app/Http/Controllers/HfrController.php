@@ -159,7 +159,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_predefined_groupby_callback('pos'))
 			->get();
@@ -302,7 +302,7 @@ class HfrController extends Controller
 			// $data['chart_title'] = Week::find($week_id)->name;
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
 				->when(($groupby < 10), function($query) use($week_id) {
@@ -336,7 +336,7 @@ class HfrController extends Controller
 			}
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
@@ -469,7 +469,7 @@ class HfrController extends Controller
 			// $data['chart_title'] = Week::find($week_id)->name;
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
 				->when(($groupby < 10), function($query) use($week_id) {
@@ -506,7 +506,7 @@ class HfrController extends Controller
 
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
@@ -515,6 +515,7 @@ class HfrController extends Controller
 
 			$data['rows'] = $rows;
 		}
+		// dd($data);
 		return view('tables.net_new_detail', $data);
 	}
 
@@ -540,7 +541,7 @@ class HfrController extends Controller
 			// $data['chart_title'] = Week::find($week_id)->name;
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_callback('tx_curr'))
 				->when(($groupby < 10), function($query) use($week_id) {
@@ -549,7 +550,7 @@ class HfrController extends Controller
 				->get();
 
 			$tx_new_rows  = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_callback('tx_new'))
 				->get();
@@ -591,7 +592,7 @@ class HfrController extends Controller
 			}
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_callback('tx_curr'))
@@ -599,7 +600,7 @@ class HfrController extends Controller
 				->get();
 
 			$tx_new_rows  = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('pos'))
 			->get();
@@ -656,7 +657,7 @@ class HfrController extends Controller
         $prep_new = HfrSubmission::columns(true, 'prep_new');
         $sql = $this->get_hfr_sum($prep_new, 'prep_new');
         $rows = DB::table($this->my_table)
-            ->when(true, $this->get_joins_callback_weeks($this->my_table))
+            ->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
             ->selectRaw($sql)
             ->when(true, $this->get_predefined_groupby_callback('prep_new'))
             ->get();
@@ -699,7 +700,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_predefined_groupby_callback('vmmc_circ'))
 			->get();
@@ -777,7 +778,7 @@ class HfrController extends Controller
         $date_query = Lookup::date_query();
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_predefined_groupby_callback('less_5m'))
 			->get();

@@ -6,7 +6,7 @@
                     <th>#</th>
                     @if (session('filter_partner') == null)
                      <th>Partner</th>
-                    @else
+                    @else 
                      <th>County</th>
                     @endif
                     <th>TX Net New</th>
@@ -14,10 +14,14 @@
             </thead>
             <tbody>
             @foreach($rows as $key => $row)
+            <?php
+            $lastkey = $key - 1;
+            if ($key < 1 ) $lastkey = 0;
+            ?>
                 <tr>
                     <td> {{ $key+1 }} </td>
                     <td> {{ $row->name ?? '' }} </td>
-                    <td> {{ number_format($row->tx_curr - 100000) ?? '' }} </td>
+                    <td> {{ number_format($row->tx_curr - $rows[$lastkey]->tx_curr) ?? '' }} </td>
                 </tr>
             @endforeach
             </tbody>
@@ -32,6 +36,7 @@
         $('#{{ $div }}').DataTable({
             dom: '<"btn"B>lTfgtip',
             // responsive: true,
+            paging:false,
             buttons : [
                 {
                     text:  'Export to CSV',
