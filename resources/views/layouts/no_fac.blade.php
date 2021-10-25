@@ -1,5 +1,5 @@
 
-<div class="row" id="filter">	
+<div class="row" id="filter" data-html2canvas-ignore="true">	
 
 
 	<div class="col-md-4">

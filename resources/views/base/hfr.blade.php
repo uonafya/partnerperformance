@@ -380,6 +380,30 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
+<script>
+	$(document).ready(function(){
+		setTimeout(() => {
+			document.querySelectorAll('.dt-buttons').forEach(function(e){
+				e.props['data-html2canvas-ignore'] = "true";
+			});
+			document.querySelectorAll('.dataTables_filter').forEach(function(e){
+				e.props['data-html2canvas-ignore'] = "true";
+			});
+			document.querySelectorAll('.dataTables_paginate').forEach(function(e){
+				e.props['data-html2canvas-ignore'] = "true";
+			});
+			document.querySelectorAll('.dataTables_length').forEach(function(e){
+				e.props['data-html2canvas-ignore'] = "true";
+			});
+			document.querySelectorAll('.navbar.navbar-default').forEach(function(e){
+				e.props['data-html2canvas-ignore'] = "true";
+			});
+			document.querySelectorAll('.dt-button').forEach(function(e){
+				e.props['data-html2canvas-ignore'] = "true";
+			});
+		}, 1200);
+	});
+</script>
 
 
 @endsection
