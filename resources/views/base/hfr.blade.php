@@ -28,7 +28,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row detail_tables hidden">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -55,7 +55,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row detail_tables hidden">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -123,7 +123,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row detail_tables hidden">
 <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -158,7 +158,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class="col-md-12 col-sm-12 col-xs-12">
+	<!-- <div class="col-md-12 col-sm-12 col-xs-12 detail_tables hidden">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			Net New Detail <div class="display_date"></div>
@@ -181,7 +181,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables hidden">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    TX MMD Detail <div class="display_date"></div>
@@ -217,7 +217,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row detail_tables hidden">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -253,7 +253,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row detail_tables hidden">
 <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -354,6 +354,11 @@
 
 <script type="text/javascript">
     function downloadPDF() {
+		document.querySelectorAll(".detail_tables").forEach(function(e){
+			if(e != null && e.props != undefined){
+				e.classList.remove("hidden");
+			}
+		});
 		var HTML_Width = $(".content-body").width();
 		var HTML_Height = $(".content-body").height();
 		var top_left_margin = 15;
@@ -373,7 +378,13 @@
 				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
 			}
 			pdf.save("hfr.pdf");
-    });
+		}).then(function(){
+			document.querySelectorAll(".detail_tables").forEach(function(e){
+				if(e != null && e.props != undefined){
+					e.classList.add("hidden");
+				}
+			});
+		});
 		
     }
 </script>
@@ -381,25 +392,42 @@
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
 <script>
+	document.querySelectorAll(".detail_tables").forEach(function(e){
+		if(e != null && e.props != undefined){
+			e.classList.add("hidden");
+		}
+	});
 	$(document).ready(function(){
 		setTimeout(() => {
 			document.querySelectorAll('.dt-buttons').forEach(function(e){
-				e.props['data-html2canvas-ignore'] = "true";
+				if(e != null && e.props != undefined){
+					e.props['data-html2canvas-ignore'] = "true";
+				}
 			});
 			document.querySelectorAll('.dataTables_filter').forEach(function(e){
-				e.props['data-html2canvas-ignore'] = "true";
+				if(e != null && e.props != undefined){
+					e.props['data-html2canvas-ignore'] = "true";
+				}
 			});
 			document.querySelectorAll('.dataTables_paginate').forEach(function(e){
-				e.props['data-html2canvas-ignore'] = "true";
+				if(e != null && e.props != undefined){
+					e.props['data-html2canvas-ignore'] = "true";
+				}
 			});
 			document.querySelectorAll('.dataTables_length').forEach(function(e){
-				e.props['data-html2canvas-ignore'] = "true";
+				if(e != null && e.props != undefined){
+					e.props['data-html2canvas-ignore'] = "true";
+				}
 			});
 			document.querySelectorAll('.navbar.navbar-default').forEach(function(e){
-				e.props['data-html2canvas-ignore'] = "true";
+				if(e != null && e.props != undefined){
+					e.props['data-html2canvas-ignore'] = "true";
+				}
 			});
 			document.querySelectorAll('.dt-button').forEach(function(e){
-				e.props['data-html2canvas-ignore'] = "true";
+				if(e != null && e.props != undefined){
+					e.props['data-html2canvas-ignore'] = "true";
+				}
 			});
 		}, 1200);
 	});
