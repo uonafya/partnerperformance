@@ -28,7 +28,7 @@
 		</div>
 	</div>
 </div>
-<div class="row detail_tables hidden">
+<div class="row detail_tables">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -55,7 +55,7 @@
 	</div>
 </div>
 
-<div class="row detail_tables hidden">
+<div class="row detail_tables">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -123,7 +123,7 @@
 		</div>
 	</div>
 </div>
-<div class="row detail_tables hidden">
+<div class="row detail_tables">
 <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -158,7 +158,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class="col-md-12 col-sm-12 col-xs-12 detail_tables hidden">
+	<!-- <div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			Net New Detail <div class="display_date"></div>
@@ -181,7 +181,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables hidden">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    TX MMD Detail <div class="display_date"></div>
@@ -217,7 +217,7 @@
 	</div>
 </div>
 
-<div class="row detail_tables hidden">
+<div class="row detail_tables">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -253,7 +253,7 @@
 	</div>
 </div>
 
-<div class="row detail_tables hidden">
+<div class="row detail_tables">
 <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -354,11 +354,7 @@
 
 <script type="text/javascript">
     function downloadPDF() {
-		document.querySelectorAll(".detail_tables").forEach(function(e){
-			if(e != null && e.props != undefined){
-				e.classList.remove("hidden");
-			}
-		});
+		$(".detail_tables").removeClass("hidden");
 		var HTML_Width = $(".content-body").width();
 		var HTML_Height = $(".content-body").height();
 		var top_left_margin = 15;
@@ -379,11 +375,7 @@
 			}
 			pdf.save("hfr.pdf");
 		}).then(function(){
-			document.querySelectorAll(".detail_tables").forEach(function(e){
-				if(e != null && e.props != undefined){
-					e.classList.add("hidden");
-				}
-			});
+			$(".detail_tables").addClass("hidden");
 		});
 		
     }
@@ -392,11 +384,7 @@
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
 <script>
-	document.querySelectorAll(".detail_tables").forEach(function(e){
-		if(e != null && e.props != undefined){
-			e.classList.add("hidden");
-		}
-	});
+	$(".detail_tables").addClass("hidden");
 	$(document).ready(function(){
 		setTimeout(() => {
 			document.querySelectorAll('.dt-buttons').forEach(function(e){
