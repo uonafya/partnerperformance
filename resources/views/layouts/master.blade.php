@@ -69,6 +69,7 @@
 							</ul>
 						</li>	
 						<li><a href="{{ url('hfr') }}">HFR</a></li>		
+						<li><a href="{{ url('cervical_cancer') }}">Cervical Cancer</a></li>	
 						<!-- 
 						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
 						<li><a href="{{ url('tx_curr') }}">MMD</a></li>	
@@ -117,6 +118,7 @@
 									<li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
 									<li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
 									<li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
+									<li><a href="{{ url('/cervical_cancer/download') }}">Download Cervical Cancer Template</a></li>
 									@if(auth()->user()->user_type_id < 3)
 										<li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
 										<li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
@@ -137,6 +139,7 @@
 									<li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>
 									<li><a href="{{ url('/upload/gbv') }}">Upload GBV</a></li>
 									<li><a href="{{ url('/upload/hfr') }}">Upload HFR</a></li>
+									<li><a href="{{ url('/upload/cervical-cancer') }}">Upload Cervical Cancer</a></li>
 									<li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
 									<li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
 									<li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>

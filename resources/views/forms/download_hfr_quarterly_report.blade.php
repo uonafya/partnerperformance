@@ -21,7 +21,7 @@
           Download HFR Quarterly Report
 		    </div>
 			<div class="panel-body" id="user_guide">
-				<form action="{{ url('download/quarterly-gbv') }}" method="post" class="form-horizontal"> 
+				<form action="{{ url('download/quarterly-hfr') }}" method="post" class="form-horizontal"> 
 					@csrf
 
           <div class="form-group">

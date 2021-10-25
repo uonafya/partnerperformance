@@ -165,6 +165,9 @@ Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('new_reporting', 'ViolenceController@new_reporting')->name('new_reporting');
 	Route::get('modality_reported', 'ViolenceController@modality_reported')->name('modality_reported');
 });
+Route::prefix('cervical_cancer')->name('cervical_cancer')->group(function(){
+	Route::get('/', 'GeneralController@cervical_cancer_dashboard');
+});
 
 Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('testing', 'HfrController@testing')->name('testing');

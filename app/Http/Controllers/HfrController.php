@@ -213,10 +213,11 @@ class HfrController extends Controller
 
 	public function tx_curr()
 	{
+		// DB::enableQueryLog();
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
 
-		$data['div'] = str_random(15);
+		$data['div'] = str_random(15); 
 
 		Lookup::bars($data, ["TX Curr"], "column");
 
@@ -385,6 +386,9 @@ class HfrController extends Controller
 					return $query->where(['week_id' => $week_id]);
 				})
 				->get();
+			// dd($rows);
+			
+
 		}
 		else{
 			$periods = [];
@@ -406,11 +410,22 @@ class HfrController extends Controller
 
 			$weeks = $week_ids = [];
 
+			$weeks = $week_ids = [];
+			$previous_week = $p_week = [];
+			$last_rep_week = [];
+			// $tx_weeks = [];
+
 			foreach ($periods as $period) {
 				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				$p = Week::where($period->toArray())->orderBy('id', 'asc')->first();
 				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+				// if(true) $tx_weeks[] = $w->id;
+				if($p) $p_week[] = $p->id; $previous_week[] = $p; 
 			}
-
+			foreach ($p_week as $pw){
+				$lpw = $pw - 1;
+				array_push($last_rep_week,$lpw);
+			}
 
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
@@ -419,14 +434,20 @@ class HfrController extends Controller
 				->when(true, $this->get_callback('tx_curr'))
 				->whereIn('week_id', $week_ids)
 				->get();
+
 		}
 		$i = 0;
 		foreach ($rows as $key => $row){			
 			if(!$row->tx_curr) continue;
+			$lastkey = $key - 1;
+			if ($key < 1 ) $lastkey = 0;
 			$data['categories'][$i] = Lookup::get_category($row);
-			$data["outcomes"][0]["data"][$i] = (int) ($row->tx_curr - 100000);
+			// if ($key > 2) dd($rows[$lastkey],$row->tx_curr);
+			$data["outcomes"][0]["data"][$i] = ($row->tx_curr - $rows[$lastkey]->tx_curr);
 			$i++;
 		}	
+
+	
 
 		return view('charts.line_graph', $data);
 	}
@@ -526,6 +547,13 @@ class HfrController extends Controller
 					return $query->where(['week_id' => $week_id]);
 				})
 				->get();
+
+			$tx_new_rows  = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_callback('tx_new'))
+				->get();
+			// dd($rows,$tx_new_rows);
 		}
 		else{
 			$periods = [];
@@ -546,12 +574,21 @@ class HfrController extends Controller
 			if(!$periods) return null;
 
 			$weeks = $week_ids = [];
+			$previous_week = $p_week = [];
+			$last_rep_week = [];
+			// $tx_weeks = [];
 
 			foreach ($periods as $period) {
 				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+				$p = Week::where($period->toArray())->orderBy('id', 'asc')->first();
 				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+				// if(true) $tx_weeks[] = $w->id;
+				if($p) $p_week[] = $p->id; $previous_week[] = $p; 
 			}
-
+			foreach ($p_week as $pw){
+				$lpw = $pw - 1;
+				array_push($last_rep_week,$lpw);
+			}
 
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks($this->my_table))
@@ -560,13 +597,24 @@ class HfrController extends Controller
 				->when(true, $this->get_callback('tx_curr'))
 				->whereIn('week_id', $week_ids)
 				->get();
+
+			$tx_new_rows  = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_callback('pos'))
+			->get();
+
+			
 		}
 		$i = 0;
 		foreach ($rows as $key => $row){			
 			if(!$row->tx_curr) continue;
+			$lastkey = $key - 1;
+			if ($key < 1 ) $lastkey = 0;
 			$data['categories'][$i] = Lookup::get_category($row);
 			$results = ($row->tx_curr);
-			$results_2 = (($row->tx_new + 400000));
+			$results_2 = (($tx_new_rows[$key]->tx_new + $rows[$lastkey]->tx_curr));
+			// if ($key > 2) dd($rows[$lastkey],$row->tx_curr,$tx_new_rows[$key]->tx_new);
 			$target = 90;
 			$data["outcomes"][0]["data"][$key] =  $target;
 			$data["outcomes"][1]["data"][$i] = Lookup::get_percentage($results,$results_2);
