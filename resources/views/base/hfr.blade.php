@@ -59,7 +59,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Linkage (HTS POS & TX NEW) Details (Last Month)</div>
+			    Linkage (HTS POS & TX NEW) Details (Last Month)<div class=""></div>
 		    </div>
 			<div class="panel-body" id="linkage_dis">
 				<center><div class="loader"></div></center>
@@ -170,7 +170,7 @@
 	</div> -->
 </div>
 
-<div class="row">
+<div class=" row detail_tables">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -193,7 +193,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row detail_tables">
 	<div class="col-md-3 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">

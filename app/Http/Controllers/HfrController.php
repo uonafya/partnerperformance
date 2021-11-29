@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 use App\HfrSubmission;
+use App\Partner;
 use App\Period;
 use App\Week;
 use Dotenv\Regex\Result;
@@ -36,7 +37,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
 
 		$data['rows'] = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
             ->addSelect(DB::raw("view_facilities.id as div_id, name, new_name, DHIScode as dhis_code, facilitycode as mfl_code, facility_uid, subcounty, countyname, partnername "))
             ->where('funding_agency_id', '!=', 1)
@@ -57,7 +58,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('tests'))
 			->get();
@@ -116,7 +117,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('pos'))
 			->get();
@@ -194,7 +195,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('tx_curr'))
 			->get();
@@ -229,7 +230,7 @@ class HfrController extends Controller
 			// $data['chart_title'] = Week::find($week_id)->name;
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_callback('tx_curr'))
 				->when(($groupby < 10), function($query) use($week_id) {
@@ -263,14 +264,14 @@ class HfrController extends Controller
 			}
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_callback('tx_curr'))
 				->whereIn('week_id', $week_ids)
 				->get();
 		}
-
+		// return DB::getQueryLog();
 		$i = 0;
 		foreach ($rows as $key => $row){
 
@@ -379,7 +380,7 @@ class HfrController extends Controller
 			// $data['chart_title'] = Week::find($week_id)->name;
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_callback('tx_curr'))
 				->when(($groupby < 10), function($query) use($week_id) {
@@ -428,7 +429,7 @@ class HfrController extends Controller
 			}
 
 			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks($this->my_table))
+				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_callback('tx_curr'))
@@ -631,7 +632,7 @@ class HfrController extends Controller
 		$prep_new = HfrSubmission::columns(true, 'prep_new');
 		$sql = $this->get_hfr_sum($prep_new, 'prep_new');
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('prep_new'))
 			->get();
@@ -675,7 +676,7 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('vmmc_circ'))
 			->get();
@@ -723,7 +724,7 @@ class HfrController extends Controller
         $date_query = Lookup::date_query();
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('less_5m'))
 			->get();
@@ -800,7 +801,7 @@ class HfrController extends Controller
         $date_query = Lookup::date_query();
 
 		$row = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->whereRaw($divisions_query)
             ->whereRaw($date_query)
@@ -846,7 +847,7 @@ class HfrController extends Controller
         $date_query = Lookup::date_query();
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('less_3m'))
 			// ->whereRaw($divisions_query)
@@ -923,9 +924,10 @@ class HfrController extends Controller
 
 		$date_query = Lookup::date_query();
 		$week_id = Lookup::get_tx_week();
-
+	
+		// DB::enableQueryLog();
 		$results = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks($this->my_table))
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when($modality != 'tx_curr', function($query) use($date_query){
 				return $query->whereRaw($date_query);
@@ -943,6 +945,7 @@ class HfrController extends Controller
 			->whereRaw(Lookup::county_target_query())
 			->first();
 
+			// return DB::getQueryLog();
 		$data = Lookup::target_donut();
 
 		$divisor = Lookup::get_target_divisor(1);
