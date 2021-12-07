@@ -170,7 +170,7 @@
 	</div> -->
 </div>
 
-<div class=" row detail_tables">
+<div class=" row col-sm-12 col-xs-12">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -193,7 +193,7 @@
 	</div>
 </div>
 
-<div class="row detail_tables">
+<div class="row col-sm-12 col-xs-12 ">
 	<div class="col-md-3 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -267,7 +267,7 @@
 
 </div>
 
-<div class="row">
+<!-- <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">Facilities With HFR Data that are not assigned to USAID Partners <div class="display_date"></div>
@@ -277,7 +277,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 </div>
 @endsection
 
