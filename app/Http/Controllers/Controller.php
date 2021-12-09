@@ -63,6 +63,16 @@ class Controller extends BaseController
                 ->whereRaw($active_partner_query);
         };        
     }
+    public function get_predefined_joins_callback_weeks_hfr($table_name)
+    {
+        $active_partner_query = Lookup::predefined_active_partner_hfr_query();
+        return function($query) use($table_name, $active_partner_query){
+            // return $query->join('view_facilitys', 'view_facilitys.id', '=', "{$table_name}.facility")
+            return $query->join('view_facilities', 'view_facilities.id', '=', "{$table_name}.facility")
+                ->join('weeks', 'weeks.id', '=', "{$table_name}.week_id")
+                ->whereRaw($active_partner_query);
+        };        
+    }
 
     // Add Divisions Query Here
     // Also Add Date Query Here

@@ -31,6 +31,7 @@
                     $x = (count($rows)-1);
                 ?>
             @foreach($rows as $key => $row)
+            @if($row->less_3m > 0)
                 <tr>
                     <td> {{ $key+1 }} </td>
                     <td> 
@@ -49,6 +50,7 @@
                         <span>({{$calc_percentage($row->above_6m, $row) ?? '' }})</span>
                     </td>
                 </tr>
+                @endif
             @endforeach
             </tbody>
         </table>

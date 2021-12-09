@@ -28,8 +28,8 @@
 		</div>
 	</div>
 </div>
-<div class="row detail_tables">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row ">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    HTS Testing & Yield Details (Last Month) <div class=""></div>
@@ -55,8 +55,8 @@
 	</div>
 </div>
 
-<div class="row detail_tables">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row ">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    Linkage (HTS POS & TX NEW) Details (Last Month)<div class=""></div>
@@ -123,11 +123,11 @@
 		</div>
 	</div>
 </div>
-<div class="row detail_tables">
-<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row ">
+<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    TX CURR Detail (Last Month)<div class=""></div>
+			    TX CURR Detail (Last Month) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_curr_details">
 				<center><div class="loader"></div></center>
@@ -184,7 +184,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    TX MMD Detail (Last Month)<div class=""></div>
+			    TX MMD Detail (Last Month) <div class=""></div>
 		    </div>
 			<div class="panel-body" id="tx_mmd_detail">
 				<center><div class="loader"></div></center>
@@ -217,11 +217,11 @@
 	</div>
 </div>
 
-<div class="row detail_tables">
-	<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row ">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				Prep New Details (Last Month) <div class=""></div>
+				Prep New Details (Last Month)  <div class=""></div>
 			</div>
 			<div class="panel-body" id="prep_new_last_rpt_period">
 				<center><div class="loader"></div></center>
@@ -253,11 +253,11 @@
 	</div>
 </div>
 
-<div class="row detail_tables">
-<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row ">
+<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    VMMC CIRC Details (Last Month)<div class=""></div>
+			    VMMC CIRC Details (Last Month) <div class=""></div>
 		    </div>
 			<div class="panel-body" id="vmmc_circ_details">
 				<center><div class="loader"></div></center>

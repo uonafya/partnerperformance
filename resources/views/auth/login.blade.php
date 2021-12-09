@@ -10,7 +10,7 @@
             <div class="panel-body" id="login">
 
 
-                <form method="POST" action="{{ secure_url('login') }}" aria-label="{{ __('Login') }}">
+                <form method="POST" action="{{ url('login') }}" aria-label="{{ __('Login') }}">
                     @csrf
 
                     <div class="form-group">
