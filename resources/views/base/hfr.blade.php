@@ -40,7 +40,7 @@
 		</div>
 	</div>
 </div>
-
+<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -68,6 +68,8 @@
 	</div>
 </div>
 
+<div class="html2pdf__page-break"></div>
+
 <div class="row">
 	<div class="col-md-4 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -89,6 +91,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="html2pdf__page-break"></div>
 	<div class="col-md-4 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -100,6 +103,7 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -112,6 +116,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="html2pdf__page-break"></div>
 	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -135,6 +140,8 @@
 		</div>
 	</div>
 </div>	
+<div class="html2pdf__page-break"></div>
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -147,6 +154,8 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -169,6 +178,7 @@
 		</div>
 	</div> -->
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class=" row col-sm-12 col-xs-12">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -192,6 +202,7 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class="row col-sm-12 col-xs-12 ">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -204,6 +215,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="html2pdf__page-break"></div>
 	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -229,6 +241,7 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -351,37 +364,25 @@
 	});
 
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
     function downloadPDF() {
-		$(".detail_tables").removeClass("hidden");
-		var HTML_Width = $(".content-body").width();
-		var HTML_Height = $(".content-body").height();
-		var top_left_margin = 15;
-		var PDF_Width = HTML_Width + (top_left_margin * 2);
-		var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
-		var canvas_image_width = HTML_Width;
-		var canvas_image_height = HTML_Height;
+		var element = document.getElementById('body');
+		var opt = {
+		margin:       1,
+		filename:     'hts.pdf',
+		image:        { type: 'jpg', quality: 0.5 },
+		html2canvas:  { scale: 2 },
+		jsPDF:        { unit: 'mm', format: 'a2', orientation: 'landscape',precision:16 }
+		};
 
-		var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+		// Old monolithic-style usage:
+		// html2pdf(element, opt);
+		html2pdf().set(opt).from(element).save();
 
-		html2canvas($(".content-body")[0]).then(function (canvas) {
-			var imgData = canvas.toDataURL("image/jpeg", 1.0);
-			var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
-			pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
-			for (var i = 1; i <= totalPDFPages; i++) { 
-				pdf.addPage(PDF_Width, PDF_Height);
-				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
-			}
-			pdf.save("hfr.pdf");
-		}).then(function(){
-			$(".detail_tables").addClass("hidden");
-		});
-		
     }
 </script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0/jspdf.min.js"></script>
 
 <script>
 	$(".detail_tables").addClass("hidden");
