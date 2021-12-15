@@ -40,7 +40,7 @@
 		</div>
 	</div>
 </div>
-<div class="html2pdf__page-break"></div>
+
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -68,8 +68,6 @@
 	</div>
 </div>
 
-<div class="html2pdf__page-break"></div>
-
 <div class="row">
 	<div class="col-md-4 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -91,7 +89,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="html2pdf__page-break"></div>
 	<div class="col-md-4 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -103,7 +100,6 @@
 		</div>
 	</div>
 </div>
-<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -116,7 +112,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="html2pdf__page-break"></div>
 	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -140,8 +135,6 @@
 		</div>
 	</div>
 </div>	
-<div class="html2pdf__page-break"></div>
-
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -154,8 +147,6 @@
 		</div>
 	</div>
 </div>
-<div class="html2pdf__page-break"></div>
-
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -178,7 +169,6 @@
 		</div>
 	</div> -->
 </div>
-<div class="html2pdf__page-break"></div>
 
 <div class=" row col-sm-12 col-xs-12">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -202,7 +192,6 @@
 		</div>
 	</div>
 </div>
-<div class="html2pdf__page-break"></div>
 
 <div class="row col-sm-12 col-xs-12 ">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -215,7 +204,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="html2pdf__page-break"></div>
 	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -241,7 +229,6 @@
 		</div>
 	</div>
 </div>
-<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -386,12 +373,18 @@
 		};
 		// html2pdf().set(opt).from(element).save();
 		html2pdf(element, opt);
+		$(document).ready(function(){
+		setTimeout(() => { hide()}, 2300);
+	});
+	
 		///////
     }
+	function hide(){
+		$(".detail_tables").addClass("hidden");
+	}
 </script>
 {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script> --}}
-
 
 <script>
 	$(".detail_tables").addClass("hidden");
