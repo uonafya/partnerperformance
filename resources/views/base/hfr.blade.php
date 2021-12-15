@@ -368,7 +368,7 @@
 			filename:     'HFR-'+new Date().toLocaleString('en-GB').replaceAll('/', '_').replaceAll(' ', '_').toLowerCase().replaceAll(',','_').replaceAll(':','_')+'.pdf',
 			image:        { type: 'jpeg',},
 			html2canvas:  { scale: 1, },
-			jsPDF:        { unit: 'mm', format: 'a2', orientation: 'portrait' },
+			jsPDF:        { unit: 'mm', format: 'a2', orientation: 'landscape' },
 			pagebreak: { mode: 'avoid-all' }
 		};
 		// html2pdf().set(opt).from(element).save();
