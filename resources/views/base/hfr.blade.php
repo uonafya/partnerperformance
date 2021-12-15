@@ -364,25 +364,34 @@
 	});
 
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js" integrity="sha512-dBB2PGgYedA6vzize7rsf//Q6iuUuMPvXCDybHtZP3hQXCPCD/YVJXK3QYZ2v0p7YCfVurqr8IdcSuj4CCKnGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script type="text/javascript">
     function downloadPDF() {
+		$(".detail_tables").removeClass("hidden");
+	
+		
+
+		///////
 		var element = document.getElementById('body');
 		var opt = {
-		margin:       1,
-		filename:     'hts.pdf',
-		image:        { type: 'jpg', quality: 0.5 },
-		html2canvas:  { scale: 2 },
-		jsPDF:        { unit: 'mm', format: 'a2', orientation: 'landscape',precision:16 }
+			margin: 0,
+			filename:     'HFR-'+new Date().toLocaleString('en-GB').replaceAll('/', '_').replaceAll(' ', '_').toLowerCase().replaceAll(',','_').replaceAll(':','_')+'.pdf',
+			image:        { type: 'jpeg',},
+			html2canvas:  { scale: 1, },
+			jsPDF:        { unit: 'mm', format: 'a2', orientation: 'portrait' },
+			pagebreak: { mode: 'avoid-all' }
 		};
-
-		// Old monolithic-style usage:
-		// html2pdf(element, opt);
-		html2pdf().set(opt).from(element).save();
-
+		// html2pdf().set(opt).from(element).save();
+		html2pdf(element, opt);
+		///////
     }
 </script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0/jspdf.min.js"></script>
+{{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script> --}}
+
 
 <script>
 	$(".detail_tables").addClass("hidden");
