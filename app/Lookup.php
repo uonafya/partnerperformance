@@ -81,6 +81,7 @@ class Lookup
 	{
 		$groupby = session('filter_groupby', 1);
 		if($force_filter) $groupby = $force_filter;
+		// dd($groupby);
 		if($groupby > 9){
 			if($groupby == 10 || $groupby == 11) return 1;
 			if($groupby == 12) return 12;
@@ -322,19 +323,174 @@ class Lookup
             $y = $financial_year;
             if($month > 9) $y--;
             $active_date = "{$y}-{$m}-01";
-        }else{
-        
+        }else{        
             $y = $financial_year - 1;
             $active_date = "{$y}-10-01";
+			
         }
-	//dd($active_date);
-
+			//$DD($active_date);
         return self::get_active_partner_query($active_date);
+	}
+	public static function active_partner_hfr_query()
+	{
+        $week = session('filter_week');
+        $financial_year = session('filter_financial_year');
+        $quarter = session('filter_quarter');
+
+        $year = session('filter_year');
+        $month = session('filter_month');
+        $to_year = session('to_year');
+        $to_month = session('to_month');
+
+
+        if($week){
+        	$w = Week::find($w);
+        	$active_date = $w->start_date;
+        }else if($to_year){
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$year}-{$m}-01";
+        }else if($month){
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$y}-{$m}-01";
+        }else if($quarter){
+            if($quarter == 1) $m = '10';
+            else if($quarter == 2) $m = '01';
+            else if($quarter == 3) $m = '04';
+            else if($quarter == 4) $m = '07';
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $active_date = "{$y}-{$m}-01";
+        }else{
+			$y = $financial_year - 1;
+            $active_date = "{$y}-10-01";
+			
+        }
+			//$DD($active_date);
+        return self::get_active_partner_hfr_query($active_date);
+	}
+	public static function predefined_active_partner_query()
+	{
+        $week = session('filter_week');
+        $financial_year = session('filter_financial_year');
+		//dd($financial_year);
+        $quarter = session('filter_quarter');
+
+        $year = session('filter_year');
+        $month = session('filter_month');
+		
+        $to_year = session('to_year');
+        $to_month = session('to_month');
+		if($month == null){
+			$month = date('m')-1;
+			// dd($month);
+
+		}
+
+	
+        if($week){
+        	$w = Week::find($w);
+        	$active_date = $w->start_date;
+        }else if($to_year){
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$year}-{$m}-01";
+        }else if($month){
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$y}-{$m}-01";
+        }else if($quarter){
+            if($quarter == 1) $m = '10';
+            else if($quarter == 2) $m = '01';
+            else if($quarter == 3) $m = '04';
+            else if($quarter == 4) $m = '07';
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $active_date = "{$y}-{$m}-01";
+        }else{
+			$y = $financial_year ;
+			$month = date('m') -1;
+			$m = '0'.$month;
+			// $y = date('y');
+            $active_date = "{$y}-{$m}-01";
+			
+        }
+			//$dd($active_date);
+        return self::get_active_partner_query($active_date);
+	}
+	public static function predefined_active_partner_hfr_query()
+	{
+        $week = session('filter_week');
+        $financial_year = session('filter_financial_year');
+		//dd($financial_year);
+        $quarter = session('filter_quarter');
+
+        $year = session('filter_year');
+        $month = session('filter_month');
+		
+        $to_year = session('to_year');
+        $to_month = session('to_month');
+		if($month == null){
+			$month = date('m')-1;
+			// dd($month);
+
+		}
+
+	
+        if($week){
+        	$w = Week::find($w);
+        	$active_date = $w->start_date;
+        }else if($to_year){
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$year}-{$m}-01";
+        }else if($month){
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $m = $month;
+            if($month < 10) $m = '0' . $month;
+            $active_date = "{$y}-{$m}-01";
+        }else if($quarter){
+            if($quarter == 1) $m = '10';
+            else if($quarter == 2) $m = '01';
+            else if($quarter == 3) $m = '04';
+            else if($quarter == 4) $m = '07';
+            $y = $financial_year;
+            if($month > 9) $y--;
+            $active_date = "{$y}-{$m}-01";
+        }else{
+			$y = $financial_year ;
+			$month = date('m') -1;
+			$m = '0'.$month;
+			// $y = date('y');
+            $active_date = "{$y}-{$m}-01";
+			// dd($active_date);
+			
+        }
+			//$dd($active_date);
+        return self::get_active_partner_hfr_query($active_date);
 	}
 
 	public static function get_active_partner_query($active_date)
 	{
-		return "(start_of_support <= '{$active_date}' AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+		// dd($active_date);
+		
+		//return "(start_of_support <= weeks.start_date AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+		return "( start_of_support <= '{$active_date}' and (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+
+	}
+	public static function get_active_partner_hfr_query($active_date)
+	{
+		// dd($active_date);
+		
+		return "(start_of_support <= weeks.start_date AND (end_of_support >= weeks.start_date	 OR end_of_support IS NULL))";
+		// return "( end_of_support >= '{$active_date}' OR end_of_support IS NULL)";
+
 	}
 
 	// Prepension allows us to prepend 'periods.' so it doesn't clash
@@ -355,6 +511,31 @@ class Lookup
 		$query = " financial_year='{$financial_year}'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
 		if($month) $query .= " AND {$prepension}month='{$month}'";
+
+		return $query;
+	}
+	public static function predefined_date_query($for_target=false, $prepension = '')
+	{
+		$financial_year = session('filter_financial_year');
+		$quarter = session('filter_quarter');
+
+		$year = session('filter_year');
+		$month = session('filter_month');
+		if ($month == null && date('d')< 20 && date('Y') == 2021){
+			 $month = date('m')-3;
+		}elseif($month == null && date('d')>= 20){
+			$month = date('m')-1;
+		}
+		$to_year = session('to_year');
+		$to_month = session('to_month');
+
+		if($for_target) return " financial_year='{$financial_year}'";
+
+		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month, $prepension);
+
+		$query = " {$prepension}month='{$month}'";
+		if($quarter) $query .= " AND quarter='{$quarter}'";
+		// if($month) $query .= " AND {$prepension}month='{$month}'";
 
 		return $query;
 	}
@@ -610,6 +791,13 @@ class Lookup
 		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner_id" . self::set_division_query(session('filter_partner'));
 		return $query;		
 	}
+	public static function county_target_query_by_partner()
+	{
+		$query = " 1 ";		
+		if(session('filter_partner')==null)$query .= " AND partner_id"  ;
+		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner_id" . self::set_division_query(session('filter_partner'));
+		return $query;		
+	}
 
 	public static function set_division_query($param, $quote=false)
 	{
@@ -699,6 +887,23 @@ class Lookup
 		return compact('select_query', 'group_query', 'group_array');
 		// return ['select_query' => $select_query, 'group_query' => $group_query];
 	}
+    public static function predefined_groupby_query($groupby)
+    {	
+		
+        switch ($groupby) {
+            case 1:
+                $select_query = "partner as div_id";
+                $select_query .= ", partnername as name, partnername as dhis_code, partnername as mfl_code";
+                $group_query = "partner";
+                break;
+            case 2:
+                $select_query = "county as div_id, countyname as name, CountyDHISCode as dhis_code, CountyMFLCode as mfl_code";
+                $group_query = "county";
+                break;
+        }
+        if(!isset($group_array)) $group_array = [$group_query];
+        return compact('select_query', 'group_query', 'group_array');
+    }
 
 	public static function duplicate_parameters($row)
 	{

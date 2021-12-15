@@ -99,6 +99,10 @@
             @if(isset($data_labels))
                 plotOptions: {
                     column: {
+                        dataLabels: {
+                            enabled: true,
+                            // shape: 'callout'
+                        },
                         @empty($no_column_label)
                         dataLabels: {
                             enabled: true,

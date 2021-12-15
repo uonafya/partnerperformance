@@ -46,8 +46,10 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
     	$fac = null;
 
-		if($row->orgunituid) $fac = Facility::where('facility_uid', 'like', "%{$row->orgunituid}%")->first();
-		if(!$fac) $fac = Facility::where('name', $row->orgunit)->first();
+		
+		if($row->orgunituid) $fac = Facility::where('facility_uid', $row->orgunituid)->first();
+		if(!$fac) $fac = Facility::where('name','like', $row->orgunit)->first();
+		
 		// if(!$fac) return;
 		if(!$fac){
 			$facilities = session('missing_facilities');
@@ -92,8 +94,6 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 		$update_data['facility'] = $fac;
 
 		dd($update_data);*/
-
-
 
 		$updated_row = DB::table($this->table_name)->where(['facility' => $fac->id, 'week_id' => $week->id, ])->first();
 		if(!$updated_row) dd("Row is not in the DB.");

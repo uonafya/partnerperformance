@@ -165,6 +165,9 @@ Route::prefix('violence')->name('violence.')->group(function(){
 	Route::get('new_reporting', 'ViolenceController@new_reporting')->name('new_reporting');
 	Route::get('modality_reported', 'ViolenceController@modality_reported')->name('modality_reported');
 });
+Route::prefix('cervical_cancer')->name('cervical_cancer')->group(function(){
+	Route::get('/', 'GeneralController@cervical_cancer_dashboard');
+});
 
 Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('testing', 'HfrController@testing')->name('testing');
@@ -173,8 +176,18 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('tx_mmd', 'HfrController@tx_mmd')->name('tx_mmd');
 	Route::get('prep_new', 'HfrController@prep_new')->name('prep_new');
 	Route::get('vmmc_circ', 'HfrController@vmmc_circ')->name('vmmc_circ');
+	Route::get('net_new', 'HfrController@net_new')->name('net_new');
+	Route::get('net_new_detail', 'HfrController@net_new_detail')->name('net_new_detail');
+	Route::get('tx_crude', 'HfrController@tx_crude')->name('tx_crude');	
 	
 	Route::get('misassigned_facilities', 'HfrController@misassigned_facilities')->name('misassigned_facilities');
+	Route::get('prep_new_last_rpt_period', 'HfrController@prep_new_last_rpt_period')->name('prep_new_last_rpt_period');
+	Route::get('testing_dis', 'HfrController@testing_dis')->name('testing_dis');
+	Route::get('tx_curr_details', 'HfrController@tx_curr_details')->name('tx_curr_details');
+	Route::get('vmmc_circ_details', 'HfrController@vmmc_circ_details')->name('vmmc_circ_details');
+	Route::get('linkage_dis', 'HfrController@linkage_dis')->name('linkage_dis');
+	
+	Route::get('tx_mmd_detail', 'HfrController@tx_mmd_detail')->name('tx_mmd_detail');
 
 	// Route::get('tx_curr_two', 'HfrController@tx_curr_two')->name('tx_curr_two');
 	// Route::get('tx_mmd_two', 'HfrController@tx_mmd_two')->name('tx_mmd_two');
