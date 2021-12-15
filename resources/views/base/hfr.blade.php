@@ -40,7 +40,7 @@
 		</div>
 	</div>
 </div>
-
+<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -68,6 +68,8 @@
 	</div>
 </div>
 
+<div class="html2pdf__page-break"></div>
+
 <div class="row">
 	<div class="col-md-4 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -89,6 +91,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="html2pdf__page-break"></div>
 	<div class="col-md-4 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -100,6 +103,7 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -112,6 +116,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="html2pdf__page-break"></div>
 	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -135,6 +140,8 @@
 		</div>
 	</div>
 </div>	
+<div class="html2pdf__page-break"></div>
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -147,6 +154,8 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -169,6 +178,7 @@
 		</div>
 	</div> -->
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class=" row col-sm-12 col-xs-12">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -192,6 +202,7 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class="row col-sm-12 col-xs-12 ">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -204,6 +215,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="html2pdf__page-break"></div>
 	<div class="col-md-9 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
@@ -229,6 +241,7 @@
 		</div>
 	</div>
 </div>
+<div class="html2pdf__page-break"></div>
 
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
@@ -352,6 +365,7 @@
 
 </script>
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js" integrity="sha512-dBB2PGgYedA6vzize7rsf//Q6iuUuMPvXCDybHtZP3hQXCPCD/YVJXK3QYZ2v0p7YCfVurqr8IdcSuj4CCKnGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script type="text/javascript">
@@ -377,6 +391,7 @@
 </script>
 {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script> --}}
+
 
 <script>
 	$(".detail_tables").addClass("hidden");
