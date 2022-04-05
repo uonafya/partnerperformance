@@ -48,17 +48,29 @@
 				</div>
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
 					<ul class="nav navbar-nav">
+						@if (Request::is('/'))
 						<li><a href="{{ url('/') }}">Home</a></li>	
+						@elseif (Request::is('testing'))
 						<li><a href="{{ url('testing') }}">Testing</a></li>	
+						@elseif (Request::is('pmtct'))
 						<li><a href="{{ url('pmtct') }}">PMTCT</a></li>	
+						@elseif (Request::is('art'))
 						<li><a href="{{ url('art') }}">ART</a></li>	
+						@elseif (Request::is('vmmc'))
 						<li><a href="{{ url('vmmc') }}">VMMC</a></li>	
+						@elseif (Request::is('tb'))
 						<li><a href="{{ url('tb') }}">TB</a></li>	
+						@elseif (Request::is('keypop'))
 						<li><a href="{{ url('keypop') }}">KeyPOP</a></li>	
+						@elseif (Request::is('indicators'))
 						<li><a href="{{ url('indicators') }}">Indicators</a></li>	
+						@elseif (Request::is('non_mer'))
 						<li><a href="{{ url('non_mer') }}">Non Mer</a></li>	
+						@elseif (Request::is('pns'))
 						<li><a href="{{ url('pns') }}">PNS</a></li>	
+						@elseif (Request::is('surge'))
 						<li><a href="{{ url('surge') }}">Surge</a></li>	
+						@elseif (Request::is('gbv') || Request::is('violence'))
 						<li class="dropdown">
 							<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
 								GBV <b class="caret"></b>
@@ -68,14 +80,20 @@
 								<li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
 							</ul>
 						</li>	
-						<li><a href="{{ url('hfr') }}">HFR</a></li>		
-						<li><a href="{{ url('cervical_cancer') }}">Cervical Cancer</a></li>	
+						@elseif(Request::is('hfr'))
+						<li id="hfr"><a href="{{ url('hfr') }}">HFR</a></li>	
+						@elseif(Request::is('cervical_cancer'))
+						<li id="cancer"><a href="{{ url('cervical_cancer') }}">Cervical Cancer</a></li>	
+						@elseif(Request::is('regimen'))
+						<li><a href="{{ url('regimen') }}">MOH 729</a></li>	
+						@endif
+						
 						<!-- 
 						<li><a href="{{ url('dispensing') }}">MMD</a></li>	
 						<li><a href="{{ url('tx_curr') }}">MMD</a></li>	
 						<li><a href="{{ url('weekly') }}">MMD</a></li>	
 						 -->
-						<li><a href="{{ url('regimen') }}">MOH 729</a></li>	
+						
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="{{ url('/guide') }}">User Guide</a></li>
@@ -125,19 +143,6 @@
 									@endif
 								</ul>
 							</li>
-
-							@if(auth()->user()->user_type_id < 3)
-								<li class="dropdown">
-									<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-										Download Reports <b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
-										<li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
-									</ul>
-								</li>
-
-							@endif
 
 							<li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
 							
@@ -201,15 +206,6 @@
 		<!-- End of Dashboard area -->
 	</body>
 	
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124819698-1"></script>
-	<script>
-		// window.dataLayer = window.dataLayer || [];
-		// function gtag(){dataLayer.push(arguments);}
-		// gtag('js', new Date());
-
-		// gtag('config', 'UA-124819698-1');
-	</script> -->
 
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
@@ -343,18 +339,7 @@
 
 			@endempty	    
 
-		      //Getting the URL dynamically
-			/*var url = $(location).attr('href');
-			// Getting the file name i.e last segment of URL (i.e. example.html)
-			var fn = url.split('/').indexOf("partner");
 
-			if (fn > -1) {
-				var trends = url.split('/').indexOf("trends");
-				if (trends > -1) {
-					$('#year-month-filter').hide();
-					$('#date-range-filter').hide();
-				}
-			}*/
 	    });
 	</script>
 
