@@ -70,16 +70,10 @@
 						<li><a href="{{ url('pns') }}">PNS</a></li>	
 						@elseif (Request::is('surge'))
 						<li><a href="{{ url('surge') }}">Surge</a></li>	
-						@elseif (Request::is('gbv') || Request::is('violence'))
-						<li class="dropdown">
-							<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-								GBV <b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
-								<li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
-							</ul>
-						</li>	
+						@elseif (Request::is('violence'))
+						<li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
+						@elseif (Request::is('gbv'))
+						<li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
 						@elseif(Request::is('hfr'))
 						<li id="hfr"><a href="{{ url('hfr') }}">HFR</a></li>	
 						@elseif(Request::is('cervical_cancer'))
