@@ -525,6 +525,11 @@ class Lookup
 			 $month = date('m')-3;
 		}elseif($month == null && date('d')>= 20){
 			$month = date('m')-1;
+		}elseif($month == null && date('d')<= 20){
+			$month = date('m')-2;
+		}
+		else{
+			$month = date('m')-1;
 		}
 		$to_year = session('to_year');
 		$to_month = session('to_month');
@@ -533,10 +538,20 @@ class Lookup
 
 		if($to_year) return self::date_range_query($year, $to_year, $month, $to_month, $prepension);
 
-		$query = " {$prepension}month='{$month}'";
+		// $query = " {$prepension}month='{$month}'";
+		if($financial_year == '2021' && session('filter_month') == null){
+			$query = " {$prepension}month='9'and financial_year= '{$financial_year}'";
+		}elseif($financial_year == '2022' && session('filter_month') == null){
+			// dd($prepension,$month);
+			$query = " {$prepension}month='{$month}' and financial_year= '{$financial_year}'";
+		}elseif (session('filter_month') != null){
+			$query = " {$prepension}month='{$month}'";
+		}
+
+		// $query = " {$prepension}month='9'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
 		// if($month) $query .= " AND {$prepension}month='{$month}'";
-
+		// dd($query);
 		return $query;
 	}
 
