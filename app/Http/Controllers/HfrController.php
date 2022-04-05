@@ -175,7 +175,7 @@ class HfrController extends Controller
 
 		if($groupby < 10 || $groupby == 14){
 
-			$week_id = Lookup::get_tx_week();
+			$week_id = Lookup::get_tx_week(1, true);
 			// $data['chart_title'] = Week::find($week_id)->name;
 
 			$rows = DB::table($this->my_table)
@@ -228,12 +228,11 @@ class HfrController extends Controller
 			else{
 				$data['categories'][$key] = Lookup::get_category($row);
 			}*/
-			if(!$row->tx_curr) continue;
+			// if(!$row->tx_curr) continue;
 			$data['categories'][$i] = Lookup::get_category($row);
 			$data["outcomes"][0]["data"][$i] = (int) $row->tx_curr;
 			$i++;
 		}	
-
 		return view('charts.line_graph', $data);
 	}
 	public function tx_curr_details()
@@ -1029,6 +1028,7 @@ class HfrController extends Controller
 		$week_id = Lookup::get_tx_week();
 	
 		// DB::enableQueryLog();
+
 		$results = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)

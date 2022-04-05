@@ -126,6 +126,19 @@
 								</ul>
 							</li>
 
+							@if(auth()->user()->user_type_id < 3)
+								<li class="dropdown">
+									<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+										Download Reports <b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
+										<li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
+									</ul>
+								</li>
+
+							@endif
+
 							<li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
 							
 							<li class="dropdown">

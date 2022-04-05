@@ -92,7 +92,7 @@ class QuarterlyReportGBV implements FromArray, Responsable, WithHeadings, Should
             })
             ->orderBy('modality_id', 'desc')
             ->orderBy('age_name', 'asc')
-            ->orderBy('gender_id', 'asc')
+            ->orderBy('gender_id', 'desc')
             ->orderBy('id', 'asc')
             ->get();
 

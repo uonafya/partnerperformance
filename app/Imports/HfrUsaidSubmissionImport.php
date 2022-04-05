@@ -63,6 +63,11 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 		if(strlen($row->date) < 9) $date_format = 'm/d/y';
 		if(Str::startsWith($row->date, '2020/')) $date_format = 'Y/m/d';
 		if(Str::endsWith($row->date, '2021')) $date_format = 'm/d/Y';
+
+		if(Str::contains($row->date, ['October'])) $date_format = 'F d, Y';
+		if(Str::contains($row->date, ['Nov', 'Dec'])) $date_format = 'd-M-y';
+		if(Str::contains($row->date, ['January'])) $date_format = 'F d, Y';
+		if(Str::contains($row->date, ['January'])) $date_format = 'F d, Y';
 		
 
 		$week = Week::where(['start_date' => Carbon::createFromFormat($date_format, $row->date)->toDateString()])->first();

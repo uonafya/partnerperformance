@@ -218,11 +218,19 @@ class HfrSubmission
     public static function upload_data()
     {
         session(['missing_facilities' => [], 'duplicate_rows' => []]);
-        $files = [
+        /*$files = [
             public_path('hfr_oct_2020.csv'),
             public_path('hfr_nov_2020.csv'),
             public_path('hfr_dec_2020.csv'),
             public_path('hfr_jan_2021.csv'),
+            public_path('hfr_feb_2021.csv'),
+        ];*/
+        $files = [
+            public_path('hfr_oct.csv'),
+            public_path('hfr_nov.csv'),
+            public_path('hfr_dec.csv'),
+            public_path('hfr_jan.csv'),
+            public_path('hfr_feb.csv'),
         ];
         foreach ($files as $upload) {
             Excel::import(new HfrUsaidSubmissionImport, $upload);

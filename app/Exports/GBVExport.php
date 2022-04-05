@@ -39,7 +39,7 @@ class GBVExport extends BaseExport
     	$partner = $this->partner;
     	$period_id = $this->period_id;
 
-		$columns = \App\SurgeColumn::when($modalities, function($query) use ($modalities){
+		$columns = \App\SurgeColumnView::when($modalities, function($query) use ($modalities){
 				if(is_array($modalities)) return $query->whereIn('modality_id', $modalities);
 				return $query->where('modality_id', $modalities);
 			})->when($gender_id, function($query) use ($gender_id){
