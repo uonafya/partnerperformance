@@ -90,7 +90,8 @@
 						
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ url('/guide') }}">User Guide</a></li>
+						<li><a href="https://indextestingapp.uonbi.ac.ke/api/apps/Partner-Reporting-Dashboards/html/index.html" >Home</a></li>
+                        <li><a href="{{ url('/guide') }}">User Guide</a></li>
 						@guest
 							<li><a href="{{ url('/login') }}">Login</a></li>
 						@endguest	
