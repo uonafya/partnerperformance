@@ -226,11 +226,11 @@ class HfrSubmission
             public_path('hfr_feb_2021.csv'),
         ];*/
         $files = [
-            public_path('hfr_oct.csv'),
-            public_path('hfr_nov.csv'),
-            public_path('hfr_dec.csv'),
-            public_path('hfr_jan.csv'),
-            public_path('hfr_feb.csv'),
+            public_path('hfr2201.csv'),
+           // public_path('hfr2202.csv'),
+           // public_path('hfr2203.csv'),
+          // public_path('hfr2204_updated.csv'),
+           // public_path('hfr2205.csv'),
         ];
         foreach ($files as $upload) {
             Excel::import(new HfrUsaidSubmissionImport, $upload);
