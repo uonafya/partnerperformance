@@ -217,7 +217,7 @@ class HfrController extends Controller
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_callback('tx_curr'))
-				->whereIn('week_id', $week_ids)
+				//->whereIn('week_id', $week_ids)
 				->get();
 		}
 		// return DB::getQueryLog();
