@@ -70,12 +70,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         $change_url = URL::temporarySignedRoute('reset.password', now()->addDays(7), ['user' => $this->id]);
 
-        \Illuminate\Support\Facades\URL::forceScheme('http');
+        \Illuminate\Support\Facades\URL::forceScheme('https');
 
         $url = URL::temporarySignedRoute('reset.password', now()->addDays(7), ['user' => $this->id]);
 
 
-        \Illuminate\Support\Facades\URL::forceScheme('http');
+        \Illuminate\Support\Facades\URL::forceScheme('https');
 
 
         $new_signature = str_after($url, 'expires=');
