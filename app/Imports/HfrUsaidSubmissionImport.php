@@ -62,7 +62,7 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 		$date_format = 'm/d/Y';
 		if(strlen($row->date) < 9) $date_format = 'm/d/y';
 		if(Str::startsWith($row->date, '2020/')) $date_format = 'Y/m/d';
-		if(Str::endsWith($row->date, '2021')) $date_format = 'm/d/Y';
+		if(Str::endsWith($row->date, '2022')) $date_format = 'm/d/Y';
 
 		if(Str::contains($row->date, ['October'])) $date_format = 'F d, Y';
 		if(Str::contains($row->date, ['Nov', 'Dec'])) $date_format = 'd-M-y';

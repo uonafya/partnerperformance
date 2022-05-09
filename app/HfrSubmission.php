@@ -26,7 +26,6 @@ class HfrSubmission
         $table_name = 'd_hfr_submission';
         $sql = "CREATE TABLE `{$table_name}` (
                     id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-
                     week_id smallint(5) UNSIGNED DEFAULT 0,
                     facility int(10) UNSIGNED DEFAULT 0,
                     ";

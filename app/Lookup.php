@@ -369,7 +369,7 @@ class Lookup
             $active_date = "{$y}-10-01";
 			
         }
-			//$DD($active_date);
+			// dd($active_date);
         return self::get_active_partner_hfr_query($active_date);
 	}
 	public static function predefined_active_partner_query()
@@ -737,13 +737,18 @@ class Lookup
 			if($year == $current_financial_year){				
 				/*$start_date = date('Y-m-d', strtotime("-{$days} days"));
 				$week = \App\Week::where('start_date', $start_date)->first();*/
-
+				if(date('d') < 20){
+				$m = date('m', strtotime('-2 month'));
+				$y = date('Y', strtotime('-2 month'));
+				}else{
 				$m = date('m', strtotime('-1 month'));
 				$y = date('Y', strtotime('-1 month'));
+				}
 				if($hfr && date('d') < 14){
 					$m = date('m', strtotime('-2 months'));
 					$y = date('Y', strtotime('-2 months'));					
 				}	
+				// dd($hfr,$m,$y);
 				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->first();
 			}
 			else{
