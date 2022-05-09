@@ -722,6 +722,7 @@ class Lookup
 	public static function get_tx_week($param=1, $hfr=false)
 	{
 		$year = session('filter_financial_year');
+		$week_ids = [];
 		if(session('filter_week')) return session('filter_week');
 		else if(session('filter_month')){
 			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->first();
@@ -749,13 +750,17 @@ class Lookup
 					$y = date('Y', strtotime('-2 months'));					
 				}	
 				// dd($hfr,$m,$y);
-				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->first();
+				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
 			}
 			else{
 				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
 			}
 		}
-		return ($week->id ?? null);
+		foreach ($week as $key => $week) {
+			array_push($week_ids,$week->id);
+		}
+		// dd($week_ids);
+		return ($week_ids ?? null);
 	}
 
 	public static function year_month_name()

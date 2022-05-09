@@ -255,7 +255,7 @@ class HfrController extends Controller
 		}else{
 			$grouping = 'partners.name';
 		}
-
+		// dd($groupby);
 		if($groupby < 10 || $groupby == 14){
 
 			$week_id = Lookup::get_tx_week();
@@ -303,16 +303,18 @@ class HfrController extends Controller
 				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
 				if($w) $week_ids[] = $w->id; $weeks[] = $w;
 			}
-			// 
+			//  DB::enableQueryLog();
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				->whereIn('week_id', $week_ids)
+				// ->whereIn('week_id', $week_ids)
 				->get();
-				//
-				return DB::getQueryLog();
+			// dd($week_ids);
+			// dd($rows);s
+
+				// return DB::getQueryLog();
 			$target = DB::table($this->my_target_table)
 				->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
 				->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
@@ -1026,6 +1028,7 @@ class HfrController extends Controller
 
 		$date_query = Lookup::date_query();
 		$week_id = Lookup::get_tx_week();
+		// dd($week_id);
 	
 		// DB::enableQueryLog();
 
@@ -1036,7 +1039,7 @@ class HfrController extends Controller
 				return $query->whereRaw($date_query);
 			})
 			->when(($modality == 'tx_curr'), function($query) use($week_id) {
-				return $query->where(['week_id' => $week_id]);
+				return $query->whereIn('week_id', $week_id);
 			})
 			->whereRaw(Lookup::divisions_query())
 			->first();
