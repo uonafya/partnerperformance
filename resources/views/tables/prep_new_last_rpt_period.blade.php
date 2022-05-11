@@ -60,7 +60,10 @@
 		function getSum(total, num) {
   				return total + Math.round(num);
 		}
-		var total_results = row_total_array.reduce(getSum, 0);
+        var total_array = row_total_array.filter(function (value) {
+            return !Number.isNaN(value);
+            });
+		var total_results = total_array.reduce(getSum, 0);
         rows.forEach((row,index) => {
             if(parseInt(row.prep_new) > 0){
                

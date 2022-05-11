@@ -69,10 +69,15 @@
 		rows.forEach((row1,index)=>{
 			row_total_array.push(parseInt(row1.tests))
 		})
+        
 		function getSum(total, num) {
   				return total + Math.round(num);
 		}
-		var total_results = row_total_array.reduce(getSum, 0);
+        var total_array = row_total_array.filter(function (value) {
+            return !Number.isNaN(value);
+            });
+		var total_results = total_array.reduce(getSum, 0);
+        // console.log(total_results)
 	
         rows.forEach((row,index) => {
 
@@ -90,11 +95,12 @@
 					var achieved = parseFloat((parseInt(row.tests)/parseInt(target?.val / divisor ))*100)
 					achieved = achieved >= 0 ? achieved.toFixed(1):0
 					var contribiutions = parseFloat((parseInt(row.tests)/parseInt(total_results))*100)
+                    
 					contribiutions = contribiutions ? contribiutions.toFixed(1):0
 					achieved = achieved +"%"
 					contribiutions = contribiutions+"%"
 					yields = yields+"%"
-					// console.log(contribiutions)
+					
 					// var yields = ((parseInt(row.pos)/parseInt(row.tests))*100,1)
 					// console.log(yields)
 					// var gap_final = gap < 0 ? 0 : gap
