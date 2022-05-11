@@ -7,6 +7,10 @@
 		width: 130px;
 		display: inline;
 	}
+	.detail_date {
+		width: 130px;
+		display: inline;
+	}
 </style>
 
 <div class="row">
@@ -29,10 +33,11 @@
 	</div>
 </div>
 <div class="row ">
-	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
+	<div class="col-md-12 col-sm-12 col-xs-12 ">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    HTS Testing & Yield Details (Last Month) <div class=""></div>
+				
+			    HTS Testing & Yield Details   <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="testing_dis">
 				<center><div class="loader"></div></center>
@@ -59,7 +64,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    Linkage (HTS POS & TX NEW) Details (Last Month)<div class=""></div>
+			    Linkage (HTS POS & TX NEW) Details <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="linkage_dis">
 				<center><div class="loader"></div></center>
@@ -127,7 +132,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    TX CURR Detail (Last Month) <div class="display_date"></div>
+			    TX CURR Detail  <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_curr_details">
 				<center><div class="loader"></div></center>
@@ -184,7 +189,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    TX MMD Detail (Last Month) <div class=""></div>
+			    TX MMD Detail <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_mmd_detail">
 				<center><div class="loader"></div></center>
@@ -221,7 +226,7 @@
 	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				Prep New Details (Last Month)  <div class=""></div>
+				Prep New Details   <div class="detail_date"></div>
 			</div>
 			<div class="panel-body" id="prep_new_last_rpt_period">
 				<center><div class="loader"></div></center>
@@ -254,10 +259,10 @@
 </div>
 
 <div class="row ">
-<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
+<div class="col-md-12 col-sm-12 col-xs-12 ">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-			    VMMC CIRC Details (Last Month) <div class=""></div>
+			    VMMC CIRC Details  <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="vmmc_circ_details">
 				<center><div class="loader"></div></center>
@@ -382,6 +387,12 @@
 	function hide(){
 		$(".detail_tables").addClass("hidden");
 	}
+	function getDate(){
+		var t_date = new Date()
+		return t_date
+	}
+
+
 </script>
 {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script> --}}

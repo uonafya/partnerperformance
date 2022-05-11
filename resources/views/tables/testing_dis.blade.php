@@ -69,7 +69,6 @@
 		rows.forEach((row1,index)=>{
 			row_total_array.push(parseInt(row1.tests))
 		})
-        
 		function getSum(total, num) {
   				return total + Math.round(num);
 		}
