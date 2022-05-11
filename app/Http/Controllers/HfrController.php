@@ -160,32 +160,73 @@ class HfrController extends Controller
 		}	
 		return view('charts.line_graph', $data);
 	}
+	public function tx_new()
+	{
+		$tx_new = HfrSubmission::columns(true, 'tx_new');
+		$sql = $this->get_hfr_sum($tx_new, 'tx_new');
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_callback('tx_new'))
+			->get();
+
+		$data['div'] = str_random(15);
+
+		Lookup::bars($data, ["Tx New"], "column");
+
+		$i=0;
+		foreach ($rows as $key => $row){
+			if(!$row->tx_new) continue;
+			$data['categories'][$i] = Lookup::get_category($row);
+
+			$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
+			$i++;
+		}	
+		return view('charts.line_graph', $data);
+	}
 
 	public function tx_curr()
 	{
 		
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		$sql_test = $this->get_hfr_sum($tx_curr, 'val');
 
 		$data['div'] = str_random(15); 
 
-		Lookup::bars($data, ["TX Curr"], "column");
+		Lookup::bars($data, ["Tx_Curr", "Target" ], "column", ["#ff7d33", "#3023ea"]);
+		Lookup::splines($data, [1]);
 
 		$groupby = session('filter_groupby');
+		// dd($groupby);
 
 		if($groupby < 10 || $groupby == 14){
 
 			$week_id = Lookup::get_tx_week(1, true);
+			$grouping = 'partners.name';
 			// $data['chart_title'] = Week::find($week_id)->name;
-
+			// DB::enableQueryLog();
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
-				->when(true, $this->get_callback('tx_curr'))
+				->when(true, $this->get_callback_tx_curr('tx_curr'))
 				->when(($groupby < 10), function($query) use($week_id) {
 					return $query->where(['week_id' => $week_id]);
 				})
+				->orderby("div_id",'asc')
 				->get();
+			// return DB::getQueryLog();
+			$target = DB::table($this->my_target_table)
+				->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+				->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+				->selectRaw($sql_test)
+				->addSelect(DB::raw(" partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereRaw(Lookup::county_target_query())
+				->groupBy('partner_name','county_name')	
+				->orderby("county_id", 'asc')			
+				->get();
+			
 		}
 		else{
 			$periods = [];
@@ -195,13 +236,33 @@ class HfrController extends Controller
 				->whereRaw(Lookup::date_query())
 				->groupBy('financial_year', 'month')
 				->get();
+				$target = DB::table($this->my_target_table)
+				// ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+				// ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+				->selectRaw($sql_test)
+				// ->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereRaw(Lookup::county_target_query())
+				// ->groupBy($grouping)				
+				->get();
+
 			}
 			// Group By quarter
 			else if($groupby == 13){
 				$periods = Period::select('financial_year', 'quarter')
 				->whereRaw(Lookup::date_query())
 				->groupBy('financial_year', 'quarter')
-				->get();				
+				->get();
+				$target = DB::table($this->my_target_table)
+				// ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+				// ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+				->selectRaw($sql_test)
+				// ->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereRaw(Lookup::county_target_query())
+				// ->groupBy($grouping)				
+				->get();
+				
 			}
 			if(!$periods) return null;
 
@@ -219,22 +280,54 @@ class HfrController extends Controller
 				->when(true, $this->get_callback('tx_curr'))
 				//->whereIn('week_id', $week_ids)
 				->get();
+			// DB::enableQueryLog();
+			$target = DB::table($this->my_target_table)
+				// ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+				// ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+				->selectRaw($sql_test)
+				// ->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereRaw(Lookup::county_target_query())
+				// ->groupBy($grouping)				
+				->get();
+			// return DB::getQueryLog();
 		}
-		// return DB::getQueryLog();
+
+		//
 		$i = 0;
+		$data['yAxis'] = '';
+
 		foreach ($rows as $key => $row){
 
 			/*if($groupby > 9) $data['categories'][$key] = Lookup::get_category($row, 14);
 			else{
 				$data['categories'][$key] = Lookup::get_category($row);
 			}*/
-			// if(!$row->tx_curr) continue;
+			// // if(!$row->tx_curr) continue;
+			// $county_id = $row->div_id;
+			// dd($row);
 			$data['categories'][$i] = Lookup::get_category($row);
 			$data["outcomes"][0]["data"][$i] = (int) $row->tx_curr;
+			if($groupby < 10 || $groupby == 14){	
+
+				if(isset($target[$i])) {
+					$data["outcomes"][1]["data"][$i] = (int)  $target[$i]->val;
+				}else{
+					// dd($target,$i);
+					$data["outcomes"][1]["data"][$i] = 0;
+				}
+			}else{
+			$data["outcomes"][1]["data"][$i] = (int) $target[0]->val;
+			}
+
+			
 			$i++;
 		}	
-		return view('charts.line_graph', $data);
+		return view('charts.tx_curr', $data);
 	}
+
+
+
 	public function tx_curr_details()
 	{
 		// 
@@ -659,7 +752,7 @@ class HfrController extends Controller
 	public function tx_crude()
 	{
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
-		$tx_new = HfrSubmission::columns(true, 'tx_new'); 
+		$tx_new = HfrSubmission::columns(true, 'tx_new');
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr'). ', ' . $this->get_hfr_sum($tx_new, 'tx_new');;
 
 		$data['div'] = str_random(15);
@@ -670,94 +763,94 @@ class HfrController extends Controller
 		$data['outcomes'][1]['name'] = " Crude Retention";
 
 		$groupby = session('filter_groupby');
-	
+
 		if($groupby < 10 || $groupby == 14){
-			
 
-			$week_id = Lookup::get_tx_week();
-			// $data['chart_title'] = Week::find($week_id)->name;
 
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-				->selectRaw($sql)
-				->when(true, $this->get_callback('tx_curr'))
-				->when(($groupby < 10), function($query) use($week_id) {
-					return $query->where(['week_id' => $week_id]);
-				})
-				->get();
+				$week_id = Lookup::get_tx_week();
+				// $data['chart_title'] = Week::find($week_id)->name;
 
-			$tx_new_rows  = DB::table($this->my_table)
-				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-				->selectRaw($sql)
-				->when(true, $this->get_callback('tx_new'))
-				->get();
-			// dd($rows,$tx_new_rows);
+				$rows = DB::table($this->my_table)
+						->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+						->selectRaw($sql)
+						->when(true, $this->get_callback('tx_curr'))
+						->when(($groupby < 10), function($query) use($week_id) {
+								return $query->where(['week_id' => $week_id]);
+						})
+						->get();
+
+				$tx_new_rows  = DB::table($this->my_table)
+						->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+						->selectRaw($sql)
+						->when(true, $this->get_callback('tx_new'))
+						->get();
+				// dd($rows,$tx_new_rows);
 		}
 		else{
-			$periods = [];
-			// Group By month
-			if($groupby == 12){
-				$periods = Period::select('financial_year', 'month')
-				->whereRaw(Lookup::date_query())
-				->groupBy('financial_year', 'month')
-				->get();
-			}
-			// Group By quarter
-			else if($groupby == 13){
-				$periods = Period::select('financial_year', 'quarter')
-				->whereRaw(Lookup::date_query())
-				->groupBy('financial_year', 'quarter')
-				->get();				
-			}
-			if(!$periods) return null;
+				 $periods = [];
+				// Group By month
+				if($groupby == 12){
+				 $periods = Period::select('financial_year', 'month')
+						->whereRaw(Lookup::date_query())
+						->groupBy('financial_year', 'month')
+						->get();
+				}
+				// Group By quarter
+				else if($groupby == 13){
+						$periods = Period::select('financial_year', 'quarter')
+						->whereRaw(Lookup::date_query())
+						->groupBy('financial_year', 'quarter')
+						->get();
+				}
+				if(!$periods) return null;
 
-			$weeks = $week_ids = [];
-			$previous_week = $p_week = [];
-			$last_rep_week = [];
-			// $tx_weeks = [];
+				$weeks = $week_ids = [];
+				$previous_week = $p_week = [];
+				$last_rep_week = [];
+				// $tx_weeks = [];
 
-			foreach ($periods as $period) {
-				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
-				$p = Week::where($period->toArray())->orderBy('id', 'asc')->first();
-				if($w) $week_ids[] = $w->id; $weeks[] = $w;
-				// if(true) $tx_weeks[] = $w->id;
-				if($p) $p_week[] = $p->id; $previous_week[] = $p; 
-			}
-			foreach ($p_week as $pw){
-				$lpw = $pw - 1;
-				array_push($last_rep_week,$lpw);
-			}
+				foreach ($periods as $period) {
+						$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
+						$p = Week::where($period->toArray())->orderBy('id', 'asc')->first();
+						if($w) $week_ids[] = $w->id; $weeks[] = $w;
+						// if(true) $tx_weeks[] = $w->id;
+						if($p) $p_week[] = $p->id; $previous_week[] = $p;
+				}
+				foreach ($p_week as $pw){
+						$lpw = $pw - 1;
+						array_push($last_rep_week,$lpw);
+				}
 
-			$rows = DB::table($this->my_table)
+				$rows = DB::table($this->my_table)
+						->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+						->selectRaw($sql)
+						// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+						->when(true, $this->get_callback('tx_curr'))
+						->whereIn('week_id', $week_ids)
+						->get();
+
+				$tx_new_rows  = DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
-				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
-				->when(true, $this->get_callback('tx_curr'))
-				->whereIn('week_id', $week_ids)
+				->when(true, $this->get_callback('pos'))
 				->get();
 
-			$tx_new_rows  = DB::table($this->my_table)
-			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('pos'))
-			->get();
 
-			
 		}
 		$i = 0;
-		foreach ($rows as $key => $row){			
-			if(!$row->tx_curr) continue;
-			$lastkey = $key - 1;
-			if ($key < 1 ) $lastkey = 0;
-			$data['categories'][$i] = Lookup::get_category($row);
-			$results = ($row->tx_curr);
-			$results_2 = (($tx_new_rows[$key]->tx_new + $rows[$lastkey]->tx_curr));
-			// if ($key > 2) dd($rows[$lastkey],$row->tx_curr,$tx_new_rows[$key]->tx_new);
-			$target = 90;
-			$data["outcomes"][0]["data"][$key] =  $target;
-			$data["outcomes"][1]["data"][$i] = Lookup::get_percentage($results,$results_2);
-			$i++;
-		}	
+		foreach ($rows as $key => $row){
+				if(!$row->tx_curr) continue;
+				$lastkey = $key - 1;
+				if ($key < 1 ) $lastkey = 0;
+				 $data['categories'][$i] = Lookup::get_category($row);
+				$results = ($row->tx_curr);
+				$results_2 = (($tx_new_rows[$key]->tx_new + $rows[$lastkey]->tx_curr));
+				// if ($key > 2) dd($rows[$lastkey],$row->tx_curr,$tx_new_rows[$key]->tx_new);
+				$target = 90;
+				$data["outcomes"][0]["data"][$key] =  $target;
+				$data["outcomes"][1]["data"][$i] = Lookup::get_percentage($results,$results_2);
+				$i++;
+		}
 
 		return view('charts.line_graph', $data);
 	}
