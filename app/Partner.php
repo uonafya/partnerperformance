@@ -13,7 +13,7 @@ class Partner extends BaseModel
         parent::boot();
 
         static::addGlobalScope('hjf', function(Builder $builder){
-            $builder->where('id', '!=', 69);
+            $builder->where('funding_agency_id','=', 1);
         });
     }
 
