@@ -33,7 +33,7 @@
 	</div>
 </div>
 <div class="row ">
-	<div class="col-md-12 col-sm-12 col-xs-12 ">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 				
@@ -105,7 +105,18 @@
 		</div>
 	</div>
 </div>
-
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			   Tx New <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_new">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -259,7 +270,7 @@
 </div>
 
 <div class="row ">
-<div class="col-md-12 col-sm-12 col-xs-12 ">
+<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    VMMC CIRC Details  <div class="detail_date"></div>
@@ -304,6 +315,7 @@
 		$("#net_new").html("<center><div class='loader'></div></center>");
 		$("#net_new_detail").html("<center><div class='loader'></div></center>");
 		$("#prep_new").html("<center><div class='loader'></div></center>");
+		$("#tx_new").html("<center><div class='loader'></div></center>");
 		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
         $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
 		$("#tx_curr_details").html("<center><div class='loader'></div></center>");
@@ -319,7 +331,7 @@
 		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
 
 		$("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
-		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
+		// ("#tx_new").load("{{ url('hfr/tx_new') }}");
 		$("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
 		$("#tx_curr_details").load("{{ url('hfr/tx_curr_details') }}");
 		$("#net_new").load("{{ url('hfr/net_new') }}");
@@ -333,6 +345,7 @@
 		$("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
+		$("#tx_new").load("{{ url('hfr/tx_new') }}");
 
 
 		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
@@ -386,10 +399,6 @@
     }
 	function hide(){
 		$(".detail_tables").addClass("hidden");
-	}
-	function getDate(){
-		var t_date = new Date()
-		return t_date
 	}
 
 

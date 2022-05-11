@@ -179,6 +179,7 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('net_new', 'HfrController@net_new')->name('net_new');
 	Route::get('net_new_detail', 'HfrController@net_new_detail')->name('net_new_detail');
 	Route::get('tx_crude', 'HfrController@tx_crude')->name('tx_crude');	
+	Route::get('tx_new', 'HfrController@tx_new')->name('tx_new');	
 	
 	Route::get('misassigned_facilities', 'HfrController@misassigned_facilities')->name('misassigned_facilities');
 	Route::get('prep_new_last_rpt_period', 'HfrController@prep_new_last_rpt_period')->name('prep_new_last_rpt_period');
