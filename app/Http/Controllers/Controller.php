@@ -96,6 +96,24 @@ class Controller extends BaseController
     	}
     }
 
+    public function get_callback_tx_curr ($order_by=null, $having_null=null, $prepension='', $force_filter=null)
+    {
+    	$groupby = session('filter_groupby', 1);
+        if($force_filter) $groupby = $force_filter;
+    	$divisions_query = Lookup::divisions_query();
+        $date_query = Lookup::date_query(false, $prepension);
+    	if($groupby > 9){
+    		if($groupby == 10) return $this->year_callback($divisions_query, $date_query, $prepension);
+    		if($groupby == 11) return $this->financial_callback($divisions_query, $date_query);
+    		if($groupby == 12) return $this->year_month_callback($divisions_query, $date_query, $prepension);
+    		if($groupby == 13) return $this->year_quarter_callback($divisions_query, $date_query);
+            if($groupby == 14) return $this->week_callback($divisions_query, $date_query);
+    	}
+    	else{
+    		$var = Lookup::groupby_query(true, $force_filter);
+    		return $this->divisions_callback($divisions_query, $date_query, $var, $groupby,  $having_null);
+    	}
+    }
     public function get_predefined_groupby_callback($order_by=null, $having_null=null, $prepension='', $force_filter=null)
     {
         $groupby = 1; //default filter
