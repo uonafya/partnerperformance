@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use \App\Lookup;
 
@@ -12,6 +13,7 @@ use \App\Partner;
 use \App\Ward;
 use \App\Facility;
 use \App\ViewFacility;
+use DateTime;
 
 class FilterController extends Controller
 {
@@ -22,6 +24,14 @@ class FilterController extends Controller
 
 		$year = $request->input('year');
 		$month = $request->input('month');
+		$now = Carbon::now();
+		$detail_day = $now->day;
+		$detail_month = $now->month;
+		if($detail_day <= 20 ){
+			$detail_month = $detail_month - 2;
+		}else{
+			$detail_month = $detail_month - 1;
+		}
 
 		$to_year = $request->input('to_year');
 		$to_month = $request->input('to_month');
@@ -35,6 +45,7 @@ class FilterController extends Controller
 		session($range);
 
 		$display_date = ' (October, ' . ($financial_year-1) . ' - September ' . $financial_year . ')';
+		$detail_date =  ' (' .  Lookup::resolve_month($detail_month) .' ' . $financial_year . ')';
 		if($quarter){
 			switch ($quarter) {
 				case 1:
@@ -65,7 +76,7 @@ class FilterController extends Controller
 			}
 		}
 
-		return ['year' => $year, 'prev_year' => $prev_year, 'range' => $range, 'display_date' => $display_date];
+		return ['year' => $year, 'prev_year' => $prev_year, 'range' => $range, 'display_date' => $display_date, 'detail_date' => $detail_date];
 	}
 
 
