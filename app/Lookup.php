@@ -511,9 +511,31 @@ class Lookup
 		$query = " financial_year='{$financial_year}'";
 		if($quarter) $query .= " AND quarter='{$quarter}'";
 		if($month) $query .= " AND {$prepension}month='{$month}'";
-
+		// dd($query);
 		return $query;
 	}
+		// Prepension allows us to prepend 'periods.' so it doesn't clash
+		public static function date_query_previous($for_target=false, $prepension = '')
+		{
+			$financial_year = session('filter_financial_year');
+			$p_financial_year = session('filter_financial_year') -1;
+			$quarter = session('filter_quarter');
+	
+			$year = session('filter_year');
+			$month = session('filter_month');
+			$to_year = session('to_year');
+			$to_month = session('to_month');
+	
+			if($for_target) return " financial_year='{$financial_year}'";
+	
+			if($to_year) return self::date_range_query($year, $to_year, $month, $to_month, $prepension);
+	
+			$query = " financial_year='{$financial_year}' or (financial_year=2021 and month = 9)";
+			if($quarter) $query .= " AND quarter='{$quarter}'";
+			if($month) $query .= " AND {$prepension}month='{$month}'";
+			// dd($query);
+			return $query;
+		}
 	public static function predefined_date_query($for_target=false, $prepension = '')
 	{
 		$financial_year = session('filter_financial_year');
