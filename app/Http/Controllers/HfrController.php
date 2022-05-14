@@ -29,6 +29,19 @@ class HfrController extends Controller
         $sql .= ") AS {$name} ";
         return $sql;
     }
+	public function get_hfr_sum_prev($columns, $name)
+    {
+        $sql = "(";
+
+        foreach ($columns as $column) {
+            $sql .= "SUM(`{$column['column_name']}`) + ";
+        }
+        $sql = substr($sql, 0, -3);
+        $sql .= ") AS {$name} ";
+		$sql .= ", month, year";
+		
+        return $sql;
+    }
 
 	public function misassigned_facilities()
 	{
@@ -190,7 +203,8 @@ class HfrController extends Controller
 	{
 		
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
-		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		$sqlpartner = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr');
 		$sql_test = $this->get_hfr_sum($tx_curr, 'val');
 
 		$data['div'] = str_random(15); 
@@ -199,7 +213,8 @@ class HfrController extends Controller
 		Lookup::splines($data, [1]);
 
 		$groupby = session('filter_groupby');
-		// dd($groupby);
+		$groupbypartner = session('filter_partner');
+		
 
 		if($groupby < 10 || $groupby == 14){
 
@@ -268,19 +283,51 @@ class HfrController extends Controller
 			if(!$periods) return null;
 
 			$weeks = $week_ids = [];
+			$current_week =[];
 
+			$k =0;
 			foreach ($periods as $period) {
-				$w = Week::where($period->toArray())->orderBy('id', 'desc')->first();
-				if($w) $week_ids[] = $w->id; $weeks[] = $w;
+
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
+
+				$p =  DB::table('weeks') 
+				->where('financial_year',$period->financial_year)
+				-> where('month', $period->month )
+				->orderby('id','asc')
+				->get();
+				if(isset($w[$k])) $week_ids[] = $w[$k]->id; $weeks[] = $w;
+				
+			$k++;
 			}
+			foreach ($weeks as $key => $w ){				
+				foreach ($w as $key => $w1 ){
+					array_push($current_week,$w1->id);
+				}
+			}
+
+			sort($current_week);
+			// dd($current_week);
 			// DB::enableQueryLog();
+			if(!isset($groupbypartner)){
+				$rows = DB::table($this->my_table)
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				// ->when(true, $this->get_callback('tx_curr'))
+				->whereIn('week_id', $current_week)
+				->groupBy('year', 'month')
+				->orderby('year','asc')
+				->orderby('month','asc')
+				->get();
+			}else {
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-				->selectRaw($sql)
+				->selectRaw($sqlpartner)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_callback('tx_curr'))
 				//->whereIn('week_id', $week_ids)
 				->get();
+			}
 				// return DB::getQueryLog();
 			// DB::enableQueryLog();
 			$target = DB::table($this->my_target_table)
@@ -597,13 +644,15 @@ class HfrController extends Controller
 	public function net_new()
 	{
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
-		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr');
+		$sqlpartner = $this->get_hfr_sum($tx_curr, 'tx_curr');
 
 		$data['div'] = str_random(15);
 
 		Lookup::bars($data, ["TX Net New"], "column");
 
 		$groupby = session('filter_groupby');
+		$groupbypartner = session('filter_partner');
 	
 		if($groupby < 10 || $groupby == 14){
 			
@@ -632,13 +681,18 @@ class HfrController extends Controller
 				->whereRaw(Lookup::date_query())
 				->groupBy('financial_year', 'month')
 				->get();
+				$p_periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query_previous())
+				->groupBy('financial_year', 'month')
+				->get();
 			}
 			// Group By quarter
 			else if($groupby == 13){
 				$periods = Period::select('financial_year', 'quarter')
 				->whereRaw(Lookup::date_query())
 				->groupBy('financial_year', 'quarter')
-				->get();				
+				->get();	
+								
 			}
 			if(!$periods) return null;
 
@@ -646,35 +700,114 @@ class HfrController extends Controller
 
 			$previous_week = $p_week = [];
 			$last_rep_week = [];
+			$current_week =[];
 			// $tx_weeks = [];
 			$k =0;
+			// dd($periods);
 			foreach ($periods as $period) {
+
 				$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
-				// dd($w[$k]);
-				$p = Week::where($period->toArray())->orderBy('id', 'asc')->first();
+
+				$p =  DB::table('weeks') 
+				->where('financial_year',$period->financial_year)
+				-> where('month', $period->month )
+				->orderby('id','asc')
+				->get();
 				if(isset($w[$k])) $week_ids[] = $w[$k]->id; $weeks[] = $w;
-				// if(true) $tx_weeks[] = $w->id;
-				if($p) $p_week[] = $p->id; $previous_week[] = $p;
+				
 			$k++;
-		}
-			foreach ($p_week as $pw){
-				$lpw = $pw - 1;
-				array_push($last_rep_week,$lpw);
 			}
 
+			$j =0; 
+			// dd($p_periods);
+			foreach ($p_periods as $period){
+				$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
+
+				$p_month =  $period->month ;
+				$p_year = $period->financial_year ;
+				
+
+				$p =  DB::table('weeks') 
+				->where('financial_year',$p_year)
+				-> where('month', $p_month )
+				->orderby('id','asc')
+				->get();
+				
+				if(isset($p[$j])) $p_week[] = $p[$j]->id; $previous_week[] = $p;
+			$j++;
+
+			}
+
+		// dd($previous_week,$weeks);
+
+			foreach ($previous_week as $key => $pw ){				
+				foreach ($pw as $key => $pw1 ){
+					array_push($last_rep_week,$pw1->id);
+				}
+			}
+			foreach ($weeks as $key => $w ){				
+				foreach ($w as $key => $w1 ){
+					array_push($current_week,$w1->id);
+				}
+			}
+			sort($last_rep_week);
+			sort($current_week);
+			
+			
+			
 			// DB::enableQueryLog();
 
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-				->selectRaw($sql)
-				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
-				->when(true, $this->get_callback('tx_curr'))
-				// ->whereIn('week_id', $week_ids)
-				->get();
+			if(!isset($groupbypartner)){
+				$rows = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+					// ->when(true, $this->get_callback('tx_curr'))
+					->whereIn('week_id', $current_week)
+					->groupBy('year', 'month')
+					->orderby('year','asc')
+					->orderby('month','asc')
+					->get();
+				$p_row = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					// ->when(true, $this->get_callback_previous('tx_curr'))
+					->whereIn('week_id', $last_rep_week)
+					->groupBy('year', 'month')
+					->orderby('year','asc')
+					->orderby('month','asc')		
+					->get();
+				}else {
+				$rows = DB::table($this->my_table)
+					->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+					->selectRaw($sqlpartner)
+					// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+					->when(true, $this->get_callback('tx_curr'))
+					//->whereIn('week_id', $week_ids)
+					->get();
+				$p_row = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					// ->when(true, $this->get_callback_previous('tx_curr'))
+					->whereIn('week_id', $last_rep_week)
+					->where('partner', $groupbypartner)
+					->groupBy('year', 'month')
+					->orderby('year','asc')
+					->orderby('month','asc')		
+					->get();
+				
+				}
 				// return DB::getQueryLog();
+			// DB::enableQueryLog();
+
+			
+			// return DB::getQueryLog();
+			
+			
+				
 
 		}
-		
+		// dd($p_row,$rows);
 		$i = 0;
 		foreach ($rows as $key => $row){			
 			if(!$row->tx_curr) continue;
@@ -682,7 +815,7 @@ class HfrController extends Controller
 			if ($key < 1 ) $lastkey = 0;
 			$data['categories'][$i] = Lookup::get_category($row);
 			// if ($key > 2) dd($rows[$lastkey],$row->tx_curr);
-			$data["outcomes"][0]["data"][$i] = ($row->tx_curr - $rows[$lastkey]->tx_curr);
+			$data["outcomes"][0]["data"][$i] = ($row->tx_curr - $p_row[$key]->tx_curr);
 			$i++;
 		}	
 
@@ -762,7 +895,10 @@ class HfrController extends Controller
 	{
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$tx_new = HfrSubmission::columns(true, 'tx_new');
-		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr'). ', ' . $this->get_hfr_sum($tx_new, 'tx_new');;
+		$sqlpartner = $this->get_hfr_sum($tx_curr, 'tx_curr'). ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+		$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr'). ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+
+
 		
 		$data['div'] = str_random(15);
 		$data['yAxis'] = 'Percentage';
@@ -772,6 +908,7 @@ class HfrController extends Controller
 		$data['outcomes'][1]['name'] = " Crude Retention";
 
 		$groupby = session('filter_groupby');
+		$groupbypartner = session('filter_partner');
 
 		if($groupby < 10 || $groupby == 14){
 
@@ -819,31 +956,55 @@ class HfrController extends Controller
 				$last_rep_week = [];
 				// $tx_weeks = [];
 				// dd($periods);
-				$k = 0;
-				foreach ($periods as $period) {
-						$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
-						// dd($w[$k]);
-						$p = Week::where($period->toArray())->orderBy('id', 'asc')->first();
-						if(isset($w[$k])) $week_ids[] = $w[$k]->id; $weeks[] = $w;
-						// if(true) $tx_weeks[] = $w->id;
-						if($p) $p_week[] = $p->id; $previous_week[] = $p;
-					$k++;
-				}
-				foreach ($p_week as $pw){
-						$lpw = $pw - 1;
-						array_push($last_rep_week,$lpw);
-				}
-				// DB::enableQueryLog();
-				$rows = DB::table($this->my_table)
-						->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-						->selectRaw($sql)
-						// ->when(true, $this->get_callback('tx_curr', null, '', 14))
-						->when(true, $this->get_callback('tx_curr'))
-						// ->whereIn('week_id', $week_ids)
-						->get();
-				// return DB::getQueryLog();
-				
+				$current_week =[];
 
+				$k =0;
+				foreach ($periods as $period) {
+
+					$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
+
+					$p =  DB::table('weeks') 
+					->where('financial_year',$period->financial_year)
+					-> where('month', $period->month )
+					->orderby('id','asc')
+					->get();
+					if(isset($w[$k])) $week_ids[] = $w[$k]->id; $weeks[] = $w;
+					
+				$k++;
+				}
+				foreach ($weeks as $key => $w ){				
+					foreach ($w as $key => $w1 ){
+						array_push($current_week,$w1->id);
+					}
+				}
+
+				sort($current_week);
+				// dd($current_week);
+				// DB::enableQueryLog();
+				if(!isset($groupbypartner)){
+				$rows = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+					// ->when(true, $this->get_callback('tx_curr'))
+					->whereIn('week_id', $current_week)
+					->groupBy('year', 'month')
+					->orderby('year','asc')
+					->orderby('month','asc')
+					->get();
+				}else {
+				$rows =DB::table($this->my_table)
+				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+				->selectRaw($sql)
+				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+				// ->when(true, $this->get_callback('tx_curr'))
+				->whereIn('week_id', $current_week)
+				->where('partner',$groupbypartner)
+				->groupBy('year', 'month')
+				->orderby('year','asc')
+				->orderby('month','asc')
+				->get();
+				}
 				$tx_new_rows  = DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
@@ -852,7 +1013,7 @@ class HfrController extends Controller
 				->get();
 
 
-		}
+				}
 		$i = 0;
 		// dd($rows);
 		foreach ($rows as $key => $row){
