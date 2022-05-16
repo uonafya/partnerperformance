@@ -187,6 +187,7 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('tx_curr_details', 'HfrController@tx_curr_details')->name('tx_curr_details');
 	Route::get('vmmc_circ_details', 'HfrController@vmmc_circ_details')->name('vmmc_circ_details');
 	Route::get('linkage_dis', 'HfrController@linkage_dis')->name('linkage_dis');
+	Route::get('tx_new_dis', 'HfrController@tx_new_dis')->name('tx_new_dis');
 	
 	Route::get('tx_mmd_detail', 'HfrController@tx_mmd_detail')->name('tx_mmd_detail');
 

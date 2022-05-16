@@ -117,6 +117,19 @@
 		</div>
 	</div>
 </div>
+<div class="row ">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+				
+			    Tx New Details  <div class="detail_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_new_dis">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-3 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -320,6 +333,7 @@
         $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
 		$("#tx_curr_details").html("<center><div class='loader'></div></center>");
 		$("#vmmc_circ_details").html("<center><div class='loader'></div></center>");
+		$("#tx_new_dis").html("<center><div class='loader'></div></center>");
 		
 		
        
@@ -346,6 +360,9 @@
 		$("#prep_new").load("{{ url('hfr/prep_new') }}");
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
 		$("#tx_new").load("{{ url('hfr/tx_new') }}");
+		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
+		$("#tx_new_dis").load("{{ url('hfr/tx_new_dis') }}");
+
 
 
 		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");

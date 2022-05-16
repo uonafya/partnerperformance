@@ -561,6 +561,52 @@ class HfrController extends Controller
 		return view('tables.vmmc_circ_details', ['rows' => $rows, 'target' => $target, 'div_id' => 'vmmc_circ_details', 'divisor' => strval($divisor) ]);
 
 	}
+	public function tx_new_dis()
+	{
+		$tx_new = HfrSubmission::columns(true, 'tx_new');
+		$sql = $this->get_hfr_sum($tx_new, 'tx_new');
+		$groupby_partner = session('filter_partner');
+		$modality = 'tx_new';
+		$tests = HfrSubmission::columns(true, $modality);
+		$sql_test = $this->get_hfr_sum($tests, 'val');
+
+		if($groupby_partner != null){
+			$grouping = 'countys.name';
+		}else{
+			$grouping = 'partners.name';
+		}
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('tx_new'))
+			->get();
+		$target = DB::table($this->my_target_table)
+			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+			->selectRaw($sql_test)
+			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+			->whereRaw(Lookup::county_target_query_by_partner())
+			->groupBy($grouping)				
+			->get();
+		$divisor = Lookup::get_target_divisor(12);
+
+		$data['div'] = str_random(15);
+
+		// Lookup::bars($data, ["Tx New"], "column");
+
+		// $i=0;
+		// foreach ($rows as $key => $row){
+		// 	if(!$row->tx_new) continue;
+		// 	$data['categories'][$i] = Lookup::get_category($row);
+
+		// 	$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
+		// 	$i++;
+		// }	
+		// dd($rows,$target,$divisor);
+		return view('tables.tx_new_details', ['rows' => $rows, 'target' => $target, 'div_id' => 'tx_new_details', 'divisor' => strval($divisor) ]);
+	}
+
 	public function testing_dis()
 	{	//DB::enableQueryLog();
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 
