@@ -760,14 +760,14 @@ class Lookup
 			if($year == $current_financial_year){				
 				/*$start_date = date('Y-m-d', strtotime("-{$days} days"));
 				$week = \App\Week::where('start_date', $start_date)->first();*/
-				if(date('d') < 20){
+				if(date('d') < 15){
 				$m = date('m', strtotime('-2 month'));
 				$y = date('Y', strtotime('-2 month'));
 				}else{
 				$m = date('m', strtotime('-1 month'));
 				$y = date('Y', strtotime('-1 month'));
 				}
-				if($hfr && date('d') < 14){
+				if($hfr && date('d') < 15){
 					$m = date('m', strtotime('-2 months'));
 					$y = date('Y', strtotime('-2 months'));					
 				}	
@@ -784,7 +784,49 @@ class Lookup
 		// dd($week_ids);
 		return ($week_ids ?? null);
 	}
+	public static function get_tx_week_prev($param=1, $hfr=false)
+	{
+		$year = session('filter_financial_year');
+		$week_ids = [];
+		if(session('filter_week')) return session('filter_week');
+		else if(session('filter_month')){
+			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->first();
+		}
+		else if(session('filter_quarter')){
+			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->first();
+		}
+		else{
+			$current_financial_year = date('Y');
+			if(date('m') > 9) $current_financial_year++;
 
+			$days = date('w') + (7 * $param);
+			if($year == $current_financial_year){				
+				/*$start_date = date('Y-m-d', strtotime("-{$days} days"));
+				$week = \App\Week::where('start_date', $start_date)->first();*/
+				if(date('d') < 15){
+				$m = date('m', strtotime('-3 month'));
+				$y = date('Y', strtotime('-3 month'));
+				}else{
+				$m = date('m', strtotime('-2 month'));
+				$y = date('Y', strtotime('-2 month'));
+				}
+				if($hfr && date('d') < 14){
+					$m = date('m', strtotime('-3 months'));
+					$y = date('Y', strtotime('-3 months'));					
+				}	
+				// dd($hfr,$m,$y);
+				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
+			}
+			else{
+				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
+			}
+		}
+		foreach ($week as $key => $week) {
+			array_push($week_ids,$week->id);
+		}
+		// dd($week_ids);
+		return ($week_ids ?? null);
+	}
 	public static function year_month_name()
 	{
 		return '(' . session('tx_financial_year') . ', ' . Lookup::resolve_month(session('tx_month')) . ')';

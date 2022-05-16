@@ -658,18 +658,33 @@ class HfrController extends Controller
 			
 
 			$week_id = Lookup::get_tx_week();
+			$prev_week_id = Lookup::get_tx_week_prev();
 			// $data['chart_title'] = Week::find($week_id)->name;
-
+			// dd($groupby);
+			// DB::enableQueryLog();
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
-				->when(true, $this->get_callback('tx_curr'))
+				->when(($groupby == 1), $this->get_callback('partner'))
+				->when(($groupby == 2), $this->get_callback('county'))
 				->when(($groupby < 10), function($query) use($week_id) {
-					return $query;
-					// return $query->where(['week_id' => $week_id]);
+					// return $query;
+					return $query->whereIn('week_id', $week_id);
 				})
 				->get();
-			// dd($rows);
+				// 
+			$p_row = DB::table($this->my_table)
+			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+			->selectRaw($sql)
+			->when(($groupby == 1), $this->get_callback('partner'))
+			->when(($groupby == 2), $this->get_callback('county'))
+			->when(($groupby < 10), function($query) use($prev_week_id) {
+				// return $query;
+				return $query->whereIn('week_id', $prev_week_id);
+			})
+			->get();
+			// return DB::getQueryLog();
+			// dd($rows,$p_rows);
 			
 
 		}
@@ -914,23 +929,42 @@ class HfrController extends Controller
 
 
 				$week_id = Lookup::get_tx_week();
+				$prev_week_id = Lookup::get_tx_week_prev();
 				// $data['chart_title'] = Week::find($week_id)->name;
-
-				$rows = DB::table($this->my_table)
+				// dd($groupby);
+				// DB::enableQueryLog();
+					$rows = DB::table($this->my_table)
 						->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 						->selectRaw($sql)
-						->when(true, $this->get_callback('tx_curr'))
+						->when(($groupby == 1), $this->get_callback('partner'))
+						->when(($groupby == 2), $this->get_callback('county'))
 						->when(($groupby < 10), function($query) use($week_id) {
-							return $query;
-								// return $query->where(['week_id' => $week_id]);
+							// return $query;
+							return $query->whereIn('week_id', $week_id);
 						})
 						->get();
+						// 
+					$p_row = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					->when(($groupby == 1), $this->get_callback('partner'))
+					->when(($groupby == 2), $this->get_callback('county'))
+					->when(($groupby < 10), function($query) use($prev_week_id) {
+						// return $query;
+						return $query->whereIn('week_id', $prev_week_id);
+					})
+					->get();
 
-				$tx_new_rows  = DB::table($this->my_table)
-						->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-						->selectRaw($sql)
-						->when(true, $this->get_callback('tx_new'))
-						->get();
+					$tx_new_rows  = DB::table($this->my_table)
+							->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+							->selectRaw($sql)
+							->when(($groupby == 1), $this->get_callback('partner'))
+							->when(($groupby == 2), $this->get_callback('county'))
+							->when(($groupby < 10), function($query) use($week_id) {
+								// return $query;
+								return $query->whereIn('week_id', $week_id);
+							})
+							->get();
 				// dd($rows,$tx_new_rows);
 		}
 		else{
@@ -1063,11 +1097,12 @@ class HfrController extends Controller
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_callback('tx_new'))
-				// ->whereIn('week_id', $week_ids)
+				->whereIn('week_id', $current_week)
 				->get();
 
 
 				}
+			// dd($rows,$p_row,$tx_new_rows);
 		$i = 0;
 		foreach ($rows as $key => $row){
 				if(!$row->tx_curr) continue;
