@@ -941,6 +941,10 @@ class HfrController extends Controller
 						->whereRaw(Lookup::date_query())
 						->groupBy('financial_year', 'month')
 						->get();
+				$p_periods = Period::select('financial_year', 'month')
+						->whereRaw(Lookup::date_query_previous())
+						->groupBy('financial_year', 'month')
+						->get();
 				}
 				// Group By quarter
 				else if($groupby == 13){
@@ -954,15 +958,18 @@ class HfrController extends Controller
 				$weeks = $week_ids = [];
 				$previous_week = $p_week = [];
 				$last_rep_week = [];
+				$last_rep_week = [];
+				$current_week =[];
 				// $tx_weeks = [];
 				// dd($periods);
 				$current_week =[];
 
 				$k =0;
+				// dd($periods);
 				foreach ($periods as $period) {
-
+	
 					$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
-
+	
 					$p =  DB::table('weeks') 
 					->where('financial_year',$period->financial_year)
 					-> where('month', $period->month )
@@ -972,14 +979,41 @@ class HfrController extends Controller
 					
 				$k++;
 				}
+	
+				$j =0; 
+				// dd($p_periods);
+				foreach ($p_periods as $period){
+					$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
+	
+					$p_month =  $period->month ;
+					$p_year = $period->financial_year ;
+					
+	
+					$p =  DB::table('weeks') 
+					->where('financial_year',$p_year)
+					-> where('month', $p_month )
+					->orderby('id','asc')
+					->get();
+					
+					if(isset($p[$j])) $p_week[] = $p[$j]->id; $previous_week[] = $p;
+				$j++;
+	
+				}
+	
+			// dd($previous_week,$weeks);
+	
+				foreach ($previous_week as $key => $pw ){				
+					foreach ($pw as $key => $pw1 ){
+						array_push($last_rep_week,$pw1->id);
+					}
+				}
 				foreach ($weeks as $key => $w ){				
 					foreach ($w as $key => $w1 ){
 						array_push($current_week,$w1->id);
 					}
 				}
-
+				sort($last_rep_week);
 				sort($current_week);
-				// dd($current_week);
 				// DB::enableQueryLog();
 				if(!isset($groupbypartner)){
 				$rows = DB::table($this->my_table)
@@ -992,6 +1026,16 @@ class HfrController extends Controller
 					->orderby('year','asc')
 					->orderby('month','asc')
 					->get();
+				$p_row = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					// ->when(true, $this->get_callback_previous('tx_curr'))
+					->whereIn('week_id', $last_rep_week)
+					->groupBy('year', 'month')
+					->orderby('year','asc')
+					->orderby('month','asc')		
+					->get();
+					 
 				}else {
 				$rows =DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
@@ -1004,6 +1048,16 @@ class HfrController extends Controller
 				->orderby('year','asc')
 				->orderby('month','asc')
 				->get();
+				$p_row = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					// ->when(true, $this->get_callback_previous('tx_curr'))
+					->whereIn('week_id', $last_rep_week)
+					->where('partner',$groupbypartner)
+					->groupBy('year', 'month')
+					->orderby('year','asc')
+					->orderby('month','asc')		
+					->get();
 				}
 				$tx_new_rows  = DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
@@ -1015,7 +1069,6 @@ class HfrController extends Controller
 
 				}
 		$i = 0;
-		// dd($rows);
 		foreach ($rows as $key => $row){
 				if(!$row->tx_curr) continue;
 				$lastkey = $key - 1;
@@ -1023,7 +1076,7 @@ class HfrController extends Controller
 				 $data['categories'][$i] = Lookup::get_category($row);
 				$results = ($row->tx_curr);
 				// var_dump($row->tx_curr);
-				$results_2 = (($tx_new_rows[$key]->tx_new + $rows[$lastkey]->tx_curr));
+				$results_2 = (($tx_new_rows[$key]->tx_new + $p_row[$key]->tx_curr));
 				
 				// if ($key > 2) dd($rows[$lastkey],$row->tx_curr,$tx_new_rows[$key]->tx_new);
 				$target = 90;
