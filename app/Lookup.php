@@ -543,11 +543,11 @@ class Lookup
 
 		$year = session('filter_year');
 		$month = session('filter_month');
-		if ($month == null && date('d')< 20 && date('Y') == 2021){
+		if ($month == null && date('d')< 15 && date('Y') == 2021){
 			 $month = date('m')-3;
-		}elseif($month == null && date('d')>= 20){
+		}elseif($month == null && date('d')>= 15){
 			$month = date('m')-1;
-		}elseif($month == null && date('d')<= 20){
+		}elseif($month == null && date('d')<= 15){
 			$month = date('m')-2;
 		}
 		else{
@@ -869,6 +869,7 @@ class Lookup
 
 		// Though week is a time period, considering the way it is filtered, filter_week will be part of the divisions query
 		if(session('filter_week')) $query .= " AND week_id" . self::set_division_query(session('filter_week'));
+		// dd($query);
 
 		return $query;
 	}

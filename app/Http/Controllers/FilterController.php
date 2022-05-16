@@ -27,7 +27,7 @@ class FilterController extends Controller
 		$now = Carbon::now();
 		$detail_day = $now->day;
 		$detail_month = $now->month;
-		if($detail_day <= 20 ){
+		if($detail_day < 15 ){
 			$detail_month = $detail_month - 2;
 		}else{
 			$detail_month = $detail_month - 1;

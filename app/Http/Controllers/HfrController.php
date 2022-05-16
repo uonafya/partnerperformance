@@ -576,7 +576,7 @@ class HfrController extends Controller
 		}else{
 			$grouping = 'partners.name';
 		}
-
+		// DB::enableQueryLog();
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
