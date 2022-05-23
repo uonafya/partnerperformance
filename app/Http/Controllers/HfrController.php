@@ -16,6 +16,7 @@ class HfrController extends Controller
 {
 	private $my_table = 'd_hfr_submission';
 	private $my_target_table = 't_county_target';
+	private $my_floating = 'floating_target';
 
 
     public function get_hfr_sum($columns, $name)
@@ -156,6 +157,7 @@ class HfrController extends Controller
 	{
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		
 
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
@@ -177,16 +179,132 @@ class HfrController extends Controller
 	public function tx_new()
 	{
 		$tx_new = HfrSubmission::columns(true, 'tx_new');
+		$sql_test = $this->get_hfr_sum($tx_new, 'target');
+		$sql_target = '(SUM(floating_target)) AS target';
 		$sql = $this->get_hfr_sum($tx_new, 'tx_new');
+		$groupby = session('filter_groupby');
+		$groupbypartner = session('filter_partner');
+		$groupbycounty = session('filter_county');
+		$today =((int)date('m'))-1; 
+		// dd($groupbypartner,$groupby);
+
+		if($groupby == 12 ){
+
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
 			->when(true, $this->get_callback('tx_new'))
 			->get();
+			// DB::enableQueryLog();
+		$target = DB::table($this->my_floating)
+			->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
+			->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
+			->selectRaw($sql_target)
+			->when(($groupby == 12 && !isset($groupbypartner) ), function ($query){
+				return $query->addSelect(DB::raw("month"));
+			})
+			->when(($groupby == 12 && isset($groupbypartner) ), function ($query){
+				return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id,month"));
+			})
+			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
+				return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as county_id,month"));
+			})
+			// ->addSelect(DB::raw(" partners.name as partner_name,countys.name as county_name, countys.id as county_id,partner_id as div_id,month"))
+			->whereRaw(Lookup::county_target_query())
+			->when(($groupby == 12  ), function ($query) {
+				return $query->groupby('month');
+			})
+			// ->when(($groupby == 12 && isset($groupbypartner) ), function ($query) use($groupbypartner){
+			// 	return $query->where('partner_id', $groupbypartner);
+			// })
+			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
+				return $query->groupby('county_name');
+			})
+			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
+				return $query->orderby('month','asc');
+			})
+			->when(($groupby == 12 && isset($groupbypartner) ), function ($query) {
+				return $query->orderby('month','asc');
+			})
+			->when(($groupby == 12 ), function ($query){
+				return $query->orderby('month','asc');
+			})
+			->when(($groupby == 1), function ($query){
+				return $query->groupby('partner_name', 'month');
+			})
+			->when(($groupby == 2), function ($query){
+				return $query->groupby('county_name');
+			})
+			->when(($groupby == 1), function ($query){
+				return $query->orderby('month', 'asc');
+			})
+			->when(($groupby == 2), function ($query){
+				return $query->orderby('county_name');
+			})						
+			->get();
+			// return DB::getQueryLog();/
+		
+		}elseif($groupby < 10 || $groupby == 14){
+			$week_id = Lookup::get_tx_week(1, true);
+			$rows = DB::table($this->my_table)
+				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+				->selectRaw($sql)
+				->when(true, $this->get_callback_tx_curr('tx_new'))
+				// ->when(($groupby < 10), function($query) use($week_id) {
+				// 	return $query->where(['week_id' => $week_id]);
+				// })
+				->orderby("div_id",'asc')
+				->get();
+				// DB::enableQueryLog();
+			$target = DB::table($this->my_floating)
+				->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
+				->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
+				->selectRaw($sql_target)
+				->when(($groupby == 1 ), function ($query){
+					return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id"));
+				})
+				->when(($groupby == 2 ), function ($query){
+					return $query->addSelect(DB::raw("countys.name as county_name, countys.id as div_id"));
+				})
+				
+				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+				->whereRaw(Lookup::county_target_query())
+				->where($this->my_floating .'.month' , $today)
+				// ->when(($groupby == 1), $this->get_callback('partner_name'))
+				// ->when(($groupby == 2), $this->get_callback('county_name'))
+				->when(($groupby == 1), function ($query){
+					return $query->groupby('partner_name');
+				})
+				->when(($groupby == 2), function ($query){
+					return $query->groupby('county_name');
+				})
+				
+				->orderby("div_id", 'asc')			
+				->get();
+				// return DB::getQueryLog();
+
+
+		}else{
+			$rows = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_callback('tx_new'))
+			->get();
+		}
+
+		$divisor = Lookup::get_target_divisor(12);
+
+		// $target = ((int)($target[0]->val)/$divisor);
+		// $target = round($target,0);
+
+		// dd($target);
 
 		$data['div'] = str_random(15);
 
-		Lookup::bars($data, ["Tx New"], "column");
+		Lookup::bars($data, ["TX New", "Target" ], "column", ["#ff7d33", "#3023ea"]);
+		// if(isset($target)){
+		Lookup::splines($data, [1]);
+	// }
 
 		$i=0;
 		foreach ($rows as $key => $row){
@@ -194,6 +312,21 @@ class HfrController extends Controller
 			$data['categories'][$i] = Lookup::get_category($row);
 
 			$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
+			if($groupby == 12){
+				$data["outcomes"][1]["data"][$i] = round(((int)($target[$i]->target)),0);;
+			}else{
+			if(isset($target[$i])){
+			$targetfinal = round(((int)($target[$i]->target)),0);
+				if(isset($targetfinal)){
+					$data["outcomes"][1]["data"][$i] = $targetfinal;
+				}else{
+					$data["outcomes"][1]["data"][$i] = 0;
+				}			
+			}else{
+				$data["outcomes"][1]["data"][$i] = 0;
+			}
+			}
+
 			$i++;
 		}	
 		return view('charts.line_graph', $data);
@@ -1148,7 +1281,6 @@ class HfrController extends Controller
 
 
 				}
-			// dd($rows,$p_row,$tx_new_rows);
 		$i = 0;
 		foreach ($rows as $key => $row){
 				if(!$row->tx_curr) continue;
