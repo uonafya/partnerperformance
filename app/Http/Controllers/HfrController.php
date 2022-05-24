@@ -180,12 +180,13 @@ class HfrController extends Controller
 	{
 		$tx_new = HfrSubmission::columns(true, 'tx_new');
 		$sql_test = $this->get_hfr_sum($tx_new, 'target');
-		$sql_target = '(SUM(floating_target)) AS target';
+		$sql_ftarget = '(SUM(floating_target)) AS target';
+		$sql_target = '(SUM(target)) AS target';
 		$sql = $this->get_hfr_sum($tx_new, 'tx_new');
 		$groupby = session('filter_groupby');
 		$groupbypartner = session('filter_partner');
 		$groupbycounty = session('filter_county');
-		$today =((int)date('m'))-1; 
+		$today =((int)date('m'))+2; 
 		// dd($groupbypartner,$groupby);
 
 		if($groupby == 12 ){
@@ -199,7 +200,7 @@ class HfrController extends Controller
 		$target = DB::table($this->my_floating)
 			->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
 			->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
-			->selectRaw($sql_target)
+			->selectRaw($sql_ftarget)
 			->when(($groupby == 12 && !isset($groupbypartner) ), function ($query){
 				return $query->addSelect(DB::raw("month"));
 			})
@@ -246,16 +247,18 @@ class HfrController extends Controller
 		
 		}elseif($groupby < 10 || $groupby == 14){
 			$week_id = Lookup::get_tx_week(1, true);
+			// DB::enableQueryLog();
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
 				->when(true, $this->get_callback_tx_curr('tx_new'))
+				->where('partner','!=' ,55)
 				// ->when(($groupby < 10), function($query) use($week_id) {
 				// 	return $query->where(['week_id' => $week_id]);
 				// })
 				->orderby("div_id",'asc')
 				->get();
-				// DB::enableQueryLog();
+				//  DB::enableQueryLog();
 			$target = DB::table($this->my_floating)
 				->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
 				->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
@@ -269,7 +272,7 @@ class HfrController extends Controller
 				
 				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
 				->whereRaw(Lookup::county_target_query())
-				->where($this->my_floating .'.month' , $today)
+				->where($this->my_floating .'.month' ,'<=', $today)
 				// ->when(($groupby == 1), $this->get_callback('partner_name'))
 				// ->when(($groupby == 2), $this->get_callback('county_name'))
 				->when(($groupby == 1), function ($query){
@@ -297,7 +300,7 @@ class HfrController extends Controller
 		// $target = ((int)($target[0]->val)/$divisor);
 		// $target = round($target,0);
 
-		// dd($target);
+		// dd($target,$rows);
 
 		$data['div'] = str_random(15);
 
