@@ -367,17 +367,32 @@ class HfrController extends Controller
 				})
 				->orderby("div_id",'asc')
 				->get();
-			// return DB::getQueryLog();
+				// DB::enableQueryLog();
+			// 
 			$target = DB::table($this->my_target_table)
 				->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
 				->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
 				->selectRaw($sql_test)
-				->addSelect(DB::raw(" partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+				->when(($groupby == 1), function ($query){
+				return $query->addSelect(DB::raw(" partners.name as partner_name,partners.id as div_id"));
+				})
+				->when(($groupby == 2), function ($query){
+					return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as div_id"));
+				})
+				
 				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
 				->whereRaw(Lookup::county_target_query())
-				->groupBy('partner_name','county_name')	
-				->orderby("county_id", 'asc')			
+				->when(($groupby == 1), function ($query){
+					return $query->groupby('partner_name');
+				})
+				
+				->when(($groupby == 2), function ($query){
+					return $query->groupby('county_name');
+				})
+				// ->groupBy('partner_name','county_name')	
+				->orderby("div_id", 'asc')			
 				->get();
+				// return DB::getQueryLog();
 			
 		}
 		else{
@@ -481,7 +496,7 @@ class HfrController extends Controller
 		//
 		$i = 0;
 		$data['yAxis'] = '';
-		// dd($rows);
+		// dd($rows,$target);
 
 		foreach ($rows as $key => $row){
 
