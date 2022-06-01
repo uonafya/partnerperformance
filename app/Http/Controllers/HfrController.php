@@ -374,23 +374,23 @@ class HfrController extends Controller
 				->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
 				->selectRaw($sql_test)
 				->when(($groupby == 1), function ($query){
-				return $query->addSelect(DB::raw(" partners.name as partner_name,partners.id as div_id"));
+				return $query->addSelect(DB::raw("partners.name as partner_name,partners.id as div_id"));
 				})
 				->when(($groupby == 2), function ($query){
-					return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as div_id"));
+					return $query->addSelect(DB::raw("countys.name as county_name, countys.id as div_id"));
 				})
 				
 				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
 				->whereRaw(Lookup::county_target_query())
 				->when(($groupby == 1), function ($query){
-					return $query->groupby('partner_name');
+					return $query->groupBy('partner_name');
 				})
 				
 				->when(($groupby == 2), function ($query){
-					return $query->groupby('county_name');
+					return $query->groupBy('county_name');
 				})
 				// ->groupBy('partner_name','county_name')	
-				->orderby("div_id", 'asc')			
+				->orderBy("div_id", 'asc')			
 				->get();
 				// return DB::getQueryLog();
 			
@@ -444,7 +444,7 @@ class HfrController extends Controller
 				$p =  DB::table('weeks') 
 				->where('financial_year',$period->financial_year)
 				-> where('month', $period->month )
-				->orderby('id','asc')
+				->orderBy('id','asc')
 				->get();
 				if(isset($w[$k])) $week_ids[] = $w[$k]->id; $weeks[] = $w;
 				
@@ -467,8 +467,8 @@ class HfrController extends Controller
 				// ->when(true, $this->get_callback('tx_curr'))
 				->whereIn('week_id', $current_week)
 				->groupBy('year', 'month')
-				->orderby('year','asc')
-				->orderby('month','asc')
+				->orderBy('year','asc')
+				->orderBy('month','asc')
 				->get();
 			}else {
 			$rows = DB::table($this->my_table)
