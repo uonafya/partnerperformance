@@ -189,6 +189,7 @@ class HfrController extends Controller
 		$today =((int)date('m'))+2; 
 		// dd($groupbypartner,$groupby);
 
+		// filter by month
 		if($groupby == 12 ){
 
 		$rows = DB::table($this->my_table)
@@ -471,13 +472,26 @@ class HfrController extends Controller
 				->orderBy('month','asc')
 				->get();
 			}else {
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-				->selectRaw($sqlpartner)
-				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
-				->when(true, $this->get_callback('tx_curr'))
-				//->whereIn('week_id', $week_ids)
-				->get();
+				if ($groupby == 13){
+					$rows = DB::table($this->my_table)
+					->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+					->selectRaw($sql)
+					// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+					// ->when(true, $this->get_callback('tx_curr'))
+					->whereIn('week_id', $current_week)
+					->groupBy('quarter')
+					->orderBy('year','asc')
+					->orderBy('month','asc')
+					->get();
+				} else {
+				$rows = DB::table($this->my_table)
+					->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+					->selectRaw($sqlpartner)
+					// ->when(true, $this->get_callback('tx_curr', null, '', 14))
+					->when(true, $this->get_callback('tx_curr'))
+					//->whereIn('week_id', $week_ids)
+					->get();
+				}
 			}
 				// return DB::getQueryLog();
 			// DB::enableQueryLog();
@@ -519,9 +533,7 @@ class HfrController extends Controller
 				}
 			}else{
 			$data["outcomes"][1]["data"][$i] = (int) $target[0]->val;
-			}
-
-			
+			}			
 			$i++;
 		}	
 		return view('charts.tx_curr', $data);
@@ -903,8 +915,13 @@ class HfrController extends Controller
 				$periods = Period::select('financial_year', 'quarter')
 				->whereRaw(Lookup::date_query())
 				->groupBy('financial_year', 'quarter')
-				->get();	
-								
+				->get();
+
+				$p_periods = Period::select('financial_year', 'quarter')
+				->whereRaw(Lookup::date_query_previous())
+				->groupBy('financial_year', 'quarter')
+				->get();
+
 			}
 			if(!$periods) return null;
 
@@ -1183,6 +1200,10 @@ class HfrController extends Controller
 						->whereRaw(Lookup::date_query())
 						->groupBy('financial_year', 'quarter')
 						->get();
+				$p_periods = Period::select('financial_year', 'month')
+				->whereRaw(Lookup::date_query_previous())
+				->groupBy('financial_year', 'month')
+				->get();
 				}
 				if(!$periods) return null;
 
