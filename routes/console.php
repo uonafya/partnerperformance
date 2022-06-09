@@ -112,6 +112,10 @@ Artisan::command('hfr', function () {
 	\App\HfrSubmission::upload_data();
 })->describe('Upload HFR data from disk.');
 
+Artisan::command('hfr:upload', function () {
+	\App\TempHfrSubmission::updateHfrSubmissionsFromTemp();
+})->describe('Update HRF temp uploaded records');
+
 Artisan::command('report', function () {
 	\App\Lookup::send_report();
 })->describe('Send Duplicates Report.');

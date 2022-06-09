@@ -107,6 +107,10 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+
+
+    'secure_url' => env('APP_SECURE_URL', 'false'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
