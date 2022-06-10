@@ -20,6 +20,7 @@
 </div>
 
 <div class="content-body" id="body">
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -32,6 +33,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="row ">
 	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
@@ -163,7 +165,33 @@
 			</div>
 		</div>
 	</div>
-</div>	
+</div>
+
+<div class="row ">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">				
+			    Tx Curr Trend  <div class="detail_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_curr_trend">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row ">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
+		<div class="panel panel-default">
+		    <div class="panel-heading">				
+			    Tx Curr Trend Detail  <div class="detail_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_curr_trend_details">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -176,6 +204,20 @@
 		</div>
 	</div>
 </div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+			    TX_Curr Crude Retention Trend <div class="display_date"></div>
+		    </div>
+			<div class="panel-body" id="tx_crude_trend">
+				<center><div class="loader"></div></center>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
@@ -283,7 +325,7 @@
 </div>
 
 <div class="row ">
-<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
+	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 			    VMMC CIRC Details  <div class="detail_date"></div>
@@ -322,9 +364,11 @@
 		$("#linkage").html("<center><div class='loader'></div></center>");
 		$("#linkage_dis").html("<center><div class='loader'></div></center>");
 		$("#tx_curr").html("<center><div class='loader'></div></center>");
+		$("#tx_curr_trend").html("<center><div class='loader'></div></center>");
 		$("#tx_mmd").html("<center><div class='loader'></div></center>");
 		$("#tx_mmd_detail").html("<center><div class='loader'></div></center>");
 		$("#tx_crude").html("<center><div class='loader'></div></center>");
+		$("#tx_crude_trend").html("<center><div class='loader'></div></center>");
 		$("#net_new").html("<center><div class='loader'></div></center>");
 		$("#net_new_detail").html("<center><div class='loader'></div></center>");
 		$("#prep_new").html("<center><div class='loader'></div></center>");
@@ -344,33 +388,37 @@
 		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
 		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
 
-		$("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
-		// ("#tx_new").load("{{ url('hfr/tx_new') }}");
-		$("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
-		$("#tx_curr_details").load("{{ url('hfr/tx_curr_details') }}");
-		$("#net_new").load("{{ url('hfr/net_new') }}");
-		$("#net_new_detail").load("{{ url('hfr/net_new_detail') }}");
-		$("#tx_crude").load("{{ url('hfr/tx_crude') }}");
+
+		// Ordering the AJAX calls according to the order of the charts in the html view to create peception of faster load
 		$("#testing").load("{{ url('hfr/testing') }}");
+		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
 		$("#linkage").load("{{ url('hfr/linkage') }}");
 		$("#linkage_dis").load("{{ url('hfr/linkage_dis') }}");
-		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
-		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
-		$("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
-		$("#prep_new").load("{{ url('hfr/prep_new') }}");
-		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
-		$("#tx_new").load("{{ url('hfr/tx_new') }}");
-		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
-		$("#tx_new_dis").load("{{ url('hfr/tx_new_dis') }}");
-
-
 
 		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
 		$("#target_donut_pos").load("{{ url('hfr/target_donut/hts_tst_pos') }}");
 		$("#target_donut_tx_new").load("{{ url('hfr/target_donut/tx_new') }}");
-		$("#target_donut_vmmc_circ").load("{{ url('hfr/target_donut/vmmc_circ') }}");
-		$("#target_donut_prep_new").load("{{ url('hfr/target_donut/prep_new') }}");
+		$("#tx_new").load("{{ url('hfr/tx_new') }}");
+		$("#tx_new_dis").load("{{ url('hfr/tx_new_dis') }}");
 		$("#target_donut_tx_curr").load("{{ url('hfr/target_donut/tx_curr') }}");
+		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
+		$("#tx_curr_trend").load("{{ url('hfr/tx_curr_trend') }}");
+		$("#tx_curr_details").load("{{ url('hfr/tx_curr_details') }}");
+		$("#tx_crude").load("{{ url('hfr/tx_crude') }}");
+		$("#tx_crude_trend").load("{{ url('hfr/tx_crude_trend') }}");
+		$("#net_new").load("{{ url('hfr/net_new') }}");
+		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
+		$("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
+		$("#target_donut_prep_new").load("{{ url('hfr/target_donut/prep_new') }}");
+		$("#prep_new").load("{{ url('hfr/prep_new') }}");
+		$("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
+		$("#target_donut_vmmc_circ").load("{{ url('hfr/target_donut/vmmc_circ') }}");
+		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
+		$("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
+
+		// $("#tx_new").load("{{ url('hfr/tx_new') }}");
+		// $("#net_new_detail").load("{{ url('hfr/net_new_detail') }}");
+		
 	}
 
 

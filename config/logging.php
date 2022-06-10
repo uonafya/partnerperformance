@@ -65,6 +65,13 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'hfrupload' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/hfrupload.log'),
+            'level' => 'info',
+            'days' => 7,
+        ],
     ],
 
 ];

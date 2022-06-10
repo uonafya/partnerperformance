@@ -102,7 +102,9 @@ class ImportsExportsController extends Controller
 		}
 
 		session(['toast_message' => 'The updates have been made.']);
-		return back();
+
+		return response()->json(['message' => 'The updates have been made.'], 200); // Added this with addition of Dropzone
+		// return back();
 	}
 
 	public function export_non_mer($financial_year)
