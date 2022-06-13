@@ -173,12 +173,14 @@ Route::prefix('hfr')->name('hfr.')->group(function(){
 	Route::get('testing', 'HfrController@testing')->name('testing');
 	Route::get('linkage', 'HfrController@linkage')->name('linkage');
 	Route::get('tx_curr', 'HfrController@tx_curr')->name('tx_curr');
+	Route::get('tx_curr_trend', 'HfrController@tx_curr_trend')->name('tx_curr_trend');
 	Route::get('tx_mmd', 'HfrController@tx_mmd')->name('tx_mmd');
 	Route::get('prep_new', 'HfrController@prep_new')->name('prep_new');
 	Route::get('vmmc_circ', 'HfrController@vmmc_circ')->name('vmmc_circ');
 	Route::get('net_new', 'HfrController@net_new')->name('net_new');
 	Route::get('net_new_detail', 'HfrController@net_new_detail')->name('net_new_detail');
-	Route::get('tx_crude', 'HfrController@tx_crude')->name('tx_crude');	
+	Route::get('tx_crude', 'HfrController@tx_crude')->name('tx_crude');
+	Route::get('tx_crude_trend', 'HfrController@tx_crude_trend')->name('tx_crude_trend');	
 	Route::get('tx_new', 'HfrController@tx_new')->name('tx_new');	
 	
 	Route::get('misassigned_facilities', 'HfrController@misassigned_facilities')->name('misassigned_facilities');
