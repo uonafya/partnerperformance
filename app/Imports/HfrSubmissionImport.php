@@ -49,7 +49,7 @@ class HfrSubmissionImport implements ToCollection, WithHeadingRow
     	/**/
     	$upload_data = $this->buildTempInsert($collection, $facilities, $weeks);
     	$uploaded = TempHfrSubmission::insert($upload_data);
-    	TempHfrSubmission::updateHfrSubmissionsFromTemp();
+    	//TempHfrSubmission::updateHfrSubmissionsFromTemp();
     	/**/
     }
 
