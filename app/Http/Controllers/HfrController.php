@@ -349,47 +349,47 @@ class HfrController extends Controller
 		
 
 		if($groupby < 10 || $groupby == 14){
+            $week_id = Lookup::get_tx_week(1, true);
+            // DB::enableQueryLog();
+            $rows = DB::table($this->my_table)
+                ->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+                ->selectRaw($sql)
+                ->when(true, $this->get_callback_tx_curr('tx_curr'))
+                ->when(($groupby < 10), function($query) use($week_id) {
+                    return $query->where(['week_id' => $week_id]);
+                })
+                ->orderby("div_id",'asc')
+                ->get();
+            // DB::enableQueryLog();
+            if ($groupby == 1 || $groupby == 2){
+                $grouping = 'partners.name';
+                // $data['chart_title'] = Week::find($week_id)->name;
 
-			$week_id = Lookup::get_tx_week(1, true);
-			$grouping = 'partners.name';
-			// $data['chart_title'] = Week::find($week_id)->name;
-			// DB::enableQueryLog();
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-				->selectRaw($sql)
-				->when(true, $this->get_callback_tx_curr('tx_curr'))
-				->when(($groupby < 10), function($query) use($week_id) {
-					return $query->where(['week_id' => $week_id]);
-				})
-				->orderby("div_id",'asc')
-				->get();
-				// DB::enableQueryLog();
-			// 
-			$target = DB::table($this->my_target_table)
-				->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-				->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-				->selectRaw($sql_test)
-				->when(($groupby == 1), function ($query){
-				return $query->addSelect(DB::raw(" partners.name as partner_name,partners.id as div_id"));
-				})
-				->when(($groupby == 2), function ($query){
-					return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as div_id"));
-				})
-				
-				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				->whereRaw(Lookup::county_target_query())
-				->when(($groupby == 1), function ($query){
-					return $query->groupby('partner_name');
-				})
-				
-				->when(($groupby == 2), function ($query){
-					return $query->groupby('county_name');
-				})
-				// ->groupBy('partner_name','county_name')	
-				->orderby("div_id", 'asc')			
-				->get();
-				// return DB::getQueryLog();
-			
+                $target = DB::table($this->my_target_table)
+                    ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+                    ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+                    ->selectRaw($sql_test)
+                    ->when(($groupby == 1), function ($query){
+                        return $query->addSelect(DB::raw("partners.name as partner_name,partners.id as div_id"));
+                    })
+                    ->when(($groupby == 2), function ($query){
+                        return $query->addSelect(DB::raw("countys.name as county_name, countys.id as div_id"));
+                    })
+
+                    // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+                    ->whereRaw(Lookup::county_target_query())
+                    ->when(($groupby == 1), function ($query){
+                        return $query->groupBy('partner_name');
+                    })
+
+                    ->when(($groupby == 2), function ($query){
+                        return $query->groupBy('county_name');
+                    })
+                    // ->groupBy('partner_name','county_name')
+                    ->orderBy("div_id", 'asc')
+                    ->get();
+                // return DB::getQueryLog();
+            }
 		}
 		else{
 			$periods = [];
@@ -440,7 +440,7 @@ class HfrController extends Controller
 				$p =  DB::table('weeks') 
 				->where('financial_year',$period->financial_year)
 				-> where('month', $period->month )
-				->orderby('id','asc')
+				->orderBy('id','asc')
 				->get();
 				if(isset($w[$k])) $week_ids[] = $w[$k]->id; $weeks[] = $w;
 				
@@ -463,8 +463,8 @@ class HfrController extends Controller
 				// ->when(true, $this->get_callback('tx_curr'))
 				->whereIn('week_id', $current_week)
 				->groupBy('year', 'month')
-				->orderby('year','asc')
-				->orderby('month','asc')
+				->orderBy('year','asc')
+				->orderBy('month','asc')
 				->get();
 			}else {
 			$rows = DB::table($this->my_table)
@@ -511,7 +511,7 @@ class HfrController extends Controller
 					$data["outcomes"][1]["data"][$i] = (int)  $target[$i]->val;
 				}else{
 					// dd($target,$i);
-					$data["outcomes"][1]["data"][$i] = 0;
+//					$data["outcomes"][1]["data"][$i] = 0;  //if no target do not set it to zero on the graph
 				}
 			}else{
 			$data["outcomes"][1]["data"][$i] = (int) $target[0]->val;
