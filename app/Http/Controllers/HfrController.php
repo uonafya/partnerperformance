@@ -568,6 +568,7 @@ class HfrController extends Controller
 		$sql .= $this->get_hfr_sum($tx_curr, 'tx_curr');
 
 		// Adding the category property in the base data pulled. For this graph the categories are always months of the current filtered year.
+		// DB::enableQueryLog();
 		$base_data = DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
@@ -581,6 +582,7 @@ class HfrController extends Controller
 					$item->category = date("F", mktime(0, 0, 0, $item->month, 1)) . ", " . $item->year;
 					return $item;
 				});
+				// return DB::getQueryLog();
 		
 		// Get the categories from the pulled data
 		$categories = $base_data->pluck('category')->unique();
@@ -1405,8 +1407,8 @@ class HfrController extends Controller
 		$partner_filter = session('filter_partner');
 
 		$ou = 'partnername';
-		if ($groupby == 1 && (isset($partner_filter) || !($partner_filter == 'null' || $partner_filter == null)))
-			$ou = 'countyname';
+		if ($groupby == 1 && (isset($partner_filter) || !($partner_filter == 'null' || $partner_filter == null))){
+			$ou = 'countyname';}
 
 		$periods = Period::select('year', 'financial_year', 'month')
 					->whereRaw(Lookup::date_query())
@@ -1448,6 +1450,7 @@ class HfrController extends Controller
 					->orderby('month','asc')
 					->get()
 					->whereNotIn('tx_curr', [0, '0', 'null', null])
+					->whereIn($ou, ['Stawisha Pwani', 'USAID AMPATH Uzima', 'USAID Boresha Jamii','USAID Dumisha Afya','USAID Fahari ya Jamii','USAID Imarisha Jamii','USAID Jamii Tekelezi','USAID Tujenge Jamii','Lea Toto Program'])
 					->groupBy($ou);
 		
 		foreach ($base_data as $key => $grouped_data) {
