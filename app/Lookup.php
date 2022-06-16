@@ -747,10 +747,10 @@ class Lookup
 		$week_ids = [];
 		if(session('filter_week')) return session('filter_week');
 		else if(session('filter_month')){
-			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->first();
+			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->get();
 		}
 		else if(session('filter_quarter')){
-			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->first();
+			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->get();
 		}
 		else{
 			$current_financial_year = date('Y');
@@ -775,7 +775,7 @@ class Lookup
 				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
 			}
 			else{
-				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
+				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
 			}
 		}
 		foreach ($week as $key => $week) {
@@ -790,10 +790,10 @@ class Lookup
 		$week_ids = [];
 		if(session('filter_week')) return session('filter_week');
 		else if(session('filter_month')){
-			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->first();
+			$week = \App\Week::where(['financial_year' => $year, 'month' => session('filter_month')])->orderBy('id', 'desc')->get();
 		}
 		else if(session('filter_quarter')){
-			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->first();
+			$week = \App\Week::where(['financial_year' => $year, 'quarter' => session('filter_quarter')])->orderBy('id', 'desc')->get();
 		}
 		else{
 			$current_financial_year = date('Y');
@@ -818,7 +818,7 @@ class Lookup
 				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
 			}
 			else{
-				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->first();
+				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
 			}
 		}
 		foreach ($week as $key => $week) {
