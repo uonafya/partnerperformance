@@ -942,34 +942,38 @@ class HfrController extends Controller
 		if($groupby < 10 || $groupby == 14){
 			
 
-			$week_id = Lookup::get_tx_week();
-			$prev_week_id = Lookup::get_tx_week_prev();
-			// $data['chart_title'] = Week::find($week_id)->name;
-			// dd($groupby);
-			// DB::enableQueryLog();
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-				->selectRaw($sql)
-				->when(($groupby == 1), $this->get_callback('partner'))
-				->when(($groupby == 2), $this->get_callback('county'))
-				->when(($groupby < 10), function($query) use($week_id) {
-					// return $query;
-					return $query->whereIn('week_id', $week_id);
-				})
-				->get();
-				// 
-			$p_row = DB::table($this->my_table)
-			->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-			->selectRaw($sql)
-			->when(($groupby == 1), $this->get_callback('partner'))
-			->when(($groupby == 2), $this->get_callback('county'))
-			->when(($groupby < 10), function($query) use($prev_week_id) {
-				// return $query;
-				return $query->whereIn('week_id', $prev_week_id);
-			})
-			->get();
+            $week_id = Lookup::get_tx_week();
+            $prev_week_id = Lookup::get_tx_week_prev();
+            // $data['chart_title'] = Week::find($week_id)->name;
+            // dd($groupby);
+            // DB::enableQueryLog();
+            $rows = DB::table($this->my_table)
+                ->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+                ->selectRaw($sql)
+                ->when(($groupby == 1), $this->get_callback('partner'))
+                ->when(($groupby == 2), $this->get_callback('county'))
+                ->when(($groupby == 3), $this->get_callback('subcounty'))
+                ->when(($groupby == 5), $this->get_callback('facility'))
+                ->when(($groupby < 10), function ($query) use ($week_id) {
+                    // return $query;
+                    return $query->whereIn('week_id', $week_id);
+                })
+                ->get();
+            //
+            $p_row = DB::table($this->my_table)
+                ->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
+                ->selectRaw($sql)
+                ->when(($groupby == 1), $this->get_callback('partner'))
+                ->when(($groupby == 2), $this->get_callback('county'))
+                ->when(($groupby == 3), $this->get_callback('subcounty'))
+                ->when(($groupby == 5), $this->get_callback('facility'))
+                ->when(($groupby < 10), function ($query) use ($prev_week_id) {
+                    // return $query;
+                    return $query->whereIn('week_id', $prev_week_id);
+                })
+                ->get();
 			// return DB::getQueryLog();
-			// dd($rows,$p_rows);
+//			 dd($rows,$p_row);
 			
 
 		}
@@ -1107,16 +1111,21 @@ class HfrController extends Controller
 				
 
 		}
-		// dd($p_row,$rows);
+		//dd($p_row,$rows);
 		$i = 0;
-		foreach ($rows as $key => $row){			
-			if(!$row->tx_curr) continue;
-			$lastkey = $key - 1;
-			if ($key < 1 ) $lastkey = 0;
-			$data['categories'][$i] = Lookup::get_category($row);
-			// if ($key > 2) dd($rows[$lastkey],$row->tx_curr);
-			$data["outcomes"][0]["data"][$i] = ($row->tx_curr - $p_row[$key]->tx_curr);
-			$i++;
+		foreach ($rows as $key => $row){
+
+            if (!(isset($row->tx_curr))) {
+                $data['categories'][$i] = Lookup::get_category($row);
+                $data["outcomes"][0]["data"][$i] = (0 - $p_row[$key]->tx_curr);
+                $i++;
+            } else {
+                $data['categories'][$i] = Lookup::get_category($row);
+                $data["outcomes"][0]["data"][$i] = ($row->tx_curr - $p_row[$key]->tx_curr);
+                $i++;
+            }
+
+
 		}	
 
 	
