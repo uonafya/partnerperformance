@@ -403,10 +403,10 @@ class HfrController extends Controller
                         ->when(($groupby == 5), function ($query) {
                             return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
                         })
-
+                        ->whereRaw(Lookup::facility_target_query())
                         // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
                         ->when(($groupby == 3), function ($query) {
-                            return $query->groupby('subcounty_name');
+                            return $query->groupby(DB::raw("div_id,subcounty_name"));
                         })
                         ->when(($groupby == 5), function ($query) {
                             return $query->groupby('facility_name');
