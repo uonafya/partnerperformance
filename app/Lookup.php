@@ -392,7 +392,7 @@ class Lookup
 
 	
         if($week){
-        	$w = Week::find($w);
+        	$w = Week::find($week);
         	$active_date = $w->start_date;
         }else if($to_year){
             $m = $month;
@@ -883,9 +883,9 @@ class Lookup
 	}
 	public static function facility_target_query()
 	{
-		$query = "";
-		if(session('filter_county')) $query .= " county" . self::set_division_query(session('filter_county'));
-		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner_id" . self::set_division_query(session('filter_partner'));
+		$query = "1";
+		if(session('filter_county')) $query .= " AND view_facilities.county" . self::set_division_query(session('filter_county'));
+		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND view_facilities.partner" . self::set_division_query(session('filter_partner'));
 		return $query;
 	}
 	public static function county_target_query_by_partner()
@@ -930,7 +930,7 @@ class Lookup
 	public static function groupby_query($def=true, $force_filter=null)
 	{
 		$groupby = session('filter_groupby', 1);
-		if($force_filter) $groupby = $force_filter;
+		if(isset($force_filter)) $groupby = $force_filter;
 
 		switch ($groupby) {
 			case 1:
