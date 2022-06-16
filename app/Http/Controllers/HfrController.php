@@ -11,11 +11,13 @@ use App\Period;
 use App\Week;
 use Dotenv\Regex\Result;
 use Illuminate\Support\Facades\Log;
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 class HfrController extends Controller
 {
 	private $my_table = 'd_hfr_submission';
 	private $my_target_table = 't_county_target';
+	private $my_hfr_facility_target_table = 't_facility_hfr_target';
 	private $my_floating = 'floating_target';
 
 
@@ -364,32 +366,58 @@ class HfrController extends Controller
 				->orderby("div_id",'asc')
 				->get();
 				// DB::enableQueryLog();
-			// 
-			$target = DB::table($this->my_target_table)
-				->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-				->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-				->selectRaw($sql_test)
-				->when(($groupby == 1), function ($query){
-				return $query->addSelect(DB::raw(" partners.name as partner_name,partners.id as div_id"));
-				})
-				->when(($groupby == 2), function ($query){
-					return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as div_id"));
-				})
-				
-				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				->whereRaw(Lookup::county_target_query())
-				->when(($groupby == 1), function ($query){
-					return $query->groupby('partner_name');
-				})
-				
-				->when(($groupby == 2), function ($query){
-					return $query->groupby('county_name');
-				})
-				// ->groupBy('partner_name','county_name')	
-				->orderby("div_id", 'asc')			
-				->get();
-				// return DB::getQueryLog();
-			
+			//
+
+            if ($groupby == 1 || $groupby == 2) {
+                $target = DB::table($this->my_target_table)
+                    ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+                    ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+                    ->selectRaw($sql_test)
+                    ->when(($groupby == 1), function ($query) {
+                        return $query->addSelect(DB::raw(" partners.name as partner_name,partners.id as div_id"));
+                    })
+                    ->when(($groupby == 2), function ($query) {
+                        return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as div_id"));
+                    })
+
+                    // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+                    ->whereRaw(Lookup::county_target_query())
+                    ->when(($groupby == 1), function ($query) {
+                        return $query->groupby('partner_name');
+                    })
+                    ->when(($groupby == 2), function ($query) {
+                        return $query->groupby('county_name');
+                    })
+                    // ->groupBy('partner_name','county_name')
+                    ->orderby("div_id", 'asc')
+                    ->get();
+                // return DB::getQueryLog();
+            } else {
+//                    DB::enableQueryLog();
+                    $target = DB::table($this->my_hfr_facility_target_table)
+                        ->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
+                        ->selectRaw($sql_test)
+                        ->when(($groupby == 3), function ($query) {
+                            return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.subcounty_id as div_id"));
+                        })
+                        ->when(($groupby == 5), function ($query) {
+                            return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
+                        })
+
+                        // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+                        ->when(($groupby == 3), function ($query) {
+                            return $query->groupby('subcounty_name');
+                        })
+                        ->when(($groupby == 5), function ($query) {
+                            return $query->groupby('facility_name');
+                        })
+                        ->orderby("div_id", 'asc')
+                        ->get();
+//                    return DB::getQueryLog();
+
+
+                }
+
 		}
 		else{
 			$periods = [];
@@ -511,7 +539,7 @@ class HfrController extends Controller
 					$data["outcomes"][1]["data"][$i] = (int)  $target[$i]->val;
 				}else{
 					// dd($target,$i);
-					$data["outcomes"][1]["data"][$i] = 0;
+//					$data["outcomes"][1]["data"][$i] = 0;
 				}
 			}else{
 			$data["outcomes"][1]["data"][$i] = (int) $target[0]->val;

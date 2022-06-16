@@ -881,6 +881,13 @@ class Lookup
 		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner_id" . self::set_division_query(session('filter_partner'));
 		return $query;		
 	}
+	public static function facility_target_query()
+	{
+		$query = "";
+		if(session('filter_county')) $query .= " county" . self::set_division_query(session('filter_county'));
+		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND partner_id" . self::set_division_query(session('filter_partner'));
+		return $query;
+	}
 	public static function county_target_query_by_partner()
 	{
 		$query = " 1 ";		
