@@ -256,34 +256,35 @@ class HfrController extends Controller
 				// })
 				->orderby("div_id",'asc')
 				->get();
-				//  DB::enableQueryLog();
-			$target = DB::table($this->my_floating)
-				->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
-				->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
-				->selectRaw($sql_target)
-				->when(($groupby == 1 ), function ($query){
-					return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id"));
-				})
-				->when(($groupby == 2 ), function ($query){
-					return $query->addSelect(DB::raw("countys.name as county_name, countys.id as div_id"));
-				})
-				
-				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				->whereRaw(Lookup::county_target_query())
-				->where($this->my_floating .'.month' ,'<=', $today)
-				// ->when(($groupby == 1), $this->get_callback('partner_name'))
-				// ->when(($groupby == 2), $this->get_callback('county_name'))
-				->when(($groupby == 1), function ($query){
-					return $query->groupby('partner_name');
-				})
-				->when(($groupby == 2), function ($query){
-					return $query->groupby('county_name');
-				})
-				
-				->orderby("div_id", 'asc')			
-				->get();
-				// return DB::getQueryLog();
 
+            if ($groupby == 1 || $groupby == 2) {
+                //  DB::enableQueryLog();
+                $target = DB::table($this->my_floating)
+                    ->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
+                    ->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
+                    ->selectRaw($sql_target)
+                    ->when(($groupby == 1), function ($query) {
+                        return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id"));
+                    })
+                    ->when(($groupby == 2), function ($query) {
+                        return $query->addSelect(DB::raw("countys.name as county_name, countys.id as div_id"));
+                    })
+
+                    // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+                    ->whereRaw(Lookup::county_target_query())
+                    ->where($this->my_floating . '.month', '<=', $today)
+                    // ->when(($groupby == 1), $this->get_callback('partner_name'))
+                    // ->when(($groupby == 2), $this->get_callback('county_name'))
+                    ->when(($groupby == 1), function ($query) {
+                        return $query->groupby('partner_name');
+                    })
+                    ->when(($groupby == 2), function ($query) {
+                        return $query->groupby('county_name');
+                    })
+                    ->orderby("div_id", 'asc')
+                    ->get();
+                // return DB::getQueryLog();
+            }
 
 		}else{
 			$rows = DB::table($this->my_table)
