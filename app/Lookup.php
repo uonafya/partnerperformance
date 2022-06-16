@@ -57,7 +57,7 @@ class Lookup
 			}
 		}
 		else{
-			return $row->name ?? '';
+			return $row->name ;
 		}	
 	} 
 

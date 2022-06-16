@@ -1114,20 +1114,12 @@ class HfrController extends Controller
 		}
 		//dd($p_row,$rows);
 		$i = 0;
-		foreach ($rows as $key => $row){
-
-            if (!(isset($row->tx_curr))) {
-                $data['categories'][$i] = Lookup::get_category($row);
-                $data["outcomes"][0]["data"][$i] = (0 - $p_row[$key]->tx_curr);
-                $i++;
-            } else {
-                $data['categories'][$i] = Lookup::get_category($row);
-                $data["outcomes"][0]["data"][$i] = ($row->tx_curr - $p_row[$key]->tx_curr);
-                $i++;
-            }
-
-
-		}	
+        foreach ($rows as $key => $row) {
+            if (!$row->tx_curr) continue;
+            $data['categories'][$i] = Lookup::get_category($row);
+            $data["outcomes"][0]["data"][$i] = (($row->tx_curr ?? 0 ) - ($p_row[$key]->tx_curr ?? 0));
+            $i++;
+        }
 
 	//dd($data);
 
