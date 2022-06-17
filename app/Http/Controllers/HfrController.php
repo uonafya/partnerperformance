@@ -1472,6 +1472,7 @@ class HfrController extends Controller
 	{
 		$return_data = [];
 		foreach ($periods as $key => $period) {
+			if ($key <= 7){
 			$return_value = 95;
 			if (isset($data)) {
 				$current_ou_data = $data->where('year', $period->year)->where('month', $period->month)->first();
@@ -1490,6 +1491,7 @@ class HfrController extends Controller
 				}
 			}
 			$return_data[] = $return_value;
+			}
 		}
 		return $return_data;
 	}

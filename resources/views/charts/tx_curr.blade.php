@@ -69,7 +69,20 @@
                     verticalAlign: 'bottom',
                     y: -20
                 }
-            },
+            }, 
+            plotOptions: {
+                    column: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'center',
+                            rotation: 270,
+                            x: 2,
+                            y: -10
+
+                            // shape: 'callout'
+                        }
+                    }
+                },
             colors: [
                 '#F2784B',
                 '#1BA39C',
