@@ -221,13 +221,13 @@ def calc_targets(fy, curr_mon):
             return False
 
         if mon_back1:
-            m1 = create_df(m0, ndf, 2)
+            m1 = create_df(m0, ndf, curr_mon - 2)
             all_dfs.append(m1)
         if mon_back2:
-            m2 = create_df(m1, ndf, 3)
+            m2 = create_df(m1, ndf, curr_mon - 1)
             all_dfs.append(m2)
         if mon_back3:
-            m3 = create_df(m2, ndf, 4)
+            m3 = create_df(m2, ndf, curr_mon)
             all_dfs.append(m3)
 
         rdf = pd.concat(all_dfs, ignore_index=True, sort=False)
@@ -235,9 +235,9 @@ def calc_targets(fy, curr_mon):
         if curr_mon > 1:
             rdf.drop(['deficit_y'], axis=1)
 
-        print(rdf.columns)
+        # print(rdf.columns)
         rdf = rdf.fillna(0)
-        rdf.to_csv('Targets-Achieved.csv', index=False)
+        rdf.to_csv('Floating-Targets.csv', index=False)
         # Create SQL statements
         tlns = 0
         upsert_query = []
@@ -256,11 +256,11 @@ def calc_targets(fy, curr_mon):
             fquery = ups_query.format(**uprms)
             upsert_query.append(fquery)
             print('*' * 100)
-            # unique key
+            # unique key not used as it turned out too long
             print(u_key)
             ulen = len(u_key)
             tlns = ulen if ulen > tlns else tlns
-            print('ulen', tlns)
+            # print('ulen', tlns)
             print(fquery)
         # Update Floating targets
         '''
@@ -281,10 +281,10 @@ def calc_targets(fy, curr_mon):
 
 if __name__ == '__main__':
     fy = 2022
-    curr_mon = 5
+    curr_mon = 4
     print('Start Floating targets calculation')
     print('For FY %d and Month %d' % (fy, curr_mon))
     print('-' * 100)
     calc_targets(fy, curr_mon)
     print('*' * 100)
-    print('Done Calculating')
+    print('Done Calculating saved to Floating-Targets.csv')
