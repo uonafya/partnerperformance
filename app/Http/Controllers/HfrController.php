@@ -340,7 +340,7 @@ class HfrController extends Controller
 
 	public function tx_curr_debug()
 	{
-		$groupby = session('filter_groupby')? 3: 3;
+		$groupby = session('filter_groupby')? 5: 3;
 		$groupbypartner = session('filter_partner')? 3 : 1;
 
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
@@ -348,7 +348,8 @@ class HfrController extends Controller
 		$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr');
 		$sql_test = $this->get_hfr_sum($tx_curr, 'val');
 
-		$data['div'] = str_random(15); 
+	  	$data['div'] = str_random(15); 
+		
 
 		return DB::table($this->my_hfr_facility_target_table)
 		->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
@@ -366,9 +367,9 @@ class HfrController extends Controller
 		})
 		->when(($groupby == 5), function ($query) {
 			return $query->groupby('facility_name')->first();
-		})
-		->orderby("div_id", 'asc')
-		->get();
+		});
+		// ->orderby("div_id", 'asc')
+		// ->get();
 	}
 
 	public function tx_curr()
