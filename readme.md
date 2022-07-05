@@ -9,3 +9,9 @@ The database structure is flat. We store aggregated data at the facility level w
 - **period_id** A foreign key matching which period (exact month) it is in.
 - **facility** A foreign key matching with the facility of the row.
 - **data_columns** (*Multiple columns*) Integer fields containing totals for the period for that the particular facility. Each data column holds a specific piece of data e.g. total number of patients.
+
+### Monitor requests using Telescope.
+
+Hit this end point in you browser.
+
+http://localhost:9002/telescope/requests
