@@ -23,6 +23,8 @@ class CreateTelescopeEntriesTable extends Migration
         $this->schema = Schema::connection($this->getConnection());
     }
 
+    
+
     /**
      * Get the migration connection name.
      *
@@ -40,6 +42,8 @@ class CreateTelescopeEntriesTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('telescope_entries')) return;   
+
         $this->schema->create('telescope_entries', function (Blueprint $table) {
             $table->bigIncrements('sequence');
             $table->uuid('uuid');

@@ -14,4 +14,4 @@ The database structure is flat. We store aggregated data at the facility level w
 
 Hit this end point in you browser.
 
-http://localhost:9002/telescope/requests
+http://yourhost/telescope/requests

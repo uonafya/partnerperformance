@@ -12,7 +12,7 @@
 */
 
 
-Route::get('tx_curr_debug', 'HfrController@tx_curr_debug');
+Route::get('getRecord', 'EtlController@getRecord');
 
 Route::middleware(['check_live'])->group(function(){
 	Auth::routes(['verify' => true]);

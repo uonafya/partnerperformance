@@ -82,7 +82,7 @@ class HfrController extends Controller
 			->when(true, $this->get_callback('tests'))
 			->get();
 
-		dd($rows);
+		// dd($rows);
 		
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Total Number Tested";
@@ -134,6 +134,16 @@ class HfrController extends Controller
 		Lookup::splines($data, [2]);
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 1);
+
+		$pool = Pool::create();
+
+		// $pool[] = async(function () {
+		// 	return Test::all();
+		//  })->then(function ($output) {
+		// 	$this->data=$output;
+		// });
+	
+		// await($pool);
 
 
 		$i=0;
@@ -338,39 +348,42 @@ class HfrController extends Controller
 		return view('charts.line_graph', $data);
 	}
 
-	public function tx_curr_debug()
-	{
-		$groupby = session('filter_groupby')? 5: 3;
-		$groupbypartner = session('filter_partner')? 3 : 1;
+	// public function tx_curr_debug()
+	// {
+	// 	$groupby = session('filter_groupby')? 3: 3;
+	// 	$groupbypartner = session('filter_partner')? 1 : 1;
 
-		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
-		$sqlpartner = $this->get_hfr_sum($tx_curr, 'tx_curr');
-		$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr');
-		$sql_test = $this->get_hfr_sum($tx_curr, 'val');
+	// 	$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+	// 	$sqlpartner = $this->get_hfr_sum($tx_curr, 'tx_curr');
+	// 	$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr');
+	// 	$sql_test = $this->get_hfr_sum($tx_curr, 'val');
 
-	  	$data['div'] = str_random(15); 
+	//   	$data['div'] = str_random(15); 
 		
+	// 	DB::enableQueryLog();
 
-		return DB::table($this->my_hfr_facility_target_table)
-		->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
-		->selectRaw($sql_test)
-		->when(($groupby == 3), function ($query) {
-			return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.subcounty_id as div_id"));
-		})
-		->when(($groupby == 5), function ($query) {
-			return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
-		})
-		->whereRaw(Lookup::facility_target_query())
-		// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-		->when(($groupby == 3), function ($query) {
-			return $query->groupby(DB::raw("div_id,subcounty_name"));
-		})
-		->when(($groupby == 5), function ($query) {
-			return $query->groupby('facility_name')->first();
-		});
-		// ->orderby("div_id", 'asc')
-		// ->get();
-	}
+	// 	$target = DB::table($this->my_hfr_facility_target_table)
+	// 	->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
+	// 	->selectRaw($sql_test)
+	// 	->when(($groupby == 3), function ($query) {
+	// 		return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.subcounty_id as div_id"));
+	// 	})
+	// 	->when(($groupby == 5), function ($query) {
+	// 		return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
+	// 	})
+	// 	->whereRaw(Lookup::facility_target_query())
+	// 	// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+	// 	->when(($groupby == 3), function ($query) {
+	// 		return $query->groupby(DB::raw("div_id,subcounty_name"));
+	// 	})
+	// 	->when(($groupby == 5), function ($query) {
+	// 		return $query->groupby('facility_name')->first();
+	// 	})
+	// 	->orderby("div_id", 'asc')
+	// 	->get();
+
+	// 	dd($target);
+	// }
 
 	public function tx_curr()
 	{
