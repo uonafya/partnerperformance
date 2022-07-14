@@ -82,7 +82,7 @@ class HfrController extends Controller
 			->when(true, $this->get_callback('tests'))
 			->get();
 
-		dd($rows);
+		// dd($rows);
 		
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Total Number Tested";
