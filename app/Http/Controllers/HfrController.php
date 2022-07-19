@@ -70,6 +70,9 @@ class HfrController extends Controller
 
 	public function testing()
 	{
+
+		DB::enableQueryLog();
+
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 
 		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
 		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
@@ -82,7 +85,6 @@ class HfrController extends Controller
 			->when(true, $this->get_callback('tests'))
 			->get();
 
-		// dd($rows);
 		
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Total Number Tested";
@@ -100,6 +102,8 @@ class HfrController extends Controller
 		$i=0;
 		foreach ($rows as $key => $row){
 			if(!$row->tests) continue;
+			// return $row;
+
 
 			$data['categories'][$i] = Lookup::get_category($row);
 
@@ -108,6 +112,13 @@ class HfrController extends Controller
 			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->pos, $row->tests);
 			$i++;
 		}	
+
+		// return $tests;
+
+
+		// return	$data;
+
+		// DB::getQueryLog();
 		return view('charts.dual_axis', $data);
 	}
 

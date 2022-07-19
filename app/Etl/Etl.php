@@ -5,9 +5,9 @@ namespace App;
 class Etl 
 {
 
-    public function viewFacility(Type $var = null)
+    public function viewFacility()
     {
-        # code...
+        
     }
 
 }

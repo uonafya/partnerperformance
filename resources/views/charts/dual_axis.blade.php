@@ -1,8 +1,13 @@
 <div id="{{$div}}"></div>
 
 <script type="text/javascript">
+
+
 	
     $(function () {
+
+        console.log({{ $data }});
+
         @isset($dd)
             var dump_data = {!! $dd !!};
             console.log(dump_data);
@@ -134,6 +139,10 @@
                 '#ff1a1a'
             ],*/ 
             series: {!! json_encode($outcomes) !!}
+            var x = {!! json_encode($outcomes) !!};
+
+            // console.log(x);
+
         });
     });
 </script>

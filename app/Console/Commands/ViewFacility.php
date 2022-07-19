@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Etl\Models\ViewFacilitiesEtl;
+use App\Models\ViewFacilities;
 use Illuminate\Console\Command;
 
-use App\Models\ViewFacilities;
+
+// use App\Models\ViewFacilitiesEtl;
 
 class ViewFacility extends Command
 {
@@ -39,18 +42,37 @@ class ViewFacility extends Command
      */
     public function handle()
     {
+
+        // Delete Store and Items (via cascade) First.
+        ViewFacilitiesEtl::truncate();
+
         $this->info("vf Started");
 
-        //local
-        $vf = ViewFacilities::all();
-        //remote
+        $view_faciltity_etl = new ViewFacilitiesEtl();
+        $view_faciltity_etl->setConnection('mysql_etl');
+        // $view_faciltity_arr = $view_faciltity_etl->first();
 
-        // $view_faciltity = new ViewFacility();
-        // $view_faciltity->setConnection('mysql');
-        // $view_f = $view_faciltity->first();
+
+        $view_faciltity = new ViewFacilities();
+        $view_faciltity->setConnection('mysql_wr');
+
+        $view_f = $view_faciltity->all();
+        
+        $this->info("vf Started msql_wr");
+        // $this->info($view_f);
+        $all_facility_remote_data = ViewFacilities::transform($view_f);
+        
+        $all_facility_remote_data->each(function($item) use ($view_faciltity_etl) {
+            // $this->info(...$item);
+            $view_faciltity_etl->insert($item);
+
+        });
 
         
-        // $this->info($view_f);
+        // $view_faciltity_etl->insert(...$all_facility_remote_data);
 
-    }
+        // $this->info($all_facility_remote_data);
+
+    }   
+
 }
