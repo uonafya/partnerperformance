@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ViewFacility::class,
+        // DhfrSubmission
+        Commands\DhfrSubmission::class,
     ];
 
     /**
@@ -25,7 +27,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('vf:etl')
-                ->everyMinute();
+            ->everyMinute();
+
+        $schedule->command('etl:dhfr')
+            ->everyMinute();
 
     }
 

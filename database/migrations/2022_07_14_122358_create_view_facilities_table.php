@@ -50,6 +50,6 @@ class CreateViewFacilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('view_facilities')->nullable();
+        Schema::dropIfExists('view_facilities');
     }
 }

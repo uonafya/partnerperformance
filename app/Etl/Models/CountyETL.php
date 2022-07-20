@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Etl\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

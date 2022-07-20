@@ -118,8 +118,8 @@ class HfrController extends Controller
 
 		// return	$data;
 
-		// DB::getQueryLog();
-		return view('charts.dual_axis', $data);
+		DB::getQueryLog();
+		// return view('charts.dual_axis', $data);
 	}
 
 	public function linkage()

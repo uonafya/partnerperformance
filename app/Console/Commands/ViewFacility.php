@@ -16,7 +16,7 @@ class ViewFacility extends Command
      *
      * @var string
      */
-    protected $signature = 'vf:etl';
+    protected $signature = 'etl:viewfacility';
 
     /**
      * The console command description.

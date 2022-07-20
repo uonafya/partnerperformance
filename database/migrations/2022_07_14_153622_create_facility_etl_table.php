@@ -13,7 +13,9 @@ class CreateFacilityEtlTable extends Migration
      */
     public function up()
     {
-        Schema::create('facility_etl', function (Blueprint $table) {
+        if(Schema::connection('mysql_etl')->hasTable('facility_etl'))  return;
+        
+        Schema::connection('mysql_etl')->create('facility_etl', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('old_id');
             $table->integer('facilitycode');
