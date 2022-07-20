@@ -32,6 +32,16 @@ class Kernel extends ConsoleKernel
         $schedule->command('etl:dhfr')
             ->everyMinute();
 
+        $schedule->command('etl:Counties')
+        ->everyMinute();
+
+        // etl:Partners
+        $schedule->command('etl:Partners')
+        ->everyMinute();
+
+        // etl:weeks
+        $schedule->command('etl:weeks')
+        ->everyMinute();
     }
 
     /**

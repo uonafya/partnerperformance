@@ -40,7 +40,7 @@ class DhfrSubmission extends Command
     public function handle()
     {
         // Delete Store and Items (via cascade) First.
-        // DHfrSubmissionEtl::truncate();
+        DHfrSubmissionEtl::truncate();
 
         $this->info("etl:dhfr Started");
 

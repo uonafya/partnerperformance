@@ -4,11 +4,10 @@ namespace App\Etl\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CountyETL extends Model
+class WeeksETL extends Model
 {
     //
     protected $connection = 'mysql_etl';
-    protected $table = 'counties';
+    protected $table = 'weeks';
     protected $guarded = [];
-
 }
