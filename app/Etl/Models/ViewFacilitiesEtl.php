@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ViewFacilitiesEtl extends Model
 {
     //
-    protected $connection = 'mysql_etl';
+    protected $connection = 'mysql';
 
     protected $guarded = [];
-
 }

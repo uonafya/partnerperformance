@@ -16,7 +16,7 @@ class ViewFacility extends Command
      *
      * @var string
      */
-    protected $signature = 'vf:etl';
+    protected $signature = 'etl:view_facility';
 
     /**
      * The console command description.
@@ -46,10 +46,10 @@ class ViewFacility extends Command
         // Delete Store and Items (via cascade) First.
         ViewFacilitiesEtl::truncate();
 
-        $this->info("vf Started");
+        $this->info("View Facility ETL Started");
 
         $view_faciltity_etl = new ViewFacilitiesEtl();
-        $view_faciltity_etl->setConnection('mysql_etl');
+        $view_faciltity_etl->setConnection('mysql');
         // $view_faciltity_arr = $view_faciltity_etl->first();
 
 
@@ -58,7 +58,7 @@ class ViewFacility extends Command
 
         $view_f = $view_faciltity->all();
 
-        $this->info("vf Started msql_wr");
+        $this->info("View Facility ETL Started remote msql_wr");
         // $this->info($view_f);
         $all_facility_remote_data = ViewFacilities::transform($view_f);
 
@@ -70,7 +70,6 @@ class ViewFacility extends Command
 
         // $view_faciltity_etl->insert(...$all_facility_remote_data);
 
-        // $this->info($all_facility_remote_data);
-
+        $this->info($all_facility_remote_data);
     }
 }

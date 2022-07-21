@@ -13,12 +13,11 @@ class CreateDHfrSubmissionsTable extends Migration
      */
     public function up()
     {
-        if(!Schema::connection('mysql_etl')->hasTable('view_facilities_etls')){
-            Schema::connection('mysql_etl')->create('d_hfr_submission', function (Blueprint $table) {
+        if (Schema::connection('mysql')->hasTable('view_facilities_etls')) {
+            Schema::connection('mysql')->create('d_hfr_submission', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->timestamps();
-    
-                
+
                 // `week_id` 
                 // `facility` 
                 // `hts_tst_below_15_female` 
@@ -57,8 +56,6 @@ class CreateDHfrSubmissionsTable extends Migration
                 // `tx_mmd_above_15_male_above_6m` 
             });
         }
-
-       
     }
 
     /**

@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ViewFacility::class,
+        Commands\CountyCMD::class,
+        Commands\FacilityCMD::class,
     ];
 
     /**
@@ -24,8 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('vf:etl')
-                ->everyMinute();
+        $schedule->command('etl:view_facility')->everyMinute();
+
+        // County scheduler
 
     }
 
@@ -36,7 +39,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
         require base_path('routes/console.php');
     }
 }

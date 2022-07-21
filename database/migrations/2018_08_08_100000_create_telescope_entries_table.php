@@ -23,7 +23,7 @@ class CreateTelescopeEntriesTable extends Migration
         $this->schema = Schema::connection($this->getConnection());
     }
 
-    
+
 
     /**
      * Get the migration connection name.
@@ -42,8 +42,8 @@ class CreateTelescopeEntriesTable extends Migration
      */
     public function up()
     {
-        
-        if(!Schema::connection('mysql_etl')->hasTable('telescope_entries')){
+
+        if (Schema::connection('mysql')->hasTable('telescope_entries')) {
 
             $this->schema->create('telescope_entries', function (Blueprint $table) {
                 $table->bigIncrements('sequence');
@@ -78,9 +78,7 @@ class CreateTelescopeEntriesTable extends Migration
             $this->schema->create('telescope_monitoring', function (Blueprint $table) {
                 $table->string('tag');
             });
-
-        }  
-
+        }
     }
 
     /**
