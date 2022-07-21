@@ -13,19 +13,19 @@ class CreateCountiesTable extends Migration
      */
     public function up()
     {
-        if(Schema::connection('mysql_etl')->hasTable('counties')) return;
+        if (Schema::connection('mysql')->hasTable('counties')) return;
 
-        Schema::connection('mysql_etl')->create('counties', function (Blueprint $table) {
+        Schema::connection('mysql')->create('counties', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('old_id')->nullable();
-            $table->string('name')->nullable(); 
-            $table->string('CountyDHISCode')->nullable(); 
-            $table->string('CountyMFLCode')->nullable(); 
-            $table->string('rawcode')->nullable(); 
-            $table->string('CountyCoordinates')->nullable(); 
-            $table->string('pmtctneed1617')->nullable();  
-            $table->string('letter')->nullable();            
-            $table->timestamps();  
+            $table->string('name')->nullable();
+            $table->string('CountyDHISCode')->nullable();
+            $table->string('CountyMFLCode')->nullable();
+            $table->string('rawcode')->nullable();
+            $table->string('CountyCoordinates')->nullable();
+            $table->string('pmtctneed1617')->nullable();
+            $table->string('letter')->nullable();
+            $table->timestamps();
         });
     }
 

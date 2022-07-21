@@ -20,7 +20,10 @@ class CreateCountyEtlTable extends Migration
                 $table->text('name')->nullable();
                 $table->text('DHISCode')->nullable();
                 $table->text('MFLCode')->nullable();
+                $table->string('rawcode')->nullable();
                 $table->text('Coordinates')->nullable();
+                $table->string('pmtctneed1617')->nullable();
+                $table->string('letter')->nullable();
             });
         }
     }

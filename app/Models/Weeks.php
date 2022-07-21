@@ -11,12 +11,19 @@ class Weeks extends Model
 
     public static function transform($load)
     {
-       return $load->map(function($item){
-            return $item;
+        return $load->map(function ($item) {
+            // return $item;
 
-            // return [
-                
-            // ];
+            return [
+                'old_id' => $item->id,
+                'week_number' => $item->week_number,
+                'start_date' => $item->start_date,
+                'end_date' => $item->end_date,
+                'year' => $item->year,
+                'month' => $item->month,
+                'financial_year' => $item->financial_year,
+                'quarter' => $item->quarter,
+            ];
         });
-    } 
+    }
 }

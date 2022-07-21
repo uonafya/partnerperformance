@@ -13,10 +13,17 @@ class CreatePartnersTable extends Migration
      */
     public function up()
     {
-        if(Schema::connection('mysql_etl')->hasTable('partners_etl')) return;
+        if (Schema::connection('mysql')->hasTable('partners_etl')) return;
 
-        Schema::connection('mysql_etl')->create('partners_etl', function (Blueprint $table) {
+        Schema::connection('mysql')->create('partners_etl', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('old_id')->nullable();
+            $table->text('name')->nullable();
+            $table->text('partnerDHISCode')->nullable();
+            $table->text('mech_id')->nullable();
+            $table->text('funding_agency')->nullable();
+            $table->tinyInteger('funding_agency_id')->unsigned()->nullable();
+            $table->text('logo')->nullable();
             $table->timestamps();
         });
     }

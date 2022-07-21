@@ -24,7 +24,10 @@ class County extends Model
                 'name' => $item->name,
                 'DHIScode' => $item->DHIScode,
                 'MFLcode' => $item->CountyMFLCode,
+                'rawcode' => $item->rawcode,
                 'Coordinates' => $item->CountyCoordinates,
+                'pmtctneed1617' => $item->pmtctneed1617,
+                'letter' => $item->letter,
             ];
         });
     }
