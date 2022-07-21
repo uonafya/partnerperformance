@@ -107,8 +107,20 @@ class HfrController extends Controller
 			$data["outcomes"][1]["data"][$i] = (int) ($row->tests - $row->pos);
 			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->pos, $row->tests);
 			$i++;
+<<<<<<< HEAD
 		}
 		return view('charts.dual_axis', $data);
+=======
+		}	
+
+		// return $tests;
+
+
+		// return	$data;
+
+		DB::getQueryLog();
+		// return view('charts.dual_axis', $data);
+>>>>>>> cb711dccbd5111ef995830192ceae2f788856569
 	}
 
 	public function linkage()

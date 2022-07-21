@@ -14,6 +14,7 @@ class CreateTempHfrSubmissionsTable extends Migration
      */
     public function up()
     {
+        
         $columns = HfrSubmission::columns();
         Schema::create('temp_hfr_submissions', function (Blueprint $table) use ($columns) {
             $table->bigIncrements('id');

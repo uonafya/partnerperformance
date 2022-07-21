@@ -42,43 +42,55 @@ class CreateTelescopeEntriesTable extends Migration
      */
     public function up()
     {
+<<<<<<< HEAD
 
         if (Schema::connection('mysql')->hasTable('telescope_entries')) {
+=======
+        
+        if(Schema::connection('mysql_etl')->hasTable('telescope_entries')) return ;
+>>>>>>> cb711dccbd5111ef995830192ceae2f788856569
 
-            $this->schema->create('telescope_entries', function (Blueprint $table) {
-                $table->bigIncrements('sequence');
-                $table->uuid('uuid');
-                $table->uuid('batch_id');
-                $table->string('family_hash')->nullable();
-                $table->boolean('should_display_on_index')->default(true);
-                $table->string('type', 20);
-                $table->longText('content');
-                $table->dateTime('created_at')->nullable();
+        Schema::connection('mysql_etl')->create('telescope_entries', function (Blueprint $table) {
+            $table->bigIncrements('sequence');
+            $table->uuid('uuid');
+            $table->uuid('batch_id');
+            $table->string('family_hash')->nullable();
+            $table->boolean('should_display_on_index')->default(true);
+            $table->string('type', 20);
+            $table->longText('content');
+            $table->dateTime('created_at')->nullable();
 
-                $table->unique('uuid');
-                $table->index('batch_id');
-                $table->index('family_hash');
-                $table->index('created_at');
-                $table->index(['type', 'should_display_on_index']);
-            });
+            $table->unique('uuid');
+            $table->index('batch_id');
+            $table->index('family_hash');
+            $table->index('created_at');
+            $table->index(['type', 'should_display_on_index']);
+        });
 
-            $this->schema->create('telescope_entries_tags', function (Blueprint $table) {
-                $table->uuid('entry_uuid');
-                $table->string('tag');
+        Schema::connection('mysql_etl')->create('telescope_entries_tags', function (Blueprint $table) {
+            $table->uuid('entry_uuid');
+            $table->string('tag');
 
-                $table->index(['entry_uuid', 'tag']);
-                $table->index('tag');
+            $table->index(['entry_uuid', 'tag']);
+            $table->index('tag');
 
-                $table->foreign('entry_uuid')
-                    ->references('uuid')
-                    ->on('telescope_entries')
-                    ->onDelete('cascade');
-            });
+            $table->foreign('entry_uuid')
+                ->references('uuid')
+                ->on('telescope_entries')
+                ->onDelete('cascade');
+        });
 
+<<<<<<< HEAD
             $this->schema->create('telescope_monitoring', function (Blueprint $table) {
                 $table->string('tag');
             });
         }
+=======
+        Schema::connection('mysql_etl')->create('telescope_monitoring', function (Blueprint $table) {
+            $table->string('tag');
+        });
+
+>>>>>>> cb711dccbd5111ef995830192ceae2f788856569
     }
 
     /**

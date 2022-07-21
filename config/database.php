@@ -88,6 +88,7 @@ return [
             'collation' => 'utf8mb4_unicode_ci',
             'prefix_indexes' => true,
         ],
+<<<<<<< HEAD
         'mysql_wr' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST_WR'),
@@ -95,13 +96,25 @@ return [
             'database' => env('DB_DATABASE_WR', 'forge'),
             'username' => env('DB_USERNAME_WR', 'forge'),
             'password' => env('DB_PASSWORD_WR', ''),
+=======
+
+        
+
+        'pgsql' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+>>>>>>> cb711dccbd5111ef995830192ceae2f788856569
             'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
             'prefix' => '',
-            'strict' => false,
-            'engine' => null,
+            'schema' => 'public',
+            'sslmode' => 'prefer',
         ],
 
+<<<<<<< HEAD
         'mysql_remote' => [
             'driver'  => env('DB_CONNECTION_REMOTE', 'mysql'),
             'host' => env('DB_HOST_REMOTE'),
@@ -121,13 +134,20 @@ return [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
+=======
+        'mysql_wr' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST'),
+            'port' => env('DB_PORT_WR', '3306'),
+>>>>>>> cb711dccbd5111ef995830192ceae2f788856569
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
             'prefix' => '',
-            'schema' => 'public',
-            'sslmode' => 'prefer',
+            'strict' => false,
+            'engine' => null,
         ],
     ],
 

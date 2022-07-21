@@ -16,6 +16,8 @@ class Kernel extends ConsoleKernel
         Commands\ViewFacility::class,
         Commands\CountyCMD::class,
         Commands\FacilityCMD::class,
+        // DhfrSubmission
+        Commands\DhfrSubmission::class,
     ];
 
     /**
@@ -30,6 +32,19 @@ class Kernel extends ConsoleKernel
 
         // County scheduler
 
+        $schedule->command('etl:dhfr')
+            ->everyMinute();
+
+        $schedule->command('etl:Counties')
+            ->everyMinute();
+
+        // etl:Partners
+        $schedule->command('etl:Partners')
+            ->everyMinute();
+
+        // etl:weeks
+        $schedule->command('etl:weeks')
+            ->everyMinute();
     }
 
     /**
