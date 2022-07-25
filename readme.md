@@ -20,10 +20,10 @@ http://yourhost/telescope/requests
 ETL means Extraction, Transformation, Load.  You can read more about it here. https://www.ibm.com/cloud/learn/etl.
 
 ## How to create an etl instance.
-# There are 3 steps to this.
+### There are 3 steps to this.
     Make your models and migrations with controllers if necessary.
         (#). This involves model for both etl and remote.
-            ```properties
+            ```bat
             php artisan make:model view_facilitys -mrc 
             #this will create a model with migrations, and controllers.
             
