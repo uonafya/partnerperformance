@@ -4,10 +4,10 @@ namespace App\Etl\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DHfrSubmissionEtl extends Model
+class TFacilityHfrTargetEtl extends Model
 {
     //
     protected $connection = 'mysql_etl';
-    protected $table = 'd_hfr_submission';
+    protected $table = 't_facility_hfr_target';
     protected $guarded = [];
 }

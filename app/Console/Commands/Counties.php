@@ -13,7 +13,7 @@ class Counties extends Command
      *
      * @var string
      */
-    protected $signature = 'etl:Counties';
+    protected $signature = 'etl:counties';
 
     /**
      * The console command description.
@@ -59,11 +59,13 @@ class Counties extends Command
 
         $all_county_remote_data = ModelsCounties::transform($Counties_etl);
         
-        $this->info($all_county_remote_data);
+        // $this->info($all_county_remote_data);
 
         $all_county_remote_data->each(function($item) use ($County_etl_etl) {
             // $this->info(...$item);
             $County_etl_etl->insert($item);
         });
+
+        $this->info("etl:Counties success");
     }
 }

@@ -59,11 +59,10 @@ class Weeks extends Command
             $all_weeks_remote_data = ModelsWeeks::transform($weeks_load);
             $this->info($all_weeks_remote_data);
             
-            // $all_weeks_remote_data->each(function($item) use ($weeks_etl) {
-            //     // $this->info(...$item);
-            //     $weeks_etl->insert($item);
-    
-            // });
+            $all_weeks_remote_data->each(function($item) use ($weeks_etl) {
+                // $this->info(...$item);
+                $weeks_etl->insert($item);
+            });
 
     }
 }

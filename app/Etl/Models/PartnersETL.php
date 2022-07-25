@@ -8,6 +8,7 @@ class PartnersETL extends Model
 {
     //
     protected $connection = 'mysql_etl';
-    protected $table = 'partners_etl';
+    protected $table = 'partners';
     protected $guarded = [];
+    
 }

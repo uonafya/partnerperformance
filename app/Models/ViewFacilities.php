@@ -17,7 +17,6 @@ class ViewFacilities extends Model
     {
        return $vf->map(function($item){
             // return $item;
-
             return [
                 'old_id' => $item->id,
                 'longitude' => $item->longitude ,

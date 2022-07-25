@@ -8,8 +8,6 @@ class FacilityETL extends Model
 {
     //
     protected $connection = 'mysql_etl';
-
-    protected $table = 'facility_etl';
-
+    protected $table = 'facilitys';
 
 }

@@ -13,8 +13,8 @@ class CreateDHfrSubmissionEtlsTable extends Migration
      */
     public function up()
     {
-        if(Schema::connection('mysql_etl')->hasTable('d_hfr_submission_etls')) return;
-        Schema::connection('mysql_etl')->create('d_hfr_submission_etls', function (Blueprint $table) {
+        if(Schema::connection('mysql_etl')->hasTable('d_hfr_submission')) return;
+        Schema::connection('mysql_etl')->create('d_hfr_submission', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('old_id');
             $table->string('week_id')->nullable(); 

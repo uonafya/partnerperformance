@@ -18,6 +18,13 @@ class CreateWeeksTable extends Migration
 
         Schema::connection('mysql_etl')->create('weeks', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('week_number')->nullable(); 
+            $table->string('start_date')->nullable(); 
+            $table->string('end_date')->nullable(); 
+            $table->string('year')->nullable(); 
+            $table->string('month')->nullable(); 
+            $table->string('financial_year')->nullable(); 
+            $table->string('quarter')->nullable(); 
             $table->timestamps();
         });
     }

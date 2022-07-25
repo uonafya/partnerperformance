@@ -168,6 +168,8 @@ return [
         App\Providers\TelescopeServiceProvider::class,
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        App\Providers\HfrServiceProvider::class,
+        
 
     ],
 

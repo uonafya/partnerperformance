@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,9 +14,22 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        //Counties
+        Commands\Counties::class,
+        //vf
         Commands\ViewFacility::class,
         // DhfrSubmission
         Commands\DhfrSubmission::class,
+        //Facility
+        Commands\Facility::class,
+        //partners
+        Commands\Partners::class,
+        //t_county_target
+        Commands\TCountyTarget::class,
+        //t_facility hfr target
+        Commands\TFacilityHfrTarget::class,
+        //weeks
+        Commands\Weeks::class
     ];
 
     /**
@@ -26,22 +40,35 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('vf:etl')
-            ->everyMinute();
 
-        $schedule->command('etl:dhfr')
-            ->everyMinute();
-
+        //php artisan etl:Counties  
         $schedule->command('etl:Counties')
         ->everyMinute();
-
-        // etl:Partners
+             
+                      
+        //php artisan etl:facilitys 
+        $schedule->command('etl:facilitys')
+        ->everyMinute();             
+        //php artisan etl:partners  
         $schedule->command('etl:Partners')
-        ->everyMinute();
-
-        // etl:weeks
+        ->everyMinute();             
+        //php artisan etl:tcountytarget   
+        $schedule->command('etl:tcountytarget')
+        ->everyMinute();       
+        //php artisan etl:thfrtarget
+        $schedule->command('etl:thfrtarget')
+        ->everyMinute();             
+        //php artisan etl:viewfacility   
+        $schedule->command('etl:vf')
+            ->everyMinute();
+        //php artisan etl:weeks  
         $schedule->command('etl:weeks')
         ->everyMinute();
+ 
+        //php artisan etl:dhfr   
+        $schedule->command('etl:dhfr')
+        ->everyMinute();  
+       
     }
 
     /**
