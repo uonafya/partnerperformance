@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('/hello_sp', function () {
+    return config('your-namespace.message');
+});
 
 Route::get('tx_curr_debug', 'HfrController@tx_curr_debug');
 

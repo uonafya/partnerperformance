@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Commons\Commons;
+use App\Commons\get_hfr_sum;
+use App\Commons\get_hfr_sum_prev;
 use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
@@ -16,38 +19,14 @@ use function Symfony\Component\VarDumper\Dumper\esc;
 
 class HfrController extends Controller
 {
-	private $my_table = 'd_hfr_submission';
-	
-	private $my_target_table = 't_county_target';
-	private $my_hfr_facility_target_table = 't_facility_hfr_target';
-	private $my_floating = 'floating_target';
+	use Commons, get_hfr_sum,get_hfr_sum_prev;
 
+	public $data;
 
-    public function get_hfr_sum($columns, $name)
-    {
-        $sql = "(";
-
-        foreach ($columns as $column) {
-            $sql .= "SUM(`{$column['column_name']}`) + ";
-        }
-        $sql = substr($sql, 0, -3);
-        $sql .= ") AS {$name} ";
-        return $sql;
-    }
-
-	public function get_hfr_sum_prev($columns, $name)
-    {
-        $sql = "(";
-
-        foreach ($columns as $column) {
-            $sql .= "SUM(`{$column['column_name']}`) + ";
-        }
-        $sql = substr($sql, 0, -3);
-        $sql .= ") AS {$name} ";
-		$sql .= ", month, year";
-		
-        return $sql;
-    }
+	// public function __construct()
+	// {
+	// 	$this->data = $this->testingServiceRoutine();
+	// }
 
 	public function misassigned_facilities()
 	{
@@ -70,20 +49,19 @@ class HfrController extends Controller
 		return view('tables.misassigned_facilities', $data);
 	}
 
-	public function testing()
+
+	public function testingServiceRoutine()
 	{
-		DB::enableQueryLog();
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 
 		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
 		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
 
-		// dd($sql);
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('tests'))
-			->get();
+		->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+		->selectRaw($sql)
+		->when(true, $this->get_callback('tests'))
+		->get();
 
 		// dd($rows);
 		$data['div'] = str_random(15);
@@ -109,14 +87,14 @@ class HfrController extends Controller
 			$data["outcomes"][1]["data"][$i] = (int) ($row->tests - $row->pos);
 			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->pos, $row->tests);
 			$i++;
-		}	
-
-
-		// $c_data = Cache::get('testing_cache');
-		// $data = json_encode($c_data);
+		}
 		return $data;
-		// DB::getQueryLog();
-		// return view('charts.dual_axis', $data);
+	}
+
+	public function testing()
+	{
+		$data = $this->testingServiceRoutine();
+		return view('charts.dual_axis', $data);
 	}
 
 	public function linkage()
