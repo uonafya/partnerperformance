@@ -8,7 +8,7 @@ class CountyETL extends Model
 {
     //
     protected $connection = 'mysql_etl';
-    protected $table = 'counties';
+    protected $table = 'countys';
     protected $guarded = [];
 
 }

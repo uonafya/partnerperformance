@@ -13,8 +13,8 @@ class CreateViewFacilitiesTable extends Migration
      */
     public function up()
     {
-        if(!Schema::connection('mysql_etl')->hasTable('view_facilities_etls')){
-            Schema::connection('mysql_etl')->create('view_facilities_etls', function (Blueprint $table) {
+        if(!Schema::connection('mysql_etl')->hasTable('view_facilitys')){
+            Schema::connection('mysql_etl')->create('view_facilitys', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->integer('old_id');
                 $table->string('longitude')->nullable();
@@ -50,6 +50,6 @@ class CreateViewFacilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('view_facilities');
+        Schema::dropIfExists('view_facilitys');
     }
 }

@@ -31,9 +31,9 @@ class HfrServiceProvider extends ServiceProvider
 {
     
 
-    use Commons, get_hfr_sum, 
-		get_hfr_sum_prev, get_joins_callback_weeks_hfr, 
-		get_callback, divisions_callback;
+    // use Commons, get_hfr_sum, 
+	// 	get_hfr_sum_prev, get_joins_callback_weeks_hfr, 
+	// 	get_callback, divisions_callback;
 	// use testingServiceRoutine;
 
     /**
@@ -43,7 +43,9 @@ class HfrServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            'App\Etl\Contracts\EtlContract',
+        );
 
     }
 
@@ -54,8 +56,8 @@ class HfrServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-		$hfrContrl = new HfrController();
-		$data = $hfrContrl->testingServiceRoutine();
+		// $hfrContrl = new HfrController();
+		// $data = $hfrContrl->testingServiceRoutine();
 		// dd($data);
 
 		// $welcomeMessage = "Welcome " . \App\Facility::first()->name;

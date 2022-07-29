@@ -15,7 +15,7 @@ class TCountyTarget extends Model
        return $load->map(function($item){
             // return $item;
             return [
-                'id' => $item->id,
+                // 'id' => $item->id,
                 'county_id' => $item->county_id ,
                 'partner_id' => $item->partner_id ,
                 'financial_year' => $item->financial_year ,

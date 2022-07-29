@@ -11,6 +11,7 @@ use App\Lookup;
 use App\HfrSubmission;
 use App\Partner;
 use App\Period;
+use App\ViewFacility;
 use App\Week;
 use Dotenv\Regex\Result;
 use Illuminate\Support\Facades\Cache;
@@ -20,13 +21,6 @@ use function Symfony\Component\VarDumper\Dumper\esc;
 class HfrController extends Controller
 {
 	use Commons, get_hfr_sum,get_hfr_sum_prev;
-
-	public $data;
-
-	// public function __construct()
-	// {
-	// 	$this->data = $this->testingServiceRoutine();
-	// }
 
 	public function misassigned_facilities()
 	{
@@ -86,8 +80,13 @@ class HfrController extends Controller
 			$data["outcomes"][0]["data"][$i] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$i] = (int) ($row->tests - $row->pos);
 			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->pos, $row->tests);
+
 			$i++;
 		}
+
+
+			
+		
 		return $data;
 	}
 

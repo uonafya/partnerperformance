@@ -16,7 +16,7 @@ class CreatePartnersTable extends Migration
         if(Schema::connection('mysql_etl')->hasTable('partners')) return;
 
         Schema::connection('mysql_etl')->create('partners', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigInteger('id');
             $table->bigInteger('old_id');
             $table->string('name')->nullable(); 
             $table->string('partnerDHISCode')->nullable();

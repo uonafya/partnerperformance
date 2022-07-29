@@ -57,7 +57,7 @@ class Weeks extends Command
             
             $this->info("weeks Started msql_wr");
             $all_weeks_remote_data = ModelsWeeks::transform($weeks_load);
-            $this->info($all_weeks_remote_data);
+            // $this->info($all_weeks_remote_data);
             
             $all_weeks_remote_data->each(function($item) use ($weeks_etl) {
                 // $this->info(...$item);

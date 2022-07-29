@@ -16,7 +16,7 @@ class Counties extends Model
             // return $item->name;
             
             return [
-                'old_id' => $item->id ,
+                'id' => $item->id ,
                 'name' => $item->name, 
                 'CountyDHISCode' => $item->CountyDHISCode , 
                 'CountyMFLCode' => $item->CountyMFLCode , 

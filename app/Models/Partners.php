@@ -15,7 +15,7 @@ class Partners extends Model
             // return $item;
 
             return [
-                'old_id' => $item->id,
+                // 'id' => $item->id,
                 'name' => $item->name, 
                 'partnerDHISCode' => $item->partnerDHISCode,
                 'mech_id' => $item->mech_id, 

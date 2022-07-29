@@ -55,7 +55,7 @@ class TCountyTarget extends Command
         // $this->info($facility_load);
         // $this->info($view_f);
         $all_tcounty_load_transform = ModelsTCountyTarget::transform($tcounty_load);
-        $this->info($all_tcounty_load_transform );
+        // $this->info($all_tcounty_load_transform );
 
         $all_tcounty_load_transform->each(function($item) use ($tcounty_etl) {
             // $this->info(...$item);

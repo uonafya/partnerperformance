@@ -54,7 +54,7 @@ class Facility extends BaseModel
         return $load->getCOllection()
                     ->map(function($item){
                         return [
-                            'old_id' => $item->id,
+                            'id' => $item->id,
 							'facilitycode' => $item->facilitycode,   
 							'district' => $item->district,  
 							'subcounty_id' => $item->subcounty_id,  

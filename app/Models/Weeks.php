@@ -15,7 +15,7 @@ class Weeks extends Model
             // return $item;
 
             return [
-                'id' => $item->id, 
+                // 'id' => $item->id, 
                 'week_number' => $item->week_number, 
                 'start_date' => $item->start_date, 
                 'end_date' => $item->end_date, 

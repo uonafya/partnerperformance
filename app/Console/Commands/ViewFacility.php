@@ -44,9 +44,10 @@ class ViewFacility extends Command
     {
 
         // Delete Store and Items (via cascade) First.
-        ViewFacilitiesEtl::truncate();
+        // ViewFacilitiesEtl::truncate();
 
         $this->info("vf Started");
+        // ViewFacilitiesEtl::query()->truncate();
 
         $view_faciltity_etl = new ViewFacilitiesEtl();
         $view_faciltity_etl->setConnection('mysql_etl');
@@ -56,22 +57,21 @@ class ViewFacility extends Command
         $view_faciltity = new ViewFacilities();
         $view_faciltity->setConnection('mysql_wr');
 
-        $view_f = $view_faciltity->all();
-        
-        $this->info("vf Started msql_wr");
-        // $this->info($view_f);
-        $all_facility_remote_data = ViewFacilities::transform($view_f);
-        
-        $all_facility_remote_data->each(function($item) use ($view_faciltity_etl) {
-            // $this->info(...$item);
-            $view_faciltity_etl->insert($item);
+        $view_f = $view_faciltity->first();
+        $this->info($view_f);
 
-        });
+        // $all_facility_remote_data = ViewFacilities::transform($view_f);
+        
+        // $all_facility_remote_data->each(function($item) use ($view_faciltity_etl) {
+        //     // $this->info(...$item);
+        //     $view_faciltity_etl->create($item);
+
+        // });
 
         
         // $view_faciltity_etl->insert(...$all_facility_remote_data);
 
-        // $this->info($all_facility_remote_data);
+        // $this->info('etl:viewfacility complete');
 
     }   
 
