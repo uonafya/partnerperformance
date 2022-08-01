@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ViewFacility extends Model
 {
 	protected $table = 'view_facilitys';
+	protected $guarded = [];
 
 
     public function scopeEligible($query, $offset=0)

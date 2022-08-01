@@ -16,7 +16,7 @@ class DHfrSubmission extends Model
         return $load->getCOllection()
                     ->map(function($item){
                         return [
-                            'old_id' => $item->id,
+                            'id' => $item->id,
                             'week_id' => $item->week_id, 
                             'facility' => $item->facility, 
                             'hts_tst_below_15_female' => $item->hts_tst_below_15_female, 

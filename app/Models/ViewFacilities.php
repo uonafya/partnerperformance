@@ -2,22 +2,24 @@
 
 namespace App\Models;
 
+use App\Etl\Contracts\EtlContract;
 use Illuminate\Database\Eloquent\Model;
 use stdClass;
 use Symfony\Component\VarDumper\Cloner\Data;
 
 use App\Etl\Models\ViewFacilitiesEtl;
 
-class ViewFacilities extends Model
+class ViewFacilities extends Model implements EtlContract
 {
-    public $data;
     protected $connection = 'mysql_wr';
+    protected $table = 'view_facilitys';
+    public $data;
+
 
     public static function transform($vf)
     {
         return $vf->map(function ($item) {
             // return $item;
-
             return [
                 'old_id' => $item->id,
                 'longitude' => $item->longitude,

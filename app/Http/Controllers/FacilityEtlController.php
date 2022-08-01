@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Etl\Models\FacilityEtl;
+=======
+use App\FacilityEtl;
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 use Illuminate\Http\Request;
 
 class FacilityEtlController extends Controller

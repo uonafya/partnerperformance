@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Commons\Commons;
+use App\Commons\get_hfr_sum;
+use App\Commons\get_hfr_sum_prev;
 use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 use App\HfrSubmission;
 use App\Partner;
 use App\Period;
+use App\ViewFacility;
 use App\Week;
 use Dotenv\Regex\Result;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use function Symfony\Component\VarDumper\Dumper\esc;
 
 class HfrController extends Controller
 {
+<<<<<<< HEAD
 	private $my_table = 'd_hfr_submission';
 	private $my_target_table = 't_county_target';
 	private $my_hfr_facility_target_table = 't_facility_hfr_target';
@@ -46,6 +52,9 @@ class HfrController extends Controller
 
 		return $sql;
 	}
+=======
+	use Commons, get_hfr_sum,get_hfr_sum_prev;
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 
 	public function misassigned_facilities()
 	{
@@ -68,22 +77,31 @@ class HfrController extends Controller
 		return view('tables.misassigned_facilities', $data);
 	}
 
+<<<<<<< HEAD
 	public function testing()
 	{
 		$tests = HfrSubmission::columns(true, 'hts_tst');
+=======
+
+	public function testingServiceRoutine()
+	{
+		$tests = HfrSubmission::columns(true, 'hts_tst'); 
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
 		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
 
-		// dd($sql);
 
 		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('tests'))
-			->get();
+		->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+		->selectRaw($sql)
+		->when(true, $this->get_callback('tests'))
+		->get();
 
 		// dd($rows);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Total Number Tested";
 		$data['yAxis2'] = "Yield (%)";
@@ -97,30 +115,50 @@ class HfrController extends Controller
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 1);
 
+<<<<<<< HEAD
 		$i = 0;
 		foreach ($rows as $key => $row) {
 			if (!$row->tests) continue;
+=======
+		$i=0;
+		foreach ($rows as $key => $row){
+			if(!$row->tests) continue;
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 
 			$data['categories'][$i] = Lookup::get_category($row);
 
 			$data["outcomes"][0]["data"][$i] = (int) $row->pos;
 			$data["outcomes"][1]["data"][$i] = (int) ($row->tests - $row->pos);
 			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->pos, $row->tests);
+<<<<<<< HEAD
 			$i++;
 <<<<<<< HEAD
 		}
 		return view('charts.dual_axis', $data);
 =======
 		}	
+=======
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 
-		// return $tests;
+			$i++;
+		}
 
 
-		// return	$data;
+			
+		
+		return $data;
+	}
 
+<<<<<<< HEAD
 		DB::getQueryLog();
 		// return view('charts.dual_axis', $data);
 >>>>>>> cb711dccbd5111ef995830192ceae2f788856569
+=======
+	public function testing()
+	{
+		$data = $this->testingServiceRoutine();
+		return view('charts.dual_axis', $data);
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 	}
 
 	public function linkage()
@@ -147,6 +185,7 @@ class HfrController extends Controller
 		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
 		Lookup::yAxis($data, 0, 1);
 
+<<<<<<< HEAD
 		$pool = Pool::create();
 
 		// $pool[] = async(function () {
@@ -157,6 +196,8 @@ class HfrController extends Controller
 
 		// await($pool);
 
+=======
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 
 		$i = 0;
 		foreach ($rows as $key => $row) {
@@ -361,6 +402,7 @@ class HfrController extends Controller
 
 	public function tx_curr_debug()
 	{
+<<<<<<< HEAD
 		$groupby = session('filter_groupby') ? 5 : 3;
 		$groupbypartner = session('filter_partner') ? 3 : 1;
 
@@ -389,6 +431,36 @@ class HfrController extends Controller
 			->when(($groupby == 5), function ($query) {
 				return $query->groupby('facility_name')->first();
 			});
+=======
+		$groupby = session('filter_groupby')? 5: 3;
+		$groupbypartner = session('filter_partner')? 3 : 1;
+
+		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
+		$sqlpartner = $this->get_hfr_sum($tx_curr, 'tx_curr');
+		$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr');
+		$sql_test = $this->get_hfr_sum($tx_curr, 'val');
+
+	  	$data['div'] = str_random(15); 
+		
+
+		return DB::table($this->my_hfr_facility_target_table)
+		->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
+		->selectRaw($sql_test)
+		->when(($groupby == 3), function ($query) {
+			return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.subcounty_id as div_id"));
+		})
+		->when(($groupby == 5), function ($query) {
+			return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
+		})
+		->whereRaw(Lookup::facility_target_query())
+		// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+		->when(($groupby == 3), function ($query) {
+			return $query->groupby(DB::raw("div_id,subcounty_name"));
+		})
+		->when(($groupby == 5), function ($query) {
+			return $query->groupby('facility_name')->first();
+		});
+>>>>>>> 97f25db22d3d5e317e55881e5a17a75cd76bde14
 		// ->orderby("div_id", 'asc')
 		// ->get();
 	}

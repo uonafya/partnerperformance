@@ -15,7 +15,7 @@ class Weeks extends Model
             // return $item;
 
             return [
-                'old_id' => $item->id,
+                // 'id' => $item->id, 
                 'week_number' => $item->week_number,
                 'start_date' => $item->start_date,
                 'end_date' => $item->end_date,
@@ -23,6 +23,7 @@ class Weeks extends Model
                 'month' => $item->month,
                 'financial_year' => $item->financial_year,
                 'quarter' => $item->quarter,
+
             ];
         });
     }

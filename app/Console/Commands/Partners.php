@@ -13,7 +13,7 @@ class Partners extends Command
      *
      * @var string
      */
-    protected $signature = 'etl:Partners';
+    protected $signature = 'etl:partners';
 
     /**
      * The console command description.
@@ -40,14 +40,14 @@ class Partners extends Command
     public function handle()
     {
        // Delete Store and Items (via cascade) First.
-    //    CountyETL::truncate();
+       //Todo: check if data  , persist what doesn't
+       PartnersETL::truncate();
 
        $this->info("etl:partners Started");
 
        $partners_etl = new PartnersETL();
        $partners_etl->setConnection('mysql_etl');
        // $view_faciltity_arr = $view_faciltity_etl->first();
-
 
        $partners = new ModelsPartners();
        $partners->setConnection('mysql_wr');
@@ -59,13 +59,17 @@ class Partners extends Command
 
        $all_partners_remote_data = ModelsPartners::transform($partners_load);
        
-       $this->info($all_partners_remote_data);
+    //    $this->info($all_partners_remote_data);
         
     // Todo persist from etl
     
-    //    $all_partners_remote_data->each(function($item) use ($partners_etl) {
-    //        // $this->info(...$item);
-    //        $partners_etl->insert($item);
-    //    });
+       $all_partners_remote_data->each(function($item) use ($partners_etl) {
+           // $this->info(...$item);
+           $partners_etl->insert($item);
+       });
+
+       $this->info("etl:partner success");
+
+
     }
 }

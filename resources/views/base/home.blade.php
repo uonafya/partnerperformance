@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <style type="text/css">
 	.display_date {
 		width: 130px;

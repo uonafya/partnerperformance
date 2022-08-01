@@ -11,17 +11,23 @@ class Partners extends Model
 
     public static function transform($partners)
     {
-        return $partners->map(function ($item) {
+        return $load->map(function ($item) {
             // return $item;
 
             return [
-                'old_id' => $item->id,
+                // 'id' => $item->id,
                 'name' => $item->name,
-                'partnerDHIScode' => $item->partnerDHIScode,
+                'partnerDHISCode' => $item->partnerDHISCode,
                 'mech_id' => $item->mech_id,
-                'funding_agency' => $item->funding_agency,
+                'fundingagency' => $item->fundingagency,
                 'funding_agency_id' => $item->funding_agency_id,
                 'logo' => $item->logo,
+                'country' => $item->country,
+                'flag' => $item->flag,
+                'orderno' => $item->orderno,
+                'unknown2013' => $item->unknown2013,
+                'unknown2014' => $item->unknown2014,
+                'unknown2015' => $item->unknown2015,
             ];
         });
     }

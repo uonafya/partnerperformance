@@ -11,8 +11,11 @@
 |
 */
 
+Route::get('/hello_sp', function () {
+    return config('your-namespace.message');
+});
 
-Route::get('getRecord', 'EtlController@getRecord');
+Route::get('tx_curr_debug', 'HfrController@tx_curr_debug');
 
 Route::middleware(['check_live'])->group(function(){
 	Auth::routes(['verify' => true]);
