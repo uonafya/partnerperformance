@@ -178,3 +178,9 @@ trait testingServiceRoutine{
 		return $data;
 	}
 }
+
+trait modelparams{
+	protected $connection = 'mysql_wr';
+    protected $table = 'view_facilitys';
+    public $data;
+}

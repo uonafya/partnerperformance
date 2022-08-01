@@ -56,21 +56,7 @@ class HfrServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-		// $hfrContrl = new HfrController();
-		// $data = $hfrContrl->testingServiceRoutine();
-		// dd($data);
 
-		// $welcomeMessage = "Welcome " . \App\Facility::first()->name;
-        // config(['your-namespace.message' => $data ]);
-
-
-		// $test_data = $this->testingHfrServiceRoution();
-        // config(['your-namespace.message' => $test_data ]);
-
-       
-		// View::composer('charts.dual_axis', function($view) use ($test_data) {
-		// 	$view->with('data', $test_data);
-		// });
-
+        //
     }
 }

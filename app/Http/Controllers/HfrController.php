@@ -57,7 +57,6 @@ class HfrController extends Controller
 		->when(true, $this->get_callback('tests'))
 		->get();
 
-		// dd($rows);
 		$data['div'] = str_random(15);
 		$data['yAxis'] = "Total Number Tested";
 		$data['yAxis2'] = "Yield (%)";
@@ -84,19 +83,28 @@ class HfrController extends Controller
 			$i++;
 		}
 
-
-			
+		// Cache::put("testingServiceRoutine", $data);
 		
 		return $data;
 	}
 
 	public function testing()
 	{
-		$data = $this->testingServiceRoutine();
+		// dd(Cache::get("testingServiceRoutine"));
+		// dd($this->testingServiceRoutine());
+		Cache::rememberForever('testingServiceRoutine', function(){
+			return $this->testingServiceRoutine();
+		});
+
+
+		// if(cache::get("testingServiceRoutine") != null)
+		$data = Cache::get("testingServiceRoutine");
+		// else
+		// 	$data = $this->testingServiceRoutine();
 		return view('charts.dual_axis', $data);
 	}
 
-	public function linkage()
+	public function linkageServiceRoutine()
 	{
 		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
 		$tx_new = HfrSubmission::columns(true, 'tx_new');
@@ -136,6 +144,13 @@ class HfrController extends Controller
 			}
 			$i++;
 		}	
+
+		return $data;
+	}
+
+	public function linkage()
+	{
+		$data = $this->linkageServiceRoutine();
 		return view('charts.dual_axis', $data);
 	}
 

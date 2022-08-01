@@ -2,20 +2,19 @@
 
 namespace App\Models;
 
+use App\Etl\Contracts\EtlContract;
 use Illuminate\Database\Eloquent\Model;
 
-class Partners extends Model
+class Partners extends Model implements EtlContract
 {
-    public $data;
-    protected $connection = 'mysql_wr';
-
+    
     public static function transform($load)
     {
        return $load->map(function($item){
             // return $item;
 
             return [
-                // 'id' => $item->id,
+                'id' => $item->id,
                 'name' => $item->name, 
                 'partnerDHISCode' => $item->partnerDHISCode,
                 'mech_id' => $item->mech_id, 

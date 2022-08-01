@@ -16,20 +16,7 @@ class CreatePartnersTable extends Migration
         if(Schema::connection('mysql_etl')->hasTable('partners')) return;
 
         Schema::connection('mysql_etl')->create('partners', function (Blueprint $table) {
-            $table->bigInteger('id');
-            $table->bigInteger('old_id');
-            $table->string('name')->nullable(); 
-            $table->string('partnerDHISCode')->nullable();
-            $table->string('mech_id')->nullable(); 
-            $table->string('fundingagency')->nullable(); 
-            $table->string('funding_agency_id')->nullable(); 
-            $table->string('logo')->nullable(); 
-            $table->string('country')->nullable(); 
-            $table->string('flag')->nullable(); 
-            $table->string('orderno')->nullable(); 
-            $table->string('unknown2013')->nullable(); 
-            $table->string('unknown2014')->nullable(); 
-            $table->string('unknown2015')->nullable(); 
+            $table->unsignedBigInteger('id');
             $table->timestamps();
         });
     }
