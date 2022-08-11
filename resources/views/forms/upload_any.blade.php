@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master-lte')
 
 @section('css_scripts')
   <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
