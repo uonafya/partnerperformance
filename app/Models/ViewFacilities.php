@@ -12,8 +12,9 @@ use App\Etl\Models\ViewFacilitiesEtl;
 class ViewFacilities extends Model implements EtlContract
 {
     protected $connection = 'mysql_wr';
-    protected $table = 'view_facilitys';
     public $data;
+    protected $table = 'view_facilitys';
+
 
 
     public static function transform($vf)

@@ -3,6 +3,7 @@
 /public/storage
 /storage/*.key
 /storage/exports
+storage/dbdata/*
 /vendor
 /.idea
 /.vscode

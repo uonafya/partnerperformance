@@ -21,20 +21,15 @@ use Illuminate\Support\Facades\View;
 
 use App\Http\Controllers\HfrController;
 
-
-
-
-
-
-
 class HfrServiceProvider extends ServiceProvider
 {
     
 
-    // use Commons, get_hfr_sum, 
-	// 	get_hfr_sum_prev, get_joins_callback_weeks_hfr, 
-	// 	get_callback, divisions_callback;
-	// use testingServiceRoutine;
+    use Commons, get_hfr_sum, 
+		get_hfr_sum_prev, get_joins_callback_weeks_hfr, 
+		get_callback, divisions_callback;
+
+    use testingServiceRoutine;
 
     /**
      * Register services.
@@ -46,7 +41,6 @@ class HfrServiceProvider extends ServiceProvider
         $this->app->bind(
             'App\Etl\Contracts\EtlContract',
         );
-
     }
 
     /**
@@ -56,7 +50,7 @@ class HfrServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+       //
 
-        //
     }
 }

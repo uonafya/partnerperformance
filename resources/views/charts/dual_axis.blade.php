@@ -5,7 +5,6 @@
     $(function () {
         @isset($dd)
             var dump_data = {!! $dd !!};
-            console.log("dump_data");
             console.log(dump_data);
         @endisset
 

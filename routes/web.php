@@ -23,6 +23,9 @@ Route::middleware(['check_live'])->group(function(){
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('ichart_testing', 'IChartsController@dual_axes_and_column')->name('ichart_testing');
+Route::get('ilinkage', 'IChartsController@linkage')->name('ilinkage');
+
 
 Route::post('facility/search', 'FilterController@facility')->name('facility.search');
 

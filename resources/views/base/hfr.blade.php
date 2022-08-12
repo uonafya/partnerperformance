@@ -28,7 +28,12 @@
 			    HTS Testing & Yield <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="testing">
-				<center><div class="loader"></div></center>
+			<center>
+				<div class="loader">					
+				</div>
+			</center>
+
+
 			</div>
 		</div>
 	</div>
@@ -357,81 +362,145 @@
 
 <script type="text/javascript">
 
-	function reload_page()
-	{
-		$("#testing").html("<center><div class='loader'></div></center>");
-		$("#testing_dis").html("<center><div class='loader'></div></center>");
-		$("#linkage").html("<center><div class='loader'></div></center>");
-		$("#linkage_dis").html("<center><div class='loader'></div></center>");
-		$("#tx_curr").html("<center><div class='loader'></div></center>");
-		$("#tx_curr_trend").html("<center><div class='loader'></div></center>");
-		$("#tx_mmd").html("<center><div class='loader'></div></center>");
-		$("#tx_mmd_detail").html("<center><div class='loader'></div></center>");
-		$("#tx_crude").html("<center><div class='loader'></div></center>");
-		$("#tx_crude_trend").html("<center><div class='loader'></div></center>");
-		$("#net_new").html("<center><div class='loader'></div></center>");
-		$("#net_new_detail").html("<center><div class='loader'></div></center>");
-		$("#prep_new").html("<center><div class='loader'></div></center>");
-		$("#tx_new").html("<center><div class='loader'></div></center>");
-		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
-        $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
-		$("#tx_curr_details").html("<center><div class='loader'></div></center>");
-		$("#vmmc_circ_details").html("<center><div class='loader'></div></center>");
-		$("#tx_new_dis").html("<center><div class='loader'></div></center>");
-		
-		
-       
-		$("#target_donut_hts").html("<center><div class='loader'></div></center>");
-		$("#target_donut_pos").html("<center><div class='loader'></div></center>");
-		$("#target_donut_tx_new").html("<center><div class='loader'></div></center>");
-		$("#target_donut_vmmc_circ").html("<center><div class='loader'></div></center>");
-		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
-		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
-
-
-		// Ordering the AJAX calls according to the order of the charts in the html view to create peception of faster load
-		$("#testing").load("{{ url('hfr/testing') }}");
-		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
-		$("#linkage").load("{{ url('hfr/linkage') }}");
-		$("#linkage_dis").load("{{ url('hfr/linkage_dis') }}");
-
-		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
-		$("#target_donut_pos").load("{{ url('hfr/target_donut/hts_tst_pos') }}");
-		$("#target_donut_tx_new").load("{{ url('hfr/target_donut/tx_new') }}");
-		$("#tx_new").load("{{ url('hfr/tx_new') }}");
-		$("#tx_new_dis").load("{{ url('hfr/tx_new_dis') }}");
-		$("#target_donut_tx_curr").load("{{ url('hfr/target_donut/tx_curr') }}");
-		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
-		$("#tx_curr_trend").load("{{ url('hfr/tx_curr_trend') }}");
-		$("#tx_curr_details").load("{{ url('hfr/tx_curr_details') }}");
-		$("#tx_crude").load("{{ url('hfr/tx_crude') }}");
-		$("#tx_crude_trend").load("{{ url('hfr/tx_crude_trend') }}");
-		$("#net_new").load("{{ url('hfr/net_new') }}");
-		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
-		$("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
-		$("#target_donut_prep_new").load("{{ url('hfr/target_donut/prep_new') }}");
-		$("#prep_new").load("{{ url('hfr/prep_new') }}");
-		$("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
-		$("#target_donut_vmmc_circ").load("{{ url('hfr/target_donut/vmmc_circ') }}");
-		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
-		$("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
-
-		// $("#tx_new").load("{{ url('hfr/tx_new') }}");
-		// $("#net_new_detail").load("{{ url('hfr/net_new_detail') }}");
-		
-	}
-
-
 	$().ready(function(){
-
 		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
 		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
 
+		// $("#testing").load("{{ url('hfr/testing') }}");
+
+		// $.ajax({
+		// 	type: "GET",
+		// 	url:"{{ url('hfr/testing') }}/",
+		// 	// cache: false,
+		// 	// contentType: false,
+		// 	// processData: false,
+		// 	dataType: 'html',
+		// 	async: true,
+		// 	success: function (data) {
+		// 		$("#testing").html(data);
+
+		// 		console.log(data);	
+
+		// 	},
+		// 	error: function (xhr, textStatus, errorThrown) {
+		// 		console.log("XHR",xhr);
+		// 		console.log("status",textStatus);
+		// 		console.log("Error in",errorThrown);
+		// 	}
+		// });
+
+		// $.ajax({
+		// 	type: "GET",
+		// 	url:"{{ url('hfr/testing_dis') }}/",
+		// 	cache: true,
+		// 	// contentType: false,
+		// 	// processData: false,
+		// 	dataType: 'html',
+		// 	async: true,
+		// 	success: function (data) {
+		// 		$("#testing_dis").html(data);
+
+		// 		console.log(data);	
+
+		// 	},
+		// 	error: function (xhr, textStatus, errorThrown) {
+		// 		console.log("XHR",xhr);
+		// 		console.log("status",textStatus);
+		// 		console.log("Error in",errorThrown);
+		// 	}
+		// });
+
+		// $.ajax({
+		// 	type: "GET",
+		// 	url:"{{ url('hfr/linkage') }}/",
+		// 	cache: true,
+		// 	// contentType: false,
+		// 	// processData: false,
+		// 	dataType: 'html',
+		// 	async: true,
+		// 	success: function (data) {
+		// 		$("#linkage").html(data);
+
+		// 		console.log(data);	
+
+		// 	},
+		// 	error: function (xhr, textStatus, errorThrown) {
+		// 		console.log("XHR",xhr);
+		// 		console.log("status",textStatus);
+		// 		console.log("Error in",errorThrown);
+		// 	}
+		// });
 
 		
 		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
-
 	});
+
+	function reload_page()
+	{
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/testing') }}/",
+			cache: true,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#testing").html(data);
+
+				console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/testing_dis') }}/",
+			cache: true,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#testing_dis").html(data);
+
+				console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/linkage') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#linkage").html(data);
+
+				console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+	}
 
 </script>
 
@@ -443,7 +512,6 @@
 		$(".detail_tables").removeClass("hidden");
 	
 		
-
 		///////
 		var element = document.getElementById('body');
 		var opt = {
@@ -465,8 +533,6 @@
 	function hide(){
 		$(".detail_tables").addClass("hidden");
 	}
-
-
 </script>
 {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script> --}}
@@ -511,5 +577,3 @@
 
 
 @endsection
-
-
