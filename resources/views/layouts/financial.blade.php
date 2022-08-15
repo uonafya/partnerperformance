@@ -1,11 +1,31 @@
 @if(isset($counties))
-<div class="row" id="filter">
+<div style="background-color: #E4E9F7" class="row" id="filter">
+
+
+	<div class="position-absolute text-right floating-action-menu" style="bottom: 10px; right: 10px;">
+        <div class="action-menu">
+            <div class="floating-action">
+                <div class="badge badge-dark">Add Product</div>
+                <a class="btn-floating btn-sm btn-secondary"><i class="fas fa-plus"></i></a>
+            </div>
+            <div class="floating-action">
+                <div class="badge badge-dark">Save Order</div>
+                <a class="btn-floating btn-sm btn-success"><i class="fas fa-save"></i></a>
+            </div>
+        </div>
+        <div class="d-block action-button">
+            <a class="btn-floating btn-primary" onclick="$(this).closest('div.floating-action-menu').toggleClass('active')">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+
 
 	<div class="row">	
 
-		<div class="col-md-3">
-			<select class="btn filters form-control" id="filter_county">
-				<option disabled='true'>Select County</option>
+		<div style="padding: 1%"  class="col-md-3">
+			<select  class="btn filters form-control" id="filter_county">
+				<option  disabled='true'>Select County</option>
 				<option value='null' selected='true'>All Counties</option>
 
 				@foreach($counties as $county)
@@ -14,7 +34,7 @@
 			</select>		
 		</div>	
 
-		<div class="col-md-3">
+		<div style="padding: 1%"  class="col-md-3">
 			<select class="btn filters form-control" id="filter_subcounty">
 				<option disabled='true'>Select Subcounty</option>
 				<option value='null' selected='true'>All Subcounties</option>
@@ -25,7 +45,7 @@
 			</select>		
 		</div>		
 
-		<div class="col-md-3">
+		<div style="padding: 1%"  class="col-md-3">
 			<select class="btn filters form-control" id="filter_ward">
 				<option disabled='true'>Select Ward</option>
 				<option value='null' selected='true'>All Wards</option>
@@ -36,7 +56,7 @@
 			</select>		
 		</div>
 
-		<div class="col-md-3">
+		<div style="padding: 1%"  class="col-md-3">
 			<select class="btn filters form-control" id="filter_partner">
 				<option disabled='true'>Select Partner</option>
 				<option value='null' selected='true'>All Partners</option>

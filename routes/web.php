@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('/hello_sp', function () {
+    return config('your-namespace.message');
+});
 
 Route::get('tx_curr_debug', 'HfrController@tx_curr_debug');
 
@@ -19,6 +22,11 @@ Route::middleware(['check_live'])->group(function(){
 });
 
 // Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get("theme", "IChartsController@themeit");
+
+Route::get('ichart_testing', 'IChartsController@testing')->name('ichart_testing');
+Route::get('ilinkage', 'IChartsController@linkage')->name('ichart_linkage');
 
 
 Route::post('facility/search', 'FilterController@facility')->name('facility.search');

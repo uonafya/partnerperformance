@@ -1,4 +1,4 @@
-@extends('layouts.master-lte')
+@extends('layouts.master2')
 
 @section('content')
 
@@ -10,7 +10,7 @@
 	.detail_date {
 		width: 130px;
 		display: inline;
-	}
+	}	
 </style>
 
 <div class="row">
@@ -28,7 +28,11 @@
 			    HTS Testing & Yield <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="testing">
-				<center><div class="loader"></div></center>
+			<center>
+				<img src="img/spinner_hfr.gif" class="img-circle elevation-2" alt="Spinner HFR">
+			</center>
+
+
 			</div>
 		</div>
 	</div>
@@ -42,7 +46,7 @@
 			    HTS Testing & Yield Details   <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="testing_dis">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -56,7 +60,7 @@
 			    Linkage (HTS POS & TX NEW) <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="linkage">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -69,7 +73,7 @@
 			    Linkage (HTS POS & TX NEW) Details <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="linkage_dis">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -82,7 +86,7 @@
 			    Testing Target <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="target_donut_hts">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -92,7 +96,7 @@
 			    Positives Target <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="target_donut_pos">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -102,7 +106,7 @@
 			    TX New Target <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="target_donut_tx_new">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -114,7 +118,7 @@
 			   Tx New <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_new">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -127,7 +131,7 @@
 			    Tx New Details  <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_new_dis">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -139,7 +143,7 @@
 			    TX CURR Target <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="target_donut_tx_curr">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -149,7 +153,7 @@
 			    TX CURR <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_curr">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -161,7 +165,7 @@
 			    TX CURR Detail  <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_curr_details">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -174,7 +178,7 @@
 			    Tx Curr Trend  <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_curr_trend">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -186,7 +190,7 @@
 			    Tx Curr Trend Detail  <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_curr_trend_details">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -199,7 +203,7 @@
 			    TX_Curr Crude Retention <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_crude">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -212,7 +216,7 @@
 			    TX_Curr Crude Retention Trend <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_crude_trend">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -225,7 +229,7 @@
 			Net New <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="net_new">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -235,7 +239,7 @@
 			Net New Detail <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="net_new_detail">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div> -->
@@ -248,7 +252,7 @@
 			    TX MMD <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_mmd">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -258,7 +262,7 @@
 			    TX MMD Detail <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="tx_mmd_detail">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -271,7 +275,7 @@
 			    PrEP New Target <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="target_donut_prep_new">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -281,7 +285,7 @@
 			    PrEP NEW <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="prep_new">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 
 		</div>
@@ -295,7 +299,7 @@
 				Prep New Details   <div class="detail_date"></div>
 			</div>
 			<div class="panel-body" id="prep_new_last_rpt_period">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -308,7 +312,7 @@
 			    VMMC Target <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="target_donut_vmmc_circ">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -318,7 +322,7 @@
 			    VMMC CIRC <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="vmmc_circ">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -331,7 +335,7 @@
 			    VMMC CIRC Details  <div class="detail_date"></div>
 		    </div>
 			<div class="panel-body" id="vmmc_circ_details">
-				<center><div class="loader"></div></center>
+				<center><img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR"></center>
 			</div>
 		</div>
 	</div>
@@ -344,7 +348,9 @@
 		    <div class="panel-heading">Facilities With HFR Data that are not assigned to USAID Partners <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="misassigned_facilities">
-				<center><div class="loader"></div></center>
+				<center>
+					<img src="{{ asset("img/spinner_hfr.gif") }}" class="img-circle elevation-2" alt="Spinner HFR">
+				</center>
 			</div>
 		</div>
 	</div>
@@ -357,44 +363,109 @@
 
 <script type="text/javascript">
 
+	$().ready(function(){
+		// $("#misassigned_facilities").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  ");
+		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
+
+		$("#testing").load("{{ url('hfr/testing') }}");
+		
+		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
+	});
+
 	function reload_page()
 	{
-		$("#testing").html("<center><div class='loader'></div></center>");
-		$("#testing_dis").html("<center><div class='loader'></div></center>");
-		$("#linkage").html("<center><div class='loader'></div></center>");
-		$("#linkage_dis").html("<center><div class='loader'></div></center>");
-		$("#tx_curr").html("<center><div class='loader'></div></center>");
-		$("#tx_curr_trend").html("<center><div class='loader'></div></center>");
-		$("#tx_mmd").html("<center><div class='loader'></div></center>");
-		$("#tx_mmd_detail").html("<center><div class='loader'></div></center>");
-		$("#tx_crude").html("<center><div class='loader'></div></center>");
-		$("#tx_crude_trend").html("<center><div class='loader'></div></center>");
-		$("#net_new").html("<center><div class='loader'></div></center>");
-		$("#net_new_detail").html("<center><div class='loader'></div></center>");
-		$("#prep_new").html("<center><div class='loader'></div></center>");
-		$("#tx_new").html("<center><div class='loader'></div></center>");
-		$("#vmmc_circ").html("<center><div class='loader'></div></center>");
-        $("#prep_new_last_rpt_period").html("<center><div class='loader'></div></center>");
-		$("#tx_curr_details").html("<center><div class='loader'></div></center>");
-		$("#vmmc_circ_details").html("<center><div class='loader'></div></center>");
-		$("#tx_new_dis").html("<center><div class='loader'></div></center>");
-		
-		
-       
-		$("#target_donut_hts").html("<center><div class='loader'></div></center>");
-		$("#target_donut_pos").html("<center><div class='loader'></div></center>");
-		$("#target_donut_tx_new").html("<center><div class='loader'></div></center>");
-		$("#target_donut_vmmc_circ").html("<center><div class='loader'></div></center>");
-		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
-		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
+
+		// $("#testing").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#testing_dis").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#linkage").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#linkage_dis").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_curr").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_curr_trend").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_mmd").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_mmd_detail").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_crude").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_crude_trend").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#net_new").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#net_new_detail").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#prep_new").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_new").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#vmmc_circ").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+        // $("#prep_new_last_rpt_period").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_curr_details").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#vmmc_circ_details").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#tx_new_dis").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#target_donut_hts").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#target_donut_pos").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#target_donut_tx_new").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#target_donut_vmmc_circ").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#target_donut_prep_new").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+		// $("#target_donut_tx_curr").html("<center><img src="{{ asset("img/spinner_hfr.gif") }}"  </center>");
+
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/testing') }}/",
+			cache: true,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#testing").html(data);
+
+				console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/testing_dis') }}/",
+			cache: true,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#testing_dis").html(data);
+
+				console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/linkage') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#linkage").html(data);
+
+				console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
 
 
-		// Ordering the AJAX calls according to the order of the charts in the html view to create peception of faster load
-		$("#testing").load("{{ url('hfr/testing') }}");
-		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
-		$("#linkage").load("{{ url('hfr/linkage') }}");
 		$("#linkage_dis").load("{{ url('hfr/linkage_dis') }}");
-
 		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
 		$("#target_donut_pos").load("{{ url('hfr/target_donut/hts_tst_pos') }}");
 		$("#target_donut_tx_new").load("{{ url('hfr/target_donut/tx_new') }}");
@@ -416,22 +487,8 @@
 		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
 		$("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
 
-		// $("#tx_new").load("{{ url('hfr/tx_new') }}");
-		// $("#net_new_detail").load("{{ url('hfr/net_new_detail') }}");
-		
-	}
 
-
-	$().ready(function(){
-
-		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
-		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
-
-
-		
-		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
-
-	});
+	};
 
 </script>
 
@@ -443,7 +500,6 @@
 		$(".detail_tables").removeClass("hidden");
 	
 		
-
 		///////
 		var element = document.getElementById('body');
 		var opt = {
@@ -465,8 +521,6 @@
 	function hide(){
 		$(".detail_tables").addClass("hidden");
 	}
-
-
 </script>
 {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script> --}}
@@ -511,5 +565,3 @@
 
 
 @endsection
-
-
