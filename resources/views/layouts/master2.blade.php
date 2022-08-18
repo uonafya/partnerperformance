@@ -132,16 +132,15 @@
             }
             .sidebar .nav-links li .sub-menu a{
             color: #fff;
-            text-decoration-color: #fff;
             font-size: 15px;
             padding: 5px 0;
             white-space: nowrap;
-            opacity: 0.6;
+            opacity: 10;
             transition: all 0.3s ease;
             }
             .sidebar .nav-links li .sub-menu a:hover{
                 opacity: 0.6;
-                background-color: #E4E9F7;
+                background-color: #0f1012;
                 padding: 15px;              
                 transition: all 0.3s ease;
             }
@@ -159,7 +158,7 @@
             }
             .sidebar.close .nav-links li:hover .sub-menu{
             top: 0;
-            opacity: 1;
+            opacity: 10;
             pointer-events: auto;
             transition: all 0.4s ease;
             }
@@ -168,7 +167,7 @@
             }
             .sidebar.close .nav-links li .sub-menu .link_name{
             font-size: 18px;
-            opacity: 1;
+            opacity: 10;
             display: block;
             }
             .sidebar .nav-links li .sub-menu.blank{
@@ -333,8 +332,32 @@
             transform: rotate(-315deg);
 
         }
+
+        .css-after {
+        position: relative;
+        }
+        .css-after img {
+        width: 105px;
+        height: 105px;
+        border-radius: 50%;
+        border: 2px solid #1D5288;
+        }
+        .css-after::after {
+        content: "";
+        width: 85px;
+        height: 91px;
+        margin-left: 2%;
+        margin-top: 5%;
+        border-radius: 50%;
+        display: block;
+        position: absolute;
+        top: -6px;
+        left: -3px;
+        }
     
-            
+       .dropdown-menu{
+        background-color: #01FF01 !important;
+       }
        </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
@@ -374,7 +397,7 @@
         </a>
         <ul class="sub-menu blank">
           <li><a class="link_name" href="/">Dashboard</a></li>
-        </ul>
+        </ul
       </li>
       <li>
         <div class="iocn-link">
@@ -390,7 +413,140 @@
           <li id="sub_menu_color" ><a style="color: #E4E9F7" href="{{ route("ichart_linkage") }}">Linkage</a></li>
           <li id="sub_menu_color" ><a style="color: #E4E9F7" href="#">More ...</a></li>
         </ul>
+
       </li>
+
+       @auth
+        <li>
+            <div class="iocn-link">
+            <a href="#">
+                <i class='bx bx-line-chart' ></i>
+                <span class="link_name">More Access.</span>
+            </a>
+            <i class='bx bxs-chevron-down arrow' ></i>
+            </div>
+            <ul  class="sub-menu">
+                <li  ><a class="link_name" href="/">More Access.</a></li>
+                {{-- @if (Request::is('/')) --}}
+                        {{-- <li><a href="{{ url('/') }}">Home</a></li>	 --}}
+                {{-- @elseif (Request::is('testing')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('testing') }}">Testing</a></li>	
+                {{-- @elseif (Request::is('pmtct')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('pmtct') }}">PMTCT</a></li>	
+                {{-- @elseif (Request::is('art')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('art') }}">ART</a></li>	
+                {{-- @elseif (Request::is('vmmc')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7"  href="{{ url('vmmc') }}">VMMC</a></li>	
+                {{-- @elseif (Request::is('tb')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('tb') }}">TB</a></li>	
+                {{-- @elseif (Request::is('keypop')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('keypop') }}">KeyPOP</a></li>	
+                {{-- @elseif (Request::is('indicators')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7"  href="{{ url('indicators') }}">Indicators</a></li>	
+                {{-- @elseif (Request::is('non_mer')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7"  href="{{ url('non_mer') }}">Non Mer</a></li>	
+                {{-- @elseif (Request::is('pns')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7"  href="{{ url('pns') }}">PNS</a></li>	
+                {{-- @elseif (Request::is('surge')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('surge') }}">Surge</a></li>	
+                {{-- @elseif (Request::is('violence')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7"  href="{{ url('violence') }}">GBV Dashboard</a></li>
+                {{-- @elseif (Request::is('gbv')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('gbv') }}">GBV Deep Dive</a></li>
+                {{-- @elseif(Request::is('hfr')) --}}
+                <li id="hfr"><a href="{{ url('hfr') }}">HFR</a></li>	
+                {{-- @elseif(Request::is('cervical_cancer')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7"  id="cancer"><a href="{{ url('cervical_cancer') }}">Cervical Cancer</a></li>	
+                {{-- @elseif(Request::is('regimen')) --}}
+                <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ url('regimen') }}">MOH 729</a></li>	
+                {{-- @endif --}}
+            </ul>
+        </li>
+       @endauth
+
+       @auth
+       <li>
+           <div class="iocn-link">
+           <a href="#">
+               <i class='bx bx-line-chart' ></i>
+               <span class="link_name">Downloads.</span>
+           </a>
+           <i class='bx bxs-chevron-down arrow' ></i>
+           </div>
+           <ul  class="sub-menu">
+            <li  ><a class="link_name" href="/">Downloads.</a></li>
+            <li class="dropdown">
+                <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Download Indicators Template <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li ><a href="{{ url('download/indicators/2017') }}">2017</a></li>
+                    <li><a href="{{ url('download/indicators/2018') }}">2018</a></li>
+                    <li><a href="{{ url('download/indicators/2019') }}">2019</a></li>
+                    <li><a href="{{ url('download/indicators/2020') }}">2020</a></li>
+                </ul>
+            </li>							
+            <li class="dropdown">
+                <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Download Non-mer Template <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url('download/non_mer/2017') }}">2017</a></li>
+                    <li><a href="{{ url('download/non_mer/2018') }}">2018</a></li>
+                    <li><a href="{{ url('download/non_mer/2019') }}">2019</a></li>
+                    <li><a href="{{ url('download/non_mer/2020') }}">2020</a></li>
+                </ul>
+            </li>	
+            <li class="dropdown">
+                <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Download Other Templates <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url('/weekly/download/vmmc_circ') }}">Download VMMC Circ Template</a></li>
+                    <li><a href="{{ url('/weekly/download/prep_new') }}">Download PREP New Template</a></li>
+                    <li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
+                    <li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
+                    <li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
+                    <li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
+                    <li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
+                    <li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
+                    <li><a href="{{ url('/cervical_cancer/download') }}">Download Cervical Cancer Template</a></li>
+                    @if(auth()->user()->user_type_id < 3)
+                        <li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
+                        <li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
+                    @endif
+                </ul>
+            </li>
+
+            <li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
+            
+            <li class="dropdown">
+                <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Upload Templates <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url('/upload/weekly/vmmc_circ') }}">Upload VMMC Circ</a></li>
+                    <li><a href="{{ url('/upload/weekly/prep_new') }}">Upload PREP New</a></li>
+                    <li><a href="{{ url('/upload/tx_curr') }}">Upload TX Current</a></li>
+                    <li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>
+                    <li><a href="{{ url('/upload/gbv') }}">Upload GBV</a></li>
+                    <li><a href="{{ url('/upload/hfr') }}">Upload HFR</a></li>
+                    <li><a href="{{ url('/upload/cervical-cancer') }}">Upload Cervical Cancer</a></li>
+                    <li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
+                    <li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
+                    <li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>
+                    <li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer Indicators</a></li>
+                </ul>
+            </li>
+            @if(auth()->user()->user_type_id == 1)
+                <li><a href="{{ url('/user/create') }}">Create User</a></li>
+            @endif
+            <li><a href="{{ url('/user/change_password') }}">Change Password</a></li>
+           
+           </ul>
+       </li>
+      @endauth
+
       {{-- <li>
         <div class="iocn-link">
           <a href="#">
@@ -428,7 +584,7 @@
       </span>
       {{-- TOP NAVIGATION --}}
 
-      <div style="margin-left:  50%; margin-top: 20px;"  class="navbar navbar-default">
+      <div style="margin-left:  45%; margin-top: 20px;"  class="navbar navbar-default">
         <div style="border: 1.5px solid #1D5288; border-radius: 5%; "  onMouseOver="this.style.color='#000'"  onMouseOut="this.style.color='#fff'"  class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -440,39 +596,7 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul  class="nav navbar-nav">
-                    @if (Request::is('/'))
-                    {{-- <li><a href="{{ url('/') }}">Home</a></li>	 --}}
-                    @elseif (Request::is('testing'))
-                    <li><a href="{{ url('testing') }}">Testing</a></li>	
-                    @elseif (Request::is('pmtct'))
-                    <li><a href="{{ url('pmtct') }}">PMTCT</a></li>	
-                    @elseif (Request::is('art'))
-                    <li><a href="{{ url('art') }}">ART</a></li>	
-                    @elseif (Request::is('vmmc'))
-                    <li><a href="{{ url('vmmc') }}">VMMC</a></li>	
-                    @elseif (Request::is('tb'))
-                    <li><a href="{{ url('tb') }}">TB</a></li>	
-                    @elseif (Request::is('keypop'))
-                    <li><a href="{{ url('keypop') }}">KeyPOP</a></li>	
-                    @elseif (Request::is('indicators'))
-                    <li><a href="{{ url('indicators') }}">Indicators</a></li>	
-                    @elseif (Request::is('non_mer'))
-                    <li><a href="{{ url('non_mer') }}">Non Mer</a></li>	
-                    @elseif (Request::is('pns'))
-                    <li><a href="{{ url('pns') }}">PNS</a></li>	
-                    @elseif (Request::is('surge'))
-                    <li><a href="{{ url('surge') }}">Surge</a></li>	
-                    @elseif (Request::is('violence'))
-                    <li><a href="{{ url('violence') }}">GBV Dashboard</a></li>
-                    @elseif (Request::is('gbv'))
-                    <li><a href="{{ url('gbv') }}">GBV Deep Dive</a></li>
-                    @elseif(Request::is('hfr'))
-                    <li id="hfr"><a href="{{ url('hfr') }}">HFR</a></li>	
-                    @elseif(Request::is('cervical_cancer'))
-                    <li id="cancer"><a href="{{ url('cervical_cancer') }}">Cervical Cancer</a></li>	
-                    @elseif(Request::is('regimen'))
-                    <li><a href="{{ url('regimen') }}">MOH 729</a></li>	
-                    @endif
+                    
                     
                     <!-- 
                     <li><a href="{{ url('dispensing') }}">MMD</a></li>	
@@ -488,85 +612,37 @@
                         <li><a href="{{ url('/login') }}">Login</a></li>
                     @endguest	
                     @auth
-                        <li class="dropdown">
-                            <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Download Indicators Template <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('download/indicators/2017') }}">2017</a></li>
-                                <li><a href="{{ url('download/indicators/2018') }}">2018</a></li>
-                                <li><a href="{{ url('download/indicators/2019') }}">2019</a></li>
-                                <li><a href="{{ url('download/indicators/2020') }}">2020</a></li>
-                            </ul>
-                        </li>							
-                        <li class="dropdown">
-                            <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Download Non-mer Template <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('download/non_mer/2017') }}">2017</a></li>
-                                <li><a href="{{ url('download/non_mer/2018') }}">2018</a></li>
-                                <li><a href="{{ url('download/non_mer/2019') }}">2019</a></li>
-                                <li><a href="{{ url('download/non_mer/2020') }}">2020</a></li>
-                            </ul>
-                        </li>	
-                        <li class="dropdown">
-                            <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Download Other Templates <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('/weekly/download/vmmc_circ') }}">Download VMMC Circ Template</a></li>
-                                <li><a href="{{ url('/weekly/download/prep_new') }}">Download PREP New Template</a></li>
-                                <li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
-                                <li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
-                                <li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
-                                <li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
-                                <li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
-                                <li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
-                                <li><a href="{{ url('/cervical_cancer/download') }}">Download Cervical Cancer Template</a></li>
-                                @if(auth()->user()->user_type_id < 3)
-                                    <li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
-                                    <li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
-                                @endif
-                            </ul>
-                        </li>
-
-                        <li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
-                        
-                        <li class="dropdown">
-                            <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Upload Templates <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('/upload/weekly/vmmc_circ') }}">Upload VMMC Circ</a></li>
-                                <li><a href="{{ url('/upload/weekly/prep_new') }}">Upload PREP New</a></li>
-                                <li><a href="{{ url('/upload/tx_curr') }}">Upload TX Current</a></li>
-                                <li><a href="{{ url('/upload/dispensing') }}">Upload Multi-Month Dispensing</a></li>
-                                <li><a href="{{ url('/upload/gbv') }}">Upload GBV</a></li>
-                                <li><a href="{{ url('/upload/hfr') }}">Upload HFR</a></li>
-                                <li><a href="{{ url('/upload/cervical-cancer') }}">Upload Cervical Cancer</a></li>
-                                <li><a href="{{ url('/upload/surge') }}">Upload Surge</a></li>
-                                <li><a href="{{ url('/upload/pns') }}">Upload PNS</a></li>
-                                <li><a href="{{ url('/upload/indicators') }}">Upload Early Warning Indicators</a></li>
-                                <li><a href="{{ url('/upload/non_mer') }}">Upload Non-Mer Indicators</a></li>
-                            </ul>
-                        </li>
-                        @if(auth()->user()->user_type_id == 1)
-                            <li><a href="{{ url('/user/create') }}">Create User</a></li>
-                        @endif
-                        <li><a href="{{ url('/user/change_password') }}">Change Password</a></li>
                         <li><a href="{{ route('logout') }}" onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();">Logout</a></li>
-
+                            document.getElementById('logout-form').submit();">Logout</a></li>
+        
                         <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     @endauth
                 </ul>
+                
+                
+               
+
+
             </div>
         </div>
         </div>
+
+        @auth
+            <div class="css-after">
+                <img style="width: 40px; height: 40px; margin-top: 18px; margin-left: 20px;" src="img/user.png" alt="Kenya Logo">
+
+                <br>
+                <p  style="margin-left: 15px;">{{auth()->user()->name}}</p>
+            </div>
+        @endauth
+
+        
     </div>
+    
+
+ 
 
     </div>
 
