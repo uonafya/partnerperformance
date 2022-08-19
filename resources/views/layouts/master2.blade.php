@@ -474,7 +474,28 @@
            <i class='bx bxs-chevron-down arrow' ></i>
            </div>
            <ul  class="sub-menu">
-            <li  ><a class="link_name" href="/">Downloads.</a></li>
+
+            <li class="dropdown">
+                <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Download Other Templates <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url('/weekly/download/vmmc_circ') }}">Download VMMC Circ Template</a></li>
+                    <li><a href="{{ url('/weekly/download/prep_new') }}">Download PREP New Template</a></li>
+                    <li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
+                    <li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
+                    <li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
+                    <li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
+                    <li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
+                    <li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
+                    <li><a href="{{ url('/cervical_cancer/download') }}">Download Cervical Cancer Template</a></li>
+                    @if(auth()->user()->user_type_id < 3)
+                        <li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
+                        <li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
+                    @endif
+                </ul>
+            </li>
+            
             <li class="dropdown">
                 <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
                     Download Indicators Template <b class="caret"></b>
@@ -497,26 +518,7 @@
                     <li><a href="{{ url('download/non_mer/2020') }}">2020</a></li>
                 </ul>
             </li>	
-            <li class="dropdown">
-                <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                    Download Other Templates <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="{{ url('/weekly/download/vmmc_circ') }}">Download VMMC Circ Template</a></li>
-                    <li><a href="{{ url('/weekly/download/prep_new') }}">Download PREP New Template</a></li>
-                    <li><a href="{{ url('/tx_curr/download') }}">Download TX Current Template</a></li>
-                    <li><a href="{{ url('/dispensing/download') }}">Download Multi-Month Dispensing Template</a></li>
-                    <li><a href="{{ url('/pns/download') }}">Download PNS Template</a></li>
-                    <li><a href="{{ url('/surge/download') }}">Download Surge Template</a></li>
-                    <li><a href="{{ url('/gbv/download') }}">Download GBV Template</a></li>
-                    <li><a href="{{ url('/hfr/download') }}">Download HFR Template</a></li>
-                    <li><a href="{{ url('/cervical_cancer/download') }}">Download Cervical Cancer Template</a></li>
-                    @if(auth()->user()->user_type_id < 3)
-                        <li><a href="{{ url('/gbv/download-report') }}">Download Quarterly GBV Report</a></li>
-                        <li><a href="{{ url('/hfr/download-report') }}">Download Quarterly HFR Report</a></li>
-                    @endif
-                </ul>
-            </li>
+         
 
             <li><a href="{{ url('/surge/set_surge_facilities') }}">Set Surge Facilities</a></li>
             
