@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Commons\Commons;
 use App\Commons\get_hfr_sum;
 use App\Commons\get_hfr_sum_prev;
+use App\Commons\linkageDisServiceRoutineRows;
+use App\Commons\linkageDisServiceRoutineTarget;
 use App\Commons\linkageServiceRoutine;
+use App\Commons\prep_new_last_rpt_period_serviceRoutine_rows;
+use App\Commons\prep_new_last_rpt_period_serviceRoutine_target;
 use App\Commons\testingServiceRoutine;
 use App\Commons\tx_curr_oldServiceRoutines;
 use App\Commons\tx_curr_trendServiceRoutine;
 use App\Commons\tx_currServiceRoutine;
 use App\Commons\tx_newServiceRoutine;
+use App\Commons\vmmc_circ_details_serveceRoutine_target;
+use App\Commons\vmmc_circ_details_serviceRoutineRows;
 use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
@@ -32,7 +38,10 @@ class HfrController extends Controller
 
 	use testingServiceRoutine, linkageServiceRoutine,
 		tx_curr_oldServiceRoutines, tx_currServiceRoutine,
-		tx_newServiceRoutine, tx_curr_trendServiceRoutine;
+		tx_newServiceRoutine, tx_curr_trendServiceRoutine,
+		linkageDisServiceRoutineTarget, linkageDisServiceRoutineRows,
+		prep_new_last_rpt_period_serviceRoutine_target,prep_new_last_rpt_period_serviceRoutine_rows,
+		vmmc_circ_details_serveceRoutine_target, vmmc_circ_details_serviceRoutineRows;
 
 
 	
@@ -75,9 +84,6 @@ class HfrController extends Controller
 
 		return view('charts.dual_axis', $data);
 	}
-
-
-
 
 	public function linkage()
 	{
@@ -296,35 +302,25 @@ class HfrController extends Controller
 
 	public function prep_new_last_rpt_period()
     {
-		$group_by = session('filter_groupby');
-		$groupby_partner = session('filter_partner');
-		$modality = 'prep_new';
-		$tests = HfrSubmission::columns(true, $modality);
-		$sql_test = $this->get_hfr_sum($tests, 'val');
+		Cache::forget("prep_new_last_rpt_period_serviceRoutine_rows");
+		Cache::forget("prep_new_last_rpt_period_serviceRoutine_target");
 
-		if($groupby_partner != null){
-			$grouping = 'countys.name';
-		}else{
-			$grouping = 'partners.name';
-		}
-        $prep_new = HfrSubmission::columns(true, 'prep_new');
-        $sql = $this->get_hfr_sum($prep_new, 'prep_new');
-		// DB::enableQueryLog();
-        $rows = DB::table($this->my_table)
-            ->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
-            ->selectRaw($sql)
-            ->when(true, $this->get_predefined_groupby_callback('prep_new'))
-            ->get();
-			// return DB::getQueryLog();
-		$target = DB::table($this->my_target_table)
-			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-			->selectRaw($sql_test)
-			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-			->whereRaw(Lookup::county_target_query_by_partner())
-			->groupBy($grouping)				
-			->get();
+		Cache::rememberForever("prep_new_last_rpt_period_serviceRoutine_rows", function(){
+			return $this->prep_new_last_rpt_period_serviceRoutine_rows();
+		});
+
+		Cache::rememberForever("prep_new_last_rpt_period_serviceRoutine_target", function(){
+			return $this->prep_new_last_rpt_period_serviceRoutine_target();
+		});
+			
+		$group_by = session('filter_groupby');
+
+		$rows = Cache::get("prep_new_last_rpt_period_serviceRoutine_rows");
+		// $this->prep_new_last_rpt_period_serviceRoutine_rows();
+
+		$target = Cache::get("prep_new_last_rpt_period_serviceRoutine_target");
+		// $this->prep_new_last_rpt_period_serviceRoutine_target();
+		
 		$divisor = Lookup::get_target_divisor(12);
 		// dd($target);
 
@@ -336,36 +332,24 @@ class HfrController extends Controller
 		return view('tables.prep_new_last_rpt_period', ['rows' => $rows, 'target' => $target, 'div_id' => 'prep_new_details', 'divisor' => strval($divisor) ]);
     }
 
+
 	public function vmmc_circ_details()
 	{
-		$vmmc_circ = HfrSubmission::columns(true, 'vmmc_circ');
-		$groupby_partner = session('filter_partner');
-		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');
-		$modality = 'vmmc_circ';
-		$tests = HfrSubmission::columns(true, $modality);
-		$sql_test = $this->get_hfr_sum($tests, 'val');
 
-		if($groupby_partner != null){
-			$grouping = 'countys.name';
-		}else{
-			$grouping = 'partners.name';
-		}
+		Cache::forget("vmmc_circ_details_serviceRoutineRows");
+		Cache::forget("vmmc_circ_details_serveceRoutine_target");
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_predefined_groupby_callback('vmmc_circ'))
-			->get();
-					// return DB::getQueryLog();
-		$target = DB::table($this->my_target_table)
-			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-			->selectRaw($sql_test)
-			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-			->whereRaw(Lookup::county_target_query_by_partner())
-			->groupBy($grouping)				
-			->get();
+		Cache::rememberForever("vmmc_circ_details_serveceRoutine_target", function(){
+			return $this->vmmc_circ_details_serveceRoutine_target();
+		});
+
+		Cache::rememberForever("vmmc_circ_details_serviceRoutineRows", function(){
+			return $this->vmmc_circ_details_serviceRoutineRows();
+		});
+
+		$rows= Cache::get("vmmc_circ_details_serviceRoutineRows");
+		$target = Cache::get("vmmc_circ_details_serveceRoutine_target");
+
 		$divisor = Lookup::get_target_divisor(12);
 
 		$data['div'] = str_random(15);
@@ -448,43 +432,29 @@ class HfrController extends Controller
 		return view('tables.testing_dis', ['rows' => $rows, 'target' => $target, 'div_id' => 'testing_dis', 'divisor' => strval($divisor) ]);
 	}
 
+
 	public function linkage_dis()
 	{
-		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
-		$tx_new = HfrSubmission::columns(true, 'tx_new');
-		$modality = 'hts_tst_pos';
-		$groupby_partner = session('filter_partner');
-		$tests = HfrSubmission::columns(true, $modality);
-		$sql_test = $this->get_hfr_sum($tests, 'val');
-		$sql = $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+		Cache::forget("linkageDisServiceRoutineRows");
+		Cache::forget("linkageDisServiceRoutineTarget");
 
-		if($groupby_partner != null){
-			$grouping = 'countys.name';
-		}else{
-			$grouping = 'partners.name';
-		}
+		Cache::rememberForever("linkageDisServiceRoutineRows", function(){
+			return $this->linkageDisServiceRoutineRows();
+		});
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_predefined_groupby_callback('pos'))
-			->get();
-		$target = DB::table($this->my_target_table)
-			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-			->selectRaw($sql_test)
-			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-			->whereRaw(Lookup::county_target_query_by_partner())
-			->groupBy($grouping)				
-			->get();
+		Cache::rememberForever("linkageDisServiceRoutineTarget", function(){
+			return $this->linkageDisServiceRoutineTarget();
+		});
+
+		$rows = Cache::get("linkageDisServiceRoutineRows");
+		// $this->linkageDisServiceRoutineRows();
+
+		$target = Cache::get("linkageDisServiceRoutineTarget");
 
 		$data['div'] = str_random(15);
 		$divisor = Lookup::get_target_divisor(12);
 		
 		$data['rows'] = $rows;	
-
-		// dd($rows,$target);
 		
 		return view('tables.linkage_dis', ['rows' => $rows, 'target' => $target, 'div_id' => 'linkage_dis', 'divisor' => strval($divisor) ]);
 	}
@@ -537,7 +507,6 @@ class HfrController extends Controller
                 ->get();
 			// return DB::getQueryLog();
 //			 dd($rows,$p_row);
-			
 
 		}
 		else{

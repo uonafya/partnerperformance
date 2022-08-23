@@ -20,7 +20,7 @@ trait Commons
     private $my_table = 'd_hfr_submission';
 	private $my_target_table = 't_county_target';
 	private $my_hfr_facility_target_table = 't_facility_hfr_target';
-	private $my_floating = 'floating_target';
+	private $my_floating = 'floating_target';	
  
 }
 
@@ -658,4 +658,148 @@ trait modelparams{
 	protected $connection = 'mysql_wr';
     protected $table = 'view_facilitys';
     public $data;
+}
+
+trait linkageDisServiceRoutineRows{
+	public function linkageDisServiceRoutineRows()
+	{
+		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
+		$tx_new = HfrSubmission::columns(true, 'tx_new');
+		$sql = $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('pos'))
+			->get();
+		
+		return $rows;
+
+	}
+
+	
+}
+
+trait linkageDisServiceRoutineTarget{
+
+	public function linkageDisServiceRoutineTarget()
+	{
+		$modality = 'hts_tst_pos';
+		$groupby_partner = session('filter_partner');
+		$tests = HfrSubmission::columns(true, $modality);
+		$sql_test = $this->get_hfr_sum($tests, 'val');
+
+		if($groupby_partner != null){
+			$grouping = 'countys.name';
+		}else{
+			$grouping = 'partners.name';
+		}
+
+		$target = DB::table($this->my_target_table)
+			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+			->selectRaw($sql_test)
+			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+			->whereRaw(Lookup::county_target_query_by_partner())
+			->groupBy($grouping)				
+			->get();
+
+		return $target;
+	}
+}
+
+trait prep_new_last_rpt_period_serviceRoutine_rows{
+	public function prep_new_last_rpt_period_serviceRoutine_rows()
+	{
+		
+        $prep_new = HfrSubmission::columns(true, 'prep_new');
+        $sql = $this->get_hfr_sum($prep_new, 'prep_new');
+
+		$rows = DB::table($this->my_table)
+		->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
+		->selectRaw($sql)
+		->when(true, $this->get_predefined_groupby_callback('prep_new'))
+		->get();
+
+		return $rows;
+	}
+}
+
+trait prep_new_last_rpt_period_serviceRoutine_target{
+	public function prep_new_last_rpt_period_serviceRoutine_target()
+	{
+	
+		$groupby_partner = session('filter_partner');
+		$modality = 'prep_new';
+		$tests = HfrSubmission::columns(true, $modality);
+		$sql_test = $this->get_hfr_sum($tests, 'val');
+
+		if($groupby_partner != null){
+			$grouping = 'countys.name';
+		}else{
+			$grouping = 'partners.name';
+		}
+
+			// return DB::getQueryLog();
+		$target = DB::table($this->my_target_table)
+		->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+		->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+		->selectRaw($sql_test)
+		->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+		// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+		->whereRaw(Lookup::county_target_query_by_partner())
+		->groupBy($grouping)				
+		->get();
+
+		return $target;
+	}
+
+}
+
+trait vmmc_circ_details_serveceRoutine_target{
+	public function vmmc_circ_details_serveceRoutine_target()
+	{	
+		$modality = 'vmmc_circ';
+		$tests = HfrSubmission::columns(true, $modality);
+		$sql_test = $this->get_hfr_sum($tests, 'val');
+		$groupby_partner = session('filter_partner');
+
+
+		if($groupby_partner != null){
+			$grouping = 'countys.name';
+		}else{
+			$grouping = 'partners.name';
+		}
+
+		// return DB::getQueryLog();
+		$target = DB::table($this->my_target_table)
+			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+			->selectRaw($sql_test)
+			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
+			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+			->whereRaw(Lookup::county_target_query_by_partner())
+			->groupBy($grouping)				
+			->get();
+
+		return $target;
+	}
+}
+
+trait vmmc_circ_details_serviceRoutineRows{
+	public function vmmc_circ_details_serviceRoutineRows()
+	{
+		$vmmc_circ = HfrSubmission::columns(true, 'vmmc_circ');
+		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');
+
+		$rows = DB::table($this->my_table)
+			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
+			->selectRaw($sql)
+			->when(true, $this->get_predefined_groupby_callback('vmmc_circ'))
+			->get();
+
+		return $rows;
+	}
+
 }
