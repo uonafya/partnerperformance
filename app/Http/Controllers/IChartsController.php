@@ -11,6 +11,7 @@ use App\Commons\tx_curr_oldServiceRoutines;
 use App\Commons\tx_curr_trendServiceRoutine;
 use App\Commons\tx_currServiceRoutine;
 use App\Commons\tx_newServiceRoutine;
+use App\Commons\targetDonutServiceRoutine;
 use App\HfrSubmission;
 use App\Lookup;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class IChartsController extends Controller
 
 	use testingServiceRoutine, linkageServiceRoutine,
 	tx_curr_oldServiceRoutines, tx_currServiceRoutine,
-	tx_newServiceRoutine, tx_curr_trendServiceRoutine;
+	tx_newServiceRoutine, tx_curr_trendServiceRoutine, targetDonutServiceRoutine;
 
 	public function themeit()
 	{
@@ -57,6 +58,46 @@ class IChartsController extends Controller
 		$data = Cache::get("linkageServiceRoutine");
 
 		return view('iCharts.dual_axes_and_column', $data);
+	}
+
+
+	public function tx_new()
+	{
+		Cache::forget("tx_newServiceRoutine");
+
+		Cache::rememberForever("tx_newServiceRoutine", function(){
+			return $this->tx_newServiceRoutine();
+		});
+
+		$data = Cache::get("tx_newServiceRoutine");
+
+		return view('iCharts.dual_axes_and_column', $data);
+	}
+
+	public function tx_curr()
+	{
+		Cache::forget("tx_currServiceRoutine");
+
+		Cache::rememberForever("tx_currServiceRoutine", function(){
+			return $this->tx_currServiceRoutine();
+		});
+
+		$data = Cache::get("tx_currServiceRoutine");
+
+		return view('iCharts.dual_axes_and_column', $data);
+	}
+
+	public function testing_target()
+	{
+		Cache::forget("targetDonutServiceRoutine");
+
+		Cache::rememberForever("targetDonutServiceRoutine", function(){
+			return $this->targetDonutServiceRoutine();
+		});
+
+		$data = Cache::get("targetDonutServiceRoutine");
+
+		return view('iCharts.pie_chart', $data);
 	}
 	
 }

@@ -132,6 +132,58 @@ trait divisions_callback{
 }
 
 
+trait targetDonutServiceRoutine
+{
+	public function targetDonutServiceRoutine($modality = 'hts_tst')
+	{
+		$tests = HfrSubmission::columns(true, $modality); 
+		$sql = $this->get_hfr_sum($tests, 'val');
+
+		$date_query = Lookup::date_query();
+		$week_id = Lookup::get_tx_week();
+		// dd($week_id);
+	
+		// DB::enableQueryLog();
+
+		$results = DB::table($this->my_table)
+			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+			->selectRaw($sql)
+			->when($modality != 'tx_curr', function($query) use($date_query){
+				return $query->whereRaw($date_query);
+			})
+			->when(($modality == 'tx_curr'), function($query) use($week_id) {
+				return $query->whereIn('week_id', $week_id);
+			})
+			->whereRaw(Lookup::divisions_query())
+			->first();
+
+		$target = DB::table($this->my_target_table)
+			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
+			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
+			->selectRaw($sql)
+			->whereRaw(Lookup::county_target_query())
+			->first();
+
+			// return DB::getQueryLog();
+		$data = Lookup::target_donut();
+
+		$divisor = Lookup::get_target_divisor(1);
+
+		$results = (int) $results->val;
+		$target = (int) ($target->val / $divisor);
+		$gap = $target - $results;
+		if($gap < 0) $gap = 0;
+
+		$data['outcomes']['data'][0]['y'] = $results;
+		$data['outcomes']['data'][1]['y'] = $gap;
+
+		// dd($data);
+
+		return $data;
+	}
+}
+
+
 
 
 

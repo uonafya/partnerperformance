@@ -27,6 +27,9 @@ Route::get("theme", "IChartsController@themeit");
 
 Route::get('ichart_testing', 'IChartsController@testing')->name('ichart_testing');
 Route::get('ilinkage', 'IChartsController@linkage')->name('ichart_linkage');
+Route::get('tx_new', 'IChartsController@tx_new')->name('tx_new');
+Route::get('testing_target', 'IChartsController@testing_target')->name('testing_target');
+Route::get('tx_curr_visualization', 'IChartsController@tx_curr')->name('tx_curr_visualization');
 
 
 Route::post('facility/search', 'FilterController@facility')->name('facility.search');

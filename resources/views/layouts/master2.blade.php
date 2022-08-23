@@ -411,6 +411,9 @@
           <li  ><a class="link_name" href="#">Individual Charts.</a></li>
           <li id="sub_menu_color"  ><a style="color: #E4E9F7" href="{{ route("ichart_testing") }}">Testing</a></li>
           <li id="sub_menu_color" ><a style="color: #E4E9F7" href="{{ route("ichart_linkage") }}">Linkage</a></li>
+          {{-- <li id="sub_menu_color" ><a style="color: #E4E9F7" href="{{ route("testing_target") }}">Testing Target</a></li> --}}
+          <li id="sub_menu_color" ><a style="color: #E4E9F7" href="{{ route("tx_new") }}">Tx New</a></li>
+          <li id="sub_menu_color" ><a style="color: #E4E9F7" href="{{ route("tx_curr_visualization") }}">Tx Curr</a></li>
           <li id="sub_menu_color" ><a style="color: #E4E9F7" href="#">More ...</a></li>
         </ul>
 
@@ -587,7 +590,7 @@
       {{-- TOP NAVIGATION --}}
 
       <div style="margin-left:  45%; margin-top: 20px;"  class="navbar navbar-default">
-        <div style="border: 1.5px solid #1D5288; border-radius: 5%; "  onMouseOver="this.style.color='#000'"  onMouseOut="this.style.color='#fff'"  class="container-fluid">
+        <div style="border: 1.5px solid #01286b; border-radius: 5%; "  onMouseOver="this.style.color='#000'"  onMouseOut="this.style.color='#fff'"  class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
                     <span class="icon-bar"></span>
