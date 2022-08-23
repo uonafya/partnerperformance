@@ -23,7 +23,7 @@ Route::middleware(['check_live'])->group(function(){
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('ichart_testing', 'IChartsController@dual_axes_and_column')->name('ichart_testing');
+Route::get('ichart_testing', 'IChartsController@testing')->name('ichart_testing');
 Route::get('ilinkage', 'IChartsController@linkage')->name('ilinkage');
 
 
