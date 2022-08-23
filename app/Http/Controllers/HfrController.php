@@ -73,7 +73,7 @@ class HfrController extends Controller
 	{
 		// dd(Request::geRequestUri());
 		// if(r)
-
+    
 		Cache::forget("testingServiceRoutine");
 		
 		Cache::rememberForever('testingServiceRoutine' ,function(){
