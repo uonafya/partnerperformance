@@ -1393,10 +1393,11 @@ class HfrController extends Controller
             $data['categories'][$i] = Lookup::get_category($row);
             $results = $row->tx_curr ?? 0;
             $results_2 = ((($tx_new_rows[$key]->tx_new ?? 0) + ($p_row[$key]->tx_curr ?? 0)));
-
-            $target = 95;
-            $data["outcomes"][0]["data"][$key] = $target;
-            $data["outcomes"][1]["data"][$i] = Lookup::get_percentage($results, $results_2);
+            if ($results > 0) {
+                $target = 95;
+                $data["outcomes"][0]["data"][$key] = $target;
+                $data["outcomes"][1]["data"][$i] = Lookup::get_percentage($results, $results_2);
+            }
             $i++;
         }
 		
@@ -1472,7 +1473,7 @@ class HfrController extends Controller
 	{
 		$return_data = [];
 		foreach ($periods as $key => $period) {
-			if ($key <= 7){
+			if ($key <= 9){
 			$return_value = 95;
 			if (isset($data)) {
 				$current_ou_data = $data->where('year', $period->year)->where('month', $period->month)->first();
