@@ -490,7 +490,7 @@ class HfrController extends Controller
 				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
 				->selectRaw($sql)
 				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
-				// ->when(true, $this->get_callback('tx_curr'))
+				 ->when(true, $this->get_callback('tx_curr'))
 				->whereIn('week_id', $current_week)
 				->groupBy('year', 'month')
 				->orderby('year','asc')
