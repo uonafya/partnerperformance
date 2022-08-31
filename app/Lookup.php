@@ -885,6 +885,9 @@ class Lookup
 	{
 		$query = "1";
 		if(session('filter_county')) $query .= " AND view_facilities.county" . self::set_division_query(session('filter_county'));
+		if(session('filter_subcounty')) $query .= " AND view_facilities.subcounty_id" . self::set_division_query(session('filter_subcounty'));
+		//sub_county_filter
+        //ward_filter
 		if(session('filter_partner') || is_numeric(session('filter_partner'))) $query .= " AND view_facilities.partner" . self::set_division_query(session('filter_partner'));
 		return $query;
 	}
