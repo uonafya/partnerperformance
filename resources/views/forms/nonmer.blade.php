@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 @extends('layouts.master2')
 
+=======
+@extends('layouts.master-lte')
+>>>>>>> refs/remotes/origin/ui-enhancement
 
 @section('content')
 

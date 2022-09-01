@@ -1,36 +1,33 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Partner Performance | Dashboard</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-</head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-<body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+  <title>Partner Performance | Dashboard 3</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- IonIcons -->
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to to the body tag
+to get the desired effect
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
 
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -216,12 +213,12 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-2">
             <!-- Brand Logo -->
             <a href="https://partnermanagementsystem.uonbi.ac.ke/api/apps/Partner-Reporting-Dashboards/html/index.html"
                 class="brand-link">
-                <img src="dist/img/kenya.png" alt="Kenya Logo" class="brand-image img elevation-6">
-                <span class="brand-text font-weight-light">Partner Performance</span>
+                <img src="dist/img/kenya.png" alt="Kenya Logo" class="brand-image img elevation-2">
+                <span class="brand-text">Partner Performance</span>
             </a>
 
             <!-- Sidebar -->
@@ -242,74 +239,82 @@
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-                            <li class="nav-item has-treeview menu-open">
-                                <a href="#" class="nav-link active">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>
-                                        Select County
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <select class="btn filters form-control" id="filter_county">
-                                            @foreach ($counties as $county)
-                                                <option value="{{ $county->id }}" selected='true'>
-                                                    {{ $county->name }}
-                                                </option>
+                            <li  class="nav-item has-treeview menu-open">
+                                <a href="#" class="">
+                                    {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                                    <div>
+                                        <select style="background-color: #0d6efd;" class="btn-primary btn filters form-control" id="filter_county">
+                                            <option disabled='true'>Select County</option>
+                                            <option value='null' selected='true'>All Counties</option>
+                            
+                                            @foreach($counties as $county)
+                                                <option value="{{ $county->id }}"> {{ $county->name }} </option>
                                             @endforeach
+                                        </select>		
+                                    </div>
+                                </a>
+                            </li>
+                            <li  style="margin-top: padding-top:10%" class="nav-item has-treeview menu-open">
+                                <a href="#" class="">
+                                    {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                                    <div>
+                                        <select style="background-color: #0d6efd;" class="btn-primary btn filters form-control" id="filter_county">
+                                            <option disabled='true'>Select Subcounty</option>
+                                            <option value='null' selected='true'>All Subcounties</option>
+                                            @foreach($subcounties as $subcounty)
+                                                <option value="{{ $subcounty->id }}"> {{ $subcounty->name }} </option>
+                                            @endforeach
+                                        </select>		
+                                    </div>	
+                                </a>
+                            </li>
+                            <li  class="nav-item has-treeview menu-open">
+                                <a href="#" class="">
+                                    {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                                    <div>
+                                        <select style="background-color: #0d6efd;" class="btn-primary btn filters form-control" id="filter_county">
+                                            <option disabled='true'>Select Ward</option>
+                                            <option value='null' selected='true'>All Wards</option>
+                            
+                                            @foreach($wards as $ward)
+                                                <option value="{{ $ward->id }}"> {{ $ward->name }} </option>
+                                            @endforeach
+                                        </select>		
+                                    </div>         
+                                    
+                                </a>
+                            </li>
+                            <li  class="nav-item has-treeview menu-open">
+                                <a href="#" class="">
+                                    {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                                    <div>
+                                        <select style="background-color: #0d6efd;" class="btn-primary btn filters form-control" id="filter_county">
+                                            <option disabled='true'>Select Partner</option>
+                                            <option value='null' selected='true'>All Partners</option>
+                            
+                                            @foreach($partners as $partner)
+                                                <option value="{{ $partner->id }}"> {{ $partner->name }} </option>
+                                            @endforeach
+                                        </select>	
+                                    </div>         
+                                    
+                                </a>
+                            </li>
+                            <li  class="nav-item has-treeview menu-open">
+                                <a href="#" class="">
+                                    {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                                    <div>
+                                        <select style="background-color: #0d6efd;" class="btn-primary btn filters form-control" id="filter_county">
+                                            <option disabled='true'>Select Facility</option>
+                                            <option value='null' selected='true'>All Facilities</option>
+                    
                                         </select>
-                                    </li>
-                                </ul>
+                                    </div>         
+                                    
+                                </a>
                             </li>
 
-                            {{-- <li class="nav-item has-treeview menu-open">
-
-                                <ul class="nav nav-treeview">
-                                    <div class="col-md-3">
-                                        <select class="btn filters form-control" id="filter_county">
-                                            @foreach ($counties as $county)
-                                                <option disabled='true'>Select County</option>
-                                                <option value="{{ $county->id }}" selected='true'>{{ $county->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </ul>
-                            </li> --}}
-
-                            {{-- <div class="col-md-3">
-                                <select class="btn filters form-control" id="filter_subcounty">
-                                    <option disabled='true'>Select Subcounty</option>
-                                    <option value='null' selected='true'>All Subcounties</option>
-
-                                    @foreach ($subcounties as $subcounty)
-                                        <option value="{{ $subcounty->id }}"> {{ $subcounty->name }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <select class="btn filters form-control" id="filter_ward">
-                                    <option disabled='true'>Select Ward</option>
-                                    <option value='null' selected='true'>All Wards</option>
-
-                                    @foreach ($wards as $ward)
-                                        <option value="{{ $ward->id }}"> {{ $ward->name }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <select class="btn filters form-control" id="filter_partner">
-                                    <option disabled='true'>Select Partner</option>
-                                    <option value='null' selected='true'>All Partners</option>
-
-                                    @foreach ($partners as $partner)
-                                        <option value="{{ $partner->id }}"> {{ $partner->name }} </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
+                            
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->
@@ -995,13 +1000,7 @@
                     <!-- /.content -->
                 </div>
                 <!-- /.content-wrapper -->
-                <footer class="main-  mt-auto py-3 stickybg-white">
-                    <strong>Copyright @<?php echo date('Y'); ?> HealthIt</a>.</strong>
-                    All rights reserved.
-                    <div class="float-right d-none d-sm-inline-block">
-                        <b>Version</b> 3.x
-                    </div>
-                </footer>
+                
 
                 <!-- Control Sidebar -->
                 <aside class="control-sidebar control-sidebar-dark">

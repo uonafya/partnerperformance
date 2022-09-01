@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 @extends('layouts.master2')
 
 @section('css_scripts')
   <link rel="stylesheet" href="{{ asset('css/ui-vis.css') }}" />
 
 @endsection
+=======
+@extends('layouts.master-lte')
+>>>>>>> refs/remotes/origin/ui-enhancement
 
 @section('content')
 

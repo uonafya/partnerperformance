@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @extends('layouts.master2')
+=======
+@extends('layouts.master-lte')
+>>>>>>> refs/remotes/origin/ui-enhancement
 
 @section('css_scripts')
   <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
