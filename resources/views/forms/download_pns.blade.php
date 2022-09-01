@@ -1,6 +1,8 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 
 @section('content')
+
+<head>
 
 <style type="text/css">
 	.display_date {
@@ -12,27 +14,29 @@
 		display: inline;
 	}
 </style>
-
+    <link rel="stylesheet" href="{{ asset('css/ui-vis.css') }}" />
+</head>
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
-		    <div class="panel-heading">
+		    <div class="panel-heading" 
+        style=" background-color:#F8F8FF; ">
 			    {{ $partner->name ?? '' }} 
-          <br />
+          <br/>
           Download PNS Excel
 		    </div>
 			<div class="panel-body" id="user_guide">
 				<form action="{{ url('download/pns') }}" method="post" class="form-horizontal"> 
 					@csrf
 
-          <p style="font-size: 16;">
-            After downloading, do not delete the first 6 columns. They are necessary for the system when you upload the excel. You can delete any of the other columns if you do not wish to upload its data. You can also delete any rows other that the first row that is used as column headers.
+          <p>
+            After downloading,  do not delete the first 6 columns. They are necessary for the system when you upload the excel. You can delete any of the other columns if you do not wish to upload its data. You can also delete any rows other that the first row that is used as column headers.
           </p>
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Financial Year</label>
-              <select class="col-sm-7 select_tag" name="financial_year">
+              <select class="col-sm-3 select_tag" name="financial_year">
                 <option></option>
                 @foreach($financial_years as $financial_year)
                   <option value="{{ $financial_year->financial_year }}" @if($loop->last) selected @endif>{{ $financial_year->yr }}</option>
@@ -61,7 +65,7 @@
 
           <div class="form-group">
               <label class="col-sm-3 control-label">Data Items (You can select multiple data items)</label>
-              <select class="col-sm-7 select_tag" required multiple="multiple" name="items[]">
+              <select class="col-sm-7 select_tag" required multiple="multiple"name="items[]">
                 <option value="screened">Index Clients Screened</option>
                 <option value="contacts_identified">Contacts Identified</option>
                 <option value="pos_contacts">Known HIV Positive Contacts</option>
@@ -73,7 +77,7 @@
           </div>
 
           <div class="col-sm-6 col-sm-offset-6">
-              <button class="btn btn-success" type="submit" >Submit</button>
+              <button class="btn btn-success" type="submit"  >Submit</button>
           </div>
         </form>
 			</div>

@@ -1,10 +1,11 @@
-@extends('layouts.master')
+@extends('layouts.master2')
+
 
 @section('content')
 
 <style type="text/css">
 	.display_date {
-		width: 130px;
+		width: 130
 		display: inline;
 	}
 	.display_date {

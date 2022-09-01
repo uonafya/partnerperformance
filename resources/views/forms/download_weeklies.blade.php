@@ -1,7 +1,9 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 
 @section('content')
 
+<head>
+<link rel="stylesheet" href="{{ asset('css/ui-vis.css') }}" />
 <style type="text/css">
 	.display_date {
 		width: 130px;
@@ -12,7 +14,7 @@
 		display: inline;
 	}
 </style>
-
+</head>
 
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">

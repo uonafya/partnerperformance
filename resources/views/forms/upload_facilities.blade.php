@@ -1,4 +1,9 @@
-@extends('layouts.master')
+@extends('layouts.master2')
+
+@section('css_scripts')
+  <link rel="stylesheet" href="{{ asset('css/ui-vis.css') }}" />
+
+@endsection
 
 @section('content')
 

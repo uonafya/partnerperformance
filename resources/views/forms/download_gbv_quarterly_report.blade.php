@@ -1,17 +1,22 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 
 @section('content')
 
-<style type="text/css">
-	.display_date {
-		width: 130px;
-		display: inline;
-	}
-	.display_date {
-		width: 130px;
-		display: inline;
-	}
-</style>
+<head>
+  <link rel="stylesheet" href="{{ asset('css/ui-vis.css') }}"/>
+
+    <style type="text/css">
+        .display_date {
+          width: 130px;
+          display: inline;
+        }
+        .display_date {
+          width: 130px;
+          display: inline;
+        }
+    </style>
+</head>
+      
 
 
 <div class="row">
