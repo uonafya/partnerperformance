@@ -793,8 +793,6 @@ class HfrController extends Controller
 			->groupBy($grouping)				
 			->get();
 		$divisor = Lookup::get_target_divisor(12);
-		dd($target);
-
 		$data['div'] = str_random(15);
 		$data['rows'] = $rows;		
 			// dd($rows,$target);
