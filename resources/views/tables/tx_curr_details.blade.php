@@ -16,7 +16,7 @@
                     <th>Contribution</th>
                 </tr>
             </thead>
-            <tbody id="vv">
+            <tbody id="vv2">
             </tbody>
         </table>
     </div>
@@ -90,8 +90,8 @@
                         row_html += '</tr>'
                 }
         });
-        $('#vv').html(row_html);
-        
+        $('#vv2').html(row_html);
+
     });
 
 </script>

@@ -16,7 +16,7 @@
                     <th>Contribution</th>
                 </tr>
             </thead>
-            <tbody id="vxv">
+            <tbody id="vxvq">
             </tbody>
         </table>
     </div>
@@ -29,7 +29,7 @@
         var targets = {!! json_encode($target->toArray()) !!};
         var rows = {!! json_encode($rows->toArray()) !!};
         var divisor = {!! json_encode($divisor) !!};
-        
+        console.log(targets)
         var div_id = {!! json_encode($div_id) !!};
 
         $('#div_id').DataTable({
@@ -90,7 +90,7 @@
                     row_html += '</tr>'
                 }
         });
-        $('#vxv').html(row_html);
+        $('#vxvq').html(row_html);
         
     });
 

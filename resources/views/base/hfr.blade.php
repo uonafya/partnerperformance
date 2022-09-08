@@ -179,8 +179,8 @@
 		</div>
 	</div>
 </div>
-<div class="row ">
-	<div class="col-md-12 col-sm-12 col-xs-12 detail_tables">
+<div class="row " style="display: none">
+	<div class="col-md-12 col-sm-12 col-xs-12 ">
 		<div class="panel panel-default">
 		    <div class="panel-heading">				
 			    Tx Curr Trend Detail  <div class="detail_date"></div>
