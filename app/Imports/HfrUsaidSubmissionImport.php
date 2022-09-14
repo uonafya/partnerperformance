@@ -112,10 +112,10 @@ class HfrUsaidSubmissionImport implements OnEachRow, WithHeadingRow
 
 		$original_row['db_row'] = $updated_row;
 
-		$updated = DB::table($this->table_name)
+		/*$updated = DB::table($this->table_name)
 		->where('id', $updated_row->id)
 		// ->where(['facility' => $fac->id, 'week_id' => $week->id, ])
-		->update($update_data);
+		->update($update_data);*/
 		/*if(!$updated) {
 			$original_row['reason'] = 'Updated is ' . $updated;
 			$original_row['update_date'] = $update_data;
