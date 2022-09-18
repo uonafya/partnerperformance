@@ -49,7 +49,8 @@ class ImportsExportsController extends Controller
 	public function upload_any(Request $request, $path)
 	{
 		ini_set('memory_limit', '-1');
-		if (!$request->hasFile('upload')){
+        set_time_limit(0);
+        if (!$request->hasFile('upload')){
 	        session(['toast_error' => 1, 'toast_message' => 'Please select a file before clicking the submit button.']);
 			return back();
 		}
