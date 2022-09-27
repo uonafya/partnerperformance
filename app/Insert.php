@@ -71,6 +71,36 @@ class Insert
         self::partner_indicators_insert($year);
 	}
 
+    public static function insert_gbv_rows($year = null)
+    {
+        if (!$year) $year = date('Y');
+        $facilities = Facility::select('id')->get();
+        $periods = Period::where(['year' => $year])->get();
+        // $periods = Period::where(['year' => 2019, 'financial_year' => 2020])->get();
+        $table_name = 'd_gender_based_violence';
+        $columns = collect(DB::select("show columns from `" . $table_name . '`'));
+        $p = $columns->where('Field', 'period_id')->first();
+        $i = 0;
+        $data = [];
+        echo "Begin entry for {$table_name} for {$year} at " . date('Y-m-d H:i:s') . "\n";
+        foreach ($periods as $period) {
+            foreach ($facilities as $facility) {
+                $data[] = ['period_id' => $period->id, 'facility' => $facility->id];
+                $i++;
+                if ($i == 200) {
+                    DB::connection('mysql_wr')->table($table_name)->insert($data);
+                    $i = 0;
+                    $data = [];
+                }
+            }
+        }
+        if ($data) DB::connection('mysql_wr')->table($table_name)->insert($data);
+        $i = 0;
+        $data = [];
+        echo "Completed entry for {$table_name} for {$year} at " . date('Y-m-d H:i:s') . "\n";
+        return;
+    }
+
 	public static function partner_indicators_insert($year=null)
 	{
 		if(!$year) $year = date('Y');
