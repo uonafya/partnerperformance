@@ -67,9 +67,9 @@ class QuarterlyHfrSubmissionExport implements FromArray, Responsable, WithHeadin
 
         }
 
-		$sql = "name, facility_uid, mech_id, partnername, country, countyname, ";
+		$sql = "week_number,name, facilitycode, facility_uid, mech_id, partnername, country, countyname, ";
 
-		$excel_headings = ["HFR Month/Week Start Date", 'Facility or Community Name', 'Facility OR Community UID', 'Mechanism ID', 'Mechanism or Partner Name', 'OU', 'PSNU', ];
+		$excel_headings = ["HFR Month/Week Start Date",'Week Number', 'Facility or Community Name', 'Facility Code','Facility OR Community UID', 'Mechanism ID', 'Mechanism or Partner Name', 'OU', 'PSNU', ];
 
 		$columns = HfrSubmission::columns();
 
