@@ -481,7 +481,7 @@ class Lookup
 		// dd($active_date);
 		
 		//return "(start_of_support <= weeks.start_date AND (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
-		return "( start_of_support <= '{$active_date}' and (end_of_support >= '{$active_date}' OR end_of_support IS NULL))";
+		return "(end_of_support >= '{$active_date}' OR end_of_support IS NULL)";
 
 	}
 	public static function get_active_partner_hfr_query($active_date)
