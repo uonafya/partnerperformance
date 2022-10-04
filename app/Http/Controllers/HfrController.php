@@ -353,18 +353,22 @@ class HfrController extends Controller
 
 		if($groupby < 10 || $groupby == 14){
 
-			$week_id = Lookup::get_tx_week(1, true);
+			$week_id = Lookup::get_tx_week_prev(1, true);
+        //			dd($week_id);
 			$grouping = 'partners.name';
 			// $data['chart_title'] = Week::find($week_id)->name;
 //            DB::enableQueryLog();
             $rows = DB::table($this->my_table)
                 ->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
                 ->selectRaw($sql)
-                ->when(true, $this->get_callback_tx_curr('tx_curr'))
+                ->when(($groupby == 1), $this->get_callback('partner'))
+                ->when(($groupby == 2), $this->get_callback('county'))
+                ->when(($groupby == 3), $this->get_callback('subcounty'))
+                ->when(($groupby == 5), $this->get_callback('facility'))
                 ->when(($groupby < 10), function ($query) use ($week_id) {
-                    return $query->where(['week_id' => $week_id]);
+                    // return $query;
+                    return $query->whereIn('week_id', $week_id);
                 })
-                ->orderby("div_id", 'asc')
                 ->get();
 //            dd($rows);
 //            DB::enableQueryLog();
@@ -393,7 +397,6 @@ class HfrController extends Controller
                     // ->groupBy('partner_name','county_name')
                     ->orderby("div_id", 'asc')
                     ->get();
-                // return DB::getQueryLog();
             } else {
 //                    DB::enableQueryLog();
                     $target = DB::table($this->my_hfr_facility_target_table)
