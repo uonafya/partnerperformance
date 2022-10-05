@@ -818,7 +818,15 @@ class Lookup
 				$week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
 			}
 			else{
-				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
+                if($hfr && date('d') < 14){
+                    $m = date('m', strtotime('-2 months'));
+                    $y = date('Y', strtotime('-2 months'));
+                    $week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
+
+                }
+                // dd($hfr,$m,$y);
+
+//				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
 			}
 		}
 		foreach ($week as $key => $week) {
