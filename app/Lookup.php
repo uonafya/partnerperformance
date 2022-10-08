@@ -822,11 +822,10 @@ class Lookup
                     $m = date('m', strtotime('-2 months'));
                     $y = date('Y', strtotime('-2 months'));
                     $week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
-
+                }else {
+                    // dd($hfr,$m,$y);
+				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
                 }
-                // dd($hfr,$m,$y);
-
-//				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
 			}
 		}
 		foreach ($week as $key => $week) {

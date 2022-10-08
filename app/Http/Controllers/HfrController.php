@@ -189,79 +189,82 @@ class HfrController extends Controller
 
 		if($groupby == 12 ){
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('tx_new'))
-			->get();
-			// DB::enableQueryLog();
-		$target = DB::table($this->my_floating)
-			->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
-			->selectRaw($sql_ftarget)
-			->when(($groupby == 12 && !isset($groupbypartner) ), function ($query){
-				return $query->addSelect(DB::raw("month"));
-			})
-			->when(($groupby == 12 && isset($groupbypartner) ), function ($query){
-				return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id,month"));
-			})
-			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
-				return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as county_id,month"));
-			})
-			// ->addSelect(DB::raw(" partners.name as partner_name,countys.name as county_name, countys.id as county_id,partner_id as div_id,month"))
-			->whereRaw(Lookup::county_target_query())
-			->when(($groupby == 12  ), function ($query) {
-				return $query->groupby('month');
-			})
-			// ->when(($groupby == 12 && isset($groupbypartner) ), function ($query) use($groupbypartner){
-			// 	return $query->where('partner_id', $groupbypartner);
-			// })
-			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
-				return $query->groupby('county_name');
-			})
-			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
-				return $query->orderby('month','asc');
-			})
-			->when(($groupby == 12 && isset($groupbypartner) ), function ($query) {
-				return $query->orderby('month','asc');
-			})
-			->when(($groupby == 12 ), function ($query){
-				return $query->orderby('month','asc');
-			})
-			->when(($groupby == 1), function ($query){
-				return $query->groupby('partner_name', 'month');
-			})
-			->when(($groupby == 2), function ($query){
-				return $query->groupby('county_name');
-			})
-			->when(($groupby == 1), function ($query){
-				return $query->orderby('month', 'asc');
-			})
-			->when(($groupby == 2), function ($query){
-				return $query->orderby('county_name');
-			})						
-			->get();
-			// return DB::getQueryLog();/
-		
-		} elseif($groupby < 10 || $groupby == 14) {
-			$week_id = Lookup::get_tx_week(1, true);
-			// DB::enableQueryLog();
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-				->selectRaw($sql)
-				->when(true, $this->get_callback_tx_curr('tx_new'))
-				->where('partner','!=' ,55)
-				// ->when(($groupby < 10), function($query) use($week_id) {
-				// 	return $query->where(['week_id' => $week_id]);
-				// })
-				->orderby("div_id",'asc')
-				->get();
+            $rows = DB::table($this->my_table)
+                ->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+                ->selectRaw($sql)
+                ->when(true, $this->get_callback('tx_new'))
+                ->get();
+            // DB::enableQueryLog();
+            $target = DB::table($this->my_floating)
+                ->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
+                ->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
+                ->selectRaw($sql_ftarget)
+                ->when(($groupby == 12 && !isset($groupbypartner) ), function ($query){
+                    return $query->addSelect(DB::raw("month"));
+                })
+                ->when(($groupby == 12 && isset($groupbypartner) ), function ($query){
+                    return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id,month"));
+                })
+                ->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
+                    return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as county_id,month"));
+                })
+                // ->addSelect(DB::raw(" partners.name as partner_name,countys.name as county_name, countys.id as county_id,partner_id as div_id,month"))
+                ->whereRaw(Lookup::county_target_query())
+                ->when(($groupby == 12  ), function ($query) {
+                    return $query->groupby('month');
+                })
+                // ->when(($groupby == 12 && isset($groupbypartner) ), function ($query) use($groupbypartner){
+                // 	return $query->where('partner_id', $groupbypartner);
+                // })
+                ->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
+                    return $query->groupby('county_name');
+                })
+                ->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
+                    return $query->orderby('month','asc');
+                })
+                ->when(($groupby == 12 && isset($groupbypartner) ), function ($query) {
+                    return $query->orderby('month','asc');
+                })
+                ->when(($groupby == 12 ), function ($query){
+                    return $query->orderby('month','asc');
+                })
+                ->when(($groupby == 1), function ($query){
+                    return $query->groupby('partner_name', 'month');
+                })
+                ->when(($groupby == 2), function ($query){
+                    return $query->groupby('county_name');
+                })
+                ->when(($groupby == 1), function ($query){
+                    return $query->orderby('month', 'asc');
+                })
+                ->when(($groupby == 2), function ($query){
+                    return $query->orderby('county_name');
+                })
+                ->get();
+            // return DB::getQueryLog();/
+
+        } elseif($groupby < 10 || $groupby == 14) {
+            $week_id = Lookup::get_tx_week(1, true);
+            // DB::enableQueryLog();
+            $rows = DB::table($this->my_table)
+                ->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
+                ->selectRaw($sql)
+                ->when(($groupby == 1), $this->get_callback('partner'))
+                ->when(($groupby == 2), $this->get_callback('county'))
+                ->when(($groupby == 3), $this->get_callback('subcounty'))
+                ->when(($groupby == 5), $this->get_callback('facility'))
+//                ->when(true, $this->get_callback_tx_curr('tx_new'))
+                ->where('partner','!=' ,55)
+                // ->when(($groupby < 10), function($query) use($week_id) {
+                // 	return $query->where(['week_id' => $week_id]);
+                // })
+            ->get();
 
             if ($groupby == 1 || $groupby == 2) {
                 //  DB::enableQueryLog();
                 $target = DB::table($this->my_floating)
-                    ->join('countys', 'countys.id', '=', $this->my_hfr_facility_target_table . '.county_id')
-                    ->join('partners', 'partners.id', '=', $this->my_hfr_facility_target_table . '.partner_id')
+                    ->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
+                    ->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
                     ->selectRaw($sql_target)
                     ->when(($groupby == 1), function ($query) {
                         return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id"));
@@ -281,27 +284,15 @@ class HfrController extends Controller
                     ->when(($groupby == 2), function ($query) {
                         return $query->groupby('county_name');
                     })
-                    ->orderby("div_id", 'asc')
+                    ->orderby("div_id", 'desc')
                     ->get();
                 // return DB::getQueryLog();
-            } else if ($groupby == 3 || $groupby == 5) {
+            }else{
                 $target = DB::table($this->my_hfr_facility_target_table)
                     ->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
                     ->selectRaw($sql_test)
-                    ->when(($groupby == 3), function ($query) {
-                        return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.district as div_id"));
-                    })
-                    ->when(($groupby == 5), function ($query) {
-                        return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
-                    })
-                    ->whereRaw(Lookup::facility_target_query())
-                    // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-                    ->when(($groupby == 3), function ($query) {
-                        return $query->groupby(DB::raw("subcounty_name"));
-                    })
-                    ->when(($groupby == 5), function ($query) {
-                        return $query->groupby('facility_name');
-                    })
+                    ->when(($groupby == 3), $this->get_callback('subcounty'))
+                    ->when(($groupby == 5), $this->get_callback('facility'))
                     ->orderby("div_id", 'desc')
                     ->get();
             }
