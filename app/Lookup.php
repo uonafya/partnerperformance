@@ -954,8 +954,8 @@ class Lookup
 				$group_query = "county";
 				break;
 			case 3:
-				$select_query = "subcounty_id as div_id, subcounty as name, SubCountyDHISCode as dhis_code, SubCountyMFLCode as mfl_code";
-				$group_query = "subcounty_id";
+				$select_query = "view_facilities.district as div_id, subcounty as name, SubCountyDHISCode as dhis_code, SubCountyMFLCode as mfl_code";
+				$group_query = "view_facilities.district";
 				break;
 			case 4:
 				$select_query = "ward_id as div_id, wardname as name, WardDHISCode as dhis_code, WardMFLCode as mfl_code";

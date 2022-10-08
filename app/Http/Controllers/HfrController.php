@@ -260,8 +260,8 @@ class HfrController extends Controller
             if ($groupby == 1 || $groupby == 2) {
                 //  DB::enableQueryLog();
                 $target = DB::table($this->my_floating)
-                    ->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
-                    ->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
+                    ->join('countys', 'countys.id', '=', $this->my_hfr_facility_target_table . '.county_id')
+                    ->join('partners', 'partners.id', '=', $this->my_hfr_facility_target_table . '.partner_id')
                     ->selectRaw($sql_target)
                     ->when(($groupby == 1), function ($query) {
                         return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id"));
@@ -284,6 +284,26 @@ class HfrController extends Controller
                     ->orderby("div_id", 'asc')
                     ->get();
                 // return DB::getQueryLog();
+            } else if ($groupby == 3 || $groupby == 5) {
+                $target = DB::table($this->my_hfr_facility_target_table)
+                    ->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
+                    ->selectRaw($sql_test)
+                    ->when(($groupby == 3), function ($query) {
+                        return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.district as div_id"));
+                    })
+                    ->when(($groupby == 5), function ($query) {
+                        return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
+                    })
+                    ->whereRaw(Lookup::facility_target_query())
+                    // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+                    ->when(($groupby == 3), function ($query) {
+                        return $query->groupby(DB::raw("subcounty_name"));
+                    })
+                    ->when(($groupby == 5), function ($query) {
+                        return $query->groupby('facility_name');
+                    })
+                    ->orderby("div_id", 'desc')
+                    ->get();
             }
 
 		}else{
@@ -395,28 +415,16 @@ class HfrController extends Controller
                         return $query->groupby('county_name');
                     })
                     // ->groupBy('partner_name','county_name')
-                    ->orderby("div_id", 'asc')
+                    ->orderby("div_id", 'desc')
                     ->get();
             } else {
 //                    DB::enableQueryLog();
                     $target = DB::table($this->my_hfr_facility_target_table)
                         ->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
                         ->selectRaw($sql_test)
-                        ->when(($groupby == 3), function ($query) {
-                            return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.subcounty_id as div_id"));
-                        })
-                        ->when(($groupby == 5), function ($query) {
-                            return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
-                        })
-                        ->whereRaw(Lookup::facility_target_query())
-                        // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-                        ->when(($groupby == 3), function ($query) {
-                            return $query->groupby(DB::raw("subcounty_name"));
-                        })
-                        ->when(($groupby == 5), function ($query) {
-                            return $query->groupby('facility_name');
-                        })
-                        ->orderby("div_id", 'asc')
+                        ->when(($groupby == 3), $this->get_callback('subcounty'))
+                        ->when(($groupby == 5), $this->get_callback('facility'))
+                        ->orderby("div_id", 'desc')
                         ->get();
 //                    return DB::getQueryLog();
 
