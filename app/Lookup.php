@@ -822,11 +822,10 @@ class Lookup
                     $m = date('m', strtotime('-2 months'));
                     $y = date('Y', strtotime('-2 months'));
                     $week = Week::where(['year' => $y, 'month' => $m])->orderBy('start_date', 'desc')->get();
-
+                }else {
+                    // dd($hfr,$m,$y);
+				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
                 }
-                // dd($hfr,$m,$y);
-
-//				$week = \App\Week::where(['financial_year' => $year])->orderBy('id', 'desc')->get();
 			}
 		}
 		foreach ($week as $key => $week) {
@@ -954,8 +953,8 @@ class Lookup
 				$group_query = "county";
 				break;
 			case 3:
-				$select_query = "subcounty_id as div_id, subcounty as name, SubCountyDHISCode as dhis_code, SubCountyMFLCode as mfl_code";
-				$group_query = "subcounty_id";
+				$select_query = "view_facilities.district as div_id, subcounty as name, SubCountyDHISCode as dhis_code, SubCountyMFLCode as mfl_code";
+				$group_query = "view_facilities.district";
 				break;
 			case 4:
 				$select_query = "ward_id as div_id, wardname as name, WardDHISCode as dhis_code, WardMFLCode as mfl_code";
