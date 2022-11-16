@@ -95,6 +95,8 @@
 						@guest
 							<li><a href="{{ url('/login') }}">Login</a></li>
 						@endguest	
+
+
 						@auth
 							<li class="dropdown">
 								<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">

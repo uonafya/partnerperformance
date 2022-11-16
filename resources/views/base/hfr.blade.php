@@ -28,7 +28,12 @@
 			    HTS Testing & Yield <div class="display_date"></div>
 		    </div>
 			<div class="panel-body" id="testing">
-				<center><div class="loader"></div></center>
+			<center>
+				<div class="loader">					
+				</div>
+			</center>
+
+
 			</div>
 		</div>
 	</div>
@@ -357,6 +362,15 @@
 
 <script type="text/javascript">
 
+	$().ready(function(){
+		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
+		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
+
+		// $("#testing").load("{{ url('hfr/testing') }}");	
+		
+		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
+	});
+
 	function reload_page()
 	{
 		$("#testing").html("<center><div class='loader'></div></center>");
@@ -388,50 +402,548 @@
 		$("#target_donut_prep_new").html("<center><div class='loader'></div></center>");
 		$("#target_donut_tx_curr").html("<center><div class='loader'></div></center>");
 
+		// hfr/testing
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/testing') }}/",
+			cache: true,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#testing").html(data);
 
-		// Ordering the AJAX calls according to the order of the charts in the html view to create peception of faster load
-		$("#testing").load("{{ url('hfr/testing') }}");
-		$("#testing_dis").load("{{ url('hfr/testing_dis') }}");
-		$("#linkage").load("{{ url('hfr/linkage') }}");
-		$("#linkage_dis").load("{{ url('hfr/linkage_dis') }}");
+				// console.log(data);	
 
-		$("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
-		$("#target_donut_pos").load("{{ url('hfr/target_donut/hts_tst_pos') }}");
-		$("#target_donut_tx_new").load("{{ url('hfr/target_donut/tx_new') }}");
-		$("#tx_new").load("{{ url('hfr/tx_new') }}");
-		$("#tx_new_dis").load("{{ url('hfr/tx_new_dis') }}");
-		$("#target_donut_tx_curr").load("{{ url('hfr/target_donut/tx_curr') }}");
-		$("#tx_curr").load("{{ url('hfr/tx_curr') }}");
-		$("#tx_curr_trend").load("{{ url('hfr/tx_curr_trend') }}");
-		$("#tx_curr_details").load("{{ url('hfr/tx_curr_details') }}");
-		$("#tx_crude").load("{{ url('hfr/tx_crude') }}");
-		$("#tx_crude_trend").load("{{ url('hfr/tx_crude_trend') }}");
-		$("#net_new").load("{{ url('hfr/net_new') }}");
-		$("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
-		$("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
-		$("#target_donut_prep_new").load("{{ url('hfr/target_donut/prep_new') }}");
-		$("#prep_new").load("{{ url('hfr/prep_new') }}");
-		$("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
-		$("#target_donut_vmmc_circ").load("{{ url('hfr/target_donut/vmmc_circ') }}");
-		$("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
-		$("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// hfr/testing_dis
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/testing_dis') }}/",
+			cache: true,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#testing_dis").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// hfr/linkag
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/linkage') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#linkage").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// hfr/linkage_dis
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/linkage_dis') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#linkage_dis").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+
+		// $("#target_donut_hts").load("{{ url('hfr/target_donut/hts_tst') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/target_donut/hts_tst') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#target_donut_hts").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#target_donut_pos").load("{{ url('hfr/target_donut/hts_tst_pos') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/target_donut/hts_tst_pos') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#target_donut_pos").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#target_donut_tx_new").load("{{ url('hfr/target_donut/tx_new') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/target_donut/tx_new') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#target_donut_tx_new").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
 
 		// $("#tx_new").load("{{ url('hfr/tx_new') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_new') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_new").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// ("#tx_new_dis").load("{{ url('hfr/tx_new_dis') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_new_dis') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_new_dis").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+
+		// $("#target_donut_tx_curr").load("{{ url('hfr/target_donut/tx_curr') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/target_donut/tx_curr') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#target_donut_tx_curr").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#tx_curr").load("{{ url('hfr/tx_curr') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_curr') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_curr").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#tx_curr_trend").load("{{ url('hfr/tx_curr_trend') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_curr_trend') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_curr_trend").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#tx_curr_details").load("{{ url('hfr/tx_curr_details') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_curr_details') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_curr_details").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#tx_crude").load("{{ url('hfr/tx_crude') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_crude') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_crude").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#tx_crude_trend").load("{{ url('hfr/tx_crude_trend') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_crude_trend') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_crude_trend").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#net_new").load("{{ url('hfr/net_new') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/net_new') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#net_new").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+
+		// $("#tx_mmd").load("{{ url('hfr/tx_mmd') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_mmd') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_mmd").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#tx_mmd_detail").load("{{ url('hfr/tx_mmd_detail') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/tx_mmd_detail') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#tx_mmd_detail").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#target_donut_prep_new").load("{{ url('hfr/target_donut/prep_new') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/target_donut/prep_new') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#target_donut_prep_new").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+		
+
+		// $("#prep_new").load("{{ url('hfr/prep_new') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/prep_new') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#prep_new").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+		
+		// $("#prep_new_last_rpt_period").load("{{ url('hfr/prep_new_last_rpt_period') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/prep_new_last_rpt_period') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#prep_new_last_rpt_period").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+
+		// $("#target_donut_vmmc_circ").load("{{ url('hfr/target_donut/vmmc_circ') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/target_donut/vmmc_circ') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#target_donut_vmmc_circ").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+
+		// $("#vmmc_circ").load("{{ url('hfr/vmmc_circ') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/vmmc_circ') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#vmmc_circ").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+
+		// $("#vmmc_circ_details").load("{{ url('hfr/vmmc_circ_details') }}");
+		$.ajax({
+			type: "GET",
+			url:"{{ url('hfr/vmmc_circ_details') }}/",
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			dataType: 'html',
+			async: true,
+			success: function (data) {
+				$("#vmmc_circ_details").html(data);
+
+				// console.log(data);	
+
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log("XHR",xhr);
+				console.log("status",textStatus);
+				console.log("Error in",errorThrown);
+			}
+		});
+
+		// $("#tx_new").load("{{ url('hfr/tx_new') }}");
+
 		// $("#net_new_detail").load("{{ url('hfr/net_new_detail') }}");
-		
+
+
+
 	}
-
-
-	$().ready(function(){
-
-		$("#misassigned_facilities").html("<center><div class='loader'></div></center>");
-		$("#misassigned_facilities").load("{{ url('hfr/misassigned_facilities') }}");
-
-
-		
-		date_filter('financial_year', {{ date('Y') }}, '{{ $date_url }}');
-
-	});
 
 </script>
 
@@ -443,7 +955,6 @@
 		$(".detail_tables").removeClass("hidden");
 	
 		
-
 		///////
 		var element = document.getElementById('body');
 		var opt = {
@@ -465,8 +976,6 @@
 	function hide(){
 		$(".detail_tables").addClass("hidden");
 	}
-
-
 </script>
 {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script> --}}
@@ -511,5 +1020,3 @@
 
 
 @endsection
-
-

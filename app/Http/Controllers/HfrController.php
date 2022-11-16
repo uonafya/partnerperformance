@@ -2,50 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Commons\Commons;
+use App\Commons\get_hfr_sum;
+use App\Commons\get_hfr_sum_prev;
+use App\Commons\linkageDisServiceRoutineRows;
+use App\Commons\linkageDisServiceRoutineTarget;
+use App\Commons\linkageServiceRoutine;
+use App\Commons\prep_new_last_rpt_period_serviceRoutine_rows;
+use App\Commons\prep_new_last_rpt_period_serviceRoutine_target;
+use App\Commons\testingServiceRoutine;
+use App\Commons\tx_curr_oldServiceRoutines;
+use App\Commons\tx_curr_trendServiceRoutine;
+use App\Commons\tx_currServiceRoutine;
+use App\Commons\tx_newServiceRoutine;
+use App\Commons\vmmc_circ_details_serveceRoutine_target;
+use App\Commons\vmmc_circ_details_serviceRoutineRows;
 use Illuminate\Http\Request;
 use DB;
 use App\Lookup;
 use App\HfrSubmission;
 use App\Partner;
 use App\Period;
+use App\ViewFacility;
 use App\Week;
 use Dotenv\Regex\Result;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+
 use function Symfony\Component\VarDumper\Dumper\esc;
 
 class HfrController extends Controller
 {
-	private $my_table = 'd_hfr_submission';
-	private $my_target_table = 't_county_target';
-	private $my_hfr_facility_target_table = 't_facility_hfr_target';
-	private $my_floating = 'floating_target';
+	use Commons, get_hfr_sum,get_hfr_sum_prev;
+
+	use testingServiceRoutine, linkageServiceRoutine,
+		tx_curr_oldServiceRoutines, tx_currServiceRoutine,
+		tx_newServiceRoutine, tx_curr_trendServiceRoutine,
+		linkageDisServiceRoutineTarget, linkageDisServiceRoutineRows,
+		prep_new_last_rpt_period_serviceRoutine_target,prep_new_last_rpt_period_serviceRoutine_rows,
+		vmmc_circ_details_serveceRoutine_target, vmmc_circ_details_serviceRoutineRows;
 
 
-    public function get_hfr_sum($columns, $name)
-    {
-        $sql = "(";
+	
 
-        foreach ($columns as $column) {
-            $sql .= "SUM(`{$column['column_name']}`) + ";
-        }
-        $sql = substr($sql, 0, -3);
-        $sql .= ") AS {$name} ";
-        return $sql;
-    }
-
-	public function get_hfr_sum_prev($columns, $name)
-    {
-        $sql = "(";
-
-        foreach ($columns as $column) {
-            $sql .= "SUM(`{$column['column_name']}`) + ";
-        }
-        $sql = substr($sql, 0, -3);
-        $sql .= ") AS {$name} ";
-		$sql .= ", month, year";
-		
-        return $sql;
-    }
+	// dd(reque)
 
 	public function misassigned_facilities()
 	{
@@ -70,539 +71,132 @@ class HfrController extends Controller
 
 	public function testing()
 	{
-		$tests = HfrSubmission::columns(true, 'hts_tst'); 
-		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
-		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
-
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('tests'))
-			->get();
+		// dd(Request::geRequestUri());
+		// if(r)
+    
+		Cache::forget("testingServiceRoutine");
 		
-		$data['div'] = str_random(15);
-		$data['yAxis'] = "Total Number Tested";
-		$data['yAxis2'] = "Yield (%)";
-		$data['data_labels'] = true;
-		$data['no_column_label'] = true;
-		$data['suffix'] = '%';
+		Cache::rememberForever('testingServiceRoutine' ,function(){
+			return $this->testingServiceRoutine();
+		});
 
+		$data = Cache::get("testingServiceRoutine");
 
-		Lookup::bars($data, ["Positive", "Negative", "Yield"], "column", ["#ff0000", "#00ff00", "#3023ea"]);
-		Lookup::splines($data, [2]);
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
-		Lookup::yAxis($data, 0, 1);
-
-		$i=0;
-		foreach ($rows as $key => $row){
-			if(!$row->tests) continue;
-
-			$data['categories'][$i] = Lookup::get_category($row);
-
-			$data["outcomes"][0]["data"][$i] = (int) $row->pos;
-			$data["outcomes"][1]["data"][$i] = (int) ($row->tests - $row->pos);
-			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->pos, $row->tests);
-			$i++;
-		}	
 		return view('charts.dual_axis', $data);
 	}
 
 	public function linkage()
 	{
-		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
-		$tx_new = HfrSubmission::columns(true, 'tx_new');
-		$sql = $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+		Cache::forget("linkageServiceRoutine");
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('pos'))
-			->get();
+		Cache::rememberForever("linkageServiceRoutine", function(){
+			return $this->linkageServiceRoutine();
+		});
 
-		$data['div'] = str_random(15);
-		$data['yAxis'] = '';
-		$data['yAxis2'] = "Linkage (%)";
-		$data['data_labels'] = true;
-		$data['no_column_label'] = true;
-		$data['suffix'] = '%';
+		$data = Cache::get("linkageServiceRoutine");
 
-		Lookup::bars($data, ["Not Linked", "TX New", "Linkage"], "column", ["#ff0000", "#00ff00", "#3023ea"]);
-		Lookup::splines($data, [2]);
-		$data['outcomes'][2]['tooltip'] = array("valueSuffix" => ' %');
-		Lookup::yAxis($data, 0, 1);
-
-
-		$i=0;
-		foreach ($rows as $key => $row){
-			if(!$row->pos) continue;
-
-			$data['categories'][$i] = Lookup::get_category($row);
-
-			$data["outcomes"][0]["data"][$i] = (int) ($row->pos - $row->tx_new); 
-			$data["outcomes"][1]["data"][$i] = (int) $row->tx_new;
-			$data["outcomes"][2]["data"][$i] = Lookup::get_percentage($row->tx_new, $row->pos);
-			if($data["outcomes"][0]["data"][$i] < 0) {
-				$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
-				$data["outcomes"][2]["data"][$i] = 0;
-			}
-			$i++;
-		}	
 		return view('charts.dual_axis', $data);
 	}
 
 	public function tx_curr_old()
 	{
-		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
-		$sql = $this->get_hfr_sum($tx_curr, 'tx_curr');
-		
+		Cache::forget("tx_curr_oldServiceRoutines");
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('tx_curr'))
-			->get();
+		Cache::rememberForever("tx_curr_oldServiceRoutines", function(){
+			return $this->tx_curr_oldServiceRoutines();
+		});
 
-		$data['div'] = str_random(15);
+		if(Cache::get("tx_curr_oldServiceRoutines") == null)
+			$data = $this->tx_curr_oldServiceRoutines();
+		else 
+			$data = Cache::get("tx_curr_oldServiceRoutines");
 
-		Lookup::bars($data, ["TX Curr"], "column");
+		return  view('charts.line_graph', $data);
 
-		foreach ($rows as $key => $row){
-			$data['categories'][$key] = Lookup::get_category($row);
-
-			$data["outcomes"][0]["data"][$key] = (int) $row->tx_curr;
-		}	
-		return view('charts.line_graph', $data);
 	}
 
 	public function tx_new()
 	{
-		$tx_new = HfrSubmission::columns(true, 'tx_new');
-		$sql_test = $this->get_hfr_sum($tx_new, 'target');
-		$sql_ftarget = '(SUM(floating_target)) AS target';
-		$sql_target = '(SUM(target)) AS target';
-		$sql = $this->get_hfr_sum($tx_new, 'tx_new');
-		$groupby = session('filter_groupby');
-		$groupbypartner = session('filter_partner');
-		$groupbycounty = session('filter_county');
-		$today =((int)date('m'))+2; 
-		// dd($groupbypartner,$groupby);
+		Cache::forget("tx_newServiceRoutine");
 
-		if($groupby == 12 ){
+		Cache::rememberForever("tx_newServiceRoutine", function(){
+			return $this->tx_newServiceRoutine();
+		});
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('tx_new'))
-			->get();
-			// DB::enableQueryLog();
-		$target = DB::table($this->my_floating)
-			->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
-			->selectRaw($sql_ftarget)
-			->when(($groupby == 12 && !isset($groupbypartner) ), function ($query){
-				return $query->addSelect(DB::raw("month"));
-			})
-			->when(($groupby == 12 && isset($groupbypartner) ), function ($query){
-				return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id,month"));
-			})
-			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
-				return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as county_id,month"));
-			})
-			// ->addSelect(DB::raw(" partners.name as partner_name,countys.name as county_name, countys.id as county_id,partner_id as div_id,month"))
-			->whereRaw(Lookup::county_target_query())
-			->when(($groupby == 12  ), function ($query) {
-				return $query->groupby('month');
-			})
-			// ->when(($groupby == 12 && isset($groupbypartner) ), function ($query) use($groupbypartner){
-			// 	return $query->where('partner_id', $groupbypartner);
-			// })
-			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
-				return $query->groupby('county_name');
-			})
-			->when(($groupby == 12 && isset($groupbycounty) ), function ($query){
-				return $query->orderby('month','asc');
-			})
-			->when(($groupby == 12 && isset($groupbypartner) ), function ($query) {
-				return $query->orderby('month','asc');
-			})
-			->when(($groupby == 12 ), function ($query){
-				return $query->orderby('month','asc');
-			})
-			->when(($groupby == 1), function ($query){
-				return $query->groupby('partner_name', 'month');
-			})
-			->when(($groupby == 2), function ($query){
-				return $query->groupby('county_name');
-			})
-			->when(($groupby == 1), function ($query){
-				return $query->orderby('month', 'asc');
-			})
-			->when(($groupby == 2), function ($query){
-				return $query->orderby('county_name');
-			})						
-			->get();
-			// return DB::getQueryLog();/
+		if(Cache::get("tx_newServiceRoutine") == null)
+			$data = Cache::get("tx_newServiceRoutine");
+		else
+			$data =  $this->tx_newServiceRoutine();
+
 		
-		} elseif($groupby < 10 || $groupby == 14) {
-			$week_id = Lookup::get_tx_week(1, true);
-			// DB::enableQueryLog();
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-				->selectRaw($sql)
-				->when(true, $this->get_callback_tx_curr('tx_new'))
-				->where('partner','!=' ,55)
-				// ->when(($groupby < 10), function($query) use($week_id) {
-				// 	return $query->where(['week_id' => $week_id]);
-				// })
-				->orderby("div_id",'asc')
-				->get();
-
-            if ($groupby == 1 || $groupby == 2) {
-                //  DB::enableQueryLog();
-                $target = DB::table($this->my_floating)
-                    ->join('countys', 'countys.id', '=', $this->my_floating . '.county_id')
-                    ->join('partners', 'partners.id', '=', $this->my_floating . '.partner_id')
-                    ->selectRaw($sql_target)
-                    ->when(($groupby == 1), function ($query) {
-                        return $query->addSelect(DB::raw(" partners.name as partner_name,partner_id as div_id"));
-                    })
-                    ->when(($groupby == 2), function ($query) {
-                        return $query->addSelect(DB::raw("countys.name as county_name, countys.id as div_id"));
-                    })
-
-                    // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-                    ->whereRaw(Lookup::county_target_query())
-                    ->where($this->my_floating . '.month', '<=', $today)
-                    // ->when(($groupby == 1), $this->get_callback('partner_name'))
-                    // ->when(($groupby == 2), $this->get_callback('county_name'))
-                    ->when(($groupby == 1), function ($query) {
-                        return $query->groupby('partner_name');
-                    })
-                    ->when(($groupby == 2), function ($query) {
-                        return $query->groupby('county_name');
-                    })
-                    ->orderby("div_id", 'asc')
-                    ->get();
-                // return DB::getQueryLog();
-            }
-
-		}else{
-			$rows = DB::table($this->my_table)
-			->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_callback('tx_new'))
-			->get();
-		}
-
-		$divisor = Lookup::get_target_divisor(12);
-
-		// $target = ((int)($target[0]->val)/$divisor);
-		// $target = round($target,0);
-
-		// dd($target,$rows);
-
-		$data['div'] = str_random(15);
-
-		Lookup::bars($data, ["TX New", "Target" ], "column", ["#ff7d33", "#3023ea"]);
-		// if(isset($target)){
-		Lookup::splines($data, [1]);
-		// }
-
-		$i=0;
-		foreach ($rows as $key => $row){
-			if(!$row->tx_new) continue;
-			$data['categories'][$i] = Lookup::get_category($row);
-
-			$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
-			if($groupby == 12){
-				$data["outcomes"][1]["data"][$i] = round(((int)($target[$i]->target)),0);;
-			}else{
-			if(isset($target[$i])){
-			$targetfinal = round(((int)($target[$i]->target)),0);
-				if(isset($targetfinal)){
-					$data["outcomes"][1]["data"][$i] = $targetfinal;
-				}else{
-					$data["outcomes"][1]["data"][$i] = 0;
-				}			
-			}else{
-				$data["outcomes"][1]["data"][$i] = 0;
-			}
-			}
-
-			$i++;
-		}	
 		return view('charts.line_graph', $data);
 	}
 
-	public function tx_curr()
+	public function tx_curr_debug()
 	{
-		
+		$groupby = session('filter_groupby')? 5: 3;
+		$groupbypartner = session('filter_partner')? 3 : 1;
+
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$sqlpartner = $this->get_hfr_sum($tx_curr, 'tx_curr');
 		$sql = $this->get_hfr_sum_prev($tx_curr, 'tx_curr');
 		$sql_test = $this->get_hfr_sum($tx_curr, 'val');
 
-		$data['div'] = str_random(15); 
-
-		Lookup::bars($data, ["Tx_Curr", "Target" ], "column", ["#ff7d33", "#3023ea"]);
-		Lookup::splines($data, [1]);
-
-		$groupby = session('filter_groupby');
-		$groupbypartner = session('filter_partner');
+	  	$data['div'] = str_random(15); 
 		
 
-		if($groupby < 10 || $groupby == 14){
+		return DB::table($this->my_hfr_facility_target_table)
+		->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
+		->selectRaw($sql_test)
+		->when(($groupby == 3), function ($query) {
+			return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.subcounty_id as div_id"));
+		})
+		->when(($groupby == 5), function ($query) {
+			return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
+		})
+		->whereRaw(Lookup::facility_target_query())
+		// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
+		->when(($groupby == 3), function ($query) {
+			return $query->groupby(DB::raw("div_id,subcounty_name"));
+		})
+		->when(($groupby == 5), function ($query) {
+			return $query->groupby('facility_name')->first();
+		});
+		// ->orderby("div_id", 'asc')
+		// ->get();
+	}
 
-			$week_id = Lookup::get_tx_week(1, true);
-			$grouping = 'partners.name';
-			// $data['chart_title'] = Week::find($week_id)->name;
-//            DB::enableQueryLog();
-            $rows = DB::table($this->my_table)
-                ->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-                ->selectRaw($sql)
-                ->when(true, $this->get_callback_tx_curr('tx_curr'))
-                ->when(($groupby < 10), function ($query) use ($week_id) {
-                    return $query->where(['week_id' => $week_id]);
-                })
-                ->orderby("div_id", 'asc')
-                ->get();
-//            dd($rows);
-//            DB::enableQueryLog();
-			//php
+	public function tx_curr()
+	{
+		Cache::forget("tx_currServiceRoutine");
 
-            if ($groupby == 1 || $groupby == 2) {
-                $target = DB::table($this->my_target_table)
-                    ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-                    ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-                    ->selectRaw($sql_test)
-                    ->when(($groupby == 1), function ($query) {
-                        return $query->addSelect(DB::raw(" partners.name as partner_name,partners.id as div_id"));
-                    })
-                    ->when(($groupby == 2), function ($query) {
-                        return $query->addSelect(DB::raw(" countys.name as county_name, countys.id as div_id"));
-                    })
+		Cache::rememberForever("tx_currServiceRoutine", function(){
+			return $this->tx_currServiceRoutine();
+		});
 
-                    // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-                    ->whereRaw(Lookup::county_target_query())
-                    ->when(($groupby == 1), function ($query) {
-                        return $query->groupby('partner_name');
-                    })
-                    ->when(($groupby == 2), function ($query) {
-                        return $query->groupby('county_name');
-                    })
-                    // ->groupBy('partner_name','county_name')
-                    ->orderby("div_id", 'asc')
-                    ->get();
-                // return DB::getQueryLog();
-            } else {
-//                    DB::enableQueryLog();
-                    $target = DB::table($this->my_hfr_facility_target_table)
-                        ->join('view_facilities', 'view_facilities.id', '=', $this->my_hfr_facility_target_table . '.facility_id')
-                        ->selectRaw($sql_test)
-                        ->when(($groupby == 3), function ($query) {
-                            return $query->addSelect(DB::raw("view_facilities.subcounty as subcounty_name, view_facilities.county as county_id , view_facilities.subcounty_id as div_id"));
-                        })
-                        ->when(($groupby == 5), function ($query) {
-                            return $query->addSelect(DB::raw("view_facilities.name as facility_name,view_facilities.id as div_id"));
-                        })
-                        ->whereRaw(Lookup::facility_target_query())
-                        // ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-                        ->when(($groupby == 3), function ($query) {
-                            return $query->groupby(DB::raw("div_id,subcounty_name"));
-                        })
-                        ->when(($groupby == 5), function ($query) {
-                            return $query->groupby('facility_name');
-                        })
-                        ->orderby("div_id", 'asc')
-                        ->get();
-//                    return DB::getQueryLog();
+		if(Cache::get("tx_currServiceRoutine") == null)
+			$data = $this->tx_currServiceRoutine();
+		else 
+			$data = Cache::get("tx_currServiceRoutine");
 
-
-                }
-
-		}
-		else{
-			$periods = [];
-			// Group By month
-			if($groupby == 12){
-				$periods = Period::select('financial_year', 'month')
-				->whereRaw(Lookup::date_query())
-				->groupBy('financial_year', 'month')
-				->get();
-				$target = DB::table($this->my_target_table)
-				// ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-				// ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-				->selectRaw($sql_test)
-				// ->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				->whereRaw(Lookup::county_target_query())
-				// ->groupBy($grouping)				
-				->get();
-
-			}
-			// Group By quarter
-			else if($groupby == 13){
-				$periods = Period::select('financial_year', 'quarter')
-				->whereRaw(Lookup::date_query())
-				->groupBy('financial_year', 'quarter')
-				->get();
-				$target = DB::table($this->my_target_table)
-				// ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-				// ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-				->selectRaw($sql_test)
-				// ->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				->whereRaw(Lookup::county_target_query())
-				// ->groupBy($grouping)				
-				->get();
-				
-			}
-			if(!$periods) return null;
-
-			$weeks = $week_ids = [];
-			$current_week =[];
-
-			$k =0;
-			foreach ($periods as $period) {
-
-				$w = Week::where($period->toArray())->orderBy('id', 'desc')->get();
-
-				$p =  DB::table('weeks') 
-				->where('financial_year',$period->financial_year)
-				-> where('month', $period->month )
-				->orderby('id','asc')
-				->get();
-				if(isset($w[$k])) $week_ids[] = $w[$k]->id; $weeks[] = $w;
-				
-			$k++;
-			}
-			foreach ($weeks as $key => $w ){				
-				foreach ($w as $key => $w1 ){
-					array_push($current_week,$w1->id);
-				}
-			}
-
-			sort($current_week);
-			// dd($current_week);
-			// DB::enableQueryLog();
-			if(!isset($groupbypartner)){
-				$rows = DB::table($this->my_table)
-				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-				->selectRaw($sql)
-				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
-				// ->when(true, $this->get_callback('tx_curr'))
-				->whereIn('week_id', $current_week)
-				->groupBy('year', 'month')
-				->orderby('year','asc')
-				->orderby('month','asc')
-				->get();
-			}else {
-			$rows = DB::table($this->my_table)
-				->when(true, $this->get_joins_callback_weeks_hfr($this->my_table))
-				->selectRaw($sqlpartner)
-				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
-				->when(true, $this->get_callback('tx_curr'))
-				//->whereIn('week_id', $week_ids)
-				->get();
-			}
-				// return DB::getQueryLog();
-			// DB::enableQueryLog();
-			$target = DB::table($this->my_target_table)
-				// ->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-				// ->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-				->selectRaw($sql_test)
-				// ->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				->whereRaw(Lookup::county_target_query())
-				// ->groupBy($grouping)				
-				->get();
-			// return DB::getQueryLog();
-		}
-
-		//
-		$i = 0;
-		$data['yAxis'] = '';
-		// dd($rows,$target);
-
-		foreach ($rows as $key => $row){
-
-			/*if($groupby > 9) $data['categories'][$key] = Lookup::get_category($row, 14);
-			else{
-				$data['categories'][$key] = Lookup::get_category($row);
-			}*/
-			// // if(!$row->tx_curr) continue;
-			// $county_id = $row->div_id;
-			// dd($row);
-			$data['categories'][$i] = Lookup::get_category($row);
-			$data["outcomes"][0]["data"][$i] = (int) $row->tx_curr;
-			if($groupby < 10 || $groupby == 14){	
-
-				if(isset($target[$i])) {
-					$data["outcomes"][1]["data"][$i] = (int)  $target[$i]->val;
-				}else{
-					// dd($target,$i);
-//					$data["outcomes"][1]["data"][$i] = 0;
-				}
-			}else{
-			$data["outcomes"][1]["data"][$i] = (int) $target[0]->val;
-			}
-
-			
-			$i++;
-		}	
+		
 		return view('charts.tx_curr', $data);
 	}
 
 	public function tx_curr_trend()
 	{
-		$data['div'] = str_random(15);
-		$data['yAxis'] = 'Patients Current on Treatment';
-		$data['suffix'] = '';
+		Cache::forget("tx_curr_trendServiceRoutine");
 
-		$partner_filter = session('filter_partner');
-		$groupby = session('filter_groupby');
-		$ou = 'partnername';
-		if ($groupby == 1 && (isset($partner_filter) || !($partner_filter == 'null' || $partner_filter == null)))
-			$ou = 'countyname';
+		Cache::rememberForever("tx_curr_trendServiceRoutine", function(){
+			return $this->tx_curr_trendServiceRoutine();
+		});
 
-		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
-		$sql = "year, financial_year, month, {$ou}, ";
-		$sql .= $this->get_hfr_sum($tx_curr, 'tx_curr');
-
-		// Adding the category property in the base data pulled. For this graph the categories are always months of the current filtered year.
-		// DB::enableQueryLog();
-		$base_data = DB::table($this->my_table)
-				->when(true, $this->get_predefined_joins_callback_weeks($this->my_table))
-				->selectRaw($sql)
-				->when(true, $this->get_callback())
-				->groupBy($ou,'year','financial_year','month')
-				->orderBy('year', 'asc')
-				->orderBy('month', 'asc')
-				->get()
-				->whereNotIn('tx_curr', [0, '0', 'null', null])
-				->map(function($item, $index) {
-					$item->category = date("F", mktime(0, 0, 0, $item->month, 1)) . ", " . $item->year;
-					return $item;
-				});
-				// return DB::getQueryLog();
+		if(Cache::get("tx_curr_trendServiceRoutine") == null)
+			$data = $this->tx_curr_trendServiceRoutine();
+		else
+			$data = Cache::get("tx_curr_trendServiceRoutine");
 		
-		// Get the categories from the pulled data
-		$categories = $base_data->pluck('category')->unique();
-
-		$data['categories'] = array_values($categories->toArray());
-		$data['outcomes'] = [];
-
-		// Grouping by partner
-		$base_data = $base_data->groupby($ou);
-
-		foreach($base_data as $key => $grouped_data) {
-			$data['outcomes'][] = [
-				'name' => $key,
-				'data' => $this->foramt_tx_curr_trend($categories, $grouped_data)
-			];
-		}
-		
-		return view('charts.line_graph', $data);
+		return  view('charts.line_graph', $data);
 	}
 
 	private function foramt_tx_curr_trend($categories, $data)
@@ -617,8 +211,6 @@ class HfrController extends Controller
 
 	public function tx_curr_details()
 	{
-		// 
-		//////////////////////////////////////
 		$tx_curr = HfrSubmission::columns(true, 'tx_curr');
 		$modality = 'tx_curr';
 		$tests = HfrSubmission::columns(true, $modality); 
@@ -687,70 +279,48 @@ class HfrController extends Controller
 			$rows = DB::table($this->my_table)
 				->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
 				->selectRaw($sql)
-				// ->when(true, $this->get_callback('tx_curr', null, '', 14))
 				->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-				// ->whereIn('week_id', $week_ids)
 				->get();
-			// dd($week_ids);
-			// dd($rows);s
 
-				// return DB::getQueryLog();
 			$target = DB::table($this->my_target_table)
 				->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
 				->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
 				->selectRaw($sql_test)
 				->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-				// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
 				->whereRaw(Lookup::county_target_query_by_partner())
 				->groupBy($grouping)				
-				->get();
-				
-				
+				->get();				
 		}
 		
 		
 
 
 		$divisor = Lookup::get_target_divisor(1);
-		// dd($divisor);
-	
-		
-		// dd($target,$rows);
 
 		return view('tables.tx_curr_details', ['rows' => $rows, 'target' => $target, 'div_id' => 'tx_curr_details', 'divisor' => strval($divisor) ]);
 	}
 
 	public function prep_new_last_rpt_period()
     {
-		$group_by = session('filter_groupby');
-		$groupby_partner = session('filter_partner');
-		$modality = 'prep_new';
-		$tests = HfrSubmission::columns(true, $modality);
-		$sql_test = $this->get_hfr_sum($tests, 'val');
+		Cache::forget("prep_new_last_rpt_period_serviceRoutine_rows");
+		Cache::forget("prep_new_last_rpt_period_serviceRoutine_target");
 
-		if($groupby_partner != null){
-			$grouping = 'countys.name';
-		}else{
-			$grouping = 'partners.name';
-		}
-        $prep_new = HfrSubmission::columns(true, 'prep_new');
-        $sql = $this->get_hfr_sum($prep_new, 'prep_new');
-		// DB::enableQueryLog();
-        $rows = DB::table($this->my_table)
-            ->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
-            ->selectRaw($sql)
-            ->when(true, $this->get_predefined_groupby_callback('prep_new'))
-            ->get();
-			// return DB::getQueryLog();
-		$target = DB::table($this->my_target_table)
-			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-			->selectRaw($sql_test)
-			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-			->whereRaw(Lookup::county_target_query_by_partner())
-			->groupBy($grouping)				
-			->get();
+		Cache::rememberForever("prep_new_last_rpt_period_serviceRoutine_rows", function(){
+			return $this->prep_new_last_rpt_period_serviceRoutine_rows();
+		});
+
+		Cache::rememberForever("prep_new_last_rpt_period_serviceRoutine_target", function(){
+			return $this->prep_new_last_rpt_period_serviceRoutine_target();
+		});
+			
+		$group_by = session('filter_groupby');
+
+		$rows = Cache::get("prep_new_last_rpt_period_serviceRoutine_rows");
+		// $this->prep_new_last_rpt_period_serviceRoutine_rows();
+
+		$target = Cache::get("prep_new_last_rpt_period_serviceRoutine_target");
+		// $this->prep_new_last_rpt_period_serviceRoutine_target();
+		
 		$divisor = Lookup::get_target_divisor(12);
 		// dd($target);
 
@@ -762,36 +332,24 @@ class HfrController extends Controller
 		return view('tables.prep_new_last_rpt_period', ['rows' => $rows, 'target' => $target, 'div_id' => 'prep_new_details', 'divisor' => strval($divisor) ]);
     }
 
+
 	public function vmmc_circ_details()
 	{
-		$vmmc_circ = HfrSubmission::columns(true, 'vmmc_circ');
-		$groupby_partner = session('filter_partner');
-		$sql = $this->get_hfr_sum($vmmc_circ, 'vmmc_circ');
-		$modality = 'vmmc_circ';
-		$tests = HfrSubmission::columns(true, $modality);
-		$sql_test = $this->get_hfr_sum($tests, 'val');
 
-		if($groupby_partner != null){
-			$grouping = 'countys.name';
-		}else{
-			$grouping = 'partners.name';
-		}
+		Cache::forget("vmmc_circ_details_serviceRoutineRows");
+		Cache::forget("vmmc_circ_details_serveceRoutine_target");
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_predefined_groupby_callback('vmmc_circ'))
-			->get();
-					// return DB::getQueryLog();
-		$target = DB::table($this->my_target_table)
-			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-			->selectRaw($sql_test)
-			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-			->whereRaw(Lookup::county_target_query_by_partner())
-			->groupBy($grouping)				
-			->get();
+		Cache::rememberForever("vmmc_circ_details_serveceRoutine_target", function(){
+			return $this->vmmc_circ_details_serveceRoutine_target();
+		});
+
+		Cache::rememberForever("vmmc_circ_details_serviceRoutineRows", function(){
+			return $this->vmmc_circ_details_serviceRoutineRows();
+		});
+
+		$rows= Cache::get("vmmc_circ_details_serviceRoutineRows");
+		$target = Cache::get("vmmc_circ_details_serveceRoutine_target");
+
 		$divisor = Lookup::get_target_divisor(12);
 
 		$data['div'] = str_random(15);
@@ -824,7 +382,6 @@ class HfrController extends Controller
 			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
 			->selectRaw($sql_test)
 			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
 			->whereRaw(Lookup::county_target_query_by_partner())
 			->groupBy($grouping)				
 			->get();
@@ -832,23 +389,11 @@ class HfrController extends Controller
 
 		$data['div'] = str_random(15);
 
-		// Lookup::bars($data, ["Tx New"], "column");
-
-		// $i=0;
-		// foreach ($rows as $key => $row){
-		// 	if(!$row->tx_new) continue;
-		// 	$data['categories'][$i] = Lookup::get_category($row);
-
-		// 	$data["outcomes"][0]["data"][$i] = (int) $row->tx_new;
-		// 	$i++;
-		// }	
-		// dd($rows,$target,$divisor);
 		return view('tables.tx_new_details', ['rows' => $rows, 'target' => $target, 'div_id' => 'tx_new_details', 'divisor' => strval($divisor) ]);
 	}
 
 	public function testing_dis()
 	{
-		//DB::enableQueryLog();
 		$tests = HfrSubmission::columns(true, 'hts_tst'); 
 		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
 		$sql = $this->get_hfr_sum($tests, 'tests') . ', ' . $this->get_hfr_sum($pos, 'pos');
@@ -862,7 +407,6 @@ class HfrController extends Controller
 		}else{
 			$grouping = 'partners.name';
 		}
-		// DB::enableQueryLog();
 		$rows = DB::table($this->my_table)
 			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
 			->selectRaw($sql)
@@ -888,43 +432,29 @@ class HfrController extends Controller
 		return view('tables.testing_dis', ['rows' => $rows, 'target' => $target, 'div_id' => 'testing_dis', 'divisor' => strval($divisor) ]);
 	}
 
+
 	public function linkage_dis()
 	{
-		$pos = HfrSubmission::columns(true, 'hts_tst_pos');
-		$tx_new = HfrSubmission::columns(true, 'tx_new');
-		$modality = 'hts_tst_pos';
-		$groupby_partner = session('filter_partner');
-		$tests = HfrSubmission::columns(true, $modality);
-		$sql_test = $this->get_hfr_sum($tests, 'val');
-		$sql = $this->get_hfr_sum($pos, 'pos') . ', ' . $this->get_hfr_sum($tx_new, 'tx_new');
+		Cache::forget("linkageDisServiceRoutineRows");
+		Cache::forget("linkageDisServiceRoutineTarget");
 
-		if($groupby_partner != null){
-			$grouping = 'countys.name';
-		}else{
-			$grouping = 'partners.name';
-		}
+		Cache::rememberForever("linkageDisServiceRoutineRows", function(){
+			return $this->linkageDisServiceRoutineRows();
+		});
 
-		$rows = DB::table($this->my_table)
-			->when(true, $this->get_predefined_joins_callback_weeks_hfr($this->my_table))
-			->selectRaw($sql)
-			->when(true, $this->get_predefined_groupby_callback('pos'))
-			->get();
-		$target = DB::table($this->my_target_table)
-			->join('countys', 'countys.id', '=', $this->my_target_table . '.county_id')
-			->join('partners', 'partners.id', '=', $this->my_target_table . '.partner_id')
-			->selectRaw($sql_test)
-			->addSelect(DB::raw("partners.id as div_id, partners.name as partner_name,countys.name as county_name, countys.id as county_id"))
-			// ->when(true, $this->get_predefined_groupby_callback('tx_curr'))
-			->whereRaw(Lookup::county_target_query_by_partner())
-			->groupBy($grouping)				
-			->get();
+		Cache::rememberForever("linkageDisServiceRoutineTarget", function(){
+			return $this->linkageDisServiceRoutineTarget();
+		});
+
+		$rows = Cache::get("linkageDisServiceRoutineRows");
+		// $this->linkageDisServiceRoutineRows();
+
+		$target = Cache::get("linkageDisServiceRoutineTarget");
 
 		$data['div'] = str_random(15);
 		$divisor = Lookup::get_target_divisor(12);
 		
 		$data['rows'] = $rows;	
-
-		// dd($rows,$target);
 		
 		return view('tables.linkage_dis', ['rows' => $rows, 'target' => $target, 'div_id' => 'linkage_dis', 'divisor' => strval($divisor) ]);
 	}
@@ -977,7 +507,6 @@ class HfrController extends Controller
                 ->get();
 			// return DB::getQueryLog();
 //			 dd($rows,$p_row);
-			
 
 		}
 		else{

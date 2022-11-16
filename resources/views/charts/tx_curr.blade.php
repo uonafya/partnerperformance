@@ -77,7 +77,7 @@
                             align: 'center',
                             rotation: 270,
                             x: 2,
-                            y: 40
+                            y: 50
 
                             // shape: 'callout'
                         }

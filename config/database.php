@@ -68,19 +68,7 @@ return [
             'engine' => null,
         ],
 
-        'mysql_wr' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT_WR', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false,
-            'engine' => null,
-        ],
+        
 
         'pgsql' => [
             'driver' => 'pgsql',
@@ -93,6 +81,38 @@ return [
             'prefix' => '',
             'schema' => 'public',
             'sslmode' => 'prefer',
+        ],
+
+        'mysql_wr' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST'),
+            'port' => env('DB_PORT_WR', '3306'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
+        'mysql_etl' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_etl', '127.0.0.1'),
+            'port' => env('DB_PORT_etl', '3306'),
+            'database' => env('DB_DATABASE_etl', 'forge'),
+            'username' => env('DB_USERNAME_etl', 'forge'),
+            'password' => env('DB_PASSWORD_etl', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+            'unix_socket' => '',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix_indexes' => true,
         ],
 
     ],

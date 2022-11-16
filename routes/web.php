@@ -11,11 +11,20 @@
 |
 */
 
+Route::get('/hello_sp', function () {
+    return config('your-namespace.message');
+});
+
+Route::get('tx_curr_debug', 'HfrController@tx_curr_debug');
+
 Route::middleware(['check_live'])->group(function(){
 	Auth::routes(['verify' => true]);
 });
 
 // Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('ichart_testing', 'IChartsController@testing')->name('ichart_testing');
+Route::get('ilinkage', 'IChartsController@linkage')->name('ilinkage');
 
 
 Route::post('facility/search', 'FilterController@facility')->name('facility.search');
@@ -325,6 +334,7 @@ Route::middleware(['clear_session', 'auth', 'check_live'])->group(function(){
 	Route::get('user/change_password', 'UserController@change_password');
 	Route::resource('user', 'UserController');
 });
+
 
 
 /*Route::prefix('partner')->name('partner.')->group(function(){

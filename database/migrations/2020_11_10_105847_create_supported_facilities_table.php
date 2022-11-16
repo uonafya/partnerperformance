@@ -13,6 +13,9 @@ class CreateSupportedFacilitiesTable extends Migration
      */
     public function up()
     {
+
+        if(Schema::hasTable('supported_facilities')) return; 
+        
         Schema::create('supported_facilities', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('partner_id')->unsigned();
